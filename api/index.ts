@@ -7,9 +7,9 @@ import config from 'config'
 export default new GraphQLServer({
   typeDefs: config.graphqlSchemaPath,
   resolvers,
-  context: async (request, response) => {
+  context: async (_req, _res) => {
     return {
-      // auth: new Auth(request, response),
+      // auth: new Auth(_req, _res),
     }
   },
 })
