@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["es2016", "esnext.asynciterable"],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+        "api/*": [ "api/*" ],
+        "ui/*": [ "ui/*" ],
+        "config/*": [ "config/*" ]
+    }
+  }
+}
