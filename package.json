@@ -6,7 +6,8 @@
   "license": "RESERVED",
   "private": true,
   "scripts": {
-    "start": "node bin/start.js"
+    "start": "node bin/start.js",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js" 
   },
   "_moduleAliases": {
     "api": "./api",
@@ -30,6 +31,7 @@
     "graphql-yoga": "^1.17.4",
     "module-alias": "^2.2.0",
     "next": "^8.0.3",
+    "pg": "^7.8.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "reflect-metadata": "^0.1.13",

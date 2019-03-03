@@ -17,5 +17,10 @@ export default {
   environment: 'development',
   ssl: false,
   domain: 'localhost:8080',
+  dbHost: 'localhost',
+  dbPort: 5432,
+  dbUsername: 'pguser',
+  dbPassword: 'pgpass',
+  dbName: 'syncui',
   ...secrets,
 }
