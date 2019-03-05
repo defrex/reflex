@@ -20,5 +20,6 @@ export default {
   dbPassword: 'pgpass',
   dbName: 'syncui',
   figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
-  ...secrets,
+  secretKey: process.env.SECRET_KEY,
+  figmaClientSecret: process.env.FIGMA_CLIENT_SECRET,
 }
