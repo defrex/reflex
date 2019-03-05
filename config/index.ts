@@ -1,7 +1,5 @@
 import * as path from 'path'
 
-import secrets from './secrets'
-
 const basePath: string = path.join(__dirname, '..')
 
 export default {
