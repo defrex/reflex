@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "start": "node bin/start.js",
+    "build": "next build",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js"
   },
   "_moduleAliases": {
