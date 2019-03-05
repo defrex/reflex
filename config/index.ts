@@ -8,6 +8,10 @@ export default {
   graphqlSchemaPath: path.join(basePath, 'api/schema.graphql'),
   graphqlSchemaTypesPath: path.join(basePath, 'api/gen/schema.d.ts'),
   graphqlEndpoint: '/graphql',
+  graphqlDocumentPaths: [
+    path.join(basePath, 'pages/**/*.graphql'),
+    path.join(basePath, 'components/**/*.graphql'),
+  ],
   environment: process.env.NODE_ENV,
   port: process.env.PORT,
   ssl: !!process.env.SSL,

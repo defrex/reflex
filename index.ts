@@ -1,25 +1,40 @@
 import * as next from 'next'
+import * as chokidar from 'chokidar'
 
 import config from 'config'
 import api from 'api'
+import gen from './bin/gen'
 
 const nextApp = next({
   dev: config.environment === 'development',
 })
 const nextHandler = nextApp.getRequestHandler()
 
-nextApp.prepare().then(() => {
-  api.use((req, res, next) => {
-    if (req.path.startsWith(config.graphqlEndpoint)) {
-      return next()
-    }
+api.use((req, res, next) => {
+  if (req.path.startsWith(config.graphqlEndpoint)) {
+    return next()
+  }
 
-    nextHandler(req, res, next)
-  })
-
-  api.start({
-    endpoint: config.graphqlEndpoint,
-    playground: config.graphqlEndpoint,
-    port: config.port,
-  }).catch(err => console.log('ERROR:', err))
+  nextHandler(req, res, next)
 })
+
+if (config.environment === 'development') {
+  const files = [
+    config.graphqlSchemaPath,
+    ...config.graphqlDocumentPaths,
+  ]
+
+  chokidar.watch(files).on('all', async () => {
+    await gen()
+    await nextApp.close()
+    await nextApp.prepare()
+  })
+} else {
+  nextApp.prepare()
+}
+
+api.start({
+  endpoint: config.graphqlEndpoint,
+  playground: config.graphqlEndpoint,
+  port: config.port,
+}).catch(err => console.log('ERROR:', err))

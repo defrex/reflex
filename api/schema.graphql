@@ -2,3 +2,16 @@
 type Query {
   hello: String!
 }
+
+type Mutation {
+  createUser (input: CreateUserInput!): User
+}
+
+type User {
+  id: ID!
+  name: String
+}
+
+input CreateUserInput {
+  name: String!
+}
