@@ -12,5 +12,5 @@ module.exports = withTypescript({
     })
 
     return webpackConfig
-  }
+  },
 })

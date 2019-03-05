@@ -9,9 +9,6 @@ export default {
   basePath,
   graphqlSchemaPath: path.join(basePath, 'api/schema.graphql'),
   graphqlSchemaTypesPath: path.join(basePath, 'api/gen/schema.d.ts'),
-  plaidClientId: '5c61ae6e6b79360011eb2b93',
-  plaidPublicKey: 'bf785f2abeb9bea89229da5f8f5587',
-  plaidEnv: 'sandbox',
   graphqlEndpoint: '/graphql',
   port: 8080,
   environment: 'development',
@@ -22,5 +19,6 @@ export default {
   dbUsername: 'pguser',
   dbPassword: 'pgpass',
   dbName: 'syncui',
+  figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
   ...secrets,
 }
