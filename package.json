@@ -9,7 +9,8 @@
     "start": "node bin/start.js",
     "build": "next build",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "gen": "gql-gen --config codegen.yml"
+    "gen": "gql-gen --config codegen.yml",
+    "heroku-postbuild": "yarn run build"
   },
   "_moduleAliases": {
     "api": "./api",
