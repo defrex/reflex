@@ -2,11 +2,7 @@ const config = require('./config').default
 
 module.exports = {
   'type': 'postgres',
-  'host': config.dbHost,
-  'port': config.dbPort,
-  'username': config.dbUsername,
-  'password': config.dbPassword,
-  'database': config.dbName,
+  'url': config.dbUrl,
   'synchronize': true,
   'logging': false,
   'entities': [
