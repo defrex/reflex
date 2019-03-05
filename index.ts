@@ -1,5 +1,6 @@
 import * as next from 'next'
 import * as chokidar from 'chokidar'
+import { createConnection } from 'typeorm'
 
 import config from 'config'
 import api from 'api'
@@ -38,3 +39,5 @@ api.start({
   playground: config.graphqlEndpoint,
   port: config.port,
 }).catch(err => console.log('ERROR:', err))
+
+createConnection()
