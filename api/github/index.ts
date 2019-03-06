@@ -1,8 +1,8 @@
 import { Application } from 'probot'
 
 export default (app: Application) => {
-  app.on('issues.opened', async (_context) => {
-    console.log('Hello GitHub')
+  app.on('pull_request', async (context) => {
+    app.log(context)
   })
   // For more information on building apps:
   // https://probot.github.io/docs/
