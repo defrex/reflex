@@ -24,6 +24,10 @@ export interface User {
   name?: Maybe<string>;
 }
 
+export interface GithubCheck {
+  id: string;
+}
+
 // ====================================================
 // Arguments
 // ====================================================

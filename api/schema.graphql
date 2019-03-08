@@ -16,3 +16,7 @@ input CreateUserInput {
   name: String!
   email: String!
 }
+
+type GithubCheck {
+  id: ID!
+}

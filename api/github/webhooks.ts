@@ -1,7 +1,6 @@
 import { Application } from 'probot'
 
 import { GithubCheck } from 'models/GithubCheck'
-import { appendFile } from 'fs'
 
 export default (probot: Application) => {
   probot.on('pull_request', async (context) => {
