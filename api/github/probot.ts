@@ -1,7 +1,7 @@
 import { Probot } from 'probot'
 
 import config from 'config'
-import probotAppfunction from './index'
+import webhookHandler from './webhooks'
 
 const probot = new Probot({
   id: config.githubAppId,
@@ -9,6 +9,6 @@ const probot = new Probot({
   cert: config.githubPrivateKey,
   // tunnel: process.env.SUBDOMAIN || process.env.NODE_ENV !== 'production',
 })
-probot.load(probotAppfunction)
+probot.load(webhookHandler)
 
 export default probot
