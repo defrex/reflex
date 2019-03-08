@@ -6,13 +6,13 @@ module.exports = {
   'synchronize': true,
   'logging': false,
   'entities': [
-    'api/models/**/*.ts',
+    'api/models/*.ts',
   ],
   'migrations': [
-    'api/migration/**/*.ts',
+    'api/migration/*.ts',
   ],
   'subscribers': [
-    'api/subscriber/**/*.ts',
+    'api/subscriber/*.ts',
   ],
   'cli': {
     'entitiesDir': 'api/models',

@@ -1,6 +1,8 @@
 
 type Query {
   hello: String!
+
+  githubChecks: [GithubCheck]!
 }
 
 type Mutation {
@@ -15,4 +17,8 @@ type User {
 input CreateUserInput {
   name: String!
   email: String!
+}
+
+type GithubCheck {
+  id: ID!
 }
