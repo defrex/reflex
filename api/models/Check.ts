@@ -6,7 +6,7 @@ export default class GithubCheck extends BaseEntity {
   id: number
 
   @Column()
-  githubCheckId: number
+  githubCheckSuiteId: number
 
   @Column()
   githubRepoId: string
