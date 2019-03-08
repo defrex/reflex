@@ -1,5 +1,9 @@
 import * as React from 'react'
 
-export default () => (
-  <div>Reflex UI</div>
-)
+export default class IndexPage extends React.PureComponent {
+  render () {
+    return (
+      <div>Reflex UI</div>
+    )
+  }
+}
