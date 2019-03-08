@@ -1,6 +1,8 @@
 
 type Query {
   hello: String!
+
+  githubChecks: [GithubCheck]!
 }
 
 type Mutation {

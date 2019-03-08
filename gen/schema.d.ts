@@ -12,6 +12,12 @@ export interface CreateUserInput {
 
 export interface Query {
   hello: string;
+
+  githubChecks: (Maybe<GithubCheck>)[];
+}
+
+export interface GithubCheck {
+  id: string;
 }
 
 export interface Mutation {
@@ -22,10 +28,6 @@ export interface User {
   id: string;
 
   name?: Maybe<string>;
-}
-
-export interface GithubCheck {
-  id: string;
 }
 
 // ====================================================
