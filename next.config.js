@@ -1,8 +1,7 @@
 const withTypescript = require('@zeit/next-typescript')
 
 module.exports = withTypescript({
-  webpack: (webpackConfig, { isServer, dev }) => {
-    console.log(webpackConfig)
+  webpack: (webpackConfig) => {
     webpackConfig.resolve.alias.ui = __dirname
 
     webpackConfig.module.rules.push({
