@@ -8,10 +8,10 @@
   "scripts": {
     "start": "node bin/start.js",
     "build": "next build",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "gen": "gql-gen --config codegen.yml",
-    "heroku-postbuild": "yarn run build",
-    "test": "ts-jest"
+    "orm": "./bin/orm.js",
+    "gen": "./bin/gen.js",
+    "test": "ts-jest",
+    "heroku-postbuild": "yarn run build"
   },
   "_moduleAliases": {
     "api": "./api",

@@ -5,8 +5,11 @@ import Model from './Model'
 @Entity()
 export default class GithubCheck extends Model {
   @Column()
-  githubCheckSuiteId: number
+  repo: string
 
   @Column()
-  githubRepoId: string
+  headSha: string
+
+  @Column()
+  githubCheckId: number
 }
