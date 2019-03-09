@@ -38,7 +38,7 @@ export default (probot: Application) => {
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
-      started_at: githubCheck.createdAt,
+      started_at: githubCheck.createdAt.toString(),
       // status,
       // conclusion,
       // completed_at,
