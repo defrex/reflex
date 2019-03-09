@@ -10,7 +10,8 @@
     "build": "next build",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "gen": "gql-gen --config codegen.yml",
-    "heroku-postbuild": "yarn run build"
+    "heroku-postbuild": "yarn run build",
+    "test": "ts-jest"
   },
   "_moduleAliases": {
     "api": "./api",
@@ -18,17 +19,19 @@
     "config": "./config"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0-0",
     "@types/express": "^4.16.1",
+    "@types/jest": "^24.0.11",
     "@types/node": "^11.10.4",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "@zeit/next-typescript": "^1.1.1",
+    "aes256": "^1.0.4",
     "chokidar": "^2.1.2",
     "cookie-parser": "^1.4.4",
     "eslint": "^5.15.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
@@ -40,6 +43,7 @@
     "graphql-import": "^0.7.1",
     "graphql-tag": "^2.10.1",
     "graphql-yoga": "^1.17.4",
+    "jest": "^24.3.1",
     "module-alias": "^2.2.0",
     "next": "^8.0.3",
     "now": "^14.0.2",
@@ -50,6 +54,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "reflect-metadata": "^0.1.13",
+    "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "typeorm": "^0.2.14",
     "typescript": "^3.3.3333"
