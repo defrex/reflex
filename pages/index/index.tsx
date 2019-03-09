@@ -3,7 +3,7 @@ import * as React from 'react'
 export default class IndexPage extends React.PureComponent {
   render () {
     return (
-      <div>Reflex UI</div>
+      <div>Reflex UI t</div>
     )
   }
 }
