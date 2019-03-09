@@ -10,6 +10,6 @@ export default class GithubCheck extends Model {
   @Column()
   headSha: string
 
-  @Column()
+  @Column({ nullable: true })
   githubCheckId: number
 }
