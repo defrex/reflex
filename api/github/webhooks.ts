@@ -67,7 +67,7 @@ export default (probot: Application) => {
     })
     console.log('check', check)
 
-    githubCheck.githubCheckId = check.id
+    githubCheck.githubCheckId = (check as any).id
     await githubCheck.save()
 
     probot.log(`Created check: ${repo} ${headSha}`)
