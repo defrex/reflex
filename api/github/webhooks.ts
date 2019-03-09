@@ -6,19 +6,25 @@ import GithubCheck from 'api/models/GithubCheck'
 export default (probot: Application) => {
   probot.on('check_suite', async ({ name, payload, github }) => {
     // create check
-    probot.log(name)
-    const githubRepoId = payload.repository.id
-    const githubCheckSuiteId = payload.check_suite.id
+    console.log('name', name)
+    const repo = payload.repository.full_name
+    const headSha = payload.check_suite.head_sha
 
-    let githubCheck = await GithubCheck.findOne({ githubRepoId, githubCheckSuiteId })
+    console.log('repo', repo)
+    console.log('headSha', headSha)
+
+    let githubCheck = await GithubCheck.findOne({ repo, headSha })
+    console.log('githubCheck.found', githubCheck)
     if (!githubCheck) {
       githubCheck = new GithubCheck()
-      githubCheck.githubRepoId = githubRepoId
-      githubCheck.githubCheckSuiteId = githubCheckSuiteId
+      githubCheck.repo = repo
+      githubCheck.headSha = headSha
       await githubCheck.save()
+      console.log('githubCheck.new', githubCheck)
     }
 
-    await (github as any).checks.create({
+    console.log('creating via octobot')
+    const check = await (github as any).checks.create({
       owner: payload.repository.owner,
       repo: payload.repository.name,
       name: 'reflex',
@@ -53,8 +59,12 @@ export default (probot: Application) => {
       // actions[].description,
       // actions[].identifier,
     })
+    console.log('check', check)
 
-    probot.log(`Created check for repo ${githubRepoId} and suite ${githubCheckSuiteId}`)
+    githubCheck.githubCheckId = check.id
+    await githubCheck.save()
+
+    probot.log(`Created check: ${repo} ${headSha}`)
   })
   probot.on('check_run', async ({ name }) => {
     // re-run check
