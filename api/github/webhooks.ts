@@ -4,7 +4,7 @@ import { absoluteUrl } from 'api/lib/url'
 import GithubCheck from 'api/models/GithubCheck'
 
 export default (probot: Application) => {
-  probot.on('check_suite', async ({ name, payload, checks }) => {
+  probot.on('check_suite', async ({ name, payload, github }) => {
     // create check
     probot.log(name)
     const githubRepoId = payload.repository.id
@@ -18,7 +18,7 @@ export default (probot: Application) => {
       await githubCheck.save()
     }
 
-    await checks.create({
+    await (github as any).checks.create({
       name: 'reflex',
       head_sha: payload.check_suite.head_sha,
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
