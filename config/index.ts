@@ -20,7 +20,6 @@ export default {
   secretKey: process.env.SECRET_KEY,
   figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
   figmaClientSecret: process.env.FIGMA_CLIENT_SECRET,
-
   githubWebhookPath: '/github',
   githubAppId: 26484,
   githubWebhookSecret: process.env.GITHUB_WEBHOOK_SECRET,
