@@ -4,4 +4,8 @@ require('module-alias/register')
 require('ts-node/register')
 require('reflect-metadata')
 
-require('../index.ts')
+const main = require('../index.ts').default
+
+if (require.main === module) {
+  main()
+}

@@ -4,40 +4,52 @@ import * as chokidar from 'chokidar'
 import config from 'config'
 import api from 'api'
 import probot from 'api/github/probot'
+import conection from 'api/db'
+import { absoluteUrl } from 'api/lib/url'
 import gen from './bin/gen'
 
-api.use(config.githubWebhookPath, probot.server)
+export default async function main () {
+  api.use(config.githubWebhookPath, probot.server)
 
-const nextApp = next({
-  dev: config.environment === 'development',
-})
-const nextHandler = nextApp.getRequestHandler()
+  const nextApp = next({
+    dev: config.environment === 'development',
+  })
+  const nextHandler = nextApp.getRequestHandler()
 
-api.use((req, res, next) => {
-  if (req.path.startsWith(config.graphqlEndpoint)) {
-    return next()
+  api.use((req, res, next) => (
+    req.path.startsWith(config.graphqlEndpoint) ? (
+      next()
+    ) : (
+      nextHandler(req, res, next)
+    )
+  ))
+
+  if (config.environment === 'development') {
+    const files = [
+      config.graphqlSchemaPath,
+      ...config.graphqlDocumentPaths,
+    ]
+
+    chokidar.watch(files).on('all', async () => {
+      await gen()
+      await nextApp.close()
+      await nextApp.prepare()
+    })
+  } else {
+    await nextApp.prepare()
   }
 
-  nextHandler(req, res, next)
-})
+  await conection
 
-if (config.environment === 'development') {
-  const files = [
-    config.graphqlSchemaPath,
-    ...config.graphqlDocumentPaths,
-  ]
+  try {
+    await api.start({
+      endpoint: config.graphqlEndpoint,
+      playground: config.graphqlEndpoint,
+      port: config.port,
+    })
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
 
-  chokidar.watch(files).on('all', async () => {
-    await gen()
-    await nextApp.close()
-    await nextApp.prepare()
-  })
-} else {
-  nextApp.prepare()
+  console.log(absoluteUrl('/'))
 }
-
-api.start({
-  endpoint: config.graphqlEndpoint,
-  playground: config.graphqlEndpoint,
-  port: config.port,
-}).catch(err => console.log('ERROR:', err))
