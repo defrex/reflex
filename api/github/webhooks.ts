@@ -19,13 +19,13 @@ export default (probot: Application) => {
     }
 
     await (github as any).checks.create({
+      owner: payload.repository.owner,
+      repo: payload.repository.name,
       name: 'reflex',
       head_sha: payload.check_suite.head_sha,
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
       external_id: githubCheck.id,
       status: 'in_progress',
-      // owner,
-      // repo,
       // status,
       // started_at,
       // conclusion,
