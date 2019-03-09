@@ -1,4 +1,5 @@
 import { Application } from 'probot'
+import * as Octokit from '@octokit/rest'
 
 import { absoluteUrl } from 'api/lib/url'
 import GithubCheck from 'api/models/GithubCheck'
@@ -22,17 +23,23 @@ export default (probot: Application) => {
       console.log('githubCheck.new', githubCheck)
     }
 
+    if (githubCheck.githubCheckId !== null) {
+      probot.log(`Check exsists: ${repo} ${headSha}`)
+      return
+    }
+
     console.log('creating via octobot')
-    const check = await (github as any).checks.create({
+    const octokit = github as unknown as Octokit
+    const check = await octokit.checks.create({
       owner: payload.repository.owner,
       repo: payload.repository.name,
       name: 'reflex',
       head_sha: payload.check_suite.head_sha,
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
-      external_id: githubCheck.id,
+      external_id: `${githubCheck.id}`,
       status: 'in_progress',
+      started_at: githubCheck.createdAt,
       // status,
-      // started_at,
       // conclusion,
       // completed_at,
       // output,
