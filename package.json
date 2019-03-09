@@ -11,7 +11,7 @@
     "orm": "./bin/orm.js",
     "gen": "./bin/gen.js",
     "test": "ts-jest",
-    "heroku-postbuild": "yarn run build"
+    "heroku-postbuild": "yarn run orm schema:sync && yarn run build"
   },
   "_moduleAliases": {
     "api": "./api",
