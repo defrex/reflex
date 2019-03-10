@@ -23,8 +23,7 @@
     "baseUrl": ".",
     "paths": {
         "api/*": [ "api/*" ],
-        "ui/*": [ "ui/*" ],
-        "config/*": [ "config/*" ]
+        "ui/*": [ "ui/*" ]
     },
     "typeRoots": [
       "node_modules/@types",
