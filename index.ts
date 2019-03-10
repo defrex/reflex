@@ -6,7 +6,7 @@ import api from 'api'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
-import routes from './routes'
+import routes from 'ui/routes'
 import gen from './bin/gen'
 
 export default async function main () {
