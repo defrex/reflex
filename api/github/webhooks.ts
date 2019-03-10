@@ -31,15 +31,19 @@ export default (probot: Application) => {
     console.log('creating via octobot')
     const octokit = github as unknown as Octokit
     const check = await octokit.checks.create({
-      owner: payload.repository.owner,
-      repo: payload.repository.name,
       name: 'reflex',
       head_sha: payload.check_suite.head_sha,
-      details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
+      owner: payload.repository.owner,
+      repo: payload.repository.name,
       external_id: `${githubCheck.id}`,
+      details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
       status: 'in_progress',
       started_at: githubCheck.createdAt.toString(),
-      // status,
+      output: {
+        title: 'Reflex',
+        summary: '',
+        text: '',
+      },
       // conclusion,
       // completed_at,
       // output,
