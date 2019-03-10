@@ -1,4 +1,4 @@
 #!/bin/env node
 
-require('./setup')
+require('./lib/setup')
 require('api/lib/gen').default()
