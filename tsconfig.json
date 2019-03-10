@@ -21,11 +21,16 @@
     "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
         "api/*": [ "api/*" ],
         "ui/*": [ "ui/*" ],
         "config/*": [ "config/*" ]
-    }
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "@types"
+    ]
   }
 }

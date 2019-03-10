@@ -1,4 +1,4 @@
-import * as aes256 from 'aes256'
+import aes256 from 'aes256'
 
 import Model from 'api/models/Model'
 import config from 'api/config'

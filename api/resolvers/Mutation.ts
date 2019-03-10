@@ -1,11 +1,11 @@
-import { CreateUserInput } from 'gen/schema'
+import { CreateUserMutationArgs } from 'gen/schema'
 import User from 'api/models/User'
 import Context from 'api/context'
 
 export default {
   createUser: async (
     _parent: null,
-    args: { input: CreateUserInput },
+    args: CreateUserMutationArgs,
     _ctx: Context
   ): Promise<User> => {
     const user = new User()
