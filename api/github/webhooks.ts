@@ -28,8 +28,8 @@ export default (probot: Application) => {
     const createCheckPayload: Octokit.ChecksCreateParams = {
       owner: repoOwner,
       repo: repoName,
-      name: 'reflex',
       head_sha: headSha,
+      name: 'Reflex',
       details_url: absoluteUrl(`/checks/${repoOwner}/${repoName}/${headSha}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
