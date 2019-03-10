@@ -1,5 +1,6 @@
 import { Application } from 'probot'
 import * as Octokit from '@octokit/rest'
+import { DateTime } from 'luxon'
 
 import { absoluteUrl } from 'api/lib/url'
 import GithubCheck from 'api/models/GithubCheck'
@@ -36,7 +37,7 @@ export default (probot: Application) => {
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
-      started_at: githubCheck.createdAt.toString(),
+      started_at: DateTime.local(githubCheck.createdAt).toISO(),
       output: {
         title: 'Reflex',
         summary: '',
