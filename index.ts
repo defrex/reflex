@@ -1,13 +1,13 @@
-import * as next from 'next'
-import * as chokidar from 'chokidar'
+import next from 'next'
+import chokidar from 'chokidar'
 
 import api from 'api'
 import config from 'api/config'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
+import gen from 'api/lib/gen'
 import routes from 'ui/routes'
-import gen from './bin/gen'
 
 export default async function main () {
   api.use(config.githubWebhookPath, probot.server)

@@ -1,4 +1,4 @@
-const config = require('./config').default
+const config = require('./api/config').default
 
 module.exports = {
   'type': 'postgres',

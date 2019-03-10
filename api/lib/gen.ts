@@ -1,20 +1,20 @@
 import { generate } from 'graphql-code-generator'
 
 import config from 'api/config'
+import { absolutePath } from 'api/lib/path'
 
-export default async function gen (options = {}) {
+export default function gen (): Promise<any> {
   return generate({
     schema: config.graphqlSchemaPath,
     overwrite: true,
     generates: {
-      [config.absolutePath('gen/schema.d.ts')]: {
+      [absolutePath('gen/schema.d.ts')]: {
         plugins: ['typescript-common', 'typescript-server'],
       },
-      [config.absolutePath('gen/documents.d.ts')]: {
+      [absolutePath('gen/documents.d.ts')]: {
         documents: config.graphqlDocumentPaths,
         plugins: ['typescript-common', 'typescript-client'],
       },
     },
-    ...options,
   })
 }

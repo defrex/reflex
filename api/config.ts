@@ -6,7 +6,6 @@ const absolutePath = path.join.bind(path, basePath)
 export default {
   appName: 'Sync UI',
   basePath,
-  absolutePath,
   graphqlSchemaPath: absolutePath('api/schema.graphql'),
   graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
   graphqlEndpoint: '/graphql',
