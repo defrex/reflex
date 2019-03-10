@@ -37,12 +37,12 @@ export default (probot: Application) => {
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
-      started_at: DateTime.local(githubCheck.createdAt).toISO(),
-      output: {
-        title: 'Reflex',
-        summary: '',
-        text: '',
-      },
+      started_at: DateTime.fromJSDate(githubCheck.createdAt).toISO(),
+      // output: {
+      //   title: 'Reflex',
+      //   summary: '',
+      //   text: '',
+      // },
     }
 
     console.log('createCheckPayload', createCheckPayload)
