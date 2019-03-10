@@ -28,15 +28,13 @@ export default (probot: Application) => {
       return
     }
 
-    console.log('creating via octobot')
-    const octokit = github as unknown as Octokit
-    const check = await octokit.checks.create({
-      name: 'reflex',
-      head_sha: payload.check_suite.head_sha,
+    const createCheckPayload: Octokit.ChecksCreateParams = {
       owner: payload.repository.owner,
       repo: payload.repository.name,
-      external_id: `${githubCheck.id}`,
+      name: 'reflex',
+      head_sha: payload.check_suite.head_sha,
       details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
+      external_id: `${githubCheck.id}`,
       status: 'in_progress',
       started_at: githubCheck.createdAt.toString(),
       output: {
@@ -44,31 +42,12 @@ export default (probot: Application) => {
         summary: '',
         text: '',
       },
-      // conclusion,
-      // completed_at,
-      // output,
-      // output.title,
-      // output.summary,
-      // output.text,
-      // output.annotations,
-      // output.annotations[].path,
-      // output.annotations[].start_line,
-      // output.annotations[].end_line,
-      // output.annotations[].start_column,
-      // output.annotations[].end_column,
-      // output.annotations[].annotation_level,
-      // output.annotations[].message,
-      // output.annotations[].title,
-      // output.annotations[].raw_details,
-      // output.images,
-      // output.images[].alt,
-      // output.images[].image_url,
-      // output.images[].caption,
-      // actions,
-      // actions[].label,
-      // actions[].description,
-      // actions[].identifier,
-    })
+    }
+
+    console.log('createCheckPayload', createCheckPayload)
+    const octokit = github as unknown as Octokit
+    console.log('creating via octobot')
+    const check = await octokit.checks.create(createCheckPayload)
     console.log('check', check)
 
     githubCheck.githubCheckId = (check as any).id
