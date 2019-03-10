@@ -21,7 +21,7 @@ export default (probot: Application) => {
     }
 
     if (githubCheck.githubCheckId !== null) {
-      probot.log(`Check exsists: ${repoOwner}/${repoName} ${headSha}`)
+      console.log(`Check exsists: ${repoOwner}/${repoName} ${headSha}`)
       return
     }
 
@@ -43,7 +43,7 @@ export default (probot: Application) => {
     githubCheck.githubCheckId = (check as any).id
     await githubCheck.save()
 
-    probot.log(`Created check: ${repoName} ${headSha}`)
+    console.log(`Created check: ${repoName} ${headSha}`)
   })
 
   probot.on('check_run', async ({ name }) => {
