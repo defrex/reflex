@@ -29,7 +29,7 @@ export default (probot: Application) => {
     }
 
     const createCheckPayload: Octokit.ChecksCreateParams = {
-      owner: payload.owner.login,
+      owner: payload.repository.owner.login,
       repo: payload.repository.name,
       name: 'reflex',
       head_sha: payload.check_suite.head_sha,
