@@ -4,6 +4,9 @@ const path = require('path')
 module.exports = withTypescript({
   useFileSystemPublicRoutes: false,
 
+  // runtimeConfig: {
+  // },
+
   webpack: (webpackConfig) => {
     webpackConfig.resolve.alias.ui = path.join(__dirname, 'ui')
     webpackConfig.resolve.alias.gen = path.join(__dirname, 'gen')

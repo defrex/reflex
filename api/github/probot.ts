@@ -1,7 +1,7 @@
 import { Probot } from 'probot'
 
-import config from 'config'
-import webhookHandler from './webhooks'
+import config from 'api/config'
+import webhookHandler from 'api/github/webhooks'
 
 const probot = new Probot({
   id: config.githubAppId,

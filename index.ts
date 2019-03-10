@@ -1,8 +1,8 @@
 import * as next from 'next'
 import * as chokidar from 'chokidar'
 
-import config from 'config'
 import api from 'api'
+import config from 'api/config'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'

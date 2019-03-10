@@ -16,8 +16,7 @@
   "_moduleAliases": {
     "gen": "./gen",
     "api": "./api",
-    "ui": "./ui",
-    "config": "./config.ts"
+    "ui": "./ui"
   },
   "dependencies": {
     "@octokit/rest": "^16.17.0",

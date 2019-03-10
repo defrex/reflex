@@ -1,7 +1,7 @@
 import * as aes256 from 'aes256'
 
 import Model from 'api/models/Model'
-import config from 'config'
+import config from 'api/config'
 
 export async function graphIdforModel (model: Model): Promise<string> {
   const plaintext = [model.constructor.name, model.id].join(':')
