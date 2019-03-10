@@ -7,7 +7,7 @@ import GithubCheck from 'api/models/GithubCheck'
 
 export default (probot: Application) => {
   probot.on('check_suite', async ({ payload, github }) => {
-    const repoName = payload.repository.full_name
+    const repoName = payload.repository.name
     const repoOwner = payload.repository.owner.login
     const headSha = payload.check_suite.head_sha
 
