@@ -36,6 +36,7 @@ export default (probot: Application) => {
       started_at: DateTime.fromJSDate(githubCheck.createdAt).toISO(),
     }
 
+    console.log(createCheckPayload)
     const octokit = github as unknown as Octokit
     const check = await octokit.checks.create(createCheckPayload)
 
