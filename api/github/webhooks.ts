@@ -30,7 +30,7 @@ export default (probot: Application) => {
       repo: repoName,
       name: 'reflex',
       head_sha: headSha,
-      details_url: absoluteUrl(`/github-checks/${githubCheck.id}`),
+      details_url: absoluteUrl(`/checks/${repoOwner}/${repoName}/${headSha}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
       started_at: DateTime.fromJSDate(githubCheck.createdAt).toISO(),
