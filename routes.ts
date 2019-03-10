@@ -1,5 +1,6 @@
-import Routes from 'next-routes'
+const routes = require('next-routes')
 
-export default new Routes()
+console.log(routes)
+export default routes()
   .add('index', '/')
   .add('checks', '/checks/:repoOwner/:repoName/:headSha')

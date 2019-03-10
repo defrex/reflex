@@ -6,6 +6,7 @@ import api from 'api'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
+import routes from './routes'
 import gen from './bin/gen'
 
 export default async function main () {
@@ -14,15 +15,14 @@ export default async function main () {
   const nextApp = next({
     dev: config.environment === 'development',
   })
-  const nextHandler = nextApp.getRequestHandler()
+  const nextHandler = routes.getRequestHandler(nextApp)
 
-  api.use((req, res, next) => (
-    req.path.startsWith(config.graphqlEndpoint) ? (
-      next()
-    ) : (
-      nextHandler(req, res, next)
-    )
-  ))
+  api.use(function (req, res, skip) {
+    if (req.path.startsWith(config.graphqlEndpoint)) {
+      return skip()
+    }
+    nextHandler.apply(this, arguments)
+  })
 
   if (config.environment === 'development') {
     const files = [
