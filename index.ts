@@ -9,7 +9,7 @@ import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
 import gen from 'api/lib/gen'
 import routes from 'ui/routes'
-// import nextConfig from './next.config.js'
+import nextConfig from './next.config.js'
 
 export default async function main () {
   api.use(config.githubWebhookPath, probot.server)
@@ -17,7 +17,7 @@ export default async function main () {
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
-    // conf: nextConfig,
+    conf: nextConfig,
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
