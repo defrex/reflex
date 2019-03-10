@@ -4,8 +4,11 @@ import Model from './Model'
 
 @Entity()
 export default class GithubCheck extends Model {
-  @Column()
-  repo: string
+  @Column({ default: 'defrex' })
+  repoOwner: string
+
+  @Column({ default: 'syncui' })
+  repoName: string
 
   @Column()
   headSha: string
