@@ -14,6 +14,7 @@ export default async function main () {
 
   const nextApp = next({
     dev: config.environment === 'development',
+    dir: config.uiPath,
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
