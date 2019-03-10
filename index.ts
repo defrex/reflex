@@ -1,5 +1,6 @@
 import next from 'next'
 import chokidar from 'chokidar'
+import { Request, Response } from 'express'
 
 import api from 'api'
 import config from 'api/config'
@@ -8,6 +9,7 @@ import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
 import gen from 'api/lib/gen'
 import routes from 'ui/routes'
+import nextConfig from './next.config.js'
 
 export default async function main () {
   api.use(config.githubWebhookPath, probot.server)
@@ -15,14 +17,15 @@ export default async function main () {
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
+    conf: nextConfig,
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
-  api.use(function (req, res, skip) {
+  api.use(function (req: Request, _res: Response, skip: Function) {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }
-    nextHandler.apply(this, arguments)
+    nextHandler.apply(null, arguments)
   })
 
   if (config.environment === 'development') {
