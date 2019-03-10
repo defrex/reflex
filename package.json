@@ -6,17 +6,17 @@
   "license": "RESERVED",
   "private": true,
   "scripts": {
-    "start": "node bin/start.js",
-    "build": "next build",
+    "start": "./bin/start.js",
+    "build": "next build ./ui",
     "orm": "./bin/orm.js",
     "gen": "./bin/gen.js",
     "test": "ts-jest",
     "heroku-postbuild": "yarn run orm schema:sync && yarn run build"
   },
   "_moduleAliases": {
+    "gen": "./gen",
     "api": "./api",
-    "ui": "./ui",
-    "config": "./config"
+    "ui": "./ui"
   },
   "dependencies": {
     "@octokit/rest": "^16.17.0",
@@ -29,6 +29,7 @@
     "@typescript-eslint/parser": "^1.4.2",
     "@zeit/next-typescript": "^1.1.1",
     "aes256": "^1.0.4",
+    "apollo-boost": "^0.3.1",
     "chokidar": "^2.1.2",
     "cookie-parser": "^1.4.4",
     "eslint": "^5.15.0",
@@ -51,12 +52,14 @@
     "module-alias": "^2.2.0",
     "next": "^8.0.3",
     "next-routes": "^1.4.2",
+    "next-with-apollo": "^3.4.0",
     "now": "^14.0.2",
     "passport": "^0.4.0",
     "passport-figma": "^0.0.4",
     "pg": "^7.8.1",
     "probot": "^7.5.1",
     "react": "^16.8.3",
+    "react-apollo": "^2.5.2",
     "react-dom": "^16.8.3",
     "reflect-metadata": "^0.1.13",
     "ts-jest": "^24.0.0",

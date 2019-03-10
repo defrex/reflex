@@ -1,27 +1,31 @@
-import * as next from 'next'
-import * as chokidar from 'chokidar'
+import next from 'next'
+import chokidar from 'chokidar'
+import { Request, Response } from 'express'
 
-import config from 'config'
 import api from 'api'
+import config from 'api/config'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
-import routes from './routes'
-import gen from './bin/gen'
+import gen from 'api/lib/gen'
+import routes from 'ui/routes'
+import nextConfig from './next.config.js'
 
 export default async function main () {
   api.use(config.githubWebhookPath, probot.server)
 
   const nextApp = next({
     dev: config.environment === 'development',
+    dir: config.uiPath,
+    conf: nextConfig,
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
-  api.use(function (req, res, skip) {
+  api.use(function (req: Request, _res: Response, skip: Function) {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }
-    nextHandler.apply(this, arguments)
+    nextHandler.apply(null, arguments)
   })
 
   if (config.environment === 'development') {

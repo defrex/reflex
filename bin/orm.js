@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-require('./setup')
+require('./lib/setup')
 require('typeorm/cli')

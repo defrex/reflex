@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm'
 
-import Model from './Model'
+import Model from 'api/models/Model'
 
 @Entity()
 export default class User extends Model {

@@ -1,6 +1,6 @@
 module.exports = {
   presets: [
     'next/babel',
-    '@babel/preset-typescript',
+    '@zeit/next-typescript/babel',
   ],
 }

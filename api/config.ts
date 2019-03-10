@@ -1,17 +1,19 @@
 import * as path from 'path'
 
-const basePath: string = path.join(__dirname, '..')
+const basePath = path.resolve(__dirname, '..')
+const absolutePath = path.join.bind(path, basePath)
 
 export default {
   appName: 'Sync UI',
   basePath,
-  graphqlSchemaPath: path.join(basePath, 'api/schema.graphql'),
-  graphqlSchemaTypesPath: path.join(basePath, 'api/gen/schema.d.ts'),
+  graphqlSchemaPath: absolutePath('api/schema.graphql'),
+  graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
   graphqlEndpoint: '/graphql',
   graphqlDocumentPaths: [
-    path.join(basePath, 'pages/**/*.graphql'),
-    path.join(basePath, 'components/**/*.graphql'),
+    absolutePath('pages/**/*.graphql'),
+    absolutePath('components/**/*.graphql'),
   ],
+  uiPath: absolutePath('ui'),
   environment: process.env.NODE_ENV,
   port: process.env.PORT,
   ssl: !!process.env.SSL,

@@ -1,17 +1,19 @@
 const withTypescript = require('@zeit/next-typescript')
+const path = require('path')
 
 module.exports = withTypescript({
   useFileSystemPublicRoutes: false,
 
   webpack: (webpackConfig) => {
-    webpackConfig.resolve.alias.ui = __dirname
+    webpackConfig.resolve.alias.ui = path.join(__dirname, 'ui')
+    webpackConfig.resolve.alias.gen = path.join(__dirname, 'gen')
 
-    webpackConfig.module.rules.push({
-      test: /\.graphql$/,
-      exclude: /node_modules/,
-      include: [ webpackConfig.context ],
-      use: { loader: 'graphql-tag/loader' },
-    })
+    // webpackConfig.module.rules.push({
+    //   test: /\.graphql$/,
+    //   exclude: /node_modules/,
+    //   include: [ webpackConfig.context ],
+    //   use: { loader: 'graphql-tag/loader' },
+    // })
 
     return webpackConfig
   },

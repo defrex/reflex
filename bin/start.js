@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('./setup')
+require('./lib/setup')
 
 const main = require('../index.ts').default
 
