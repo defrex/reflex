@@ -11,8 +11,8 @@ export default {
     return GithubCheck.find()
   },
 
-  githubCheck: async (_parent, args, _ctx) => {
+  githubCheck: async (_parent, args, _ctx): Promise<GithubCheck | undefined> => {
     const { repoName, repoOwner, commitSha } = args
-    return GithubCheck.find({ repoName, repoOwner, commitSha })
+    return GithubCheck.findOne({ repoName, repoOwner, commitSha })
   },
 } as QueryResolvers.Resolvers<Context>

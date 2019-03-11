@@ -98,10 +98,38 @@ export namespace QueryResolvers {
 export namespace GithubCheckResolvers {
   export interface Resolvers<TContext = Context, TypeParent = GithubCheck> {
     id?: IdResolver<string, TypeParent, TContext>;
+
+    repoOwner?: RepoOwnerResolver<string, TypeParent, TContext>;
+
+    repoName?: RepoNameResolver<string, TypeParent, TContext>;
+
+    commitSha?: CommitShaResolver<string, TypeParent, TContext>;
+
+    githubCheckId?: GithubCheckIdResolver<Maybe<number>, TypeParent, TContext>;
   }
 
   export type IdResolver<
     R = string,
+    Parent = GithubCheck,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>;
+  export type RepoOwnerResolver<
+    R = string,
+    Parent = GithubCheck,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>;
+  export type RepoNameResolver<
+    R = string,
+    Parent = GithubCheck,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>;
+  export type CommitShaResolver<
+    R = string,
+    Parent = GithubCheck,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>;
+  export type GithubCheckIdResolver<
+    R = Maybe<number>,
     Parent = GithubCheck,
     TContext = Context
   > = Resolver<R, Parent, TContext>;

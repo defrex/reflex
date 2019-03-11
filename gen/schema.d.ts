@@ -20,6 +20,14 @@ export interface Query {
 
 export interface GithubCheck {
   id: string;
+
+  repoOwner: string;
+
+  repoName: string;
+
+  commitSha: string;
+
+  githubCheckId?: Maybe<number>;
 }
 
 export interface Mutation {

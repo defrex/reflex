@@ -27,4 +27,8 @@ input CreateUserInput {
 
 type GithubCheck {
   id: ID!
+  repoOwner: String!
+  repoName: String!
+  commitSha: String!
+  githubCheckId: Int
 }
