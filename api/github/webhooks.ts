@@ -9,19 +9,23 @@ export default (probot: Application) => {
   probot.on('check_suite', async ({ payload, github }) => {
     const repoName = payload.repository.name
     const repoOwner = payload.repository.owner.login
-    const headSha = payload.check_suite.head_sha
+    const commitSha = payload.check_suite.head_sha
 
-    let githubCheck = await GithubCheck.findOne({ repoName, repoOwner, headSha })
+    let githubCheck = await GithubCheck.findOne({
+      repoName,
+      repoOwner,
+      commitSha,
+    })
     if (!githubCheck) {
       githubCheck = new GithubCheck()
       githubCheck.repoName = repoName
-      githubCheck.headSha = headSha
+      githubCheck.commitSha = commitSha
       githubCheck.repoOwner = repoOwner
       await githubCheck.save()
     }
 
     if (githubCheck.githubCheckId !== null) {
-      probot.log(`Check exsists: ${repoOwner}/${repoName} ${headSha}`)
+      probot.log(`Check exsists: ${repoOwner}/${repoName} ${commitSha}`)
       return
     }
 
@@ -29,8 +33,8 @@ export default (probot: Application) => {
       owner: repoOwner,
       repo: repoName,
       name: 'reflex',
-      head_sha: headSha,
-      details_url: absoluteUrl(`/checks/${repoOwner}/${repoName}/${headSha}`),
+      head_sha: commitSha,
+      details_url: absoluteUrl(`/checks/${repoOwner}/${repoName}/${commitSha}`),
       external_id: `${githubCheck.id}`,
       status: 'in_progress',
       started_at: DateTime.fromJSDate(githubCheck.createdAt).toISO(),
@@ -43,7 +47,7 @@ export default (probot: Application) => {
     githubCheck.githubCheckId = (check as any).id
     await githubCheck.save()
 
-    probot.log(`Created check: ${repoName} ${headSha}`)
+    probot.log(`Created check: ${repoName} ${commitSha}`)
   })
 
   probot.on('check_run', async ({ name }) => {

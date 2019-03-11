@@ -1,13 +1,9 @@
-import { CreateUserMutationArgs } from 'gen/schema'
+import { MutationResolvers } from 'gen/resolvers'
 import User from 'api/models/User'
 import Context from 'api/context'
 
 export default {
-  createUser: async (
-    _parent: null,
-    args: CreateUserMutationArgs,
-    _ctx: Context
-  ): Promise<User> => {
+  createUser: async (_parent, args, _ctx): Promise<User> => {
     const user = new User()
 
     user.name = args.input.name
@@ -17,4 +13,4 @@ export default {
 
     return user
   },
-}
+} as MutationResolvers.Resolvers<Context>

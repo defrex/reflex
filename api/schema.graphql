@@ -3,6 +3,12 @@ type Query {
   hello: String!
 
   githubChecks: [GithubCheck]!
+
+  githubCheck(
+    repoOwner: String!,
+    repoName: String!,
+    commitSha: String!,
+  ): GithubCheck
 }
 
 type Mutation {

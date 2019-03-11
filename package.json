@@ -43,6 +43,7 @@
     "graphql": "^14.1.1",
     "graphql-code-generator": "^0.18.0",
     "graphql-codegen-typescript-client": "^0.18.0",
+    "graphql-codegen-typescript-resolvers": "^0.18.0",
     "graphql-codegen-typescript-server": "^0.18.0",
     "graphql-import": "^0.7.1",
     "graphql-tag": "^2.10.1",
