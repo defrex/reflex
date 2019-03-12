@@ -11,7 +11,7 @@ export default class GithubCheck extends Model {
   repoName: string
 
   @Column()
-  headSha: string
+  commitSha: string
 
   @Column({ nullable: true })
   githubCheckId: number

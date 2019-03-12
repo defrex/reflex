@@ -15,6 +15,12 @@ export default function gen (): Promise<any> {
         documents: config.graphqlDocumentPaths,
         plugins: ['typescript-common', 'typescript-client'],
       },
+      [absolutePath('gen/resolvers.d.ts')]: {
+        plugins: ['typescript-common', 'typescript-resolvers'],
+        config: {
+          contextType: 'api/context#Context',
+        },
+      },
     },
   })
 }
