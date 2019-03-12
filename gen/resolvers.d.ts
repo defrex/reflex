@@ -80,7 +80,13 @@ export namespace QueryResolvers {
     R = (Maybe<GithubCheck>)[],
     Parent = {},
     TContext = Context
-  > = Resolver<R, Parent, TContext>;
+  > = Resolver<R, Parent, TContext, GithubChecksArgs>;
+  export interface GithubChecksArgs {
+    repoOwner: string;
+
+    repoName?: Maybe<string>;
+  }
+
   export type GithubCheckResolver<
     R = Maybe<GithubCheck>,
     Parent = {},

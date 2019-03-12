@@ -2,7 +2,7 @@
 type Query {
   hello: String!
 
-  githubChecks: [GithubCheck]!
+  githubChecks(repoOwner: String!, repoName: String): [GithubCheck]!
 
   githubCheck(
     repoOwner: String!,

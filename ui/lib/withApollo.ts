@@ -4,6 +4,9 @@ import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import config from 'ui/config'
 import { absoluteUrl } from 'ui/lib/url'
 
+if (!config.domain) {
+  throw new Error('No domain set')
+}
 export default withApollo(({ initialState }) => (
   new ApolloClient({
     uri: absoluteUrl(config.graphqlEndpoint),

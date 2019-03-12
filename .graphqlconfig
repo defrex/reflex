@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "reflexui": {
+      "schemaPath": "api/schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "prod": "https://reflexui.com/graphql",
+          "dev": "http://localhost:8080/graphql"
+        }
+      }
+    }
+  }
+}
