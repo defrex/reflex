@@ -67,11 +67,8 @@ export namespace QueryResolvers {
       TypeParent,
       TContext
     >;
-<<<<<<< HEAD
-=======
 
     githubCheck?: GithubCheckResolver<Maybe<GithubCheck>, TypeParent, TContext>;
->>>>>>> master
   }
 
   export type HelloResolver<
@@ -83,9 +80,13 @@ export namespace QueryResolvers {
     R = (Maybe<GithubCheck>)[],
     Parent = {},
     TContext = Context
-  > = Resolver<R, Parent, TContext>;
-<<<<<<< HEAD
-=======
+  > = Resolver<R, Parent, TContext, GithubChecksArgs>;
+  export interface GithubChecksArgs {
+    repoOwner: string;
+
+    repoName?: Maybe<string>;
+  }
+
   export type GithubCheckResolver<
     R = Maybe<GithubCheck>,
     Parent = {},
@@ -98,14 +99,11 @@ export namespace QueryResolvers {
 
     commitSha: string;
   }
->>>>>>> master
 }
 
 export namespace GithubCheckResolvers {
   export interface Resolvers<TContext = Context, TypeParent = GithubCheck> {
     id?: IdResolver<string, TypeParent, TContext>;
-<<<<<<< HEAD
-=======
 
     repoOwner?: RepoOwnerResolver<string, TypeParent, TContext>;
 
@@ -114,7 +112,6 @@ export namespace GithubCheckResolvers {
     commitSha?: CommitShaResolver<string, TypeParent, TContext>;
 
     githubCheckId?: GithubCheckIdResolver<Maybe<number>, TypeParent, TContext>;
->>>>>>> master
   }
 
   export type IdResolver<
@@ -122,8 +119,6 @@ export namespace GithubCheckResolvers {
     Parent = GithubCheck,
     TContext = Context
   > = Resolver<R, Parent, TContext>;
-<<<<<<< HEAD
-=======
   export type RepoOwnerResolver<
     R = string,
     Parent = GithubCheck,
@@ -144,7 +139,6 @@ export namespace GithubCheckResolvers {
     Parent = GithubCheck,
     TContext = Context
   > = Resolver<R, Parent, TContext>;
->>>>>>> master
 }
 
 export namespace MutationResolvers {

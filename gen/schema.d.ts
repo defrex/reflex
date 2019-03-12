@@ -44,6 +44,11 @@ export interface User {
 // Arguments
 // ====================================================
 
+export interface GithubChecksQueryArgs {
+  repoOwner: string;
+
+  repoName?: Maybe<string>;
+}
 export interface GithubCheckQueryArgs {
   repoOwner: string;
 

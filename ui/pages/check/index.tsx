@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
-import routes from 'ui/routes'
 
 import { ChecksPageQuery } from './queries.graphql'
 
 interface ChecksPageProps {
-  repoOwner: string
   repoName: string
+  repoOwner: string
+  commitSha: string
 }
 
 export default class ChecksPage extends PureComponent<ChecksPageProps> {
@@ -15,11 +15,11 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
   }
 
   render () {
-    const { repoName, repoOwner } = this.props
+    const { repoName, repoOwner, commitSha } = this.props
     return (
       <Query
         query={ChecksPageQuery}
-        variables={{ repoName, repoOwner }}
+        variables={{ repoName, repoOwner, commitSha }}
       >
         {({ loading, error, data }) => (
           <div>
@@ -30,19 +30,9 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
               <li>
                 <strong>data:</strong>
                 {console.log(data)}
-                {data && data.githubChecks ? (
+                {data && data.githubCheck ? (
                   <ul>
-                    {data.githubChecks.map((githubCheck) => (
-                      <li key={githubCheck.id}>
-                        <routes.Link route='check' params={{
-                          repoName: githubCheck.repoName,
-                          repoOwner: githubCheck.repoOwner,
-                          commitSha: githubCheck.commitSha,
-                        }}>
-                          {githubCheck.commitSha}
-                        </routes.Link>
-                      </li>
-                    ))}
+                    <li><strong>id:</strong>{data.githubCheck.id}</li>
                     <li><strong>repoOwner:</strong>{data.githubCheck.repoOwner}</li>
                     <li><strong>repoName:</strong>{data.githubCheck.repoName}</li>
                     <li><strong>commitSha:</strong>{data.githubCheck.commitSha}</li>
