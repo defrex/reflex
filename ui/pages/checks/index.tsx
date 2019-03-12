@@ -48,6 +48,7 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
               <li><strong>error:</strong>{error}</li>
               <li>
                 <strong>data:</strong>
+                {console.log(data)}
                 {data ? (
                   <ul>
                     <li><strong>id:</strong>{data.id}</li>
