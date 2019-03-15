@@ -5,15 +5,15 @@ export interface CreateUserInput {
 
   email: string;
 }
-import { GraphQLResolveInfo } from "graphql";
+import { GraphQLResolveInfo } from 'graphql';
 
-import { Context } from "api/context";
+import { Context } from 'api/context';
 
 export type Resolver<Result, Parent = {}, TContext = {}, Args = {}> = (
   parent: Parent,
   args: Args,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Promise<Result> | Result;
 
 export interface ISubscriptionResolverObject<Result, Parent, TContext, Args> {
@@ -21,13 +21,13 @@ export interface ISubscriptionResolverObject<Result, Parent, TContext, Args> {
     parent: P,
     args: Args,
     context: TContext,
-    info: GraphQLResolveInfo
+    info: GraphQLResolveInfo,
   ): AsyncIterator<R | Result> | Promise<AsyncIterator<R | Result>>;
   resolve?<R = Result, P = Parent>(
     parent: P,
     args: Args,
     context: TContext,
-    info: GraphQLResolveInfo
+    info: GraphQLResolveInfo,
   ): R | Result | Promise<R | Result>;
 }
 
@@ -45,7 +45,7 @@ export type SubscriptionResolver<
 export type TypeResolveFn<Types, Parent = {}, TContext = {}> = (
   parent: Parent,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Maybe<Types>;
 
 export type NextResolverFn<T> = () => Promise<T>;
@@ -55,7 +55,7 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
   source: any,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
 export namespace QueryResolvers {

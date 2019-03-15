@@ -17,38 +17,45 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
   render () {
     const { repoName, repoOwner } = this.props
     return (
-      <Query
-        query={ChecksPageQuery}
-        variables={{ repoName, repoOwner }}
-      >
+      <Query query={ChecksPageQuery} variables={{ repoName, repoOwner }}>
         {({ loading, error, data }) => (
           <div>
             <h1>ChecksPage</h1>
             <ul>
-              <li><strong>loading:</strong>{loading}</li>
-              <li><strong>error:</strong>{error}</li>
+              <li>
+                <strong>loading:</strong>
+                {loading}
+              </li>
+              <li>
+                <strong>error:</strong>
+                {error}
+              </li>
               <li>
                 <strong>data:</strong>
-                {console.log(data)}
                 {data && data.githubChecks ? (
                   <ul>
                     {data.githubChecks.map((githubCheck) => (
                       <li key={githubCheck.id}>
-                        <routes.Link route='check' params={{
-                          repoName: githubCheck.repoName,
-                          repoOwner: githubCheck.repoOwner,
-                          commitSha: githubCheck.commitSha,
-                        }}>
-                          {githubCheck.commitSha}
+                        <routes.Link
+                          route="check"
+                          params={{
+                            repoName: githubCheck.repoName,
+                            repoOwner: githubCheck.repoOwner,
+                            commitSha: githubCheck.commitSha,
+                          }}
+                        >
+                          <a>
+                            {`${githubCheck.repoOwner}/${
+                              githubCheck.repoName
+                            }@${githubCheck.commitSha}`}
+                          </a>
                         </routes.Link>
                       </li>
                     ))}
-                    <li><strong>repoOwner:</strong>{data.githubCheck.repoOwner}</li>
-                    <li><strong>repoName:</strong>{data.githubCheck.repoName}</li>
-                    <li><strong>commitSha:</strong>{data.githubCheck.commitSha}</li>
-                    <li><strong>githubCheckId:</strong>{data.githubCheck.githubCheckId}</li>
                   </ul>
-                ) : 'No Data Available'}
+                ) : (
+                  'No Data Available'
+                )}
               </li>
             </ul>
           </div>

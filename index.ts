@@ -25,14 +25,14 @@ export default async function main () {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }
+    // @ts-ignore
+    req.api = api
+
     nextHandler.apply(null, arguments)
   })
 
   if (config.environment === 'development') {
-    const files = [
-      config.graphqlSchemaPath,
-      ...config.graphqlDocumentPaths,
-    ]
+    const files = [config.graphqlSchemaPath, ...config.graphqlDocumentPaths]
 
     chokidar.watch(files).on('all', async () => {
       await gen()

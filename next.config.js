@@ -1,5 +1,6 @@
 const withTypescript = require('@zeit/next-typescript')
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = withTypescript({
   useFileSystemPublicRoutes: false,
@@ -14,6 +15,8 @@ module.exports = withTypescript({
       include: [ webpackConfig.context ],
       use: { loader: 'graphql-tag/loader' },
     })
+
+    webpackConfig.plugins.push(new webpack.EnvironmentPlugin(['SSL', 'DOMAIN']))
 
     return webpackConfig
   },

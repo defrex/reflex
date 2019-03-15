@@ -16,7 +16,7 @@ export default {
   uiPath: absolutePath('ui'),
   environment: process.env.NODE_ENV,
   port: process.env.PORT,
-  ssl: !!process.env.SSL,
+  ssl: process.env.SSL === 'true',
   domain: process.env.DOMAIN,
   dbUrl: process.env.DATABASE_URL,
   secretKey: process.env.SECRET_KEY,

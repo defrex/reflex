@@ -1,0 +1,3 @@
+fragment TemplateQuery on Query {
+  hello
+}

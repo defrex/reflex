@@ -1,7 +1,8 @@
 import React from 'react'
 import App, { Container } from 'next/app'
 import { ApolloProvider } from 'react-apollo'
-import ApolloClient, { InMemoryCache } from 'apollo-boost'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import withApollo from 'ui/lib/withApollo'
 

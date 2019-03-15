@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
 
+import Page from 'ui/components/Page'
+
 import { ChecksPageQuery } from './queries.graphql'
+import styles from './styles'
 
 interface ChecksPageProps {
   repoName: string
@@ -22,26 +25,49 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
         variables={{ repoName, repoOwner, commitSha }}
       >
         {({ loading, error, data }) => (
-          <div>
+          <Page css={styles.root}>
             <h1>ChecksPage</h1>
             <ul>
-              <li><strong>loading:</strong>{loading}</li>
-              <li><strong>error:</strong>{error}</li>
+              <li>
+                <strong>loading:</strong>
+                {loading}
+              </li>
+              <li>
+                <strong>error:</strong>
+                {error}
+              </li>
               <li>
                 <strong>data:</strong>
                 {console.log(data)}
                 {data && data.githubCheck ? (
                   <ul>
-                    <li><strong>id:</strong>{data.githubCheck.id}</li>
-                    <li><strong>repoOwner:</strong>{data.githubCheck.repoOwner}</li>
-                    <li><strong>repoName:</strong>{data.githubCheck.repoName}</li>
-                    <li><strong>commitSha:</strong>{data.githubCheck.commitSha}</li>
-                    <li><strong>githubCheckId:</strong>{data.githubCheck.githubCheckId}</li>
+                    <li>
+                      <strong>id:</strong>
+                      {data.githubCheck.id}
+                    </li>
+                    <li>
+                      <strong>repoOwner:</strong>
+                      {data.githubCheck.repoOwner}
+                    </li>
+                    <li>
+                      <strong>repoName:</strong>
+                      {data.githubCheck.repoName}
+                    </li>
+                    <li>
+                      <strong>commitSha:</strong>
+                      {data.githubCheck.commitSha}
+                    </li>
+                    <li>
+                      <strong>githubCheckId:</strong>
+                      {data.githubCheck.githubCheckId}
+                    </li>
                   </ul>
-                ) : 'No Data Available'}
+                ) : (
+                  'No Data Available'
+                )}
               </li>
             </ul>
-          </div>
+          </Page>
         )}
       </Query>
     )
