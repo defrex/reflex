@@ -9,9 +9,9 @@ export default class ReflexDocument extends Document {
     return (
       <html>
         <Head>
-          <title>Reflex</title>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
           <meta name='theme-color' content={primary} />
+          <link rel='manifest' href='/static/manifest.json' />
           <link
             href='https://fonts.googleapis.com/css?family=Source+Sans+Pro'
             rel='stylesheet'
