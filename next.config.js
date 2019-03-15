@@ -1,8 +1,9 @@
 const withTypescript = require('@zeit/next-typescript')
+const withOffline = require('next-offline')
 const path = require('path')
 const webpack = require('webpack')
 
-module.exports = withTypescript({
+let nextConfig = {
   useFileSystemPublicRoutes: false,
 
   webpack: (webpackConfig) => {
@@ -12,7 +13,7 @@ module.exports = withTypescript({
     webpackConfig.module.rules.push({
       test: /\.graphql$/,
       exclude: /node_modules/,
-      include: [ webpackConfig.context ],
+      include: [webpackConfig.context],
       use: { loader: 'graphql-tag/loader' },
     })
 
@@ -20,4 +21,9 @@ module.exports = withTypescript({
 
     return webpackConfig
   },
-})
+}
+
+nextConfig = withTypescript(nextConfig)
+nextConfig = withOffline(nextConfig)
+
+module.exports = nextConfig

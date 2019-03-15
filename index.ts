@@ -7,6 +7,7 @@ import config from 'api/config'
 import probot from 'api/github/probot'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
+import { absolutePath } from 'api/lib/path'
 import gen from 'api/lib/gen'
 import routes from 'ui/routes'
 import nextConfig from './next.config.js'
@@ -21,13 +22,18 @@ export default async function main () {
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
-  api.use(function (req: Request, _res: Response, skip: Function) {
+  api.use(function (req: Request, res: Response, skip: Function) {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }
+
+    if (req.path === '/service-worker.js') {
+      nextApp.serveStatic(req, res, absolutePath('ui/.next/service-worker.js'))
+      return
+    }
+
     // @ts-ignore
     req.api = api
-
     nextHandler.apply(null, arguments)
   })
 
