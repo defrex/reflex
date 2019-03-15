@@ -42,23 +42,23 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
                 {data && data.githubCheck ? (
                   <ul>
                     <li>
-                      <strong>id:</strong>
+                      <strong>{'id: '}</strong>
                       {data.githubCheck.id}
                     </li>
                     <li>
-                      <strong>repoOwner:</strong>
+                      <strong>{'repoOwner: '}</strong>
                       {data.githubCheck.repoOwner}
                     </li>
                     <li>
-                      <strong>repoName:</strong>
+                      <strong>{'repoName: '}</strong>
                       {data.githubCheck.repoName}
                     </li>
                     <li>
-                      <strong>commitSha:</strong>
+                      <strong>{'commitSha: '}</strong>
                       {data.githubCheck.commitSha}
                     </li>
                     <li>
-                      <strong>githubCheckId:</strong>
+                      <strong>{'githubCheckId: '}</strong>
                       {data.githubCheck.githubCheckId}
                     </li>
                   </ul>
