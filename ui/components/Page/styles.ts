@@ -7,6 +7,8 @@ export default {
 
     @media (max-width: 1024px) {
       margin: 32px;
+      width: calc(100vw - 64px);
+      overflow: hidden;
     }
   `,
 }
