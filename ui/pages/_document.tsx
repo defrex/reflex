@@ -7,7 +7,7 @@ import Body from 'ui/components/Body'
 export default class ReflexDocument extends Document {
   render () {
     return (
-      <html>
+      <html lang='en-US'>
         <Head>
           <meta name='viewport' content='width=device-width, initial-scale=1' />
           <meta name='theme-color' content={primary} />
