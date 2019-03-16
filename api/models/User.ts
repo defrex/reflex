@@ -9,4 +9,19 @@ export default class User extends Model {
 
   @Column()
   email: string
+
+  @Column({ unique: true })
+  githubUsername: string
+
+  @Column()
+  githubAvatarUrl: string
+
+  @Column()
+  githubAccessToken: string
+
+  @Column({ nullable: true })
+  figmaAccessToken?: string
+
+  @Column({ nullable: true })
+  figmaRefreshToken?: string
 }

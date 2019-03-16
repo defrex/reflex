@@ -3,14 +3,16 @@ import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
+import { PageQuery } from './fragments.graphql'
 import styles from './styles'
 
 interface PageProps {
   children: ReactNode
+  query: PageQuery
 }
 
 export default class Page extends PureComponent<PageProps> {
-  render () {
+  render() {
     const { children } = this.props
     return (
       <div>

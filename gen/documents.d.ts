@@ -1,7 +1,7 @@
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | null
 
 export interface CreateUserInput {
-  name: string;
+  name: string
 
-  email: string;
+  email: string
 }

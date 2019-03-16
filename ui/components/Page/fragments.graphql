@@ -1,0 +1,4 @@
+# import AppBarQuery from 'ui/components/AppBar/fragments.graphql'
+fragment PageQuery on Query {
+  ...AppBarQuery
+}

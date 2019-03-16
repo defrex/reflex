@@ -2,7 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 
 import resolvers from 'api/resolvers'
 import config from 'api/config'
-import { getContext } from 'api/context'
+import { getContext } from 'api/Context'
 
 const graphqlServer = new GraphQLServer({
   typeDefs: config.graphqlSchemaPath,

@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
 import { SchemaLink } from 'apollo-link-schema'
-import { IncomingMessage } from 'http'
+import { Request } from 'express'
 
 import config from 'ui/config'
 import { absoluteUrl } from 'ui/lib/url'
@@ -14,18 +14,13 @@ if (!config.domain) {
   throw new Error('No domain set')
 }
 
-interface GraphSchemaRequest extends IncomingMessage {
-  graphqlSchema?: any
-  graphqlContext?: any
-}
-
 export default withApollo(({ ctx, initialState }) => {
   let link: ApolloLink
 
   if (!process.browser && ctx && ctx.req) {
-    const req: GraphSchemaRequest = ctx.req
+    const req = ctx.req as Request
     link = new SchemaLink({
-      schema: req.graphqlSchema,
+      schema: req.graphqlSchema!,
       context: req.graphqlSchema,
     })
   } else {

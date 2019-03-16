@@ -1,9 +1,9 @@
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | null
 
 export interface CreateUserInput {
-  name: string;
+  name: string
 
-  email: string;
+  email: string
 }
 
 // ====================================================
@@ -11,33 +11,35 @@ export interface CreateUserInput {
 // ====================================================
 
 export interface Query {
-  hello: string;
+  hello: string
 
-  githubChecks: (Maybe<GithubCheck>)[];
+  githubChecks: (Maybe<GithubCheck>)[]
 
-  githubCheck?: Maybe<GithubCheck>;
+  githubCheck?: Maybe<GithubCheck>
+
+  currentUser?: Maybe<User>
 }
 
 export interface GithubCheck {
-  id: string;
+  id: string
 
-  repoOwner: string;
+  repoOwner: string
 
-  repoName: string;
+  repoName: string
 
-  commitSha: string;
+  commitSha: string
 
-  githubCheckId?: Maybe<number>;
-}
-
-export interface Mutation {
-  createUser?: Maybe<User>;
+  githubCheckId?: Maybe<number>
 }
 
 export interface User {
-  id: string;
+  id: string
 
-  name?: Maybe<string>;
+  name?: Maybe<string>
+}
+
+export interface Mutation {
+  createUser?: Maybe<User>
 }
 
 // ====================================================
@@ -45,17 +47,17 @@ export interface User {
 // ====================================================
 
 export interface GithubChecksQueryArgs {
-  repoOwner: string;
+  repoOwner: string
 
-  repoName?: Maybe<string>;
+  repoName?: Maybe<string>
 }
 export interface GithubCheckQueryArgs {
-  repoOwner: string;
+  repoOwner: string
 
-  repoName: string;
+  repoName: string
 
-  commitSha: string;
+  commitSha: string
 }
 export interface CreateUserMutationArgs {
-  input: CreateUserInput;
+  input: CreateUserInput
 }

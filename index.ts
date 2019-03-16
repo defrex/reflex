@@ -1,7 +1,8 @@
+/// <reference path="./@types/Request.d.ts" />
 import next from 'next'
 import chokidar from 'chokidar'
-import express, { Request, Response } from 'express'
-import { GraphQLSchema } from 'graphql'
+import express, { Request, Response, NextFunction } from 'express'
+import cookieSession from 'cookie-session'
 
 import graphqlServer from 'api/graphql'
 import config from 'api/config'
@@ -10,15 +11,9 @@ import { absoluteUrl } from 'api/lib/url'
 import { absolutePath } from 'api/lib/path'
 import gen from 'api/lib/gen'
 import apiRoutes from 'api/routes'
-import Context from 'api/context'
 import uiRoutes from 'ui/routes'
 
-interface GraphSchemaRequest extends Request {
-  graphqlSchema?: GraphQLSchema
-  graphqlContext?: Context
-}
-
-export default async function main () {
+export default async function main() {
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
@@ -26,16 +21,22 @@ export default async function main () {
   const nextHandler = uiRoutes.getRequestHandler(nextApp)
 
   graphqlServer.use(
+    cookieSession({
+      secret: config.secretKey,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true,
+      secure: config.ssl,
+      sameSite: 'lax',
+    }),
+  )
+
+  graphqlServer.use(
     '/service-worker.js',
     express.static(absolutePath('ui/.next/service-worker.js')),
   )
   graphqlServer.use('/api', apiRoutes)
 
-  graphqlServer.use(function (
-    req: GraphSchemaRequest,
-    _res: Response,
-    skip: Function,
-  ) {
+  graphqlServer.use(function(req: Request, _res: Response, skip: NextFunction) {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }

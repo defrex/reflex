@@ -3,6 +3,7 @@ import { Query } from 'react-apollo'
 import routes from 'ui/routes'
 
 import { ChecksPageQuery } from './queries.graphql'
+import Page from 'ui/components/Page'
 
 interface ChecksPageProps {
   repoOwner: string
@@ -10,55 +11,42 @@ interface ChecksPageProps {
 }
 
 export default class ChecksPage extends PureComponent<ChecksPageProps> {
-  static getInitialProps ({ query }: { query: ChecksPageProps }) {
+  static getInitialProps({ query }: { query: ChecksPageProps }) {
     return query
   }
 
-  render () {
+  render() {
     const { repoName, repoOwner } = this.props
     return (
       <Query query={ChecksPageQuery} variables={{ repoName, repoOwner }}>
-        {({ loading, error, data }) => (
-          <div>
+        {({ data }) => (
+          <Page query={data}>
             <h1>ChecksPage</h1>
-            <ul>
-              <li>
-                <strong>loading:</strong>
-                {loading}
-              </li>
-              <li>
-                <strong>error:</strong>
-                {error}
-              </li>
-              <li>
-                <strong>data:</strong>
-                {data && data.githubChecks ? (
-                  <ul>
-                    {data.githubChecks.map((githubCheck) => (
-                      <li key={githubCheck.id}>
-                        <routes.Link
-                          route="check"
-                          params={{
-                            repoName: githubCheck.repoName,
-                            repoOwner: githubCheck.repoOwner,
-                            commitSha: githubCheck.commitSha,
-                          }}
-                        >
-                          <a>
-                            {`${githubCheck.repoOwner}/${
-                              githubCheck.repoName
-                            }@${githubCheck.commitSha}`}
-                          </a>
-                        </routes.Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  'No Data Available'
-                )}
-              </li>
-            </ul>
-          </div>
+            {data && data.githubChecks ? (
+              <ul>
+                {data.githubChecks.map((githubCheck) => (
+                  <li key={githubCheck.id}>
+                    <routes.Link
+                      route='check'
+                      params={{
+                        repoName: githubCheck.repoName,
+                        repoOwner: githubCheck.repoOwner,
+                        commitSha: githubCheck.commitSha,
+                      }}
+                    >
+                      <a>
+                        {`${githubCheck.repoOwner}/${githubCheck.repoName}@${
+                          githubCheck.commitSha
+                        }`}
+                      </a>
+                    </routes.Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              'No Data Available'
+            )}
+          </Page>
         )}
       </Query>
     )

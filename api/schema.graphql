@@ -1,18 +1,19 @@
-
 type Query {
   hello: String!
 
   githubChecks(repoOwner: String!, repoName: String): [GithubCheck]!
 
   githubCheck(
-    repoOwner: String!,
-    repoName: String!,
-    commitSha: String!,
+    repoOwner: String!
+    repoName: String!
+    commitSha: String!
   ): GithubCheck
+
+  currentUser: User
 }
 
 type Mutation {
-  createUser (input: CreateUserInput!): User
+  createUser(input: CreateUserInput!): User
 }
 
 type User {

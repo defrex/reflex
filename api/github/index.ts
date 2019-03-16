@@ -5,8 +5,8 @@ import webhookHandler from 'api/github/webhooks'
 
 const probot = new Probot({
   id: config.githubAppId,
-  secret: config.githubWebhookSecret,
-  cert: config.githubPrivateKey,
+  secret: config.githubAppWebhookSecret,
+  cert: config.githubAppPrivateKey,
   // tunnel: process.env.SUBDOMAIN || process.env.NODE_ENV !== 'production',
 })
 probot.load(webhookHandler)
