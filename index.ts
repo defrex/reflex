@@ -1,34 +1,48 @@
 import next from 'next'
 import chokidar from 'chokidar'
-import { Request, Response, NextFunction } from 'express-serve-static-core'
+import express, { Request, Response } from 'express'
+import { GraphQLSchema } from 'graphql'
 
-import api from 'api'
+import graphqlServer from 'api/graphql'
 import config from 'api/config'
-import apiRoutes from 'api/routes'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
+import { absolutePath } from 'api/lib/path'
 import gen from 'api/lib/gen'
-import routes from 'ui/routes'
-import nextConfig from './next.config.js'
+import apiRoutes from 'api/routes'
+import Context from 'api/context'
+import uiRoutes from 'ui/routes'
+
+interface GraphSchemaRequest extends Request {
+  graphqlSchema?: GraphQLSchema
+  graphqlContext?: Context
+}
 
 export default async function main () {
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
-    conf: nextConfig,
   })
-  const nextHandler = routes.getRequestHandler(nextApp)
+  const nextHandler = uiRoutes.getRequestHandler(nextApp)
 
-  api.express.use(function (req: Request, res: Response, next: NextFunction) {
-    for (let [path, handler] of Object.entries(apiRoutes)) {
-      if (req.path.startsWith(path)) {
-        return handler(req, res, next)
-      }
+  graphqlServer.use(
+    '/service-worker.js',
+    express.static(absolutePath('ui/.next/service-worker.js')),
+  )
+  graphqlServer.use('/api', apiRoutes)
+
+  graphqlServer.use(function (
+    req: GraphSchemaRequest,
+    _res: Response,
+    skip: Function,
+  ) {
+    if (req.path.startsWith(config.graphqlEndpoint)) {
+      return skip()
     }
 
-    // @ts-ignore
-    req.api = api
-    return nextHandler(req, res, next)
+    req.graphqlSchema = graphqlServer.executableSchema
+    req.graphqlContext = graphqlServer.context
+    nextHandler.apply(null, arguments)
   })
 
   if (config.environment === 'development') {
@@ -46,7 +60,7 @@ export default async function main () {
   await conection
 
   try {
-    await api.start({
+    await graphqlServer.start({
       endpoint: config.graphqlEndpoint,
       playground: config.graphqlEndpoint,
       port: config.port,

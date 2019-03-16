@@ -5,6 +5,7 @@ import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
 import { SchemaLink } from 'apollo-link-schema'
+import { IncomingMessage } from 'http'
 
 import config from 'ui/config'
 import { absoluteUrl } from 'ui/lib/url'
@@ -13,16 +14,19 @@ if (!config.domain) {
   throw new Error('No domain set')
 }
 
+interface GraphSchemaRequest extends IncomingMessage {
+  graphqlSchema?: any
+  graphqlContext?: any
+}
+
 export default withApollo(({ ctx, initialState }) => {
   let link: ApolloLink
 
   if (!process.browser && ctx && ctx.req) {
-    // TODO: solve this type issue
+    const req: GraphSchemaRequest = ctx.req
     link = new SchemaLink({
-      // @ts-ignore
-      schema: ctx.req.api.executableSchema,
-      // @ts-ignore
-      context: ctx.req.api.context,
+      schema: req.graphqlSchema,
+      context: req.graphqlSchema,
     })
   } else {
     link = ApolloLink.from([
@@ -30,8 +34,8 @@ export default withApollo(({ ctx, initialState }) => {
         if (graphQLErrors) {
           graphQLErrors.map(({ message, locations, path }) =>
             console.log(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-            )
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+            ),
           )
         }
         if (networkError) console.log(`[Network error]: ${networkError}`)

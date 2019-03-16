@@ -4,8 +4,16 @@ import resolvers from 'api/resolvers'
 import config from 'api/config'
 import { getContext } from 'api/context'
 
-export default new GraphQLServer({
+const graphqlServer = new GraphQLServer({
   typeDefs: config.graphqlSchemaPath,
   resolvers,
   context: getContext,
 })
+
+graphqlServer.options = {
+  endpoint: config.graphqlEndpoint,
+  playground: config.graphqlEndpoint,
+  ...graphqlServer.options,
+}
+
+export default graphqlServer
