@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react'
-import { Head } from 'next/document'
+import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
