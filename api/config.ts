@@ -8,7 +8,7 @@ export default {
   basePath,
   graphqlSchemaPath: absolutePath('api/schema.graphql'),
   graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
-  graphqlEndpoint: '/graphql',
+  graphqlEndpoint: '/api/graphql',
   graphqlDocumentPaths: [
     absolutePath('pages/**/*.graphql'),
     absolutePath('components/**/*.graphql'),
