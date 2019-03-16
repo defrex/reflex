@@ -1,20 +1,17 @@
 import next from 'next'
 import chokidar from 'chokidar'
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express-serve-static-core'
 
 import api from 'api'
 import config from 'api/config'
-import probot from 'api/github/probot'
+import apiRoutes from 'api/routes'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
-import { absolutePath } from 'api/lib/path'
 import gen from 'api/lib/gen'
 import routes from 'ui/routes'
 import nextConfig from './next.config.js'
 
 export default async function main () {
-  api.use(config.githubWebhookPath, probot.server)
-
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
@@ -22,19 +19,16 @@ export default async function main () {
   })
   const nextHandler = routes.getRequestHandler(nextApp)
 
-  api.use(function (req: Request, res: Response, skip: Function) {
-    if (req.path.startsWith(config.graphqlEndpoint)) {
-      return skip()
-    }
-
-    if (req.path === '/service-worker.js') {
-      nextApp.serveStatic(req, res, absolutePath('ui/.next/service-worker.js'))
-      return
+  api.express.use(function (req: Request, res: Response, next: NextFunction) {
+    for (let [path, handler] of Object.entries(apiRoutes)) {
+      if (req.path.startsWith(path)) {
+        return handler(req, res, next)
+      }
     }
 
     // @ts-ignore
     req.api = api
-    nextHandler.apply(null, arguments)
+    return nextHandler(req, res, next)
   })
 
   if (config.environment === 'development') {

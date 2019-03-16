@@ -38,7 +38,6 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
               </li>
               <li>
                 <strong>data:</strong>
-                {console.log(data)}
                 {data && data.githubCheck ? (
                   <ul>
                     <li>
