@@ -1,11 +1,16 @@
 import React, { PureComponent } from 'react'
 
+import { AppBarQuery } from 'gen/documents'
 import styles from './styles'
 
-interface AppBarProps {}
+interface AppBarProps {
+  query: AppBarQuery.Fragment
+}
 
 export default class AppBar extends PureComponent<AppBarProps> {
-  render () {
+  render() {
+    const { query } = this.props
+    console.log('AppBar', query)
     return (
       <div css={styles.appBarOuter}>
         <div css={styles.appBarInner}>

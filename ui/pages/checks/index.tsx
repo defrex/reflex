@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import { Query } from 'react-apollo'
 
 import Page from 'ui/components/Page'
 import Code from 'ui/components/Code'
-import { ChecksPageQuery } from './query.graphql'
+
+import { ChecksPageQuery } from 'gen/client'
 
 interface ChecksPageProps {
   repoOwner: string
@@ -18,14 +18,17 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
   render() {
     const { repoName, repoOwner } = this.props
     return (
-      <Query query={ChecksPageQuery} variables={{ repoName, repoOwner }}>
-        {({ data }) => (
-          <Page>
-            <h1>Checks</h1>
-            <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
-          </Page>
-        )}
-      </Query>
+      <ChecksPageQuery.Component variables={{ repoName, repoOwner }}>
+        {({ data }) =>
+          data ? (
+            <Page query={data}>
+              <h1>Checks</h1>
+              <Code language='graphql'>{ChecksPageQuery.Document}</Code>
+              <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
+            </Page>
+          ) : null
+        }
+      </ChecksPageQuery.Component>
     )
   }
 }

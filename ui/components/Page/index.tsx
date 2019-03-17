@@ -3,24 +3,24 @@ import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
-// import { PageQuery } from './fragments.graphql'
+import { PageQuery } from 'gen/documents'
 import styles from './styles'
 
 interface PageProps {
   children: ReactNode
-  // query: PageQuery
+  query: PageQuery.Fragment
 }
 
 export default class Page extends PureComponent<PageProps> {
   render() {
-    const { children } = this.props
-    // console.log('💢 PageQuery', query)
+    const { children, query } = this.props
+    console.log('Page', query)
     return (
       <div>
         <Head>
           <title>Reflex</title>
         </Head>
-        <AppBar />
+        <AppBar query={query} />
         <div css={styles.content}>{children}</div>
       </div>
     )

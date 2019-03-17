@@ -5243,6 +5243,15 @@ graphql-codegen-typescript-graphql-files-modules@^0.18.0:
   resolved "https://registry.yarnpkg.com/graphql-codegen-typescript-graphql-files-modules/-/graphql-codegen-typescript-graphql-files-modules-0.18.0.tgz#0f728b2693abfd68d04b401ecf53ec789f351ca1"
   integrity sha512-Q6P8kZpoxYrCTu4wk53jjEhwp74ixSFYM1Ph91tDip1wAMD3rpftNHHhl6FIjp+Ck2vlQT+LhO/dz4O23pJ2kQ==
 
+graphql-codegen-typescript-react-apollo@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/graphql-codegen-typescript-react-apollo/-/graphql-codegen-typescript-react-apollo-0.18.0.tgz#ab41fbc0e44bcca8a65477dc1b5d38fd53e3d6da"
+  integrity sha512-atB6RBF6qZfnUrfrYvJQcnkTD4bImbH4RmnMDPoShMzAH1A76/xd4n2NK4b/4E2d+RKq2IyYjfXYDfIfw+ZC7w==
+  dependencies:
+    graphql-codegen-core "0.18.0"
+    graphql-codegen-plugin-helpers "0.18.0"
+    graphql-codegen-typescript-common "0.18.0"
+
 graphql-codegen-typescript-resolvers@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/graphql-codegen-typescript-resolvers/-/graphql-codegen-typescript-resolvers-0.18.0.tgz#43162116fb4f6cb0ec8fb050907b70e5aaec7a22"

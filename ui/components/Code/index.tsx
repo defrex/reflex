@@ -4,7 +4,7 @@ import solarisedDark from 'react-syntax-highlighter/dist/styles/hljs/solarized-d
 
 interface TemplateProps {
   children: string
-  language?: 'json' | 'javascript' | 'jsx'
+  language?: string
 }
 
 export default class Template extends PureComponent<TemplateProps> {

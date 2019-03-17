@@ -1,4 +1,4 @@
-# im port PageQuery from 'ui/components/Page/fragments.graphql'
+#import "../../components/Page/fragments.graphql"
 query ChecksPageQuery($repoOwner: String!, $repoName: String!) {
   githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
     id
@@ -6,5 +6,5 @@ query ChecksPageQuery($repoOwner: String!, $repoName: String!) {
     repoName
     commitSha
   }
-  # ...PageQuery
+  ...PageQuery
 }

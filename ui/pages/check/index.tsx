@@ -26,7 +26,7 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
         variables={{ repoName, repoOwner, commitSha }}
       >
         {({ data }) => (
-          <Page css={styles.root}>
+          <Page css={styles.root} query={data}>
             <h1>ChecksPage</h1>
             <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
           </Page>

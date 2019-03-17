@@ -11,16 +11,24 @@ export default function gen(): Promise<any> {
       [absolutePath('gen/schema.d.ts')]: {
         plugins: ['typescript-common', 'typescript-server'],
       },
-      [absolutePath('@types/graphqlDocuments.d.ts')]: {
-        documents: config.graphqlDocumentPaths,
-        plugins: ['typescript-graphql-files-modules'],
-      },
       [absolutePath('gen/resolvers.d.ts')]: {
         plugins: ['typescript-common', 'typescript-resolvers'],
         config: {
           contextType: 'api/context#Context',
         },
       },
+      [absolutePath('gen/client.tsx')]: {
+        documents: config.graphqlDocumentPaths,
+        plugins: [
+          'typescript-common',
+          'typescript-client',
+          'typescript-react-apollo',
+        ],
+      },
+      // [absolutePath('@types/graphqlDocuments.d.ts')]: {
+      //   documents: config.graphqlDocumentPaths,
+      //   plugins: ['typescript-graphql-files-modules'],
+      // },
     },
   })
 }
