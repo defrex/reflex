@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
-import routes from 'ui/routes'
 
 import Page from 'ui/components/Page'
+import Code from 'ui/components/Code'
 import { ChecksPageQuery } from './query.graphql'
 
 interface ChecksPageProps {
@@ -22,7 +22,7 @@ export default class ChecksPage extends PureComponent<ChecksPageProps> {
         {({ data }) => (
           <Page>
             <h1>Checks</h1>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
           </Page>
         )}
       </Query>

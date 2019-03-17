@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
 
 import Page from 'ui/components/Page'
+import Code from 'ui/components/Code'
 
-import { ChecksPageQuery } from './queries.graphql'
+import { CheckPageQuery } from './queries.graphql'
 import styles from './styles'
 
 interface ChecksPageProps {
@@ -13,59 +14,21 @@ interface ChecksPageProps {
 }
 
 export default class ChecksPage extends PureComponent<ChecksPageProps> {
-  static getInitialProps ({ query }: { query: ChecksPageProps }) {
+  static getInitialProps({ query }: { query: ChecksPageProps }) {
     return query
   }
 
-  render () {
+  render() {
     const { repoName, repoOwner, commitSha } = this.props
     return (
       <Query
-        query={ChecksPageQuery}
+        query={CheckPageQuery}
         variables={{ repoName, repoOwner, commitSha }}
       >
-        {({ loading, error, data }) => (
+        {({ data }) => (
           <Page css={styles.root}>
             <h1>ChecksPage</h1>
-            <ul>
-              <li>
-                <strong>loading:</strong>
-                {loading}
-              </li>
-              <li>
-                <strong>error:</strong>
-                {error}
-              </li>
-              <li>
-                <strong>data:</strong>
-                {data && data.githubCheck ? (
-                  <ul>
-                    <li>
-                      <strong>{'id: '}</strong>
-                      {data.githubCheck.id}
-                    </li>
-                    <li>
-                      <strong>{'repoOwner: '}</strong>
-                      {data.githubCheck.repoOwner}
-                    </li>
-                    <li>
-                      <strong>{'repoName: '}</strong>
-                      {data.githubCheck.repoName}
-                    </li>
-                    <li>
-                      <strong>{'commitSha: '}</strong>
-                      {data.githubCheck.commitSha}
-                    </li>
-                    <li>
-                      <strong>{'githubCheckId: '}</strong>
-                      {data.githubCheck.githubCheckId}
-                    </li>
-                  </ul>
-                ) : (
-                  'No Data Available'
-                )}
-              </li>
-            </ul>
+            <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
           </Page>
         )}
       </Query>
