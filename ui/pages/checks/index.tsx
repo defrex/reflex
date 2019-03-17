@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
 import routes from 'ui/routes'
 
-import { ChecksPageQuery } from './queries.graphql'
 import Page from 'ui/components/Page'
+import { ChecksPageQuery } from './query.graphql'
 
 interface ChecksPageProps {
   repoOwner: string
@@ -11,17 +11,15 @@ interface ChecksPageProps {
 }
 
 export default class ChecksPage extends PureComponent<ChecksPageProps> {
-  static getInitialProps({ query }: { query: ChecksPageProps }) {
-    return query
-  }
-
   render() {
     const { repoName, repoOwner } = this.props
+    console.log('🍊 ChecksPage#render', ChecksPageQuery)
     return (
       <Query query={ChecksPageQuery} variables={{ repoName, repoOwner }}>
         {({ data }) => (
           <Page query={data}>
-            <h1>ChecksPage</h1>
+            {console.log('🍊 ChecksPage#render+data', data)}
+            <h1>Checks</h1>
             {data && data.githubChecks ? (
               <ul>
                 {data.githubChecks.map((githubCheck) => (
