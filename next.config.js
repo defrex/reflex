@@ -17,7 +17,9 @@ let nextConfig = {
       use: { loader: 'graphql-tag/loader' },
     })
 
-    webpackConfig.plugins.push(new webpack.EnvironmentPlugin(['SSL', 'DOMAIN']))
+    webpackConfig.plugins.push(
+      new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
+    )
 
     return webpackConfig
   },

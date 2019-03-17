@@ -1,4 +1,4 @@
-fragment PageQuery on Query {
+fragment AppBarQuery on Query {
   currentUser {
     id
   }

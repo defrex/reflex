@@ -10,10 +10,6 @@ import { Request } from 'express'
 import config from 'ui/config'
 import { absoluteUrl } from 'ui/lib/url'
 
-if (!config.domain) {
-  throw new Error('No domain set')
-}
-
 export default withApollo(({ ctx, initialState }) => {
   let link: ApolloLink
 
