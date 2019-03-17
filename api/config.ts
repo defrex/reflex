@@ -15,7 +15,7 @@ const config = {
   ],
   uiPath: absolutePath('ui'),
   environment: process.env.NODE_ENV || 'development',
-  port: process.env.PORT!,
+  port: parseInt(process.env.PORT!),
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
   dbUrl: process.env.DATABASE_URL!,
