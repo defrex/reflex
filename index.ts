@@ -1,6 +1,6 @@
 /// <reference path="./@types/Request.d.ts" />
 import next from 'next'
-import chokidar from 'chokidar'
+// import chokidar from 'chokidar'
 import express, { Request, Response, NextFunction } from 'express'
 import cookieSession from 'cookie-session'
 
@@ -9,16 +9,35 @@ import config from 'api/config'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
 import { absolutePath } from 'api/lib/path'
-import gen from 'api/lib/gen'
+// import gen from 'api/lib/gen'
 import apiRoutes from 'api/routes'
 import uiRoutes from 'ui/routes'
 
 export default async function main() {
+  await conection
+
   const nextApp = next({
     dev: config.environment === 'development',
     dir: config.uiPath,
   })
+  console.log('👾 next init')
+
   const nextHandler = uiRoutes.getRequestHandler(nextApp)
+
+  console.log('👾 next handler')
+  // if (config.environment === 'development') {
+  //   const files = [config.graphqlSchemaPath, ...config.graphqlDocumentPaths]
+
+  //   chokidar.watch(files).on('all', async () => {
+  //     await gen()
+  //     await nextApp.close()
+  //     await nextApp.prepare()
+  //   })
+  // } else {
+  await nextApp.prepare()
+  // }
+
+  console.log('👾 next prepared')
 
   graphqlServer.use(
     cookieSession({
@@ -36,29 +55,17 @@ export default async function main() {
   )
   graphqlServer.use('/api', apiRoutes)
 
-  graphqlServer.use(function(req: Request, _res: Response, skip: NextFunction) {
+  graphqlServer.use(function(req: Request, res: Response, skip: NextFunction) {
     if (req.path.startsWith(config.graphqlEndpoint)) {
       return skip()
     }
 
     req.graphqlSchema = graphqlServer.executableSchema
     req.graphqlContext = graphqlServer.context
-    nextHandler.apply(null, arguments)
+    nextHandler(req, res, skip)
   })
 
-  if (config.environment === 'development') {
-    const files = [config.graphqlSchemaPath, ...config.graphqlDocumentPaths]
-
-    chokidar.watch(files).on('all', async () => {
-      await gen()
-      await nextApp.close()
-      await nextApp.prepare()
-    })
-  } else {
-    await nextApp.prepare()
-  }
-
-  await conection
+  console.log('👾 api routes configured')
 
   try {
     await graphqlServer.start({

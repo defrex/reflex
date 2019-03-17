@@ -1202,7 +1202,7 @@
   resolved "https://registry.yarnpkg.com/@types/graphql-deduplicator/-/graphql-deduplicator-2.0.0.tgz#9e577b8f3feb3d067b0ca756f4a1fb356d533922"
   integrity sha512-swUwj5hWF1yFzbUXStLJrUa0ksAt11B8+SwhsAjQAX0LYJ1LLioAyuDcJ9bovWbsNzIXJYXLvljSPQw8nR728w==
 
-"@types/graphql@^14.0.0":
+"@types/graphql@^14.0.0", "@types/graphql@^14.0.7":
   version "14.0.7"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.7.tgz#daa09397220a68ce1cbb3f76a315ff3cd92312f6"
   integrity sha512-BoLDjdvLQsXPZLJux3lEZANwGr3Xag56Ngy0U3y8uoRSDdeLcn43H3oBcgZlnd++iOQElBpaRVDHPzEDekyvXQ==
@@ -5168,6 +5168,11 @@ graphql-codegen-typescript-common@0.18.0, graphql-codegen-typescript-common@^0.1
     common-tags "1.8.0"
     graphql-codegen-core "0.18.0"
     graphql-codegen-plugin-helpers "0.18.0"
+
+graphql-codegen-typescript-graphql-files-modules@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/graphql-codegen-typescript-graphql-files-modules/-/graphql-codegen-typescript-graphql-files-modules-0.18.0.tgz#0f728b2693abfd68d04b401ecf53ec789f351ca1"
+  integrity sha512-Q6P8kZpoxYrCTu4wk53jjEhwp74ixSFYM1Ph91tDip1wAMD3rpftNHHhl6FIjp+Ck2vlQT+LhO/dz4O23pJ2kQ==
 
 graphql-codegen-typescript-resolvers@^0.18.0:
   version "0.18.0"

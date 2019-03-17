@@ -3,7 +3,7 @@ import { generate } from 'graphql-code-generator'
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
 
-export default function gen (): Promise<any> {
+export default function gen(): Promise<any> {
   return generate({
     schema: config.graphqlSchemaPath,
     overwrite: true,
@@ -11,9 +11,9 @@ export default function gen (): Promise<any> {
       [absolutePath('gen/schema.d.ts')]: {
         plugins: ['typescript-common', 'typescript-server'],
       },
-      [absolutePath('gen/documents.d.ts')]: {
+      [absolutePath('@types/graphqlDocuments.d.ts')]: {
         documents: config.graphqlDocumentPaths,
-        plugins: ['typescript-common', 'typescript-client'],
+        plugins: ['typescript-graphql-files-modules'],
       },
       [absolutePath('gen/resolvers.d.ts')]: {
         plugins: ['typescript-common', 'typescript-resolvers'],

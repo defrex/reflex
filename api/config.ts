@@ -10,15 +10,15 @@ const config = {
   graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
   graphqlEndpoint: '/api/graphql',
   graphqlDocumentPaths: [
-    absolutePath('pages/**/*.graphql'),
-    absolutePath('components/**/*.graphql'),
+    absolutePath('ui/pages/**/*.graphql'),
+    absolutePath('ui/components/**/*.graphql'),
   ],
   uiPath: absolutePath('ui'),
   environment: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT!),
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
-  dbUrl: process.env.DATABASE_URL!,
+  databaseUrl: process.env.DATABASE_URL!,
   secretKey: process.env.SECRET_KEY!,
   figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
   figmaClientSecret: process.env.FIGMA_CLIENT_SECRET!,
@@ -32,7 +32,7 @@ const config = {
 
 for (const [key, value] of Object.entries(config)) {
   if (value === undefined || value === null) {
-    throw new Error(`Missing config value for ${key}`)
+    throw new Error(`Missing config value for ${key.toUpperCase()}`)
   }
 }
 
