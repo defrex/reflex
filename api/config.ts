@@ -4,7 +4,6 @@ const basePath = path.resolve(__dirname, '..')
 const absolutePath = path.join.bind(path, basePath)
 
 const config = {
-  appName: 'Sync UI',
   basePath,
   graphqlSchemaPath: absolutePath('api/schema.graphql'),
   graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
