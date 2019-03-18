@@ -8,22 +8,35 @@ export default function gen(): Promise<any> {
     schema: config.graphqlSchemaPath,
     overwrite: true,
     generates: {
-      [absolutePath('gen/schema.d.ts')]: {
-        plugins: ['typescript-common', 'typescript-server'],
-      },
-      [absolutePath('gen/resolvers.d.ts')]: {
-        plugins: ['typescript-common', 'typescript-resolvers'],
+      // [absolutePath('api/gen/schema.d.ts')]: {
+      //   plugins: ['typescript-common', 'typescript-server'],
+      // },
+      // [absolutePath('api/gen/resolvers.d.ts')]: {
+      //   plugins: ['typescript-common', 'typescript-resolvers'],
+      //   config: {
+      //     contextType: 'api/context#Context',
+      //   },
+      // },
+      [absolutePath('api/gen.ts')]: {
+        plugins: [
+          'typescript-common',
+          'typescript-server',
+          'typescript-resolvers',
+        ],
         config: {
           contextType: 'api/context#Context',
         },
       },
-      [absolutePath('gen/client.tsx')]: {
+      [absolutePath('ui/gen.tsx')]: {
         documents: config.graphqlDocumentPaths,
         plugins: [
           'typescript-common',
           'typescript-client',
           'typescript-react-apollo',
         ],
+        config: {
+          noHOC: true,
+        },
       },
       // [absolutePath('@types/graphqlDocuments.d.ts')]: {
       //   documents: config.graphqlDocumentPaths,

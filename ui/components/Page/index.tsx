@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
-import { PageQuery } from 'gen/documents'
+import { PageQuery } from 'ui/gen'
 import styles from './styles'
 
 interface PageProps {

@@ -6,7 +6,7 @@ const absolutePath = path.join.bind(path, basePath)
 const config = {
   basePath,
   graphqlSchemaPath: absolutePath('api/schema.graphql'),
-  graphqlSchemaTypesPath: absolutePath('gen/schema.d.ts'),
+  graphqlSchemaTypesPath: absolutePath('api/gen.ts'),
   graphqlEndpoint: '/api/graphql',
   graphqlDocumentPaths: [
     absolutePath('ui/pages/**/*.graphql'),

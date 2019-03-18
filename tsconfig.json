@@ -3,7 +3,6 @@
     "jsx": "preserve",
     "target": "es2017",
     "lib": ["dom", "es2017", "esnext.asynciterable"],
-    // "module": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -22,12 +21,9 @@
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
-        "api/*": [ "api/*" ],
-        "ui/*": [ "ui/*" ]
+      "api/*": ["api/*"],
+      "ui/*": ["ui/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "@types"
-    ]
+    "typeRoots": ["node_modules/@types", "@types"]
   }
 }

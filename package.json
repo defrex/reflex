@@ -14,7 +14,6 @@
     "heroku-postbuild": "yarn run orm schema:sync && yarn run build"
   },
   "_moduleAliases": {
-    "gen": "./gen",
     "api": "./api",
     "ui": "./ui"
   },

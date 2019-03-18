@@ -1,6 +1,5 @@
-import { QueryResolvers } from 'gen/resolvers'
+import { QueryResolvers } from 'api/gen'
 import GithubCheck from 'api/models/GithubCheck'
-import Context from 'api/Context'
 import { FindConditions } from 'typeorm'
 
 export default {
@@ -20,4 +19,4 @@ export default {
   currentUser: (_parent, _args, ctx) => {
     return ctx.user
   },
-} as QueryResolvers.Resolvers<Context>
+} as QueryResolvers.Resolvers

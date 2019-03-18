@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { AppBarQuery } from 'gen/documents'
+import { AppBarQuery } from 'ui/gen'
 import styles from './styles'
 
 interface AppBarProps {

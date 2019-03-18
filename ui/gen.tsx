@@ -26,7 +26,7 @@ export namespace CheckPageQuery {
   export type GithubCheck = {
     __typename?: 'GithubCheck'
 
-    id: string
+    id: Maybe<number>
 
     repoOwner: string
 
@@ -53,7 +53,7 @@ export namespace ChecksPageQuery {
   export type GithubChecks = {
     __typename?: 'GithubCheck'
 
-    id: string
+    id: Maybe<number>
 
     repoOwner: string
 
@@ -83,7 +83,7 @@ export namespace AppBarQuery {
   export type CurrentUser = {
     __typename?: 'User'
 
-    id: string
+    id: Maybe<number>
   }
 }
 
@@ -171,25 +171,6 @@ export namespace CheckPageQuery {
       )
     }
   }
-  export type Props<TChildProps = any> = Partial<
-    ReactApollo.DataProps<Query, Variables>
-  > &
-    TChildProps
-  export function HOC<TProps, TChildProps = any>(
-    operationOptions:
-      | ReactApollo.OperationOption<
-          TProps,
-          Query,
-          Variables,
-          Props<TChildProps>
-        >
-      | undefined,
-  ) {
-    return ReactApollo.graphql<TProps, Query, Variables, Props<TChildProps>>(
-      Document,
-      operationOptions,
-    )
-  }
 }
 export namespace ChecksPageQuery {
   export const Document = gql`
@@ -217,25 +198,6 @@ export namespace ChecksPageQuery {
       )
     }
   }
-  export type Props<TChildProps = any> = Partial<
-    ReactApollo.DataProps<Query, Variables>
-  > &
-    TChildProps
-  export function HOC<TProps, TChildProps = any>(
-    operationOptions:
-      | ReactApollo.OperationOption<
-          TProps,
-          Query,
-          Variables,
-          Props<TChildProps>
-        >
-      | undefined,
-  ) {
-    return ReactApollo.graphql<TProps, Query, Variables, Props<TChildProps>>(
-      Document,
-      operationOptions,
-    )
-  }
 }
 export namespace IndexQuery {
   export const Document = gql`
@@ -254,24 +216,5 @@ export namespace IndexQuery {
         />
       )
     }
-  }
-  export type Props<TChildProps = any> = Partial<
-    ReactApollo.DataProps<Query, Variables>
-  > &
-    TChildProps
-  export function HOC<TProps, TChildProps = any>(
-    operationOptions:
-      | ReactApollo.OperationOption<
-          TProps,
-          Query,
-          Variables,
-          Props<TChildProps>
-        >
-      | undefined,
-  ) {
-    return ReactApollo.graphql<TProps, Query, Variables, Props<TChildProps>>(
-      Document,
-      operationOptions,
-    )
   }
 }

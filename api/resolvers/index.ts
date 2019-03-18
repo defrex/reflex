@@ -1,4 +1,4 @@
-import { IResolvers } from 'gen/resolvers'
+import { IResolvers } from 'api/gen'
 import Query from './Query'
 import Mutation from './Mutation'
 

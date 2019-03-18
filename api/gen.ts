@@ -5,6 +5,63 @@ export interface CreateUserInput {
 
   email: string
 }
+
+// ====================================================
+// Types
+// ====================================================
+
+export interface Query {
+  hello: string
+
+  githubChecks: (Maybe<GithubCheck>)[]
+
+  githubCheck?: Maybe<GithubCheck>
+
+  currentUser?: Maybe<User>
+}
+
+export interface GithubCheck {
+  id?: Maybe<number>
+
+  repoOwner: string
+
+  repoName: string
+
+  commitSha: string
+
+  githubCheckId?: Maybe<number>
+}
+
+export interface User {
+  id?: Maybe<number>
+
+  name?: Maybe<string>
+}
+
+export interface Mutation {
+  createUser?: Maybe<User>
+}
+
+// ====================================================
+// Arguments
+// ====================================================
+
+export interface GithubChecksQueryArgs {
+  repoOwner: string
+
+  repoName?: Maybe<string>
+}
+export interface GithubCheckQueryArgs {
+  repoOwner: string
+
+  repoName: string
+
+  commitSha: string
+}
+export interface CreateUserMutationArgs {
+  input: CreateUserInput
+}
+
 import { GraphQLResolveInfo } from 'graphql'
 
 import { Context } from 'api/context'
@@ -111,7 +168,7 @@ export namespace QueryResolvers {
 
 export namespace GithubCheckResolvers {
   export interface Resolvers<TContext = Context, TypeParent = GithubCheck> {
-    id?: IdResolver<string, TypeParent, TContext>
+    id?: IdResolver<Maybe<number>, TypeParent, TContext>
 
     repoOwner?: RepoOwnerResolver<string, TypeParent, TContext>
 
@@ -123,7 +180,7 @@ export namespace GithubCheckResolvers {
   }
 
   export type IdResolver<
-    R = string,
+    R = Maybe<number>,
     Parent = GithubCheck,
     TContext = Context
   > = Resolver<R, Parent, TContext>
@@ -151,13 +208,13 @@ export namespace GithubCheckResolvers {
 
 export namespace UserResolvers {
   export interface Resolvers<TContext = Context, TypeParent = User> {
-    id?: IdResolver<string, TypeParent, TContext>
+    id?: IdResolver<Maybe<number>, TypeParent, TContext>
 
     name?: NameResolver<Maybe<string>, TypeParent, TContext>
   }
 
   export type IdResolver<
-    R = string,
+    R = Maybe<number>,
     Parent = User,
     TContext = Context
   > = Resolver<R, Parent, TContext>

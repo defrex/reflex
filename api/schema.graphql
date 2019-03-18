@@ -16,18 +16,18 @@ type Mutation {
   createUser(input: CreateUserInput!): User
 }
 
-type User {
-  id: ID!
-  name: String
-}
-
 input CreateUserInput {
   name: String!
   email: String!
 }
 
+type User {
+  id: Int
+  name: String
+}
+
 type GithubCheck {
-  id: ID!
+  id: Int
   repoOwner: String!
   repoName: String!
   commitSha: String!

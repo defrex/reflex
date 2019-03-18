@@ -1,4 +1,4 @@
-import { MutationResolvers } from 'gen/resolvers'
+import { MutationResolvers } from 'api/gen'
 import User from 'api/models/User'
 import Context from 'api/Context'
 
