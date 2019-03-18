@@ -8,15 +8,6 @@ export default function gen(): Promise<any> {
     schema: config.graphqlSchemaPath,
     overwrite: true,
     generates: {
-      // [absolutePath('api/gen/schema.d.ts')]: {
-      //   plugins: ['typescript-common', 'typescript-server'],
-      // },
-      // [absolutePath('api/gen/resolvers.d.ts')]: {
-      //   plugins: ['typescript-common', 'typescript-resolvers'],
-      //   config: {
-      //     contextType: 'api/context#Context',
-      //   },
-      // },
       [absolutePath('api/gen.ts')]: {
         plugins: [
           'typescript-common',
@@ -27,7 +18,7 @@ export default function gen(): Promise<any> {
           contextType: 'api/context#Context',
         },
       },
-      [absolutePath('ui/gen.tsx')]: {
+      [absolutePath('ui/gen.tmp.tsx')]: {
         documents: config.graphqlDocumentPaths,
         plugins: [
           'typescript-common',
@@ -36,12 +27,9 @@ export default function gen(): Promise<any> {
         ],
         config: {
           noHOC: true,
+          noNamepsaces: true,
         },
       },
-      // [absolutePath('@types/graphqlDocuments.d.ts')]: {
-      //   documents: config.graphqlDocumentPaths,
-      //   plugins: ['typescript-graphql-files-modules'],
-      // },
     },
   })
 }
