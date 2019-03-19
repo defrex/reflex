@@ -1,4 +1,4 @@
-import { generate } from 'graphql-code-generator'
+import { generate } from '@graphql-codegen/cli'
 
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
@@ -6,29 +6,20 @@ import { absolutePath } from 'api/lib/path'
 export default function gen(): Promise<any> {
   return generate({
     schema: config.graphqlSchemaPath,
-    overwrite: true,
+    documents: config.graphqlDocumentPaths,
     generates: {
       [absolutePath('api/gen.ts')]: {
-        plugins: [
-          'typescript-common',
-          'typescript-server',
-          'typescript-resolvers',
-        ],
+        plugins: ['typescript'],
         config: {
           contextType: 'api/context#Context',
         },
       },
-      [absolutePath('ui/gen.tmp.tsx')]: {
-        documents: config.graphqlDocumentPaths,
+      [absolutePath('ui/gen.tsx')]: {
         plugins: [
-          'typescript-common',
-          'typescript-client',
+          'typescript',
+          'typescript-operations',
           'typescript-react-apollo',
         ],
-        config: {
-          noHOC: true,
-          noNamepsaces: true,
-        },
       },
     },
   })

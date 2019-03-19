@@ -1,96 +1,107 @@
-export type Maybe<T> = T | null
-
-export interface CreateUserInput {
-  name: string
-
-  email: string
+type Maybe<T> = T | null
+export type Scalars = {
+  ID: string
+  String: string
+  Boolean: boolean
+  Int: number
+  Float: number
 }
 
-// ====================================================
-// Documents
-// ====================================================
+export type Config = {
+  loginUrl: Scalars['String']
+  signupUrl: Scalars['String']
+}
 
+export type CreateUserInput = {
+  name: Scalars['String']
+  email: Scalars['String']
+}
+
+export type GithubCheck = {
+  id?: Maybe<Scalars['Int']>
+  repoOwner: Scalars['String']
+  repoName: Scalars['String']
+  commitSha: Scalars['String']
+  githubCheckId?: Maybe<Scalars['Int']>
+}
+
+export type Mutation = {
+  createUser?: Maybe<User>
+}
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput
+}
+
+export type Query = {
+  hello: Scalars['String']
+  githubChecks: Array<Maybe<GithubCheck>>
+  githubCheck?: Maybe<GithubCheck>
+  currentUser?: Maybe<User>
+  config?: Maybe<Config>
+}
+
+export type QueryGithubChecksArgs = {
+  repoOwner: Scalars['String']
+  repoName?: Maybe<Scalars['String']>
+}
+
+export type QueryGithubCheckArgs = {
+  repoOwner: Scalars['String']
+  repoName: Scalars['String']
+  commitSha: Scalars['String']
+}
+
+export type User = {
+  id?: Maybe<Scalars['Int']>
+  name?: Maybe<Scalars['String']>
+}
 export type CheckPageQueryQueryVariables = {
-  repoOwner: string
-  repoName: string
-  commitSha: string
+  repoOwner: Scalars['String']
+  repoName: Scalars['String']
+  commitSha: Scalars['String']
 }
 
-export type CheckPageQueryQuery = {
-  __typename?: 'Query'
-
-  githubCheck: Maybe<CheckPageQueryGithubCheck>
-}
-
-export type CheckPageQueryGithubCheck = {
-  __typename?: 'GithubCheck'
-
-  id: Maybe<number>
-
-  repoOwner: string
-
-  repoName: string
-
-  commitSha: string
-
-  githubCheckId: Maybe<number>
+export type CheckPageQueryQuery = { __typename?: 'Query' } & {
+  githubCheck: Maybe<
+    { __typename?: 'GithubCheck' } & Pick<
+      GithubCheck,
+      'id' | 'repoOwner' | 'repoName' | 'commitSha' | 'githubCheckId'
+    >
+  >
 }
 
 export type ChecksPageQueryQueryVariables = {
-  repoOwner: string
-  repoName: string
+  repoOwner: Scalars['String']
+  repoName: Scalars['String']
 }
 
-export type ChecksPageQueryQuery = {
-  __typename?: 'Query'
-
-  githubChecks: (Maybe<ChecksPageQueryGithubChecks>)[]
+export type ChecksPageQueryQuery = { __typename?: 'Query' } & {
+  githubChecks: Array<
+    Maybe<
+      { __typename?: 'GithubCheck' } & Pick<
+        GithubCheck,
+        'id' | 'repoOwner' | 'repoName' | 'commitSha'
+      >
+    >
+  >
 } & PageQueryFragment
-
-export type ChecksPageQueryGithubChecks = {
-  __typename?: 'GithubCheck'
-
-  id: Maybe<number>
-
-  repoOwner: string
-
-  repoName: string
-
-  commitSha: string
-}
 
 export type IndexQueryQueryVariables = {}
 
-export type IndexQueryQuery = {
-  __typename?: 'Query'
+export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
-  hello: string
+export type AppBarQueryFragment = { __typename?: 'Query' } & {
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
+  config: Maybe<{ __typename?: 'Config' } & Pick<Config, 'loginUrl'>>
 }
 
-export type AppBarQueryFragment = {
-  __typename?: 'Query'
+export type PageQueryFragment = { __typename?: 'Query' } & AppBarQueryFragment
 
-  currentUser: Maybe<AppBarQueryCurrentUser>
-
-  config: {
-    loginUrl: string
-  }
-}
-
-export type AppBarQueryCurrentUser = {
-  __typename?: 'User'
-
-  id: Maybe<number>
-  name: Maybe<string>
-}
-
-export type PageQueryFragment = AppBarQueryFragment
-
-export type TemplateQueryFragment = {
-  __typename?: 'Query'
-
-  hello: string
-}
+export type TemplateQueryFragment = { __typename?: 'Query' } & Pick<
+  Query,
+  'hello'
+>
 
 import gql from 'graphql-tag'
 import * as React from 'react'
@@ -151,11 +162,11 @@ export class CheckPageQueryComponent extends React.Component<
     )
   }
 }
-export type CheckPageQueryProps<TChildProps = any> = Partial<
+export type CheckPageQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<CheckPageQueryQuery, CheckPageQueryQueryVariables>
 > &
   TChildProps
-export function CheckPageQueryHOC<TProps, TChildProps = any>(
+export function withCheckPageQuery<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
@@ -165,7 +176,7 @@ export function CheckPageQueryHOC<TProps, TChildProps = any>(
       >
     | undefined,
 ) {
-  return ReactApollo.graphql<
+  return ReactApollo.withQuery<
     TProps,
     CheckPageQueryQuery,
     CheckPageQueryQueryVariables,
@@ -199,11 +210,11 @@ export class ChecksPageQueryComponent extends React.Component<
     )
   }
 }
-export type ChecksPageQueryProps<TChildProps = any> = Partial<
+export type ChecksPageQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<ChecksPageQueryQuery, ChecksPageQueryQueryVariables>
 > &
   TChildProps
-export function ChecksPageQueryHOC<TProps, TChildProps = any>(
+export function withChecksPageQuery<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
@@ -213,7 +224,7 @@ export function ChecksPageQueryHOC<TProps, TChildProps = any>(
       >
     | undefined,
 ) {
-  return ReactApollo.graphql<
+  return ReactApollo.withQuery<
     TProps,
     ChecksPageQueryQuery,
     ChecksPageQueryQueryVariables,
@@ -238,11 +249,11 @@ export class IndexQueryComponent extends React.Component<
     )
   }
 }
-export type IndexQueryProps<TChildProps = any> = Partial<
+export type IndexQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<IndexQueryQuery, IndexQueryQueryVariables>
 > &
   TChildProps
-export function IndexQueryHOC<TProps, TChildProps = any>(
+export function withIndexQuery<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
@@ -252,7 +263,7 @@ export function IndexQueryHOC<TProps, TChildProps = any>(
       >
     | undefined,
 ) {
-  return ReactApollo.graphql<
+  return ReactApollo.withQuery<
     TProps,
     IndexQueryQuery,
     IndexQueryQueryVariables,
