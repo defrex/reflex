@@ -2,7 +2,7 @@ import config from 'api/config'
 
 export function absoluteUrl(path: string): string {
   return `${config.ssl ? 'https' : 'http'}://${config.domain}${
-    config.port !== 80 ? `:${config.port}` : ''
+    config.environment === 'development' ? `:${config.port}` : ''
   }${path}`
 }
 
