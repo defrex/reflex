@@ -18,6 +18,8 @@ export interface Query {
   githubCheck?: Maybe<GithubCheck>
 
   currentUser?: Maybe<User>
+
+  config?: Maybe<Config>
 }
 
 export interface GithubCheck {
@@ -36,6 +38,12 @@ export interface User {
   id?: Maybe<number>
 
   name?: Maybe<string>
+}
+
+export interface Config {
+  loginUrl: string
+
+  signupUrl: string
 }
 
 export interface Mutation {
@@ -128,6 +136,8 @@ export namespace QueryResolvers {
     githubCheck?: GithubCheckResolver<Maybe<GithubCheck>, TypeParent, TContext>
 
     currentUser?: CurrentUserResolver<Maybe<User>, TypeParent, TContext>
+
+    config?: ConfigResolver<Maybe<Config>, TypeParent, TContext>
   }
 
   export type HelloResolver<
@@ -161,6 +171,11 @@ export namespace QueryResolvers {
 
   export type CurrentUserResolver<
     R = Maybe<User>,
+    Parent = {},
+    TContext = Context
+  > = Resolver<R, Parent, TContext>
+  export type ConfigResolver<
+    R = Maybe<Config>,
     Parent = {},
     TContext = Context
   > = Resolver<R, Parent, TContext>
@@ -225,6 +240,25 @@ export namespace UserResolvers {
   > = Resolver<R, Parent, TContext>
 }
 
+export namespace ConfigResolvers {
+  export interface Resolvers<TContext = Context, TypeParent = Config> {
+    loginUrl?: LoginUrlResolver<string, TypeParent, TContext>
+
+    signupUrl?: SignupUrlResolver<string, TypeParent, TContext>
+  }
+
+  export type LoginUrlResolver<
+    R = string,
+    Parent = Config,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>
+  export type SignupUrlResolver<
+    R = string,
+    Parent = Config,
+    TContext = Context
+  > = Resolver<R, Parent, TContext>
+}
+
 export namespace MutationResolvers {
   export interface Resolvers<TContext = Context, TypeParent = {}> {
     createUser?: CreateUserResolver<Maybe<User>, TypeParent, TContext>
@@ -277,6 +311,7 @@ export type IResolvers<TContext = Context> = {
   Query?: QueryResolvers.Resolvers<TContext>
   GithubCheck?: GithubCheckResolvers.Resolvers<TContext>
   User?: UserResolvers.Resolvers<TContext>
+  Config?: ConfigResolvers.Resolvers<TContext>
   Mutation?: MutationResolvers.Resolvers<TContext>
 } & { [typeName: string]: never }
 

@@ -3,18 +3,17 @@ import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
-import { PageQuery } from 'ui/gen'
+import { PageQueryFragment } from 'ui/gen'
 import styles from './styles'
 
 interface PageProps {
   children: ReactNode
-  query: PageQuery.Fragment
+  query: PageQueryFragment
 }
 
 export default class Page extends PureComponent<PageProps> {
   render() {
     const { children, query } = this.props
-    console.log('Page', query)
     return (
       <div>
         <Head>

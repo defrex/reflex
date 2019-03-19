@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 
-import { AppBarQuery } from 'ui/gen'
+import { AppBarQueryFragment } from 'ui/gen'
 import styles from './styles'
+import Button from '../Button'
 
 interface AppBarProps {
-  query: AppBarQuery.Fragment
+  query: AppBarQueryFragment
 }
 
 export default class AppBar extends PureComponent<AppBarProps> {
@@ -15,6 +16,13 @@ export default class AppBar extends PureComponent<AppBarProps> {
       <div css={styles.appBarOuter}>
         <div css={styles.appBarInner}>
           <img css={styles.logo} src='/static/protologo.svg' alt='Reflex' />
+          <div>
+            {query.currentUser ? (
+              query.currentUser.name
+            ) : (
+              <Button href={query.config.loginUrl}>Login/Signup</Button>
+            )}
+          </div>
         </div>
       </div>
     )

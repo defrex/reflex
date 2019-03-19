@@ -78,12 +78,22 @@ export namespace AppBarQuery {
     __typename?: 'Query'
 
     currentUser: Maybe<CurrentUser>
+
+    config: Maybe<Config>
   }
 
   export type CurrentUser = {
     __typename?: 'User'
 
     id: Maybe<number>
+
+    name: Maybe<string>
+  }
+
+  export type Config = {
+    __typename?: 'Config'
+
+    loginUrl: string
   }
 }
 
@@ -112,6 +122,10 @@ export namespace AppBarQuery {
     fragment AppBarQuery on Query {
       currentUser {
         id
+        name
+      }
+      config {
+        loginUrl
       }
     }
   `

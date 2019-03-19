@@ -10,6 +10,8 @@ type Query {
   ): GithubCheck
 
   currentUser: User
+
+  config: Config
 }
 
 type Mutation {
@@ -32,4 +34,9 @@ type GithubCheck {
   repoName: String!
   commitSha: String!
   githubCheckId: Int
+}
+
+type Config {
+  loginUrl: String!
+  signupUrl: String!
 }

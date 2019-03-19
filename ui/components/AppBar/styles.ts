@@ -18,7 +18,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 
     @media (max-width: 1024px) {
       margin-left: 32px;

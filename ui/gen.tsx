@@ -71,12 +71,17 @@ export type AppBarQueryFragment = {
   __typename?: 'Query'
 
   currentUser: Maybe<AppBarQueryCurrentUser>
+
+  config: {
+    loginUrl: string
+  }
 }
 
 export type AppBarQueryCurrentUser = {
   __typename?: 'User'
 
   id: Maybe<number>
+  name: Maybe<string>
 }
 
 export type PageQueryFragment = AppBarQueryFragment
@@ -94,6 +99,10 @@ export const AppBarQueryFragmentDoc = gql`
   fragment AppBarQuery on Query {
     currentUser {
       id
+      name
+    }
+    config {
+      loginUrl
     }
   }
 `

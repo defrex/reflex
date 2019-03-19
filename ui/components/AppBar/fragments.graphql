@@ -1,5 +1,10 @@
 fragment AppBarQuery on Query {
   currentUser {
     id
+    name
+  }
+
+  config {
+    loginUrl
   }
 }

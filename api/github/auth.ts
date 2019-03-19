@@ -16,6 +16,7 @@ interface GithubTokenData {
 
 const router = Router()
 
+export const authUrl = absoluteUrl('/api/github/auth/start')
 // This path must match the Github App settings
 const redirectUri = absoluteUrl('/api/github/auth/finish')
 

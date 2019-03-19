@@ -1,14 +1,11 @@
-import { Probot } from 'probot'
+import express from 'express'
 
-import config from 'api/config'
-import webhookHandler from 'api/github/webhooks'
+import probot from './probot'
+import auth from './auth'
 
-const probot = new Probot({
-  id: config.githubAppId,
-  secret: config.githubAppWebhookSecret,
-  cert: config.githubAppPrivateKey,
-  // tunnel: process.env.SUBDOMAIN || process.env.NODE_ENV !== 'production',
-})
-probot.load(webhookHandler)
+const router = express.Router()
 
-export default probot.server
+router.use('/probot', probot)
+router.use('/auth', auth)
+
+export default router
