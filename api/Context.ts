@@ -3,7 +3,7 @@ import { Request } from 'express'
 
 import { loggedInUser } from 'api/lib/auth'
 
-export default interface Context {
+export type Context = {
   user?: User
 }
 

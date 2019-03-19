@@ -1,8 +1,9 @@
-import { QueryResolvers } from 'api/gen'
-import GithubCheck from 'api/models/GithubCheck'
 import { FindConditions } from 'typeorm'
 
+import { QueryResolvers } from 'api/gen'
+import GithubCheck from 'api/models/GithubCheck'
 import { authUrl } from 'api/github/auth'
+import { Context } from 'api/Context'
 
 export default {
   hello: (_parent, _args, _ctx) => {
@@ -28,4 +29,4 @@ export default {
       signupUrl: authUrl,
     }
   },
-} as QueryResolvers.Resolvers
+} as QueryResolvers<Context>

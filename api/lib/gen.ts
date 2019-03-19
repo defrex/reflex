@@ -9,10 +9,8 @@ export default function gen(): Promise<any> {
     documents: config.graphqlDocumentPaths,
     generates: {
       [absolutePath('api/gen.ts')]: {
-        plugins: ['typescript'],
-        config: {
-          contextType: 'api/context#Context',
-        },
+        plugins: ['typescript', 'typescript-resolvers'],
+        config: { avoidOptionals: true },
       },
       [absolutePath('ui/gen.tsx')]: {
         plugins: [

@@ -1,6 +1,6 @@
 import { MutationResolvers } from 'api/gen'
 import User from 'api/models/User'
-import Context from 'api/Context'
+import { Context } from 'api/Context'
 
 export default {
   createUser: async (_parent, args, _ctx): Promise<User> => {
@@ -13,4 +13,4 @@ export default {
 
     return user
   },
-} as MutationResolvers.Resolvers<Context>
+} as MutationResolvers<Context>

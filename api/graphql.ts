@@ -6,21 +6,20 @@ import resolvers from 'api/resolvers'
 import config from 'api/config'
 import { getContext } from 'api/Context'
 
+const typeDefs = importSchema(config.graphqlSchemaPath)
+
 export default async (app: Application) => {
-  const schema = makeExecutableSchema({
-    typeDefs: importSchema(config.graphqlSchemaPath),
-    resolvers,
-  })
+  const schema = makeExecutableSchema({ typeDefs, resolvers })
 
   const graphqlServer = new ApolloServer({
-    schema: schema,
+    schema,
     context: getContext,
   })
 
-  app.use(async (req: Request, _res: Response, skip: NextFunction) => {
+  app.use(async (req: Request, _res: Response, next: NextFunction) => {
     req.graphqlSchema = schema
     req.graphqlContext = await getContext(req)
-    skip()
+    next()
   })
 
   graphqlServer.applyMiddleware({ app, path: config.graphqlEndpoint })
