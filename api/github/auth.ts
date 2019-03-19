@@ -43,6 +43,9 @@ router.get('/finish', async (req: Request, res: Response) => {
   const code = req.query.code
   const state = req.query.state
 
+  console.log('💢 session.state', req.session!.githubAuthState)
+  console.log('💢 github.state', state)
+
   if (req.session!.githubAuthState !== state) {
     return res.send(400)
   }
