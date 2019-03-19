@@ -1,41 +1,19 @@
-/// <reference path="./@types/Request.d.ts" />
-import next from 'next'
-import chokidar from 'chokidar'
-import express, { Request, Response, NextFunction } from 'express'
+import express from 'express'
 import cookieSession from 'cookie-session'
 
-import graphqlServer from 'api/graphql'
+import applyGraphqlMiddleware from 'api/graphql'
+import applyNextMiddleware from 'api/next'
 import config from 'api/config'
 import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
-import { absolutePath } from 'api/lib/path'
-import gen from 'api/lib/gen'
 import apiRoutes from 'api/routes'
-import uiRoutes from 'ui/routes'
 
 export default async function main() {
   await conection
 
-  const nextApp = next({
-    dev: config.environment === 'development',
-    dir: config.uiPath,
-  })
+  const app = express()
 
-  const nextHandler = uiRoutes.getRequestHandler(nextApp)
-
-  if (config.environment === 'development') {
-    const files = [config.graphqlSchemaPath, ...config.graphqlDocumentPaths]
-
-    chokidar.watch(files).on('all', async () => {
-      await gen()
-      await nextApp.close()
-      await nextApp.prepare()
-    })
-  } else {
-    await nextApp.prepare()
-  }
-
-  graphqlServer.use(
+  app.use(
     cookieSession({
       secret: config.secretKey,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -45,31 +23,22 @@ export default async function main() {
     }),
   )
 
-  graphqlServer.use(
-    '/service-worker.js',
-    express.static(absolutePath('ui/.next/service-worker.js')),
-  )
-  graphqlServer.use('/api', apiRoutes)
-
-  graphqlServer.use(function(req: Request, res: Response, skip: NextFunction) {
-    if (req.path.startsWith(config.graphqlEndpoint)) {
-      return skip()
+  app.get('/hits', (req, res) => {
+    if (!req.session) {
+      res.send('Session unavailable')
+      return
     }
 
-    req.graphqlSchema = graphqlServer.executableSchema
-    req.graphqlContext = graphqlServer.context
-    nextHandler(req, res, skip)
+    req.session.hits = (req.session.hits || 0) + 1
+    res.send(req.session.hits + ' 👊')
   })
 
-  try {
-    await graphqlServer.start({
-      endpoint: config.graphqlEndpoint,
-      playground: config.graphqlEndpoint,
-      port: config.port,
-    })
-  } catch (error) {
-    console.log('ERROR:', error)
-  }
+  app.use('/api', apiRoutes)
+
+  await applyGraphqlMiddleware(app)
+  await applyNextMiddleware(app)
+
+  app.listen(config.port)
 
   console.log(absoluteUrl('/'))
 }

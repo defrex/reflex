@@ -2,9 +2,8 @@ import { Request } from 'express'
 import User from 'api/models/User'
 
 export async function loggedInUser(req: Request): Promise<User | undefined> {
-  const userId = req.session!.userId
-  if (userId) {
-    return await User.findOne(userId)
+  if (req.session && req.session.userId) {
+    return await User.findOne(req.session.userId)
   }
 }
 

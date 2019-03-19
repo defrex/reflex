@@ -15,9 +15,15 @@ export default withApollo(({ ctx, initialState }) => {
 
   if (!process.browser && ctx && ctx.req) {
     const req = ctx.req as Request
+    if (!req.graphqlSchema) {
+      throw new Error('Missing graphqlSchema on req')
+    }
+    if (!req.graphqlContext) {
+      throw new Error('Missing graphqlContext on req')
+    }
     link = new SchemaLink({
-      schema: req.graphqlSchema!,
-      context: req.graphqlSchema,
+      schema: req.graphqlSchema,
+      context: req.graphqlContext,
     })
   } else {
     link = ApolloLink.from([

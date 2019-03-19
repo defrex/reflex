@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import fetch from 'node-fetch'
 
+import { loggedInUser } from 'api/lib/auth'
 import config from 'api/config'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { randomString } from 'api/lib/random'
@@ -16,8 +17,9 @@ const router = Router()
 // This path must match the Figma App settings
 const redirectUri = absoluteUrl('/api/figma/auth/finish')
 
-router.get('/auth/start', (req: Request, res: Response) => {
-  if (!req.user) {
+router.get('/auth/start', async (req: Request, res: Response) => {
+  const user = await loggedInUser(req)
+  if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')
     return
@@ -41,7 +43,8 @@ router.get('/auth/start', (req: Request, res: Response) => {
 })
 
 router.get('/auth/finish', async (req: Request, res: Response) => {
-  if (!req.user) {
+  const user = await loggedInUser(req)
+  if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')
     return
@@ -65,9 +68,9 @@ router.get('/auth/finish', async (req: Request, res: Response) => {
   const tokenRes = await fetch(figmaUrl, { method: 'POST' })
   const tokenData: FigmaTokenData = await tokenRes.json()
 
-  req.user.figmaAccessToken = tokenData.access_token
-  req.user.figmaRefreshToken = tokenData.refresh_token
-  await req.user.save()
+  user.figmaAccessToken = tokenData.access_token
+  user.figmaRefreshToken = tokenData.refresh_token
+  await user.save()
 
   const referrer = req.session!.figmaAuthReferrer || '/'
   req.session!.figmaAuthReferrer = null
