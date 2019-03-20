@@ -26,6 +26,7 @@ input CreateUserInput {
 type User {
   id: Int
   name: String
+  figmaConnected: Boolean!
 }
 
 type GithubCheck {
@@ -39,4 +40,5 @@ type GithubCheck {
 type Config {
   loginUrl: String!
   signupUrl: String!
+  figmaAuthUrl: String!
 }

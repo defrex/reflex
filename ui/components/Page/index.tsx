@@ -20,7 +20,9 @@ export default class Page extends PureComponent<PageProps> {
           <title>Reflex</title>
         </Head>
         <AppBar query={query} />
-        <div css={styles.content}>{children}</div>
+        <div css={styles.contentWrapper}>
+          <div css={styles.content}>{children}</div>
+        </div>
       </div>
     )
   }

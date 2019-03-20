@@ -24,4 +24,8 @@ export default class User extends Model {
 
   @Column({ nullable: true })
   figmaRefreshToken?: string
+
+  get figmaConnected() {
+    return !!this.figmaAccessToken
+  }
 }

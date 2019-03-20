@@ -10,6 +10,7 @@ export type Scalars = {
 export type Config = {
   loginUrl: Scalars['String']
   signupUrl: Scalars['String']
+  figmaAuthUrl: Scalars['String']
 }
 
 export type CreateUserInput = {
@@ -55,6 +56,7 @@ export type QueryGithubCheckArgs = {
 export type User = {
   id?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
+  figmaConnected: Scalars['Boolean']
 }
 export type CheckPageQueryQueryVariables = {
   repoOwner: Scalars['String']
@@ -71,12 +73,25 @@ export type CheckPageQueryQuery = { __typename?: 'Query' } & {
   >
 }
 
-export type ChecksPageQueryQueryVariables = {
+export type IndexQueryQueryVariables = {}
+
+export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
+
+export type ProfilePageQueryQueryVariables = {}
+
+export type ProfilePageQueryQuery = { __typename?: 'Query' } & {
+  currentUser: Maybe<
+    { __typename?: 'User' } & Pick<User, 'name' | 'figmaConnected'>
+  >
+  config: { __typename?: 'Config' } & Pick<Config, 'figmaAuthUrl'>
+} & PageQueryFragment
+
+export type ProjectPageQueryQueryVariables = {
   repoOwner: Scalars['String']
   repoName: Scalars['String']
 }
 
-export type ChecksPageQueryQuery = { __typename?: 'Query' } & {
+export type ProjectPageQueryQuery = { __typename?: 'Query' } & {
   githubChecks: Array<
     Maybe<
       { __typename?: 'GithubCheck' } & Pick<
@@ -86,10 +101,6 @@ export type ChecksPageQueryQuery = { __typename?: 'Query' } & {
     >
   >
 } & PageQueryFragment
-
-export type IndexQueryQueryVariables = {}
-
-export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
 export type AppBarQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
@@ -183,54 +194,6 @@ export function withCheckPageQuery<TProps, TChildProps = {}>(
     CheckPageQueryProps<TChildProps>
   >(CheckPageQueryDocument, operationOptions)
 }
-export const ChecksPageQueryDocument = gql`
-  query ChecksPageQuery($repoOwner: String!, $repoName: String!) {
-    githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
-      id
-      repoOwner
-      repoName
-      commitSha
-    }
-    ...PageQuery
-  }
-  ${PageQueryFragmentDoc}
-`
-
-export class ChecksPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<ChecksPageQueryQuery, ChecksPageQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<ChecksPageQueryQuery, ChecksPageQueryQueryVariables>
-        query={ChecksPageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
-export type ChecksPageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<ChecksPageQueryQuery, ChecksPageQueryQueryVariables>
-> &
-  TChildProps
-export function withChecksPageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        ChecksPageQueryQuery,
-        ChecksPageQueryQueryVariables,
-        ChecksPageQueryProps<TChildProps>
-      >
-    | undefined,
-) {
-  return ReactApollo.withQuery<
-    TProps,
-    ChecksPageQueryQuery,
-    ChecksPageQueryQueryVariables,
-    ChecksPageQueryProps<TChildProps>
-  >(ChecksPageQueryDocument, operationOptions)
-}
 export const IndexQueryDocument = gql`
   query IndexQuery {
     hello
@@ -269,4 +232,107 @@ export function withIndexQuery<TProps, TChildProps = {}>(
     IndexQueryQueryVariables,
     IndexQueryProps<TChildProps>
   >(IndexQueryDocument, operationOptions)
+}
+export const ProfilePageQueryDocument = gql`
+  query ProfilePageQuery {
+    currentUser {
+      name
+      figmaConnected
+    }
+    config {
+      figmaAuthUrl
+    }
+    ...PageQuery
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class ProfilePageQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      ProfilePageQueryQuery,
+      ProfilePageQueryQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>
+        query={ProfilePageQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type ProfilePageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>
+> &
+  TChildProps
+export function withProfilePageQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ProfilePageQueryQuery,
+        ProfilePageQueryQueryVariables,
+        ProfilePageQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ProfilePageQueryQuery,
+    ProfilePageQueryQueryVariables,
+    ProfilePageQueryProps<TChildProps>
+  >(ProfilePageQueryDocument, operationOptions)
+}
+export const ProjectPageQueryDocument = gql`
+  query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
+    githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
+      id
+      repoOwner
+      repoName
+      commitSha
+    }
+    ...PageQuery
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class ProjectPageQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      ProjectPageQueryQuery,
+      ProjectPageQueryQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<ProjectPageQueryQuery, ProjectPageQueryQueryVariables>
+        query={ProjectPageQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type ProjectPageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ProjectPageQueryQuery, ProjectPageQueryQueryVariables>
+> &
+  TChildProps
+export function withProjectPageQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ProjectPageQueryQuery,
+        ProjectPageQueryQueryVariables,
+        ProjectPageQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ProjectPageQueryQuery,
+    ProjectPageQueryQueryVariables,
+    ProjectPageQueryProps<TChildProps>
+  >(ProjectPageQueryDocument, operationOptions)
 }

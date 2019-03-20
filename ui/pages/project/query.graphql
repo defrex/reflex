@@ -1,5 +1,5 @@
 #import "../../components/Page/fragments.graphql"
-query ChecksPageQuery($repoOwner: String!, $repoName: String!) {
+query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
   githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
     id
     repoOwner

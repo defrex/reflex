@@ -1,0 +1,13 @@
+#import "../../components/Page/fragments.graphql"
+query ProfilePageQuery {
+  currentUser {
+    name
+    figmaConnected
+  }
+
+  config {
+    figmaAuthUrl
+  }
+
+  ...PageQuery
+}

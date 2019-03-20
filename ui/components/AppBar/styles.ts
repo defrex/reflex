@@ -21,12 +21,18 @@ export default {
     justify-content: space-between;
 
     @media (max-width: 1024px) {
-      margin-left: 32px;
-      margin-right: 32px;
+      margin-left: 16px;
+      margin-right: 16px;
     }
   `,
   logo: css`
     height: 32px;
     margin: 16px 0;
+  `,
+  links: css`
+    a {
+      color: white;
+      text-decoration: none;
+    }
   `,
 }

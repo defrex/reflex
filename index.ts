@@ -26,7 +26,7 @@ export default async function main() {
   await applyGraphqlMiddleware(app)
   await applyNextMiddleware(app)
 
-  app.listen(config.port)
-
-  console.log(absoluteUrl('/'))
+  app.listen(config.port, () => {
+    console.log(absoluteUrl('/'))
+  })
 }
