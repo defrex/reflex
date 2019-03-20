@@ -1,4 +1,4 @@
-import express, { NextFunction } from 'express'
+import express from 'express'
 import cookieSession from 'cookie-session'
 
 import applyGraphqlMiddleware from 'api/graphql'
@@ -20,23 +20,6 @@ export default async function main() {
       httpOnly: true,
     }),
   )
-
-  app.use((_req, res, next: NextFunction) => {
-    next()
-    console.log('🤯', res.getHeaders())
-  })
-
-  app.get('/hits', (req, res) => {
-    if (!req.session) {
-      res.send('Session unavailable')
-      return
-    }
-
-    req.session.hits = (req.session.hits || 0) + 1
-
-    res.set('X-Reflex', 'true')
-    res.send(req.session.hits + ' 👊')
-  })
 
   app.use('/api', apiRoutes)
 
