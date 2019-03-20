@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import cookieSession from 'cookie-session'
 
 import applyGraphqlMiddleware from 'api/graphql'
@@ -21,6 +21,11 @@ export default async function main() {
       secure: config.ssl,
     }),
   )
+
+  app.use((_req, res, next: NextFunction) => {
+    next()
+    console.log('🤯', res.getHeaders())
+  })
 
   app.get('/hits', (req, res) => {
     if (!req.session) {
