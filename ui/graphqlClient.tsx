@@ -71,7 +71,7 @@ export type CheckPageQueryQuery = { __typename?: 'Query' } & {
       'id' | 'repoOwner' | 'repoName' | 'commitSha' | 'githubCheckId'
     >
   >
-}
+} & PageQueryFragment
 
 export type IndexQueryQueryVariables = {}
 
@@ -156,7 +156,9 @@ export const CheckPageQueryDocument = gql`
       commitSha
       githubCheckId
     }
+    ...PageQuery
   }
+  ${PageQueryFragmentDoc}
 `
 
 export class CheckPageQueryComponent extends React.Component<

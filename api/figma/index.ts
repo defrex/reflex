@@ -1,9 +1,9 @@
-import { Router } from 'express'
+import express from 'express'
 
-import auth from 'api/figma/auth'
+import auth from './auth'
 
-const router = Router()
+const router = express.Router()
 
-router.get('/auth', auth)
+router.use('/auth', auth)
 
 export default router
