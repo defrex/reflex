@@ -29,6 +29,8 @@ export default async function main() {
     }
 
     req.session.hits = (req.session.hits || 0) + 1
+
+    res.set('X-Reflex', 'true')
     res.send(req.session.hits + ' 👊')
   })
 
