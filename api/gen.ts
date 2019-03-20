@@ -18,15 +18,15 @@ export type CreateUserInput = {
 }
 
 export type GithubCheck = {
-  id: Maybe<Scalars['Int']>
+  id?: Maybe<Scalars['Int']>
   repoOwner: Scalars['String']
   repoName: Scalars['String']
   commitSha: Scalars['String']
-  githubCheckId: Maybe<Scalars['Int']>
+  githubCheckId?: Maybe<Scalars['Int']>
 }
 
 export type Mutation = {
-  createUser: Maybe<User>
+  createUser?: Maybe<User>
 }
 
 export type MutationCreateUserArgs = {
@@ -36,14 +36,14 @@ export type MutationCreateUserArgs = {
 export type Query = {
   hello: Scalars['String']
   githubChecks: Array<Maybe<GithubCheck>>
-  githubCheck: Maybe<GithubCheck>
-  currentUser: Maybe<User>
-  config: Maybe<Config>
+  githubCheck?: Maybe<GithubCheck>
+  currentUser?: Maybe<User>
+  config?: Maybe<Config>
 }
 
 export type QueryGithubChecksArgs = {
   repoOwner: Scalars['String']
-  repoName: Maybe<Scalars['String']>
+  repoName?: Maybe<Scalars['String']>
 }
 
 export type QueryGithubCheckArgs = {
@@ -53,8 +53,8 @@ export type QueryGithubCheckArgs = {
 }
 
 export type User = {
-  id: Maybe<Scalars['Int']>
-  name: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
+  name?: Maybe<Scalars['String']>
 }
 
 import { GraphQLResolveInfo } from 'graphql'

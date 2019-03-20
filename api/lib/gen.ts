@@ -10,7 +10,6 @@ export default function gen(): Promise<any> {
     generates: {
       [absolutePath('api/gen.ts')]: {
         plugins: ['typescript', 'typescript-resolvers'],
-        config: { avoidOptionals: true },
       },
       [absolutePath('ui/gen.tsx')]: {
         plugins: [

@@ -9,7 +9,10 @@ import { getContext } from 'api/Context'
 const typeDefs = importSchema(config.graphqlSchemaPath)
 
 export default async (app: Application) => {
-  const schema = makeExecutableSchema({ typeDefs, resolvers })
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers: resolvers as any,
+  })
 
   const graphqlServer = new ApolloServer({
     schema,
