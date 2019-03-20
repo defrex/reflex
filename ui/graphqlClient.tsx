@@ -38,7 +38,7 @@ export type Query = {
   githubChecks: Array<Maybe<GithubCheck>>
   githubCheck?: Maybe<GithubCheck>
   currentUser?: Maybe<User>
-  config?: Maybe<Config>
+  config: Config
 }
 
 export type QueryGithubChecksArgs = {
@@ -93,7 +93,7 @@ export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
 export type AppBarQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
-  config: Maybe<{ __typename?: 'Config' } & Pick<Config, 'loginUrl'>>
+  config: { __typename?: 'Config' } & Pick<Config, 'loginUrl'>
 }
 
 export type PageQueryFragment = { __typename?: 'Query' } & AppBarQueryFragment

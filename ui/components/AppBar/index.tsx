@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { AppBarQueryFragment } from 'ui/gen'
+import { AppBarQueryFragment } from 'ui/graphqlClient'
 import styles from './styles'
 import Button from '../Button'
 

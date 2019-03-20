@@ -38,7 +38,7 @@ export type Query = {
   githubChecks: Array<Maybe<GithubCheck>>
   githubCheck?: Maybe<GithubCheck>
   currentUser?: Maybe<User>
-  config?: Maybe<Config>
+  config: Config
 }
 
 export type QueryGithubChecksArgs = {
@@ -170,7 +170,7 @@ export type QueryResolvers<Context = any, ParentType = Query> = {
     QueryGithubCheckArgs
   >
   currentUser?: Resolver<Maybe<User>, ParentType, Context>
-  config?: Resolver<Maybe<Config>, ParentType, Context>
+  config?: Resolver<Config, ParentType, Context>
 }
 
 export type UserResolvers<Context = any, ParentType = User> = {

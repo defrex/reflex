@@ -11,7 +11,7 @@ type Query {
 
   currentUser: User
 
-  config: Config
+  config: Config!
 }
 
 type Mutation {

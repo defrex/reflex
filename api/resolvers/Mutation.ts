@@ -1,4 +1,4 @@
-import { MutationResolvers } from 'api/gen'
+import { MutationResolvers } from 'api/graphqlTypes'
 import User from 'api/models/User'
 import { Context } from 'api/Context'
 

@@ -1,6 +1,6 @@
 import { FindConditions } from 'typeorm'
 
-import { QueryResolvers } from 'api/gen'
+import { QueryResolvers } from 'api/graphqlTypes'
 import GithubCheck from 'api/models/GithubCheck'
 import { authUrl } from 'api/github/auth'
 import { Context } from 'api/Context'

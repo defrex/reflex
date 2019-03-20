@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import AppBar from 'ui/components/AppBar'
 
-import { PageQueryFragment } from 'ui/gen'
+import { PageQueryFragment } from 'ui/graphqlClient'
 import styles from './styles'
 
 interface PageProps {

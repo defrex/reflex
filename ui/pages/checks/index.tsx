@@ -3,7 +3,10 @@ import React, { PureComponent } from 'react'
 import Page from 'ui/components/Page'
 import Code from 'ui/components/Code'
 
-import { ChecksPageQueryComponent, ChecksPageQueryDocument } from 'ui/gen'
+import {
+  ChecksPageQueryComponent,
+  ChecksPageQueryDocument,
+} from 'ui/graphqlClient'
 
 interface ChecksPageProps {
   repoOwner: string
