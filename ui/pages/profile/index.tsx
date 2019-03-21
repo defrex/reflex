@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react'
 
 import Page from 'ui/components/Page'
+import Code from 'ui/components/Code'
 
-import { ProfilePageQueryComponent } from 'ui/graphqlClient'
+import {
+  ProfilePageQueryComponent,
+  ProfilePageQueryDocument,
+} from 'ui/graphqlClient'
 import Button from 'ui/components/Button'
 
 export default class ProfilePage extends PureComponent {
@@ -23,6 +27,11 @@ export default class ProfilePage extends PureComponent {
                   </Button>
                 )}
               </div>
+
+              <Code language='graphql'>
+                {ProfilePageQueryDocument.loc.source.body}
+              </Code>
+              <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
             </Page>
           ) : null
         }

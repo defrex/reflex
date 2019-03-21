@@ -1,4 +1,5 @@
 #!/bin/env node
 
-require('./lib/setup')
-require('api/lib/gen').default()
+require('./lib/setup').then(() => {
+  require('api/lib/gen').default()
+})
