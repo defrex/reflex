@@ -7,6 +7,8 @@ import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { randomString } from 'api/lib/random'
 
 interface FigmaTokenData {
+  error: boolean
+  message: string
   access_token: string
   expires_in: string
   refresh_token: string
@@ -63,11 +65,17 @@ router.get('/finish', async (req: Request, res: Response) => {
     client_secret: config.figmaClientSecret,
     redirect_uri: redirectUri,
     code,
-    grant_type: 'authorization_cod',
+    grant_type: 'authorization_code',
   })
 
   const tokenRes = await fetch(figmaUrl, { method: 'POST' })
   const tokenData: FigmaTokenData = await tokenRes.json()
+
+  if (tokenData.error) {
+    res.status(400)
+    res.send(tokenData.message)
+    return
+  }
 
   user.figmaAccessToken = tokenData.access_token
   user.figmaRefreshToken = tokenData.refresh_token
