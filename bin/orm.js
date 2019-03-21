@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-require('./lib/setup').then(() => {
-  require('typeorm/cli')
-})
+require('module-alias/register')
+require('ts-node/register')
+require('reflect-metadata')
+require('typeorm/cli')

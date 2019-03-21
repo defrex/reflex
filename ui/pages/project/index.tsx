@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import Page from 'ui/components/Page'
-import Code from 'ui/components/Code'
+import Breadcrumbs from 'ui/components/Breadcrumbs'
 
 import {
   ProjectPageQueryComponent,
@@ -24,12 +24,17 @@ export default class ProjectPage extends PureComponent<ProjectPageProps> {
       <ProjectPageQueryComponent variables={{ repoName, repoOwner }}>
         {({ data }) =>
           data ? (
-            <Page query={data}>
-              <h1>Project</h1>
-              <Code language='graphql'>
-                {ProjectPageQueryDocument.loc.source.body}
-              </Code>
-              <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
+            <Page query={data} document={ProjectPageQueryDocument}>
+              <Breadcrumbs>
+                {[
+                  { name: 'Dashboard', route: '/dashboard' },
+                  {
+                    name: `${repoOwner}/${repoName}`,
+                    route: 'project',
+                    params: { repoName, repoOwner },
+                  },
+                ]}
+              </Breadcrumbs>
             </Page>
           ) : null
         }

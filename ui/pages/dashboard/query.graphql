@@ -1,7 +1,7 @@
 #import "../../components/Page/fragments.graphql"
 #import "../../components/FigmaAuthButton/fragments.graphql"
 #import "../../components/GithubAuthButton/fragments.graphql"
-query ProfilePageQuery {
+query DashboardQuery {
   currentUser {
     name
     figmaConnected

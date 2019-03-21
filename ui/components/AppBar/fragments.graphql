@@ -5,6 +5,7 @@ fragment AppBarQuery on Query {
   }
 
   config {
-    loginUrl
+    githubAuthUrl
+    figmaAuthUrl
   }
 }

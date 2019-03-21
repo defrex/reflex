@@ -1,0 +1,8 @@
+fragment FigmaAuthButtonQuery on Query {
+  config {
+    figmaAuthUrl
+  }
+  currentUser {
+    figmaConnected
+  }
+}

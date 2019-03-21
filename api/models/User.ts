@@ -11,14 +11,14 @@ export default class User extends Model {
   @Column()
   email: string
 
-  @Column({ unique: true })
-  githubUsername: string
+  @Column({ unique: true, nullable: true })
+  githubUsername?: string
 
-  @Column()
-  githubAvatarUrl: string
+  @Column({ nullable: true })
+  githubAvatarUrl?: string
 
-  @Column()
-  githubAccessToken: string
+  @Column({ nullable: true })
+  githubAccessToken?: string
 
   @Column({ nullable: true })
   figmaAccessToken?: string
@@ -32,5 +32,9 @@ export default class User extends Model {
 
   get figma() {
     return new Figma(this)
+  }
+
+  get githubConnected() {
+    return !!this.githubAccessToken
   }
 }

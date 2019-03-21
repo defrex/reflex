@@ -8,9 +8,8 @@ export type Scalars = {
 }
 
 export type Config = {
-  loginUrl: Scalars['String']
-  signupUrl: Scalars['String']
   figmaAuthUrl: Scalars['String']
+  githubAuthUrl: Scalars['String']
 }
 
 export type CreateUserInput = {
@@ -57,6 +56,7 @@ export type User = {
   id?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
   figmaConnected: Scalars['Boolean']
+  githubConnected: Scalars['Boolean']
 }
 export type CheckPageQueryQueryVariables = {
   repoOwner: Scalars['String']
@@ -73,6 +73,19 @@ export type CheckPageQueryQuery = { __typename?: 'Query' } & {
   >
 } & PageQueryFragment
 
+export type DashboardQueryQueryVariables = {}
+
+export type DashboardQueryQuery = { __typename?: 'Query' } & {
+  currentUser: Maybe<
+    { __typename?: 'User' } & Pick<
+      User,
+      'name' | 'figmaConnected' | 'githubConnected'
+    >
+  >
+} & (PageQueryFragment &
+    FigmaAuthButtonQueryFragment &
+    GithubAuthButtonQueryFragment)
+
 export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
@@ -81,10 +94,14 @@ export type ProfilePageQueryQueryVariables = {}
 
 export type ProfilePageQueryQuery = { __typename?: 'Query' } & {
   currentUser: Maybe<
-    { __typename?: 'User' } & Pick<User, 'name' | 'figmaConnected'>
+    { __typename?: 'User' } & Pick<
+      User,
+      'name' | 'figmaConnected' | 'githubConnected'
+    >
   >
-  config: { __typename?: 'Config' } & Pick<Config, 'figmaAuthUrl'>
-} & PageQueryFragment
+} & (PageQueryFragment &
+    FigmaAuthButtonQueryFragment &
+    GithubAuthButtonQueryFragment)
 
 export type ProjectPageQueryQueryVariables = {
   repoOwner: Scalars['String']
@@ -104,7 +121,20 @@ export type ProjectPageQueryQuery = { __typename?: 'Query' } & {
 
 export type AppBarQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
-  config: { __typename?: 'Config' } & Pick<Config, 'loginUrl'>
+  config: { __typename?: 'Config' } & Pick<
+    Config,
+    'githubAuthUrl' | 'figmaAuthUrl'
+  >
+}
+
+export type FigmaAuthButtonQueryFragment = { __typename?: 'Query' } & {
+  config: { __typename?: 'Config' } & Pick<Config, 'figmaAuthUrl'>
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'figmaConnected'>>
+}
+
+export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
+  config: { __typename?: 'Config' } & Pick<Config, 'githubAuthUrl'>
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'githubConnected'>>
 }
 
 export type PageQueryFragment = { __typename?: 'Query' } & AppBarQueryFragment
@@ -117,6 +147,26 @@ export type TemplateQueryFragment = { __typename?: 'Query' } & Pick<
 import gql from 'graphql-tag'
 import * as React from 'react'
 import * as ReactApollo from 'react-apollo'
+export const FigmaAuthButtonQueryFragmentDoc = gql`
+  fragment FigmaAuthButtonQuery on Query {
+    config {
+      figmaAuthUrl
+    }
+    currentUser {
+      figmaConnected
+    }
+  }
+`
+export const GithubAuthButtonQueryFragmentDoc = gql`
+  fragment GithubAuthButtonQuery on Query {
+    config {
+      githubAuthUrl
+    }
+    currentUser {
+      githubConnected
+    }
+  }
+`
 export const AppBarQueryFragmentDoc = gql`
   fragment AppBarQuery on Query {
     currentUser {
@@ -124,7 +174,8 @@ export const AppBarQueryFragmentDoc = gql`
       name
     }
     config {
-      loginUrl
+      githubAuthUrl
+      figmaAuthUrl
     }
   }
 `
@@ -196,6 +247,57 @@ export function withCheckPageQuery<TProps, TChildProps = {}>(
     CheckPageQueryProps<TChildProps>
   >(CheckPageQueryDocument, operationOptions)
 }
+export const DashboardQueryDocument = gql`
+  query DashboardQuery {
+    currentUser {
+      name
+      figmaConnected
+      githubConnected
+    }
+    ...PageQuery
+    ...FigmaAuthButtonQuery
+    ...GithubAuthButtonQuery
+  }
+  ${PageQueryFragmentDoc}
+  ${FigmaAuthButtonQueryFragmentDoc}
+  ${GithubAuthButtonQueryFragmentDoc}
+`
+
+export class DashboardQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<DashboardQueryQuery, DashboardQueryQueryVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<DashboardQueryQuery, DashboardQueryQueryVariables>
+        query={DashboardQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type DashboardQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<DashboardQueryQuery, DashboardQueryQueryVariables>
+> &
+  TChildProps
+export function withDashboardQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        DashboardQueryQuery,
+        DashboardQueryQueryVariables,
+        DashboardQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    DashboardQueryQuery,
+    DashboardQueryQueryVariables,
+    DashboardQueryProps<TChildProps>
+  >(DashboardQueryDocument, operationOptions)
+}
 export const IndexQueryDocument = gql`
   query IndexQuery {
     hello
@@ -240,13 +342,15 @@ export const ProfilePageQueryDocument = gql`
     currentUser {
       name
       figmaConnected
-    }
-    config {
-      figmaAuthUrl
+      githubConnected
     }
     ...PageQuery
+    ...FigmaAuthButtonQuery
+    ...GithubAuthButtonQuery
   }
   ${PageQueryFragmentDoc}
+  ${FigmaAuthButtonQueryFragmentDoc}
+  ${GithubAuthButtonQueryFragmentDoc}
 `
 
 export class ProfilePageQueryComponent extends React.Component<

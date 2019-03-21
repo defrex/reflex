@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react'
 
 import Page from 'ui/components/Page'
-import DebugQuery from 'ui/components/DebugQuery'
+import FigmaAuthButton from 'ui/components/FigmaAuthButton'
+import GithubAuthButton from 'ui/components/GithubAuthButton'
 
 import {
   ProfilePageQueryComponent,
   ProfilePageQueryDocument,
 } from 'ui/graphqlClient'
-import Button from 'ui/components/Button'
 
 export default class ProfilePage extends PureComponent {
   render() {
@@ -15,20 +15,24 @@ export default class ProfilePage extends PureComponent {
       <ProfilePageQueryComponent>
         {({ data }) =>
           data && data.currentUser ? (
-            <Page query={data}>
+            <Page query={data} document={ProfilePageQueryDocument}>
               <h1>{data.currentUser.name}</h1>
               <div>
-                {data.currentUser.figmaConnected ? (
-                  'Figma Connected'
-                ) : (
-                  <Button href={data.config.figmaAuthUrl}>
-                    <img src='/static/figma-logo.svg' />
-                    Connect Figma
-                  </Button>
-                )}
+                <div>
+                  {data.currentUser.figmaConnected ? (
+                    'Figma Connected'
+                  ) : (
+                    <FigmaAuthButton query={data} />
+                  )}
+                </div>
+                <div>
+                  {data.currentUser.githubConnected ? (
+                    'Github Connected'
+                  ) : (
+                    <GithubAuthButton query={data} />
+                  )}
+                </div>
               </div>
-
-              <DebugQuery document={ProfilePageQueryDocument} data={data} />
             </Page>
           ) : null
         }

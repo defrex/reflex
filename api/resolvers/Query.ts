@@ -2,7 +2,7 @@ import { FindConditions } from 'typeorm'
 
 import { QueryResolvers } from 'api/graphqlTypes'
 import GithubCheck from 'api/models/GithubCheck'
-import { authUrl } from 'api/github/auth'
+import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { authUrl as figmaAuthUrl } from 'api/figma/auth'
 import { Context } from 'api/Context'
 
@@ -26,9 +26,8 @@ export default {
 
   config: (_parent, _args, _ctx) => {
     return {
-      loginUrl: authUrl,
-      signupUrl: authUrl,
       figmaAuthUrl,
+      githubAuthUrl,
     }
   },
 } as QueryResolvers<Context>

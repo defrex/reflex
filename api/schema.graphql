@@ -27,6 +27,7 @@ type User {
   id: Int
   name: String
   figmaConnected: Boolean!
+  githubConnected: Boolean!
 }
 
 type GithubCheck {
@@ -38,7 +39,6 @@ type GithubCheck {
 }
 
 type Config {
-  loginUrl: String!
-  signupUrl: String!
   figmaAuthUrl: String!
+  githubAuthUrl: String!
 }

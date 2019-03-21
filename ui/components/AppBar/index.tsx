@@ -18,15 +18,19 @@ export default class AppBar extends PureComponent<AppBarProps> {
     return (
       <div css={styles.appBarOuter}>
         <div css={styles.appBarInner}>
-          <img css={styles.logo} src='/static/protologo.svg' alt='Reflex' />
-          <div css={styles.links}>
+          <Link route='/dashboard'>
+            <a>
+              <img css={styles.logo} src='/static/protologo.svg' alt='Reflex' />
+            </a>
+          </Link>
+          <div>
             {query.currentUser ? (
-              <Link route='profile'>
-                <a>{query.currentUser.name}</a>
-              </Link>
-            ) : (
-              <Button href={query.config.loginUrl}>Login/Signup</Button>
-            )}
+              <div css={styles.links}>
+                <Link route='/profile'>
+                  <a>{query.currentUser.name}</a>
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -1,0 +1,8 @@
+fragment GithubAuthButtonQuery on Query {
+  config {
+    githubAuthUrl
+  }
+  currentUser {
+    githubConnected
+  }
+}

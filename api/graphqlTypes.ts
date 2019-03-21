@@ -8,9 +8,8 @@ export type Scalars = {
 }
 
 export type Config = {
-  loginUrl: Scalars['String']
-  signupUrl: Scalars['String']
   figmaAuthUrl: Scalars['String']
+  githubAuthUrl: Scalars['String']
 }
 
 export type CreateUserInput = {
@@ -57,6 +56,7 @@ export type User = {
   id?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
   figmaConnected: Scalars['Boolean']
+  githubConnected: Scalars['Boolean']
 }
 
 import { GraphQLResolveInfo } from 'graphql'
@@ -136,9 +136,8 @@ export type DirectiveResolverFn<
 ) => TResult | Promise<TResult>
 
 export type ConfigResolvers<Context = any, ParentType = Config> = {
-  loginUrl?: Resolver<Scalars['String'], ParentType, Context>
-  signupUrl?: Resolver<Scalars['String'], ParentType, Context>
   figmaAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
+  githubAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
 }
 
 export type GithubCheckResolvers<Context = any, ParentType = GithubCheck> = {
@@ -180,6 +179,7 @@ export type UserResolvers<Context = any, ParentType = User> = {
   id?: Resolver<Maybe<Scalars['Int']>, ParentType, Context>
   name?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
   figmaConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
+  githubConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
 }
 
 export type IResolvers<Context = any> = {
