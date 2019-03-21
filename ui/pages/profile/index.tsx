@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import Page from 'ui/components/Page'
-import Code from 'ui/components/Code'
+import DebugQuery from 'ui/components/DebugQuery'
 
 import {
   ProfilePageQueryComponent,
@@ -28,10 +28,7 @@ export default class ProfilePage extends PureComponent {
                 )}
               </div>
 
-              <Code language='graphql'>
-                {ProfilePageQueryDocument.loc.source.body}
-              </Code>
-              <Code language='json'>{JSON.stringify(data, null, 2)}</Code>
+              <DebugQuery document={ProfilePageQueryDocument} data={data} />
             </Page>
           ) : null
         }

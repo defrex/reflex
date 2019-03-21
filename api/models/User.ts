@@ -1,6 +1,7 @@
 import { Entity, Column } from 'typeorm'
 
 import Model from 'api/models/Model'
+import Figma from 'api/figma/client'
 
 @Entity()
 export default class User extends Model {
@@ -27,5 +28,9 @@ export default class User extends Model {
 
   get figmaConnected() {
     return !!this.figmaAccessToken
+  }
+
+  get figma() {
+    return new Figma(this)
   }
 }
