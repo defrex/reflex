@@ -1,4 +1,5 @@
 import { Entity, Column } from 'typeorm'
+import Octokit from '@octokit/rest'
 
 import Model from 'api/models/Model'
 import Figma from 'api/figma/client'
@@ -26,15 +27,27 @@ export default class User extends Model {
   @Column({ nullable: true })
   figmaRefreshToken?: string
 
-  get figmaConnected() {
+  get figmaConnected(): boolean {
     return !!this.figmaAccessToken
   }
 
-  get figma() {
+  get figma(): Figma | void {
+    if (!this.figmaConnected) {
+      return
+    }
     return new Figma(this)
   }
 
-  get githubConnected() {
+  get githubConnected(): boolean {
     return !!this.githubAccessToken
+  }
+
+  get github(): Octokit | void {
+    if (!this.githubConnected) {
+      return
+    }
+    return new Octokit({
+      auth: `token ${this.githubAccessToken}`,
+    })
   }
 }
