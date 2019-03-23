@@ -15,6 +15,7 @@ export type Config = {
 
 export type CreateOrganizationInput = {
   name: Scalars['String']
+  figmaTeamId?: Maybe<Scalars['String']>
 }
 
 export type CreateOrganizationResponse = {

@@ -17,6 +17,7 @@ type Mutation {
 
 input CreateOrganizationInput {
   name: String!
+  figmaTeamId: String
 }
 
 type CreateOrganizationResponse {

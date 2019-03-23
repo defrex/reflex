@@ -21,11 +21,11 @@ export function success(kwargs: { [key: string]: any } = {}): MutationResponse {
   }
 }
 
-export function fail(error: MutationError): MutationResponse
-export function fail(errors: MutationError[]): MutationResponse
-export function fail(message: string): MutationResponse
-export function fail(field: string, message: string): MutationResponse
-export function fail(
+export function error(error: MutationError): MutationResponse
+export function error(errors: MutationError[]): MutationResponse
+export function error(message: string): MutationResponse
+export function error(field: string, message: string): MutationResponse
+export function error(
   arg1: MutationError | MutationError[] | string,
   arg2?: string,
 ): MutationResponse {

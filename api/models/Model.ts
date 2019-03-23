@@ -11,4 +11,8 @@ export default abstract class Model extends orm.BaseEntity {
 
   @orm.UpdateDateColumn({ default: new Date() })
   updatedAt: Date
+
+  assign(fields: { [key: string]: any }) {
+    Model.merge(this, fields)
+  }
 }
