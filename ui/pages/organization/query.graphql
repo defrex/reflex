@@ -1,4 +1,7 @@
 #import "../../components/Page/fragments.graphql"
-query OrganizationPageQuery($organizationId: String) {
+query OrganizationPageQuery($organizationId: Int!) {
+  organization(id: $organizationId) {
+    name
+  }
   ...PageQuery
 }

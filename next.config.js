@@ -1,5 +1,6 @@
 const withTypescript = require('@zeit/next-typescript')
 const withOffline = require('next-offline')
+const withImages = require('next-images')
 const path = require('path')
 const webpack = require('webpack')
 
@@ -26,5 +27,6 @@ let nextConfig = {
 
 nextConfig = withTypescript(nextConfig)
 nextConfig = withOffline(nextConfig)
+nextConfig = withImages(nextConfig)
 
 module.exports = nextConfig

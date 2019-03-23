@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 require('./lib/setup')
-  .then(() => {
+
+require('api/db')
+  .default.then(() => {
     return require(`./scripts/${
       process.argv[process.argv.length - 1]
     }.ts`).default()

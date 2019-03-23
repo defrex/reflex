@@ -10,6 +10,16 @@ export type Scalars = {
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
+  logoutUrl: Scalars['String']
+}
+
+export type CreateOrganizationInput = {
+  name: Scalars['String']
+}
+
+export type CreateOrganizationResponse = {
+  organization?: Maybe<Organization>
+  status: MutationStatus
 }
 
 export type CreateUserInput = {
@@ -17,35 +27,61 @@ export type CreateUserInput = {
   email: Scalars['String']
 }
 
+export type CreateUserResponse = {
+  user?: Maybe<User>
+  status?: Maybe<MutationStatus>
+}
+
 export type GithubCheck = {
-  id?: Maybe<Scalars['Int']>
+  id: Scalars['Int']
   repoOwner: Scalars['String']
   repoName: Scalars['String']
   commitSha: Scalars['String']
   githubCheckId?: Maybe<Scalars['Int']>
 }
 
+export type LogoutResponse = {
+  status?: Maybe<MutationStatus>
+}
+
 export type Mutation = {
-  createUser?: Maybe<User>
+  createUser?: Maybe<CreateUserResponse>
+  logout?: Maybe<LogoutResponse>
+  createOrganization?: Maybe<CreateOrganizationResponse>
 }
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput
 }
 
+export type MutationCreateOrganizationArgs = {
+  input: CreateOrganizationInput
+}
+
+export type MutationError = {
+  field?: Maybe<Scalars['String']>
+  message: Scalars['String']
+}
+
+export type MutationStatus = {
+  success: Scalars['Boolean']
+  errors?: Maybe<Array<MutationError>>
+}
+
 export type Organization = {
+  id: Scalars['Int']
   name: Scalars['String']
   figmaTeamId?: Maybe<Scalars['String']>
 }
 
 export type Query = {
   hello: Scalars['String']
-  currentUser?: Maybe<User>
+  config: Config
   githubChecks: Array<Maybe<GithubCheck>>
   githubCheck?: Maybe<GithubCheck>
-  organizations: Array<Maybe<Organization>>
+  currentUser?: Maybe<User>
+  organizations: Array<Organization>
   organization?: Maybe<Organization>
-  config: Config
 }
 
 export type QueryGithubChecksArgs = {
@@ -64,8 +100,8 @@ export type QueryOrganizationArgs = {
 }
 
 export type User = {
-  id?: Maybe<Scalars['Int']>
-  name?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+  name: Scalars['String']
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
@@ -81,6 +117,14 @@ export type CheckPageQueryQuery = { __typename?: 'Query' } & {
       GithubCheck,
       'id' | 'repoOwner' | 'repoName' | 'commitSha' | 'githubCheckId'
     >
+  >
+} & PageQueryFragment
+
+export type OrganizationsPageQueryQueryVariables = {}
+
+export type OrganizationsPageQueryQuery = { __typename?: 'Query' } & {
+  organizations: Array<
+    { __typename?: 'Organization' } & Pick<Organization, 'id' | 'name'>
   >
 } & PageQueryFragment
 
@@ -102,11 +146,13 @@ export type IndexQueryQueryVariables = {}
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
 export type OrganizationPageQueryQueryVariables = {
-  organizationId?: Maybe<Scalars['String']>
+  organizationId: Scalars['Int']
 }
 
-export type OrganizationPageQueryQuery = {
-  __typename?: 'Query'
+export type OrganizationPageQueryQuery = { __typename?: 'Query' } & {
+  organization: Maybe<
+    { __typename?: 'Organization' } & Pick<Organization, 'name'>
+  >
 } & PageQueryFragment
 
 export type ProfilePageQueryQueryVariables = {}
@@ -156,7 +202,29 @@ export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'githubConnected'>>
 }
 
-export type PageQueryFragment = { __typename?: 'Query' } & AppBarQueryFragment
+export type MainMenuQueryFragment = { __typename?: 'Query' } & {
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'name'>>
+  organizations: Array<
+    { __typename?: 'Organization' } & Pick<Organization, 'id'>
+  >
+  config: { __typename?: 'Config' } & Pick<Config, 'logoutUrl'>
+} & GithubAuthButtonQueryFragment
+
+export type MainMenuMutationMutationVariables = {}
+
+export type MainMenuMutationMutation = { __typename?: 'Mutation' } & {
+  logout: Maybe<
+    { __typename?: 'LogoutResponse' } & {
+      status: Maybe<
+        { __typename?: 'MutationStatus' } & Pick<MutationStatus, 'success'>
+      >
+    }
+  >
+}
+
+export type PageQueryFragment = {
+  __typename?: 'Query'
+} & (AppBarQueryFragment & MainMenuQueryFragment)
 
 export type TemplateQueryFragment = { __typename?: 'Query' } & Pick<
   Query,
@@ -176,16 +244,6 @@ export const FigmaAuthButtonQueryFragmentDoc = gql`
     }
   }
 `
-export const GithubAuthButtonQueryFragmentDoc = gql`
-  fragment GithubAuthButtonQuery on Query {
-    config {
-      githubAuthUrl
-    }
-    currentUser {
-      githubConnected
-    }
-  }
-`
 export const AppBarQueryFragmentDoc = gql`
   fragment AppBarQuery on Query {
     currentUser {
@@ -198,11 +256,38 @@ export const AppBarQueryFragmentDoc = gql`
     }
   }
 `
+export const GithubAuthButtonQueryFragmentDoc = gql`
+  fragment GithubAuthButtonQuery on Query {
+    config {
+      githubAuthUrl
+    }
+    currentUser {
+      githubConnected
+    }
+  }
+`
+export const MainMenuQueryFragmentDoc = gql`
+  fragment MainMenuQuery on Query {
+    currentUser {
+      name
+    }
+    organizations {
+      id
+    }
+    config {
+      logoutUrl
+    }
+    ...GithubAuthButtonQuery
+  }
+  ${GithubAuthButtonQueryFragmentDoc}
+`
 export const PageQueryFragmentDoc = gql`
   fragment PageQuery on Query {
     ...AppBarQuery
+    ...MainMenuQuery
   }
   ${AppBarQueryFragmentDoc}
+  ${MainMenuQueryFragmentDoc}
 `
 export const TemplateQueryFragmentDoc = gql`
   fragment TemplateQuery on Query {
@@ -265,6 +350,61 @@ export function withCheckPageQuery<TProps, TChildProps = {}>(
     CheckPageQueryQueryVariables,
     CheckPageQueryProps<TChildProps>
   >(CheckPageQueryDocument, operationOptions)
+}
+export const OrganizationsPageQueryDocument = gql`
+  query OrganizationsPageQuery {
+    organizations {
+      id
+      name
+    }
+    ...PageQuery
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class OrganizationsPageQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      OrganizationsPageQueryQuery,
+      OrganizationsPageQueryQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<
+        OrganizationsPageQueryQuery,
+        OrganizationsPageQueryQueryVariables
+      >
+        query={OrganizationsPageQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type OrganizationsPageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<
+    OrganizationsPageQueryQuery,
+    OrganizationsPageQueryQueryVariables
+  >
+> &
+  TChildProps
+export function withOrganizationsPageQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        OrganizationsPageQueryQuery,
+        OrganizationsPageQueryQueryVariables,
+        OrganizationsPageQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    OrganizationsPageQueryQuery,
+    OrganizationsPageQueryQueryVariables,
+    OrganizationsPageQueryProps<TChildProps>
+  >(OrganizationsPageQueryDocument, operationOptions)
 }
 export const DashboardQueryDocument = gql`
   query DashboardQuery {
@@ -357,7 +497,10 @@ export function withIndexQuery<TProps, TChildProps = {}>(
   >(IndexQueryDocument, operationOptions)
 }
 export const OrganizationPageQueryDocument = gql`
-  query OrganizationPageQuery($organizationId: String) {
+  query OrganizationPageQuery($organizationId: Int!) {
+    organization(id: $organizationId) {
+      name
+    }
     ...PageQuery
   }
   ${PageQueryFragmentDoc}
@@ -511,4 +654,62 @@ export function withProjectPageQuery<TProps, TChildProps = {}>(
     ProjectPageQueryQueryVariables,
     ProjectPageQueryProps<TChildProps>
   >(ProjectPageQueryDocument, operationOptions)
+}
+export const MainMenuMutationDocument = gql`
+  mutation MainMenuMutation {
+    logout {
+      status {
+        success
+      }
+    }
+  }
+`
+
+export class MainMenuMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      MainMenuMutationMutation,
+      MainMenuMutationMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        MainMenuMutationMutation,
+        MainMenuMutationMutationVariables
+      >
+        mutation={MainMenuMutationDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type MainMenuMutationProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    MainMenuMutationMutation,
+    MainMenuMutationMutationVariables
+  >
+> &
+  TChildProps
+export type MainMenuMutationMutationFn = ReactApollo.MutationFn<
+  MainMenuMutationMutation,
+  MainMenuMutationMutationVariables
+>
+export function withMainMenuMutation<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        MainMenuMutationMutation,
+        MainMenuMutationMutationVariables,
+        MainMenuMutationProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    MainMenuMutationMutation,
+    MainMenuMutationMutationVariables,
+    MainMenuMutationProps<TChildProps>
+  >(MainMenuMutationDocument, operationOptions)
 }

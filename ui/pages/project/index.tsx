@@ -6,7 +6,7 @@ import Breadcrumbs from 'ui/components/Breadcrumbs'
 import {
   ProjectPageQueryComponent,
   ProjectPageQueryDocument,
-} from 'ui/graphqlClient'
+} from 'ui/lib/graphql'
 
 interface ProjectPageProps {
   repoOwner: string

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { FigmaAuthButtonQueryFragment } from 'ui/graphqlClient'
+import { FigmaAuthButtonQueryFragment } from 'ui/lib/graphql'
 import Button from 'ui/components/Button'
 
 interface FigmaAuthButtonProps {

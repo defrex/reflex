@@ -27,7 +27,10 @@ export default {
   `,
   logo: css`
     height: 32px;
-    margin: 16px 0;
+    margin: 16px;
+  `,
+  spacer: css`
+    flex-grow: 1;
   `,
   links: css`
     a {

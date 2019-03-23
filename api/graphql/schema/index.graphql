@@ -1,0 +1,39 @@
+#import Query.*, Mutation.* from "./user.graphql"
+#import Query.*, Mutation.* from "./organization.graphql"
+
+type Query {
+  hello: String!
+  config: Config!
+
+  githubChecks(repoOwner: String!, repoName: String): [GithubCheck]!
+
+  githubCheck(
+    repoOwner: String!
+    repoName: String!
+    commitSha: String!
+  ): GithubCheck
+}
+
+type MutationError {
+  field: String
+  message: String!
+}
+
+type MutationStatus {
+  success: Boolean!
+  errors: [MutationError!]
+}
+
+type GithubCheck {
+  id: Int!
+  repoOwner: String!
+  repoName: String!
+  commitSha: String!
+  githubCheckId: Int
+}
+
+type Config {
+  figmaAuthUrl: String!
+  githubAuthUrl: String!
+  logoutUrl: String!
+}

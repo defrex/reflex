@@ -4,10 +4,7 @@ import Page from 'ui/components/Page'
 import FigmaAuthButton from 'ui/components/FigmaAuthButton'
 import GithubAuthButton from 'ui/components/GithubAuthButton'
 
-import {
-  DashboardQueryComponent,
-  DashboardQueryDocument,
-} from 'ui/graphqlClient'
+import { DashboardQueryComponent, DashboardQueryDocument } from 'ui/lib/graphql'
 
 export default class Dashboard extends PureComponent {
   render() {

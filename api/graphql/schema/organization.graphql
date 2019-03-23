@@ -1,0 +1,25 @@
+type Query {
+  organizations: [Organization!]!
+  organization(id: Int!): Organization
+}
+
+type Organization {
+  id: Int!
+  name: String!
+  figmaTeamId: String
+}
+
+type Mutation {
+  createOrganization(
+    input: CreateOrganizationInput!
+  ): CreateOrganizationResponse
+}
+
+input CreateOrganizationInput {
+  name: String!
+}
+
+type CreateOrganizationResponse {
+  organization: Organization
+  status: MutationStatus!
+}

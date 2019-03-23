@@ -2,9 +2,9 @@ import { Application, Request, Response, NextFunction } from 'express'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import { importSchema } from 'graphql-import'
 
-import resolvers from 'api/resolvers'
+import resolvers from 'api/graphql/resolvers'
 import config from 'api/config'
-import { getContext } from 'api/Context'
+import { getContext } from 'api/graphql/Context'
 
 const typeDefs = importSchema(config.graphqlSchemaPath)
 

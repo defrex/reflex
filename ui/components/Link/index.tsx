@@ -1,4 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react'
+import { LinkProps as NextRoutesLinkProps } from 'next-routes'
 
 import routes from 'ui/routes'
 
@@ -9,7 +10,7 @@ interface LinkProps {
 }
 
 export default class Link extends PureComponent<
-  LinkProps & React.HTMLProps<HTMLAnchorElement>
+  LinkProps & NextRoutesLinkProps
 > {
   render() {
     const { children, ...props } = this.props

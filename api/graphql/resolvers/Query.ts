@@ -1,11 +1,12 @@
 import { FindConditions } from 'typeorm'
 
-import { QueryResolvers } from 'api/graphqlTypes'
+import { QueryResolvers } from 'api/graphql/types'
 import GithubCheck from 'api/models/GithubCheck'
 import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { authUrl as figmaAuthUrl } from 'api/figma/auth'
-import { Context } from 'api/Context'
+import { Context } from 'api/graphql/Context'
 import Organization from 'api/models/Organization'
+import { absoluteUrl } from 'api/lib/url'
 
 export default {
   hello: (_parent, _args, _ctx) => {
@@ -46,6 +47,7 @@ export default {
     return {
       figmaAuthUrl,
       githubAuthUrl,
+      logoutUrl: absoluteUrl('/api/logout'),
     }
   },
 } as QueryResolvers<Context>

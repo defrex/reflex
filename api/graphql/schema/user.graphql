@@ -1,0 +1,29 @@
+type Query {
+  currentUser: User
+}
+
+type User {
+  id: Int!
+  name: String!
+  figmaConnected: Boolean!
+  githubConnected: Boolean!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserResponse
+  logout: LogoutResponse
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+}
+
+type CreateUserResponse {
+  user: User
+  status: MutationStatus
+}
+
+type LogoutResponse {
+  status: MutationStatus
+}

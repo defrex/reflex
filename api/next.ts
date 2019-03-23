@@ -23,7 +23,10 @@ export default async (app: Application) => {
   )
 
   if (config.environment === 'development') {
-    const files = [config.graphqlSchemaPath, ...config.graphqlDocumentPaths]
+    const files = [
+      config.graphqlSchemaPath.replace('index', '*'),
+      ...config.graphqlDocumentPaths,
+    ]
 
     chokidar.watch(files).on('all', async () => {
       await gen()

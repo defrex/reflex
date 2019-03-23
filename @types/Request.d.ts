@@ -1,7 +1,7 @@
 /// <reference types="express" />
 
 import { GraphQLSchema } from 'graphql'
-import Context from 'api/Context'
+import Context from 'api/graphql/Context'
 import User from 'api/models/User'
 
 declare global {

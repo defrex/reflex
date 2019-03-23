@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import Page from 'ui/components/Page'
 import Code from 'ui/components/Code'
 
-import { CheckPageQueryComponent } from 'ui/graphqlClient'
+import { CheckPageQueryComponent } from 'ui/lib/graphql'
 import styles from './styles'
 
 interface ChecksPageProps {

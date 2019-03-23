@@ -7,7 +7,7 @@ import GithubAuthButton from 'ui/components/GithubAuthButton'
 import {
   ProfilePageQueryComponent,
   ProfilePageQueryDocument,
-} from 'ui/graphqlClient'
+} from 'ui/lib/graphql'
 
 export default class ProfilePage extends PureComponent {
   render() {
