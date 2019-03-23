@@ -1,15 +1,17 @@
 type Query {
   hello: String!
 
-  githubChecks(repoOwner: String!, repoName: String): [GithubCheck]!
+  currentUser: User
 
+  githubChecks(repoOwner: String!, repoName: String): [GithubCheck]!
   githubCheck(
     repoOwner: String!
     repoName: String!
     commitSha: String!
   ): GithubCheck
 
-  currentUser: User
+  organizations: [Organization]!
+  organization(id: Int!): Organization
 
   config: Config!
 }
@@ -36,6 +38,11 @@ type GithubCheck {
   repoName: String!
   commitSha: String!
   githubCheckId: Int
+}
+
+type Organization {
+  name: String!
+  figmaTeamId: String
 }
 
 type Config {

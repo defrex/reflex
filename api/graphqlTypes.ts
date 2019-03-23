@@ -33,11 +33,18 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput
 }
 
+export type Organization = {
+  name: Scalars['String']
+  figmaTeamId?: Maybe<Scalars['String']>
+}
+
 export type Query = {
   hello: Scalars['String']
+  currentUser?: Maybe<User>
   githubChecks: Array<Maybe<GithubCheck>>
   githubCheck?: Maybe<GithubCheck>
-  currentUser?: Maybe<User>
+  organizations: Array<Maybe<Organization>>
+  organization?: Maybe<Organization>
   config: Config
 }
 
@@ -50,6 +57,10 @@ export type QueryGithubCheckArgs = {
   repoOwner: Scalars['String']
   repoName: Scalars['String']
   commitSha: Scalars['String']
+}
+
+export type QueryOrganizationArgs = {
+  id: Scalars['Int']
 }
 
 export type User = {
@@ -157,8 +168,14 @@ export type MutationResolvers<Context = any, ParentType = Mutation> = {
   >
 }
 
+export type OrganizationResolvers<Context = any, ParentType = Organization> = {
+  name?: Resolver<Scalars['String'], ParentType, Context>
+  figmaTeamId?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+}
+
 export type QueryResolvers<Context = any, ParentType = Query> = {
   hello?: Resolver<Scalars['String'], ParentType, Context>
+  currentUser?: Resolver<Maybe<User>, ParentType, Context>
   githubChecks?: Resolver<
     ArrayOrIterable<Maybe<GithubCheck>>,
     ParentType,
@@ -171,7 +188,17 @@ export type QueryResolvers<Context = any, ParentType = Query> = {
     Context,
     QueryGithubCheckArgs
   >
-  currentUser?: Resolver<Maybe<User>, ParentType, Context>
+  organizations?: Resolver<
+    ArrayOrIterable<Maybe<Organization>>,
+    ParentType,
+    Context
+  >
+  organization?: Resolver<
+    Maybe<Organization>,
+    ParentType,
+    Context,
+    QueryOrganizationArgs
+  >
   config?: Resolver<Config, ParentType, Context>
 }
 
@@ -186,6 +213,7 @@ export type IResolvers<Context = any> = {
   Config?: ConfigResolvers<Context>
   GithubCheck?: GithubCheckResolvers<Context>
   Mutation?: MutationResolvers<Context>
+  Organization?: OrganizationResolvers<Context>
   Query?: QueryResolvers<Context>
   User?: UserResolvers<Context>
 }

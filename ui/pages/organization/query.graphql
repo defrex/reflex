@@ -1,0 +1,4 @@
+#import "../../components/Page/fragments.graphql"
+query OrganizationPageQuery($organizationId: String) {
+  ...PageQuery
+}

@@ -33,11 +33,18 @@ export type MutationCreateUserArgs = {
   input: CreateUserInput
 }
 
+export type Organization = {
+  name: Scalars['String']
+  figmaTeamId?: Maybe<Scalars['String']>
+}
+
 export type Query = {
   hello: Scalars['String']
+  currentUser?: Maybe<User>
   githubChecks: Array<Maybe<GithubCheck>>
   githubCheck?: Maybe<GithubCheck>
-  currentUser?: Maybe<User>
+  organizations: Array<Maybe<Organization>>
+  organization?: Maybe<Organization>
   config: Config
 }
 
@@ -50,6 +57,10 @@ export type QueryGithubCheckArgs = {
   repoOwner: Scalars['String']
   repoName: Scalars['String']
   commitSha: Scalars['String']
+}
+
+export type QueryOrganizationArgs = {
+  id: Scalars['Int']
 }
 
 export type User = {
@@ -89,6 +100,14 @@ export type DashboardQueryQuery = { __typename?: 'Query' } & {
 export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
+
+export type OrganizationPageQueryQueryVariables = {
+  organizationId?: Maybe<Scalars['String']>
+}
+
+export type OrganizationPageQueryQuery = {
+  __typename?: 'Query'
+} & PageQueryFragment
 
 export type ProfilePageQueryQueryVariables = {}
 
@@ -336,6 +355,57 @@ export function withIndexQuery<TProps, TChildProps = {}>(
     IndexQueryQueryVariables,
     IndexQueryProps<TChildProps>
   >(IndexQueryDocument, operationOptions)
+}
+export const OrganizationPageQueryDocument = gql`
+  query OrganizationPageQuery($organizationId: String) {
+    ...PageQuery
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class OrganizationPageQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<
+      OrganizationPageQueryQuery,
+      OrganizationPageQueryQueryVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<
+        OrganizationPageQueryQuery,
+        OrganizationPageQueryQueryVariables
+      >
+        query={OrganizationPageQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type OrganizationPageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<
+    OrganizationPageQueryQuery,
+    OrganizationPageQueryQueryVariables
+  >
+> &
+  TChildProps
+export function withOrganizationPageQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        OrganizationPageQueryQuery,
+        OrganizationPageQueryQueryVariables,
+        OrganizationPageQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    OrganizationPageQueryQuery,
+    OrganizationPageQueryQueryVariables,
+    OrganizationPageQueryProps<TChildProps>
+  >(OrganizationPageQueryDocument, operationOptions)
 }
 export const ProfilePageQueryDocument = gql`
   query ProfilePageQuery {

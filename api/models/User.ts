@@ -1,11 +1,19 @@
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, OneToMany, ManyToMany } from 'typeorm'
 import Octokit from '@octokit/rest'
+import { Client as Figma, ClientInterface } from 'figma-js'
 
 import Model from 'api/models/Model'
-import Figma from 'api/figma/client'
+import Membership from './Membership'
+import Organization from './Organization'
 
 @Entity()
 export default class User extends Model {
+  @OneToMany(() => Membership, (membership) => membership.user)
+  memberships: Membership[]
+
+  @ManyToMany(() => Organization, (organization) => organization.users)
+  organizations: Organization[]
+
   @Column()
   name: string
 
@@ -31,11 +39,13 @@ export default class User extends Model {
     return !!this.figmaAccessToken
   }
 
-  get figma(): Figma | void {
+  get figma(): ClientInterface | void {
     if (!this.figmaConnected) {
       return
     }
-    return new Figma(this)
+    return Figma({
+      accessToken: this.figmaAccessToken,
+    })
   }
 
   get githubConnected(): boolean {
