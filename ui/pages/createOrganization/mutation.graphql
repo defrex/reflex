@@ -1,0 +1,10 @@
+mutation CreateOrganizationPageMutation($name: String!) {
+  createOrganization(input: { name: $name }) {
+    status {
+      success
+    }
+    organization {
+      id
+    }
+  }
+}

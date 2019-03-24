@@ -121,6 +121,26 @@ export type CheckPageQueryQuery = { __typename?: 'Query' } & {
   >
 } & PageQueryFragment
 
+export type CreateOrganizationPageMutationMutationVariables = {
+  name: Scalars['String']
+}
+
+export type CreateOrganizationPageMutationMutation = {
+  __typename?: 'Mutation'
+} & {
+  createOrganization: Maybe<
+    { __typename?: 'CreateOrganizationResponse' } & {
+      status: { __typename?: 'MutationStatus' } & Pick<
+        MutationStatus,
+        'success'
+      >
+      organization: Maybe<
+        { __typename?: 'Organization' } & Pick<Organization, 'id'>
+      >
+    }
+  >
+}
+
 export type OrganizationsPageQueryQueryVariables = {}
 
 export type OrganizationsPageQueryQuery = { __typename?: 'Query' } & {
@@ -351,6 +371,67 @@ export function withCheckPageQuery<TProps, TChildProps = {}>(
     CheckPageQueryQueryVariables,
     CheckPageQueryProps<TChildProps>
   >(CheckPageQueryDocument, operationOptions)
+}
+export const CreateOrganizationPageMutationDocument = gql`
+  mutation CreateOrganizationPageMutation($name: String!) {
+    createOrganization(input: { name: $name }) {
+      status {
+        success
+      }
+      organization {
+        id
+      }
+    }
+  }
+`
+
+export class CreateOrganizationPageMutationComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<
+      CreateOrganizationPageMutationMutation,
+      CreateOrganizationPageMutationMutationVariables
+    >
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<
+        CreateOrganizationPageMutationMutation,
+        CreateOrganizationPageMutationMutationVariables
+      >
+        mutation={CreateOrganizationPageMutationDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type CreateOrganizationPageMutationProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<
+    CreateOrganizationPageMutationMutation,
+    CreateOrganizationPageMutationMutationVariables
+  >
+> &
+  TChildProps
+export type CreateOrganizationPageMutationMutationFn = ReactApollo.MutationFn<
+  CreateOrganizationPageMutationMutation,
+  CreateOrganizationPageMutationMutationVariables
+>
+export function withCreateOrganizationPageMutation<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        CreateOrganizationPageMutationMutation,
+        CreateOrganizationPageMutationMutationVariables,
+        CreateOrganizationPageMutationProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    CreateOrganizationPageMutationMutation,
+    CreateOrganizationPageMutationMutationVariables,
+    CreateOrganizationPageMutationProps<TChildProps>
+  >(CreateOrganizationPageMutationDocument, operationOptions)
 }
 export const OrganizationsPageQueryDocument = gql`
   query OrganizationsPageQuery {

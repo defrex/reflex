@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react'
 
 import Page from 'ui/components/Page'
+import CreateOrganizationForm from 'ui/components/CreateOrganizationForm'
 
-import { OrganizationsPageQueryComponent } from 'ui/lib/graphql'
+import {
+  OrganizationsPageQueryComponent,
+  CreateOrganizationPageMutationComponent,
+} from 'ui/lib/graphql'
 import styles from './styles'
 
 export default class OrganizationsPage extends PureComponent {
@@ -13,11 +17,13 @@ export default class OrganizationsPage extends PureComponent {
           data ? (
             <Page css={styles.root} query={data}>
               <h1>Create Organization</h1>
-              <ul>
-                {data.organizations.map((organization) => (
-                  <li key={organization.id}>{organization.name}</li>
-                ))}
-              </ul>
+              <CreateOrganizationPageMutationComponent>
+                {(createOrganization) => (
+                  <CreateOrganizationForm
+                    onSubmit={(variables) => createOrganization({ variables })}
+                  />
+                )}
+              </CreateOrganizationPageMutationComponent>
             </Page>
           ) : null
         }
