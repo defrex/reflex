@@ -6,6 +6,7 @@ fragment MainMenuQuery on Query {
 
   organizations {
     id
+    name
   }
 
   config {

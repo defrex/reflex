@@ -37,7 +37,7 @@ export default {
     }
 
     const organization = new Organization()
-    organization.assign(args)
+    Object.assign(organization, args.input)
     await organization.save()
 
     const membership = new Membership()

@@ -14,6 +14,7 @@ export default {
   },
 
   currentUser: (_parent, _args, ctx) => {
+    console.log('💢 currentUser', ctx)
     return ctx.user
   },
 

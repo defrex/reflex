@@ -15,6 +15,6 @@ export default class Organization extends Model {
   @Column()
   name: string
 
-  @Column()
+  @Column({ nullable: true })
   figmaTeamId: string
 }

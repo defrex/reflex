@@ -25,7 +25,7 @@ export default {
     display: block;
     font-size: 18px;
   `,
-  logout: css`
+  lowEmphisis: css`
     color: gray;
   `,
 }

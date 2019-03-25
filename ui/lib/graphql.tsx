@@ -226,7 +226,7 @@ export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
 export type MainMenuQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'name'>>
   organizations: Array<
-    { __typename?: 'Organization' } & Pick<Organization, 'id'>
+    { __typename?: 'Organization' } & Pick<Organization, 'id' | 'name'>
   >
   config: { __typename?: 'Config' } & Pick<Config, 'logoutUrl'>
 } & GithubAuthButtonQueryFragment
@@ -294,6 +294,7 @@ export const MainMenuQueryFragmentDoc = gql`
     }
     organizations {
       id
+      name
     }
     config {
       logoutUrl

@@ -47,27 +47,24 @@ class MainMenu extends PureComponent<MainMenuProps> {
                 <span css={styles.username}>{query.currentUser.name}</span>
                 <a
                   href='#'
-                  css={styles.logout}
+                  css={styles.lowEmphisis}
                   onClick={this.handleLogoutClick}
                 >
                   Logout
                 </a>
               </li>
-              <li css={styles.item}>
-                <Link route='/dashboard'>
-                  <a>Dashboard</a>
-                </Link>
-              </li>
               {query.organizations.map((organization) => (
                 <li css={styles.item} key={organization.id}>
-                  <Link route={`/organization/${organization.id}`}>
-                    <a>Dashboard</a>
+                  <Link route={`/organizations/${organization.id}`}>
+                    <a>{organization.name}</a>
                   </Link>
                 </li>
               ))}
               <li css={styles.item}>
                 <Link route='/organization'>
-                  <a>Create Organization</a>
+                  <a href='#' css={styles.lowEmphisis}>
+                    New Organization
+                  </a>
                 </Link>
               </li>
             </>

@@ -19,11 +19,15 @@ export default async (app: Application) => {
     context: getContext,
   })
 
-  app.use(async (req: Request, _res: Response, next: NextFunction) => {
+  app.use(async (req: Request, res: Response, next: NextFunction) => {
     req.graphqlSchema = schema
-    req.graphqlContext = await getContext(req)
+    req.graphqlContext = await getContext({ req, res })
     next()
   })
 
-  graphqlServer.applyMiddleware({ app, path: config.graphqlEndpoint })
+  graphqlServer.applyMiddleware({
+    app,
+    path: config.graphqlEndpoint,
+    cors: false,
+  })
 }

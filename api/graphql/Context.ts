@@ -1,14 +1,13 @@
-import { Request } from 'express'
-
 import User from 'api/models/User'
 import { loggedInUser } from 'api/lib/auth'
+import { ExpressContext } from 'apollo-server-express/dist/ApolloServer'
 
 export type Context = {
   user?: User
   logout: () => void
 }
 
-export const getContext = async (req: Request): Promise<Context> => {
+export async function getContext({ req }: ExpressContext): Promise<Context> {
   const user = await loggedInUser(req)
   return {
     user,

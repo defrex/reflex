@@ -1,10 +1,10 @@
 import tinycolor from 'tinycolor2'
 
 export const dark = tinycolor('black')
-  .lighten(10)
+  .lighten(5)
   .toString()
 export const light = tinycolor('white')
-  .darken(10)
+  .darken(5)
   .toString()
 export const darkGray = tinycolor('black')
   .lighten(30)

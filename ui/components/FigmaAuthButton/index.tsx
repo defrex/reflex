@@ -13,10 +13,10 @@ export default class FigmaAuthButton extends PureComponent<
   render() {
     const { query } = this.props
     return (
-      <Button href={query.config.figmaAuthUrl}>
+      <Button.A href={query.config.figmaAuthUrl}>
         <img src='/static/figma-logo.svg' />
         Connect Figma
-      </Button>
+      </Button.A>
     )
   }
 }

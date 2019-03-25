@@ -14,10 +14,10 @@ export default class GithubAuthButton extends PureComponent<
   render() {
     const { query, children } = this.props
     return (
-      <Button href={query.config.githubAuthUrl}>
+      <Button.A href={query.config.githubAuthUrl}>
         <img src='/static/github-logo.svg' />
         {children ? children : 'Connect Github'}
-      </Button>
+      </Button.A>
     )
   }
 }
