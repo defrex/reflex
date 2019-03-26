@@ -82,7 +82,9 @@ router.get('/finish', async (req: Request, res: Response) => {
       data: {
         githubAccessToken: tokenData.access_token,
       },
-      where: user,
+      where: {
+        id: user.id,
+      },
     })
   }
 
