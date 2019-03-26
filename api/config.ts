@@ -17,7 +17,6 @@ const config = {
   port: parseInt(process.env.PORT!),
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
-  databaseUrl: process.env.DATABASE_URL!,
   secretKey: process.env.SECRET_KEY!,
   figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
   figmaClientSecret: process.env.FIGMA_CLIENT_SECRET!,
