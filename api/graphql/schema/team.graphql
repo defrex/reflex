@@ -1,0 +1,24 @@
+type Query {
+  teams: [Team!]!
+  team(id: ID!): Team
+}
+
+type Team {
+  id: ID!
+  name: String!
+  role: String!
+}
+
+type Mutation {
+  createTeam(input: CreateTeamInput!): CreateTeamResponse
+}
+
+input CreateTeamInput {
+  name: String!
+  figmaTeamId: String
+}
+
+type CreateTeamResponse {
+  team: Team
+  status: MutationStatus!
+}

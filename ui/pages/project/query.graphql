@@ -1,10 +1,4 @@
 #import "../../components/Page/fragments.graphql"
 query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
-  githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
-    id
-    repoOwner
-    repoName
-    commitSha
-  }
   ...PageQuery
 }

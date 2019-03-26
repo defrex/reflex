@@ -4,16 +4,5 @@ query CheckPageQuery(
   $repoName: String!
   $commitSha: String!
 ) {
-  githubCheck(
-    repoOwner: $repoOwner
-    repoName: $repoName
-    commitSha: $commitSha
-  ) {
-    id
-    repoOwner
-    repoName
-    commitSha
-    githubCheckId
-  }
   ...PageQuery
 }

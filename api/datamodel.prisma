@@ -1,0 +1,39 @@
+type User {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  email: String! @unique
+  name: String!
+  githubAccessToken: String
+  figmaAccessToken: String
+  figmaRefreshToken: String
+
+  memberships: [Membership]!
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+type Membership {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  role: Role! @default(value: MEMBER)
+
+  user: User!
+  team: Team!
+}
+
+type Team {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String!
+
+  memberships: [Membership]!
+}

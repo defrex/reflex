@@ -1,0 +1,10 @@
+mutation CreateTeamPageMutation($name: String!) {
+  createTeam(input: { name: $name }) {
+    status {
+      success
+    }
+    team {
+      id
+    }
+  }
+}

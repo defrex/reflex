@@ -53,17 +53,17 @@ class MainMenu extends PureComponent<MainMenuProps> {
                   Logout
                 </a>
               </li>
-              {query.organizations.map((organization) => (
-                <li css={styles.item} key={organization.id}>
-                  <Link route={`/organizations/${organization.id}`}>
-                    <a>{organization.name}</a>
+              {query.teams.map((team) => (
+                <li css={styles.item} key={team.id}>
+                  <Link route={`/teams/${team.id}`}>
+                    <a>{team.name}</a>
                   </Link>
                 </li>
               ))}
               <li css={styles.item}>
-                <Link route='/organization'>
+                <Link route='/team'>
                   <a href='#' css={styles.lowEmphisis}>
-                    New Organization
+                    New Team
                   </a>
                 </Link>
               </li>

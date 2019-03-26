@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import User from 'api/models/User'
+import { prisma, User } from 'api/prisma'
 
 export async function loggedInUser(req: Request): Promise<User | undefined> {
   if (!req.session) {
@@ -7,7 +7,7 @@ export async function loggedInUser(req: Request): Promise<User | undefined> {
     return
   }
   if (req.session.userId) {
-    return await User.findOne(req.session.userId)
+    return await prisma.user({ id: req.session.userId })
   }
 }
 

@@ -8,8 +8,7 @@
   "scripts": {
     "start": "./bin/start.js",
     "build": "next build ./ui",
-    "orm": "./bin/orm.js",
-    "gen": "./bin/gen.js",
+    "gen": "prisma generate && ./bin/gen.js",
     "test": "ts-jest",
     "heroku-postbuild": "yarn run orm schema:sync && yarn run build"
   },
@@ -79,6 +78,7 @@
     "passport": "^0.4.0",
     "passport-figma": "^0.0.4",
     "pg": "^7.8.1",
+    "prisma": "^1.29.1",
     "probot": "^7.5.1",
     "react": "^16.8.3",
     "react-apollo": "^2.5.2",
@@ -88,7 +88,6 @@
     "tinycolor2": "^1.4.1",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
-    "typeorm": "^0.2.14",
     "typescript": "^3.3.3333"
   },
   "devDependencies": {}

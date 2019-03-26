@@ -3,22 +3,22 @@ import React, { ChangeEvent, FormEvent } from 'react'
 import Input from 'ui/components/Input'
 import Button from 'ui/components/Button'
 
-interface CreateOrganizationFormFields {
+interface CreateTeamFormFields {
   name: string
 }
 
-interface CreateOrganizationFormProps {
-  onSubmit: (values: CreateOrganizationFormFields) => void | Promise<any>
+interface CreateTeamFormProps {
+  onSubmit: (values: CreateTeamFormFields) => void | Promise<any>
 }
 
-interface CreateOrganizationFormState {
+interface CreateTeamFormState {
   isSubmitting: boolean
-  values: CreateOrganizationFormFields
+  values: CreateTeamFormFields
 }
 
-export default class CreateOrganizationForm extends React.PureComponent<
-  CreateOrganizationFormProps,
-  CreateOrganizationFormState
+export default class CreateTeamForm extends React.PureComponent<
+  CreateTeamFormProps,
+  CreateTeamFormState
 > {
   state = {
     values: {
@@ -60,7 +60,7 @@ export default class CreateOrganizationForm extends React.PureComponent<
         />
 
         <Button type='submit' disabled={isSubmitting} style='primary'>
-          Create Organization
+          Create Team
         </Button>
       </form>
     )

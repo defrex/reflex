@@ -2,7 +2,7 @@
 
 import { GraphQLSchema } from 'graphql'
 import Context from 'api/graphql/Context'
-import User from 'api/models/User'
+import { User } from 'api/prisma'
 
 declare global {
   namespace Express {

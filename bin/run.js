@@ -2,8 +2,8 @@
 
 require('./lib/setup')
 
-require('api/db')
-  .default.then(() => {
+Promise.resolve()
+  .then(() => {
     return require(`./scripts/${
       process.argv[process.argv.length - 1]
     }.ts`).default()

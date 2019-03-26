@@ -5,8 +5,8 @@ import Octokit from '@octokit/rest'
 import config from 'api/config'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { randomString } from 'api/lib/random'
-import User from 'api/models/User'
 import { logInUser } from 'api/lib/auth'
+import { User, prisma } from 'api/prisma'
 
 interface GithubTokenData {
   access_token: string
@@ -21,8 +21,6 @@ export const authUrl = absoluteUrl('/api/github/auth/start')
 const redirectUri = absoluteUrl('/api/github/auth/finish')
 
 router.get('/start', (req: Request, res: Response) => {
-  req.session!.githubAuthReferrer = req.get('Referrer')
-
   const state = randomString()
   req.session!.githubAuthState = state
 
@@ -71,28 +69,26 @@ router.get('/finish', async (req: Request, res: Response) => {
   const githubUserResponse = await octokit.users.getAuthenticated()
   const githubUser = githubUserResponse.data
 
-  let user: User | undefined
-  user = await User.findOne({ githubUsername: githubUser.login })
-  if (!user) {
-    user = await User.findOne({ email: githubUser.email })
-  }
+  let user: User = await prisma.user({ email: githubUser.email })
 
   if (!user) {
-    user = new User()
-    user.email = githubUser.email
-    user.name = githubUser.name
+    user = await prisma.createUser({
+      name: githubUser.name,
+      email: githubUser.email,
+      githubAccessToken: tokenData.access_token,
+    })
+  } else {
+    user = await prisma.updateUser({
+      data: {
+        githubAccessToken: tokenData.access_token,
+      },
+      where: user,
+    })
   }
 
-  user.githubAccessToken = tokenData.access_token
-  user.githubUsername = githubUser.login
-  user.githubAvatarUrl = githubUser.avatar_url
-
-  await user.save()
   await logInUser(req, user)
 
-  const referrer = req.session!.githubAuthReferrer || '/'
-  req.session!.githubAuthReferrer = null
-  res.redirect(referrer)
+  res.redirect('/dashboard')
 })
 
 export default router

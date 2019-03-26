@@ -10,6 +10,12 @@ export default function gen(): Promise<any> {
     generates: {
       [absolutePath('api/graphql/types.ts')]: {
         plugins: ['typescript', 'typescript-resolvers'],
+        config: {
+          mappers: {
+            User: 'api/prisma#User',
+            Team: 'api/prisma#Team',
+          },
+        },
       },
       [absolutePath('ui/lib/graphql.tsx')]: {
         plugins: [

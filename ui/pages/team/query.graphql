@@ -1,0 +1,7 @@
+#import "../../components/Page/fragments.graphql"
+query TeamPageQuery($teamId: ID!) {
+  team(id: $teamId) {
+    name
+  }
+  ...PageQuery
+}

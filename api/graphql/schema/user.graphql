@@ -3,25 +3,14 @@ type Query {
 }
 
 type User {
-  id: Int!
+  id: ID!
   name: String!
   figmaConnected: Boolean!
   githubConnected: Boolean!
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): CreateUserResponse
   logout: LogoutResponse
-}
-
-input CreateUserInput {
-  name: String!
-  email: String!
-}
-
-type CreateUserResponse {
-  user: User
-  status: MutationStatus
 }
 
 type LogoutResponse {

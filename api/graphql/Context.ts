@@ -1,4 +1,4 @@
-import User from 'api/models/User'
+import { User } from 'api/prisma'
 import { loggedInUser } from 'api/lib/auth'
 import { ExpressContext } from 'apollo-server-express/dist/ApolloServer'
 

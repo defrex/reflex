@@ -1,6 +1,6 @@
 #import "../../components/Page/fragments.graphql"
-query OrganizationsPageQuery {
-  organizations {
+query TeamsPageQuery {
+  teams {
     id
     name
   }

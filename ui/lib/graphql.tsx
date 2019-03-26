@@ -13,32 +13,14 @@ export type Config = {
   logoutUrl: Scalars['String']
 }
 
-export type CreateOrganizationInput = {
+export type CreateTeamInput = {
   name: Scalars['String']
   figmaTeamId?: Maybe<Scalars['String']>
 }
 
-export type CreateOrganizationResponse = {
-  organization?: Maybe<Organization>
+export type CreateTeamResponse = {
+  team?: Maybe<Team>
   status: MutationStatus
-}
-
-export type CreateUserInput = {
-  name: Scalars['String']
-  email: Scalars['String']
-}
-
-export type CreateUserResponse = {
-  user?: Maybe<User>
-  status?: Maybe<MutationStatus>
-}
-
-export type GithubCheck = {
-  id: Scalars['Int']
-  repoOwner: Scalars['String']
-  repoName: Scalars['String']
-  commitSha: Scalars['String']
-  githubCheckId?: Maybe<Scalars['Int']>
 }
 
 export type LogoutResponse = {
@@ -46,17 +28,12 @@ export type LogoutResponse = {
 }
 
 export type Mutation = {
-  createUser?: Maybe<CreateUserResponse>
   logout?: Maybe<LogoutResponse>
-  createOrganization?: Maybe<CreateOrganizationResponse>
+  createTeam?: Maybe<CreateTeamResponse>
 }
 
-export type MutationCreateUserArgs = {
-  input: CreateUserInput
-}
-
-export type MutationCreateOrganizationArgs = {
-  input: CreateOrganizationInput
+export type MutationCreateTeamArgs = {
+  input: CreateTeamInput
 }
 
 export type MutationError = {
@@ -69,39 +46,26 @@ export type MutationStatus = {
   errors?: Maybe<Array<MutationError>>
 }
 
-export type Organization = {
-  id: Scalars['Int']
-  name: Scalars['String']
-  figmaTeamId?: Maybe<Scalars['String']>
-}
-
 export type Query = {
   hello: Scalars['String']
   config: Config
-  githubChecks: Array<Maybe<GithubCheck>>
-  githubCheck?: Maybe<GithubCheck>
   currentUser?: Maybe<User>
-  organizations: Array<Organization>
-  organization?: Maybe<Organization>
+  teams: Array<Team>
+  team?: Maybe<Team>
 }
 
-export type QueryGithubChecksArgs = {
-  repoOwner: Scalars['String']
-  repoName?: Maybe<Scalars['String']>
+export type QueryTeamArgs = {
+  id: Scalars['ID']
 }
 
-export type QueryGithubCheckArgs = {
-  repoOwner: Scalars['String']
-  repoName: Scalars['String']
-  commitSha: Scalars['String']
-}
-
-export type QueryOrganizationArgs = {
-  id: Scalars['Int']
+export type Team = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  role: Scalars['String']
 }
 
 export type User = {
-  id: Scalars['Int']
+  id: Scalars['ID']
   name: Scalars['String']
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
@@ -112,41 +76,28 @@ export type CheckPageQueryQueryVariables = {
   commitSha: Scalars['String']
 }
 
-export type CheckPageQueryQuery = { __typename?: 'Query' } & {
-  githubCheck: Maybe<
-    { __typename?: 'GithubCheck' } & Pick<
-      GithubCheck,
-      'id' | 'repoOwner' | 'repoName' | 'commitSha' | 'githubCheckId'
-    >
-  >
-} & PageQueryFragment
+export type CheckPageQueryQuery = { __typename?: 'Query' } & PageQueryFragment
 
-export type CreateOrganizationPageMutationMutationVariables = {
+export type CreateTeamPageMutationMutationVariables = {
   name: Scalars['String']
 }
 
-export type CreateOrganizationPageMutationMutation = {
-  __typename?: 'Mutation'
-} & {
-  createOrganization: Maybe<
-    { __typename?: 'CreateOrganizationResponse' } & {
+export type CreateTeamPageMutationMutation = { __typename?: 'Mutation' } & {
+  createTeam: Maybe<
+    { __typename?: 'CreateTeamResponse' } & {
       status: { __typename?: 'MutationStatus' } & Pick<
         MutationStatus,
         'success'
       >
-      organization: Maybe<
-        { __typename?: 'Organization' } & Pick<Organization, 'id'>
-      >
+      team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'id'>>
     }
   >
 }
 
-export type OrganizationsPageQueryQueryVariables = {}
+export type TeamsPageQueryQueryVariables = {}
 
-export type OrganizationsPageQueryQuery = { __typename?: 'Query' } & {
-  organizations: Array<
-    { __typename?: 'Organization' } & Pick<Organization, 'id' | 'name'>
-  >
+export type TeamsPageQueryQuery = { __typename?: 'Query' } & {
+  teams: Array<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name'>>
 } & PageQueryFragment
 
 export type DashboardQueryQueryVariables = {}
@@ -166,16 +117,6 @@ export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
-export type OrganizationPageQueryQueryVariables = {
-  organizationId: Scalars['Int']
-}
-
-export type OrganizationPageQueryQuery = { __typename?: 'Query' } & {
-  organization: Maybe<
-    { __typename?: 'Organization' } & Pick<Organization, 'name'>
-  >
-} & PageQueryFragment
-
 export type ProfilePageQueryQueryVariables = {}
 
 export type ProfilePageQueryQuery = { __typename?: 'Query' } & {
@@ -194,15 +135,14 @@ export type ProjectPageQueryQueryVariables = {
   repoName: Scalars['String']
 }
 
-export type ProjectPageQueryQuery = { __typename?: 'Query' } & {
-  githubChecks: Array<
-    Maybe<
-      { __typename?: 'GithubCheck' } & Pick<
-        GithubCheck,
-        'id' | 'repoOwner' | 'repoName' | 'commitSha'
-      >
-    >
-  >
+export type ProjectPageQueryQuery = { __typename?: 'Query' } & PageQueryFragment
+
+export type TeamPageQueryQueryVariables = {
+  teamId: Scalars['ID']
+}
+
+export type TeamPageQueryQuery = { __typename?: 'Query' } & {
+  team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'name'>>
 } & PageQueryFragment
 
 export type AppBarQueryFragment = { __typename?: 'Query' } & {
@@ -225,9 +165,7 @@ export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
 
 export type MainMenuQueryFragment = { __typename?: 'Query' } & {
   currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'name'>>
-  organizations: Array<
-    { __typename?: 'Organization' } & Pick<Organization, 'id' | 'name'>
-  >
+  teams: Array<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name'>>
   config: { __typename?: 'Config' } & Pick<Config, 'logoutUrl'>
 } & GithubAuthButtonQueryFragment
 
@@ -292,7 +230,7 @@ export const MainMenuQueryFragmentDoc = gql`
     currentUser {
       name
     }
-    organizations {
+    teams {
       id
       name
     }
@@ -322,17 +260,6 @@ export const CheckPageQueryDocument = gql`
     $repoName: String!
     $commitSha: String!
   ) {
-    githubCheck(
-      repoOwner: $repoOwner
-      repoName: $repoName
-      commitSha: $commitSha
-    ) {
-      id
-      repoOwner
-      repoName
-      commitSha
-      githubCheckId
-    }
     ...PageQuery
   }
   ${PageQueryFragmentDoc}
@@ -373,70 +300,70 @@ export function withCheckPageQuery<TProps, TChildProps = {}>(
     CheckPageQueryProps<TChildProps>
   >(CheckPageQueryDocument, operationOptions)
 }
-export const CreateOrganizationPageMutationDocument = gql`
-  mutation CreateOrganizationPageMutation($name: String!) {
-    createOrganization(input: { name: $name }) {
+export const CreateTeamPageMutationDocument = gql`
+  mutation CreateTeamPageMutation($name: String!) {
+    createTeam(input: { name: $name }) {
       status {
         success
       }
-      organization {
+      team {
         id
       }
     }
   }
 `
 
-export class CreateOrganizationPageMutationComponent extends React.Component<
+export class CreateTeamPageMutationComponent extends React.Component<
   Partial<
     ReactApollo.MutationProps<
-      CreateOrganizationPageMutationMutation,
-      CreateOrganizationPageMutationMutationVariables
+      CreateTeamPageMutationMutation,
+      CreateTeamPageMutationMutationVariables
     >
   >
 > {
   render() {
     return (
       <ReactApollo.Mutation<
-        CreateOrganizationPageMutationMutation,
-        CreateOrganizationPageMutationMutationVariables
+        CreateTeamPageMutationMutation,
+        CreateTeamPageMutationMutationVariables
       >
-        mutation={CreateOrganizationPageMutationDocument}
+        mutation={CreateTeamPageMutationDocument}
         {...(this as any)['props'] as any}
       />
     )
   }
 }
-export type CreateOrganizationPageMutationProps<TChildProps = {}> = Partial<
+export type CreateTeamPageMutationProps<TChildProps = {}> = Partial<
   ReactApollo.MutateProps<
-    CreateOrganizationPageMutationMutation,
-    CreateOrganizationPageMutationMutationVariables
+    CreateTeamPageMutationMutation,
+    CreateTeamPageMutationMutationVariables
   >
 > &
   TChildProps
-export type CreateOrganizationPageMutationMutationFn = ReactApollo.MutationFn<
-  CreateOrganizationPageMutationMutation,
-  CreateOrganizationPageMutationMutationVariables
+export type CreateTeamPageMutationMutationFn = ReactApollo.MutationFn<
+  CreateTeamPageMutationMutation,
+  CreateTeamPageMutationMutationVariables
 >
-export function withCreateOrganizationPageMutation<TProps, TChildProps = {}>(
+export function withCreateTeamPageMutation<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        CreateOrganizationPageMutationMutation,
-        CreateOrganizationPageMutationMutationVariables,
-        CreateOrganizationPageMutationProps<TChildProps>
+        CreateTeamPageMutationMutation,
+        CreateTeamPageMutationMutationVariables,
+        CreateTeamPageMutationProps<TChildProps>
       >
     | undefined,
 ) {
   return ReactApollo.withMutation<
     TProps,
-    CreateOrganizationPageMutationMutation,
-    CreateOrganizationPageMutationMutationVariables,
-    CreateOrganizationPageMutationProps<TChildProps>
-  >(CreateOrganizationPageMutationDocument, operationOptions)
+    CreateTeamPageMutationMutation,
+    CreateTeamPageMutationMutationVariables,
+    CreateTeamPageMutationProps<TChildProps>
+  >(CreateTeamPageMutationDocument, operationOptions)
 }
-export const OrganizationsPageQueryDocument = gql`
-  query OrganizationsPageQuery {
-    organizations {
+export const TeamsPageQueryDocument = gql`
+  query TeamsPageQuery {
+    teams {
       id
       name
     }
@@ -445,49 +372,40 @@ export const OrganizationsPageQueryDocument = gql`
   ${PageQueryFragmentDoc}
 `
 
-export class OrganizationsPageQueryComponent extends React.Component<
+export class TeamsPageQueryComponent extends React.Component<
   Partial<
-    ReactApollo.QueryProps<
-      OrganizationsPageQueryQuery,
-      OrganizationsPageQueryQueryVariables
-    >
+    ReactApollo.QueryProps<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
   >
 > {
   render() {
     return (
-      <ReactApollo.Query<
-        OrganizationsPageQueryQuery,
-        OrganizationsPageQueryQueryVariables
-      >
-        query={OrganizationsPageQueryDocument}
+      <ReactApollo.Query<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
+        query={TeamsPageQueryDocument}
         {...(this as any)['props'] as any}
       />
     )
   }
 }
-export type OrganizationsPageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<
-    OrganizationsPageQueryQuery,
-    OrganizationsPageQueryQueryVariables
-  >
+export type TeamsPageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
 > &
   TChildProps
-export function withOrganizationsPageQuery<TProps, TChildProps = {}>(
+export function withTeamsPageQuery<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        OrganizationsPageQueryQuery,
-        OrganizationsPageQueryQueryVariables,
-        OrganizationsPageQueryProps<TChildProps>
+        TeamsPageQueryQuery,
+        TeamsPageQueryQueryVariables,
+        TeamsPageQueryProps<TChildProps>
       >
     | undefined,
 ) {
   return ReactApollo.withQuery<
     TProps,
-    OrganizationsPageQueryQuery,
-    OrganizationsPageQueryQueryVariables,
-    OrganizationsPageQueryProps<TChildProps>
-  >(OrganizationsPageQueryDocument, operationOptions)
+    TeamsPageQueryQuery,
+    TeamsPageQueryQueryVariables,
+    TeamsPageQueryProps<TChildProps>
+  >(TeamsPageQueryDocument, operationOptions)
 }
 export const DashboardQueryDocument = gql`
   query DashboardQuery {
@@ -579,60 +497,6 @@ export function withIndexQuery<TProps, TChildProps = {}>(
     IndexQueryProps<TChildProps>
   >(IndexQueryDocument, operationOptions)
 }
-export const OrganizationPageQueryDocument = gql`
-  query OrganizationPageQuery($organizationId: Int!) {
-    organization(id: $organizationId) {
-      name
-    }
-    ...PageQuery
-  }
-  ${PageQueryFragmentDoc}
-`
-
-export class OrganizationPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<
-      OrganizationPageQueryQuery,
-      OrganizationPageQueryQueryVariables
-    >
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<
-        OrganizationPageQueryQuery,
-        OrganizationPageQueryQueryVariables
-      >
-        query={OrganizationPageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
-export type OrganizationPageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<
-    OrganizationPageQueryQuery,
-    OrganizationPageQueryQueryVariables
-  >
-> &
-  TChildProps
-export function withOrganizationPageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        OrganizationPageQueryQuery,
-        OrganizationPageQueryQueryVariables,
-        OrganizationPageQueryProps<TChildProps>
-      >
-    | undefined,
-) {
-  return ReactApollo.withQuery<
-    TProps,
-    OrganizationPageQueryQuery,
-    OrganizationPageQueryQueryVariables,
-    OrganizationPageQueryProps<TChildProps>
-  >(OrganizationPageQueryDocument, operationOptions)
-}
 export const ProfilePageQueryDocument = gql`
   query ProfilePageQuery {
     currentUser {
@@ -689,12 +553,6 @@ export function withProfilePageQuery<TProps, TChildProps = {}>(
 }
 export const ProjectPageQueryDocument = gql`
   query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
-    githubChecks(repoOwner: $repoOwner, repoName: $repoName) {
-      id
-      repoOwner
-      repoName
-      commitSha
-    }
     ...PageQuery
   }
   ${PageQueryFragmentDoc}
@@ -737,6 +595,51 @@ export function withProjectPageQuery<TProps, TChildProps = {}>(
     ProjectPageQueryQueryVariables,
     ProjectPageQueryProps<TChildProps>
   >(ProjectPageQueryDocument, operationOptions)
+}
+export const TeamPageQueryDocument = gql`
+  query TeamPageQuery($teamId: ID!) {
+    team(id: $teamId) {
+      name
+    }
+    ...PageQuery
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class TeamPageQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<TeamPageQueryQuery, TeamPageQueryQueryVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<TeamPageQueryQuery, TeamPageQueryQueryVariables>
+        query={TeamPageQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type TeamPageQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<TeamPageQueryQuery, TeamPageQueryQueryVariables>
+> &
+  TChildProps
+export function withTeamPageQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        TeamPageQueryQuery,
+        TeamPageQueryQueryVariables,
+        TeamPageQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    TeamPageQueryQuery,
+    TeamPageQueryQueryVariables,
+    TeamPageQueryProps<TChildProps>
+  >(TeamPageQueryDocument, operationOptions)
 }
 export const MainMenuMutationDocument = gql`
   mutation MainMenuMutation {

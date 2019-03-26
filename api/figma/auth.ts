@@ -5,6 +5,7 @@ import { loggedInUser } from 'api/lib/auth'
 import config from 'api/config'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { randomString } from 'api/lib/random'
+import { prisma } from 'api/prisma'
 
 interface FigmaTokenData {
   error: boolean
@@ -77,9 +78,13 @@ router.get('/finish', async (req: Request, res: Response) => {
     return
   }
 
-  user.figmaAccessToken = tokenData.access_token
-  user.figmaRefreshToken = tokenData.refresh_token
-  await user.save()
+  await prisma.updateUser({
+    data: {
+      figmaAccessToken: tokenData.access_token,
+      figmaRefreshToken: tokenData.refresh_token,
+    },
+    where: user,
+  })
 
   const referrer = req.session!.figmaAuthReferrer || '/'
   req.session!.figmaAuthReferrer = null

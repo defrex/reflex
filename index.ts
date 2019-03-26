@@ -4,13 +4,10 @@ import cookieSession from 'cookie-session'
 import applyGraphqlMiddleware from 'api/graphql'
 import applyNextMiddleware from 'api/next'
 import config from 'api/config'
-import conection from 'api/db'
 import { absoluteUrl } from 'api/lib/url'
 import apiRoutes from 'api/routes'
 
 export default async function main() {
-  await conection
-
   const app = express()
 
   app.use(
