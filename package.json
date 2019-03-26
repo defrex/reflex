@@ -10,7 +10,7 @@
     "build": "next build ./ui",
     "gen": "prisma generate && ./bin/gen.js",
     "test": "ts-jest",
-    "heroku-postbuild": "yarn run orm schema:sync && yarn run build"
+    "heroku-postbuild": "prisma deploy && yarn run build"
   },
   "_moduleAliases": {
     "api": "./api",
