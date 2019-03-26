@@ -83,7 +83,9 @@ router.get('/finish', async (req: Request, res: Response) => {
       figmaAccessToken: tokenData.access_token,
       figmaRefreshToken: tokenData.refresh_token,
     },
-    where: user,
+    where: {
+      id: user.id,
+    },
   })
 
   const referrer = req.session!.figmaAuthReferrer || '/'
