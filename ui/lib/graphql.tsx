@@ -70,14 +70,6 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
-export type CheckPageQueryQueryVariables = {
-  repoOwner: Scalars['String']
-  repoName: Scalars['String']
-  commitSha: Scalars['String']
-}
-
-export type CheckPageQueryQuery = { __typename?: 'Query' } & PageQueryFragment
-
 export type CreateTeamPageMutationMutationVariables = {
   name: Scalars['String']
 }
@@ -117,25 +109,9 @@ export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
-export type ProfilePageQueryQueryVariables = {}
+export type LibraryQueryQueryVariables = {}
 
-export type ProfilePageQueryQuery = { __typename?: 'Query' } & {
-  currentUser: Maybe<
-    { __typename?: 'User' } & Pick<
-      User,
-      'name' | 'figmaConnected' | 'githubConnected'
-    >
-  >
-} & (PageQueryFragment &
-    FigmaAuthButtonQueryFragment &
-    GithubAuthButtonQueryFragment)
-
-export type ProjectPageQueryQueryVariables = {
-  repoOwner: Scalars['String']
-  repoName: Scalars['String']
-}
-
-export type ProjectPageQueryQuery = { __typename?: 'Query' } & PageQueryFragment
+export type LibraryQueryQuery = { __typename?: 'Query' } & PageQueryFragment
 
 export type TeamPageQueryQueryVariables = {
   teamId: Scalars['ID']
@@ -254,52 +230,6 @@ export const TemplateQueryFragmentDoc = gql`
     hello
   }
 `
-export const CheckPageQueryDocument = gql`
-  query CheckPageQuery(
-    $repoOwner: String!
-    $repoName: String!
-    $commitSha: String!
-  ) {
-    ...PageQuery
-  }
-  ${PageQueryFragmentDoc}
-`
-
-export class CheckPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<CheckPageQueryQuery, CheckPageQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<CheckPageQueryQuery, CheckPageQueryQueryVariables>
-        query={CheckPageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
-export type CheckPageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<CheckPageQueryQuery, CheckPageQueryQueryVariables>
-> &
-  TChildProps
-export function withCheckPageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        CheckPageQueryQuery,
-        CheckPageQueryQueryVariables,
-        CheckPageQueryProps<TChildProps>
-      >
-    | undefined,
-) {
-  return ReactApollo.withQuery<
-    TProps,
-    CheckPageQueryQuery,
-    CheckPageQueryQueryVariables,
-    CheckPageQueryProps<TChildProps>
-  >(CheckPageQueryDocument, operationOptions)
-}
 export const CreateTeamPageMutationDocument = gql`
   mutation CreateTeamPageMutation($name: String!) {
     createTeam(input: { name: $name }) {
@@ -497,104 +427,45 @@ export function withIndexQuery<TProps, TChildProps = {}>(
     IndexQueryProps<TChildProps>
   >(IndexQueryDocument, operationOptions)
 }
-export const ProfilePageQueryDocument = gql`
-  query ProfilePageQuery {
-    currentUser {
-      name
-      figmaConnected
-      githubConnected
-    }
-    ...PageQuery
-    ...FigmaAuthButtonQuery
-    ...GithubAuthButtonQuery
-  }
-  ${PageQueryFragmentDoc}
-  ${FigmaAuthButtonQueryFragmentDoc}
-  ${GithubAuthButtonQueryFragmentDoc}
-`
-
-export class ProfilePageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<
-      ProfilePageQueryQuery,
-      ProfilePageQueryQueryVariables
-    >
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>
-        query={ProfilePageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
-export type ProfilePageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<ProfilePageQueryQuery, ProfilePageQueryQueryVariables>
-> &
-  TChildProps
-export function withProfilePageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        ProfilePageQueryQuery,
-        ProfilePageQueryQueryVariables,
-        ProfilePageQueryProps<TChildProps>
-      >
-    | undefined,
-) {
-  return ReactApollo.withQuery<
-    TProps,
-    ProfilePageQueryQuery,
-    ProfilePageQueryQueryVariables,
-    ProfilePageQueryProps<TChildProps>
-  >(ProfilePageQueryDocument, operationOptions)
-}
-export const ProjectPageQueryDocument = gql`
-  query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
+export const LibraryQueryDocument = gql`
+  query LibraryQuery {
     ...PageQuery
   }
   ${PageQueryFragmentDoc}
 `
 
-export class ProjectPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<
-      ProjectPageQueryQuery,
-      ProjectPageQueryQueryVariables
-    >
-  >
+export class LibraryQueryComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<LibraryQueryQuery, LibraryQueryQueryVariables>>
 > {
   render() {
     return (
-      <ReactApollo.Query<ProjectPageQueryQuery, ProjectPageQueryQueryVariables>
-        query={ProjectPageQueryDocument}
+      <ReactApollo.Query<LibraryQueryQuery, LibraryQueryQueryVariables>
+        query={LibraryQueryDocument}
         {...(this as any)['props'] as any}
       />
     )
   }
 }
-export type ProjectPageQueryProps<TChildProps = {}> = Partial<
-  ReactApollo.DataProps<ProjectPageQueryQuery, ProjectPageQueryQueryVariables>
+export type LibraryQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<LibraryQueryQuery, LibraryQueryQueryVariables>
 > &
   TChildProps
-export function withProjectPageQuery<TProps, TChildProps = {}>(
+export function withLibraryQuery<TProps, TChildProps = {}>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        ProjectPageQueryQuery,
-        ProjectPageQueryQueryVariables,
-        ProjectPageQueryProps<TChildProps>
+        LibraryQueryQuery,
+        LibraryQueryQueryVariables,
+        LibraryQueryProps<TChildProps>
       >
     | undefined,
 ) {
   return ReactApollo.withQuery<
     TProps,
-    ProjectPageQueryQuery,
-    ProjectPageQueryQueryVariables,
-    ProjectPageQueryProps<TChildProps>
-  >(ProjectPageQueryDocument, operationOptions)
+    LibraryQueryQuery,
+    LibraryQueryQueryVariables,
+    LibraryQueryProps<TChildProps>
+  >(LibraryQueryDocument, operationOptions)
 }
 export const TeamPageQueryDocument = gql`
   query TeamPageQuery($teamId: ID!) {

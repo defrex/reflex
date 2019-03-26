@@ -1,8 +1,0 @@
-#import "../../components/Page/fragments.graphql"
-query CheckPageQuery(
-  $repoOwner: String!
-  $repoName: String!
-  $commitSha: String!
-) {
-  ...PageQuery
-}

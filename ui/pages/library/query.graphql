@@ -1,4 +1,4 @@
 #import "../../components/Page/fragments.graphql"
-query ProjectPageQuery($repoOwner: String!, $repoName: String!) {
+query LibraryQuery {
   ...PageQuery
 }
