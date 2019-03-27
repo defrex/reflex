@@ -1,3 +1,4 @@
+/// <reference path="../../@types/Request.d.ts" />
 import { Application, Request, Response, NextFunction } from 'express'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import { importSchema } from 'graphql-import'

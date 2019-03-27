@@ -13,7 +13,9 @@ const config = {
     absolutePath('ui/components/**/*.graphql'),
   ],
   uiPath: absolutePath('ui'),
-  environment: process.env.NODE_ENV || 'development',
+  environment: (process.env.NODE_ENV === 'production'
+    ? 'production'
+    : 'development') as 'production' | 'development',
   port: parseInt(process.env.PORT!),
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
