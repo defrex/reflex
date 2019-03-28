@@ -9,10 +9,6 @@ export default {
 
   entry: ['babel-polyfill'],
 
-  output: {
-    path: absolutePath('./dist'),
-  },
-
   module: {
     rules: [
       {

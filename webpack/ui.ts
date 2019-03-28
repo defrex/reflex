@@ -9,9 +9,10 @@ export default merge.smart(baseConfig, {
   name: 'ui',
   target: 'web',
 
-  entry: [absolutePath('./ui')],
+  entry: [absolutePath('./ui/render')],
 
   output: {
+    path: absolutePath('./public/dist'),
     filename: '[name].[hash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: '/dist/',

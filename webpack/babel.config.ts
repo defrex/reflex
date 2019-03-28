@@ -4,6 +4,7 @@ export default {
       '@babel/preset-env',
       {
         useBuiltIns: 'entry',
+        corejs: '3',
       },
     ],
     '@babel/typescript',
@@ -13,6 +14,7 @@ export default {
     '@babel/proposal-class-properties',
     '@babel/proposal-object-rest-spread',
     'react-loadable/babel',
+    // 'react-hot-loader/babel',
     'emotion',
   ],
 }

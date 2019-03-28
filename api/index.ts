@@ -10,6 +10,6 @@ router.use('/github', github)
 router.use('/figma', figma)
 
 export default async function applyMiddleware(app: Application) {
-  app.use(router)
+  app.use('/api', router)
   await applyGraphqlMiddleware(app)
 }
