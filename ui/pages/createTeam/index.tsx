@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 
-import routes from 'ui/routes'
 import Page from 'ui/components/Page'
 import CreateTeamForm from 'ui/components/CreateTeamForm'
 
@@ -27,9 +26,10 @@ export default class TeamsPage extends PureComponent {
       response.data.createTeam &&
       response.data.createTeam.status.success
     ) {
-      routes.pushRoute('team', {
-        id: response.data.createTeam.team!.id,
-      })
+      // routes.pushRoute('team', {
+      //   id: response.data.createTeam.team!.id,
+      // })
+      console.warn('🦙 HANDLE THIS')
     } else {
       console.error('💢', response)
     }
@@ -43,9 +43,7 @@ export default class TeamsPage extends PureComponent {
               <h1>Create Team</h1>
               <CreateTeamPageMutationComponent>
                 {(createTeam) => (
-                  <CreateTeamForm
-                    onSubmit={this.handleSubmit(createTeam)}
-                  />
+                  <CreateTeamForm onSubmit={this.handleSubmit(createTeam)} />
                 )}
               </CreateTeamPageMutationComponent>
             </Page>

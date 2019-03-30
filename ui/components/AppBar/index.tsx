@@ -1,12 +1,10 @@
 import React, { PureComponent, MouseEvent } from 'react'
-import routes from 'ui/routes'
 
 import Icon from 'ui/components/Icon'
+import Link from 'ui/components/Link'
 
 import { AppBarQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
-
-const { Link } = routes
 
 interface AppBarProps {
   query: AppBarQueryFragment

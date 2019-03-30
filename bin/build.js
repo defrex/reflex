@@ -10,8 +10,6 @@ const handler = (entry) => (err, stats) => {
   if (err || stats.hasErrors()) {
     console.error('🛑', entry)
     for (const error of stats.compilation.errors) {
-      // console.error('\n\n', error.message)
-      // console.error('\n\n', error.stack)
       console.error('\n\n', error)
     }
   } else {

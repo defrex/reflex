@@ -4,11 +4,12 @@ import { DocumentNode } from 'graphql'
 import AppBar from 'ui/components/AppBar'
 import Code from 'ui/components/Code'
 
-import menuSvg from './icons/menu-light.svg'
-import cancelSvg from './icons/cancel-light.svg'
 import { PageQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
 import MainMenu from '../MainMenu'
+
+// const cancelSvg = require('./icons/cancel-light.svg')
+// const menuSvg = require('./icons/menu-light.svg')
 
 interface PageProps {
   query: PageQueryFragment
@@ -40,7 +41,7 @@ export default class Page extends PureComponent<PageProps> {
       <div>
         <AppBar
           query={query}
-          menuIcon={menuOpen ? cancelSvg : menuSvg}
+          menuIcon={''}
           onMenuclick={this.handleMenuClick}
         />
         <MainMenu visible={menuOpen} query={query} />
