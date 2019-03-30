@@ -1,6 +1,6 @@
 import { User } from 'api/prisma'
 import { loggedInUser } from 'api/lib/auth'
-import { ExpressContext } from 'apollo-server-express/dist/ApolloServer'
+import { Request, Response } from 'express'
 
 export type Context = {
   user?: User
@@ -9,7 +9,10 @@ export type Context = {
 // GraphQL Gen needs an export not named "Context"
 export type ReflexContex = Context
 
-export async function getContext({ req }: ExpressContext): Promise<Context> {
+export async function getContext(
+  req: Request,
+  _res: Response,
+): Promise<Context> {
   const user = await loggedInUser(req)
   return {
     user,

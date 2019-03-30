@@ -21,8 +21,8 @@ export default async (app: Application) => {
   })
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {
-    req.graphqlSchema = schema
-    req.graphqlContext = await getContext({ req, res })
+    res.locals.graphqlSchema = schema
+    res.locals.graphqlContext = await getContext(req, res)
     next()
   })
 

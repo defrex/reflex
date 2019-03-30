@@ -26,10 +26,18 @@ export default async function applyUiMiddleware(app: Application) {
   // app.use(webpackHotMiddleware(compiler))
   // }
 
-  app.get('*', (_req: Request, res: Response) => {
+  app.get('*', async (_req: Request, res: Response) => {
     const stats = res.locals.webpackStats.toJson()
     const assets = stats.assets.map((asset: any) => `/dist/${asset.name}`)
-    res.send(ReactDOMServer.renderToString(<Document assets={assets} />))
+    res.send(
+      ReactDOMServer.renderToString(
+        <Document
+          assets={assets}
+          graphqlContext={res.locals.graphqlContext}
+          graphqlSchema={res.locals.graphqlSchema}
+        />,
+      ),
+    )
     res.end()
   })
 }
