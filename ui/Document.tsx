@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import { primary } from 'ui/lib/colors'
-import Body from 'ui/components/Body'
+import App from 'ui/App'
 
 interface DocumentProps {
   assets: string[]
@@ -21,12 +21,14 @@ export default class Document extends PureComponent<DocumentProps> {
             rel='stylesheet'
           />
         </head>
-        <Body>
-          <div id='app' />
+        <body>
+          <div id='app'>
+            <App />
+          </div>
           {assets.map((asset) => (
             <script src={asset} />
           ))}
-        </Body>
+        </body>
       </html>
     )
   }

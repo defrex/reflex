@@ -1,7 +1,7 @@
 import React, { FunctionComponentElement } from 'react'
 import ReactDOM, { Renderer } from 'react-dom'
 // import Loadable from 'react-loadable'
-// import App from 'ui/App'
+import App from 'ui/App'
 
 async function render(
   renderFunction: Renderer,
@@ -14,7 +14,7 @@ async function render(
   renderFunction(App, reactRoot)
 }
 
-render(ReactDOM.hydrate, <div />)
+render(ReactDOM.hydrate, <App />)
 
 // if (process.env.NODE_ENV === 'development' && module.hot && module.hot.accept) {
 //   module.hot.accept('ui/App', () => {
