@@ -9,7 +9,11 @@ const uiWebpackConfig = require('../webpack/ui').default
 const handler = (entry) => (err, stats) => {
   if (err || stats.hasErrors()) {
     console.error('🛑', entry)
-    console.error(stats.compilation.errors)
+    for (const error of stats.compilation.errors) {
+      // console.error('\n\n', error.message)
+      // console.error('\n\n', error.stack)
+      console.error('\n\n', error)
+    }
   } else {
     console.log('✅', entry)
   }

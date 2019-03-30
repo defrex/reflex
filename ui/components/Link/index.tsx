@@ -1,19 +1,19 @@
 import React, { PureComponent, ReactNode } from 'react'
-import { LinkProps as NextRoutesLinkProps } from 'next-routes'
 
-import routes from 'ui/routes'
+// import routes from 'ui/routes'
 
-const RoutesLink = routes.Link
+// const RoutesLink = routes.Link
+
+// TODO: solve routes
 
 interface LinkProps {
   children: ReactNode
+  route?: any
 }
 
-export default class Link extends PureComponent<
-  LinkProps & NextRoutesLinkProps
-> {
+export default class Link extends PureComponent<LinkProps> {
   render() {
     const { children, ...props } = this.props
-    return <RoutesLink {...props}>{children}</RoutesLink>
+    return <a {...props}>{children}</a>
   }
 }

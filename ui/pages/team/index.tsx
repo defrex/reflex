@@ -6,18 +6,12 @@ import { TeamPageQueryComponent } from 'ui/lib/graphql'
 import styles from './styles'
 
 interface TeamPageProps {
-  teamId: number
+  teamId: string
 }
 
-export default class TeamPage extends PureComponent<
-  TeamPageProps
-> {
-  static getInitialProps({
-    query,
-  }: {
-    query: { id: string }
-  }): TeamPageProps {
-    return { teamId: parseInt(query.id) }
+export default class TeamPage extends PureComponent<TeamPageProps> {
+  static getInitialProps({ query }: { query: { id: string } }): TeamPageProps {
+    return { teamId: query.id }
   }
 
   render() {

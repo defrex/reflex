@@ -1,30 +1,28 @@
-import React from 'react'
-import App, { Container } from 'next/app'
+import React, { PureComponent, ReactNode } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { Global } from '@emotion/core'
 
-import withApollo from 'ui/lib/withApollo'
+// import withApollo from 'ui/lib/withApollo'
 import globalStyles from 'ui/lib/globalStyles'
 
 interface ReflexAppProps {
   apollo: ApolloClient<InMemoryCache>
+  children: ReactNode
 }
 
-class ReflexApp extends App<App['props'] & ReflexAppProps> {
+export default class ReflexApp extends PureComponent<ReflexAppProps> {
   render() {
-    const { Component, pageProps, apollo } = this.props
+    const { apollo, children } = this.props
 
     return (
-      <Container>
-        <ApolloProvider client={apollo}>
-          <Global styles={globalStyles} />
-          <Component {...pageProps} />
-        </ApolloProvider>
-      </Container>
+      <ApolloProvider client={apollo}>
+        <Global styles={globalStyles} />
+        {children}
+      </ApolloProvider>
     )
   }
 }
 
-export default withApollo(ReflexApp)
+// export default withApollo(ReflexApp)

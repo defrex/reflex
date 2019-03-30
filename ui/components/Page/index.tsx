@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react'
-import Head from 'next/head'
 import { DocumentNode } from 'graphql'
 
 import AppBar from 'ui/components/AppBar'
@@ -16,10 +15,6 @@ interface PageProps {
   debug?: boolean
   document?: DocumentNode
   children: ReactNode
-}
-
-interface PageState {
-  menuOpen: boolean
 }
 
 export default class Page extends PureComponent<PageProps> {
@@ -43,9 +38,6 @@ export default class Page extends PureComponent<PageProps> {
     const { menuOpen } = this.state
     return (
       <div>
-        <Head>
-          <title>Reflex</title>
-        </Head>
         <AppBar
           query={query}
           menuIcon={menuOpen ? cancelSvg : menuSvg}

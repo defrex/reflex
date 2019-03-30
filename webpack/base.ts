@@ -2,19 +2,15 @@ import webpack from 'webpack'
 import config from 'api/config'
 
 import { absolutePath } from '../api/lib/path'
-import babelOptions from './babel.config'
 
 export default {
   mode: config.environment,
 
-  entry: ['babel-polyfill'],
-
   module: {
     rules: [
       {
-        test: /\.(ts|tsx|js|jsx)$/,
-        loader: 'babel-loader',
-        options: babelOptions,
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
       },
     ],
   },

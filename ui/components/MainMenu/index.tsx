@@ -4,12 +4,10 @@ import { MainMenuQueryFragment, withMainMenuMutation } from 'ui/lib/graphql'
 import styles from './styles'
 import GithubAuthButton from 'ui/components/GithubAuthButton'
 import Link from 'ui/components/Link'
-// import routes from 'ui/routes'
 
 interface MainMenuProps {
   query: MainMenuQueryFragment
   visible: boolean
-  logout: Function
 }
 
 class MainMenu extends PureComponent<MainMenuProps> {
@@ -18,7 +16,7 @@ class MainMenu extends PureComponent<MainMenuProps> {
   }
 
   handleLogoutClick = async (event: MouseEvent<HTMLAnchorElement>) => {
-    const { logout } = this.props
+    const { logout } = this.props as any
     event.preventDefault()
 
     console.log('🚪')

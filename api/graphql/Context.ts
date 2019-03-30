@@ -6,6 +6,8 @@ export type Context = {
   user?: User
   logout: () => void
 }
+// GraphQL Gen needs an export not named "Context"
+export type ReflexContex = Context
 
 export async function getContext({ req }: ExpressContext): Promise<Context> {
   const user = await loggedInUser(req)

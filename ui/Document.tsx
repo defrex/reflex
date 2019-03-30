@@ -3,8 +3,13 @@ import React, { PureComponent } from 'react'
 import { primary } from 'ui/lib/colors'
 import Body from 'ui/components/Body'
 
-export default class Document extends PureComponent {
+interface DocumentProps {
+  assets: string[]
+}
+
+export default class Document extends PureComponent<DocumentProps> {
   render() {
+    const { assets } = this.props
     return (
       <html lang='en-US'>
         <head>
@@ -18,6 +23,9 @@ export default class Document extends PureComponent {
         </head>
         <Body>
           <div id='app' />
+          {assets.map((asset) => (
+            <script src={asset} />
+          ))}
         </Body>
       </html>
     )

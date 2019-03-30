@@ -9,8 +9,13 @@ export default function gen(): Promise<any> {
     documents: config.graphqlDocumentPaths,
     generates: {
       [absolutePath('api/graphql/types.ts')]: {
-        plugins: ['typescript', 'typescript-resolvers'],
+        plugins: [
+          { add: '// tslint:disable' },
+          'typescript',
+          'typescript-resolvers',
+        ],
         config: {
+          contextType: 'api/graphql/Context#ReflexContex',
           mappers: {
             User: 'api/prisma#User',
             Team: 'api/prisma#Team',

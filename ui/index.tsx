@@ -1,3 +1,4 @@
+import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -8,7 +9,7 @@ import webpackConfig from '../webpack/ui'
 import Document from 'ui/Document'
 // import config from 'api/config'
 
-export default function applyUiMiddleware(app: Application) {
+export default async function applyUiMiddleware(app: Application) {
   // if (config.environment === 'production') {
   //   const render = require('../dist/render').default
   //   app.use(render)
@@ -16,17 +17,20 @@ export default function applyUiMiddleware(app: Application) {
   const compiler = webpack(webpackConfig)
   app.use(
     webpackDevMiddleware(compiler, {
-      publicPath: '/',
+      publicPath: '/dist',
       stats: 'minimal',
       serverSideRender: true,
     }),
   )
+
   // app.use(webpackHotMiddleware(compiler))
   // }
 
-  // ❗YOU ARE HERE: render this document❗
-  app.use((_req: Request, res: Response) => {
-    res.send(ReactDOMServer.renderToString(<Document />))
+  app.get('*', (_req: Request, res: Response) => {
+    const stats = res.locals.webpackStats.toJson()
+    const assets = stats.assets.map((asset: any) => `/dist/${asset.name}`)
+    res.send(ReactDOMServer.renderToString(<Document assets={assets} />))
+    res.end()
   })
 }
 

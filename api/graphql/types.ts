@@ -71,6 +71,7 @@ export type User = {
   githubConnected: Scalars['Boolean']
 }
 import { User, Team } from 'api/prisma'
+import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
 
@@ -148,14 +149,14 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
-export type ConfigResolvers<Context = any, ParentType = Config> = {
+export type ConfigResolvers<Context = ReflexContex, ParentType = Config> = {
   figmaAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   githubAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   logoutUrl?: Resolver<Scalars['String'], ParentType, Context>
 }
 
 export type CreateTeamResponseResolvers<
-  Context = any,
+  Context = ReflexContex,
   ParentType = CreateTeamResponse
 > = {
   team?: Resolver<Maybe<Team>, ParentType, Context>
@@ -163,13 +164,13 @@ export type CreateTeamResponseResolvers<
 }
 
 export type LogoutResponseResolvers<
-  Context = any,
+  Context = ReflexContex,
   ParentType = LogoutResponse
 > = {
   status?: Resolver<Maybe<MutationStatus>, ParentType, Context>
 }
 
-export type MutationResolvers<Context = any, ParentType = Mutation> = {
+export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
   logout?: Resolver<Maybe<LogoutResponse>, ParentType, Context>
   createTeam?: Resolver<
     Maybe<CreateTeamResponse>,
@@ -180,7 +181,7 @@ export type MutationResolvers<Context = any, ParentType = Mutation> = {
 }
 
 export type MutationErrorResolvers<
-  Context = any,
+  Context = ReflexContex,
   ParentType = MutationError
 > = {
   field?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
@@ -188,14 +189,14 @@ export type MutationErrorResolvers<
 }
 
 export type MutationStatusResolvers<
-  Context = any,
+  Context = ReflexContex,
   ParentType = MutationStatus
 > = {
   success?: Resolver<Scalars['Boolean'], ParentType, Context>
   errors?: Resolver<Maybe<ArrayOrIterable<MutationError>>, ParentType, Context>
 }
 
-export type QueryResolvers<Context = any, ParentType = Query> = {
+export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
   hello?: Resolver<Scalars['String'], ParentType, Context>
   config?: Resolver<Config, ParentType, Context>
   currentUser?: Resolver<Maybe<User>, ParentType, Context>
@@ -203,20 +204,20 @@ export type QueryResolvers<Context = any, ParentType = Query> = {
   team?: Resolver<Maybe<Team>, ParentType, Context, QueryTeamArgs>
 }
 
-export type TeamResolvers<Context = any, ParentType = Team> = {
+export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   role?: Resolver<Scalars['String'], ParentType, Context>
 }
 
-export type UserResolvers<Context = any, ParentType = User> = {
+export type UserResolvers<Context = ReflexContex, ParentType = User> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   figmaConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
   githubConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
 }
 
-export type IResolvers<Context = any> = {
+export type IResolvers<Context = ReflexContex> = {
   Config?: ConfigResolvers<Context>
   CreateTeamResponse?: CreateTeamResponseResolvers<Context>
   LogoutResponse?: LogoutResponseResolvers<Context>
@@ -228,4 +229,5 @@ export type IResolvers<Context = any> = {
   User?: UserResolvers<Context>
 }
 
-export type IDirectiveResolvers<Context = any> = {}
+// @ts-ignore
+export type IDirectiveResolvers<Context = ReflexContex> = {}

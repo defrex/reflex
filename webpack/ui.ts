@@ -1,6 +1,6 @@
 import webpack from 'webpack'
 import merge from 'webpack-merge'
-import { ReactLoadablePlugin } from 'react-loadable/webpack'
+// import { ReactLoadablePlugin } from 'react-loadable/webpack'
 
 import baseConfig from './base'
 import { absolutePath } from '../api/lib/path'
@@ -31,8 +31,8 @@ export default merge.smart(baseConfig, {
     new webpack.DefinePlugin({
       IS_BROWSER: JSON.stringify(true),
     }),
-    new ReactLoadablePlugin({
-      filename: './dist/react-loadable.json',
-    }),
+    // new ReactLoadablePlugin({
+    //   filename: './public/dist/react-loadable.json',
+    // }),
   ],
 })

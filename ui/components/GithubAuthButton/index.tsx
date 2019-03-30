@@ -5,7 +5,7 @@ import Button from 'ui/components/Button'
 
 interface GithubAuthButtonProps {
   query: GithubAuthButtonQueryFragment
-  children: string
+  children?: string
 }
 
 export default class GithubAuthButton extends PureComponent<

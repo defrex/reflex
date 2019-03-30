@@ -2,8 +2,7 @@
 /config/secrets.*
 /build
 /dist
-/.next
-/ui/.next
+/public/dist
 
 # misc
 .DS_Store
