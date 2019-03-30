@@ -46,8 +46,9 @@ async function render(
 
 render(ReactDOM.hydrate, <App apollo={apolloClient} />)
 
-// if (process.env.NODE_ENV === 'development' && module.hot && module.hot.accept) {
-//   module.hot.accept('ui/App', () => {
-//     render(ReactDOM.render, require('ui/App').default)
-//   })
-// }
+if (module.hot && module.hot.accept) {
+  module.hot.accept('ui/App', () => {
+    const App = require('ui/App').default
+    render(ReactDOM.render, <App apollo={apolloClient} />)
+  })
+}

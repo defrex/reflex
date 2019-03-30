@@ -2,6 +2,7 @@ import webpack from 'webpack'
 import merge from 'webpack-merge'
 // import { ReactLoadablePlugin } from 'react-loadable/webpack'
 
+import config from 'api/config'
 import baseConfig from './base'
 import { absolutePath } from '../api/lib/path'
 
@@ -9,7 +10,12 @@ export default merge.smart(baseConfig, {
   name: 'ui',
   target: 'web',
 
-  entry: [absolutePath('./ui/render')],
+  entry: [
+    ...(config.environment === 'development'
+      ? ['webpack-hot-middleware/client']
+      : []),
+    absolutePath('./ui/render'),
+  ],
 
   output: {
     path: absolutePath('./public/dist'),
@@ -31,6 +37,8 @@ export default merge.smart(baseConfig, {
     new webpack.DefinePlugin({
       IS_BROWSER: JSON.stringify(true),
     }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     // new ReactLoadablePlugin({
     //   filename: './public/dist/react-loadable.json',
     // }),

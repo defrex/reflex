@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import { Application, Request, Response } from 'express'
-// import webpackHotMiddleware from 'webpack-hot-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 
 import webpackConfig from '../webpack/ui'
 import Document from 'ui/Document'
@@ -23,7 +23,7 @@ export default async function applyUiMiddleware(app: Application) {
     }),
   )
 
-  // app.use(webpackHotMiddleware(compiler))
+  app.use(webpackHotMiddleware(compiler))
   // }
 
   app.get('*', async (_req: Request, res: Response) => {
