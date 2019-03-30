@@ -1,4 +1,5 @@
 import React from 'react'
+import fs from 'fs'
 import ReactDOMServer from 'react-dom/server'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -7,28 +8,38 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 
 import webpackConfig from '../webpack/ui'
 import Document from 'ui/Document'
-// import config from 'api/config'
+import config from 'api/config'
+import { absolutePath } from 'api/lib/path'
+
+const statsFilename = absolutePath('public/dist/stats.json')
+const statsFile = fs.existsSync(statsFilename)
+  ? JSON.parse(fs.readFileSync(statsFilename, 'utf-8'))
+  : null
 
 export default async function applyUiMiddleware(app: Application) {
-  // if (config.environment === 'production') {
-  //   const render = require('../dist/render').default
-  //   app.use(render)
-  // } else {
-  const compiler = webpack(webpackConfig)
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: '/dist',
-      stats: 'minimal',
-      serverSideRender: true,
-    }),
-  )
+  if (config.environment === 'development') {
+    const compiler = webpack(webpackConfig)
+    app.use(
+      webpackDevMiddleware(compiler, {
+        publicPath: '/dist',
+        stats: 'minimal',
+        serverSideRender: true,
+      }),
+    )
 
-  app.use(webpackHotMiddleware(compiler))
-  // }
+    app.use(webpackHotMiddleware(compiler))
+  }
 
   app.get('*', async (_req: Request, res: Response) => {
-    const stats = res.locals.webpackStats.toJson()
-    const assets = stats.assets.map((asset: any) => `/dist/${asset.name}`)
+    let stats
+    if (config.environment === 'development') {
+      stats = res.locals.webpackStats.toJson()
+    } else {
+      stats = statsFile
+    }
+    const assets = Object.values(stats.assetsByChunkName).map(
+      (asset: any) => `/dist/${asset}`,
+    )
     res.send(
       ReactDOMServer.renderToString(
         <Document

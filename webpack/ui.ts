@@ -1,6 +1,8 @@
+/// <reference types="../@types/webpack-stats-plugin" />
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 // import { ReactLoadablePlugin } from 'react-loadable/webpack'
+import { StatsWriterPlugin } from 'webpack-stats-plugin'
 
 import config from 'api/config'
 import baseConfig from './base'
@@ -39,6 +41,7 @@ export default merge.smart(baseConfig, {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new StatsWriterPlugin(),
     // new ReactLoadablePlugin({
     //   filename: './public/dist/react-loadable.json',
     // }),
