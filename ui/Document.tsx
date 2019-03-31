@@ -1,19 +1,24 @@
 import React, { PureComponent } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { SchemaLink } from 'apollo-link-schema'
-import { GraphQLSchema } from 'graphql'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
+import { StaticRouter } from 'react-router-dom'
 
-import { Context } from 'api/graphql/Context'
 import { primary } from 'ui/lib/colors'
 import App from 'ui/App'
 import { getStyles } from 'typestyle'
+import { Request, Response } from 'express'
 
 interface DocumentProps {
   assets: string[]
-  graphqlSchema: GraphQLSchema
-  graphqlContext: Context
+  req: Request
+  res: Response
+}
+
+interface RouterContext {
+  url?: string
+  status?: number
 }
 
 // import Loadable from 'react-loadable'
@@ -36,22 +41,37 @@ export default class Document extends PureComponent<DocumentProps> {
   constructor(props: DocumentProps) {
     super(props)
 
-    const { graphqlSchema, graphqlContext } = props
+    const { res } = props
     this.apollo = new ApolloClient({
       ssrMode: true,
       link: new SchemaLink({
-        schema: graphqlSchema,
-        context: graphqlContext,
+        schema: res.locals.graphqlSchema,
+        context: res.locals.graphqlContext,
       }),
       cache: new InMemoryCache(),
     })
   }
 
   renderApp = () => {
-    return {
-      html: ReactDOMServer.renderToString(<App apollo={this.apollo} />),
-      css: getStyles(),
+    const { req, res } = this.props
+
+    const routerContext: RouterContext = {}
+    const html = ReactDOMServer.renderToString(
+      <StaticRouter location={req.url} context={routerContext}>
+        <App apollo={this.apollo} />
+      </StaticRouter>,
+    )
+    const css = getStyles()
+
+    if (routerContext.status) {
+      res.status(routerContext.status)
     }
+
+    if (routerContext.url) {
+      res.redirect(routerContext.url)
+    }
+
+    return { html, css }
   }
 
   render() {

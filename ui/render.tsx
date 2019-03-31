@@ -1,6 +1,7 @@
-import React, { FunctionComponentElement } from 'react'
+import React from 'react'
 import ReactDOM, { Renderer } from 'react-dom'
 import { setStylesTarget } from 'typestyle'
+import { BrowserRouter } from 'react-router-dom'
 // import Loadable from 'react-loadable'
 
 import { ApolloClient } from 'apollo-client'
@@ -10,7 +11,7 @@ import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
 
 import { absoluteUrl } from 'ui/lib/url'
-import App from 'ui/App'
+import ReflexApp from 'ui/App'
 
 const styles = document.getElementById('styles')
 if (styles) setStylesTarget(styles)
@@ -35,22 +36,22 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache().restore((window as any).__APOLLO_STATE__ || {}),
 })
 
-async function render(
-  renderFunction: Renderer,
-  App: FunctionComponentElement<any>,
-) {
+async function render(renderFunction: Renderer, App: typeof ReflexApp) {
   // await Loadable.preloadReady()
-
-  const reactRoot = document.getElementById('app')
-
-  renderFunction(App, reactRoot)
+  const element = document.getElementById('app')
+  const app = (
+    <BrowserRouter>
+      <App apollo={apolloClient} />
+    </BrowserRouter>
+  )
+  renderFunction(app, element)
 }
 
-render(ReactDOM.hydrate, <App apollo={apolloClient} />)
+render(ReactDOM.hydrate, ReflexApp)
 
 if (module.hot && module.hot.accept) {
   module.hot.accept('ui/App', () => {
-    const App = require('ui/App').default
-    render(ReactDOM.render, <App apollo={apolloClient} />)
+    const ReflexApp = require('ui/App').default
+    render(ReactDOM.render, ReflexApp)
   })
 }

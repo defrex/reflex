@@ -30,7 +30,7 @@ export default async function applyUiMiddleware(app: Application) {
     app.use(webpackHotMiddleware(compiler))
   }
 
-  app.get('*', async (_req: Request, res: Response) => {
+  app.get('*', async (req: Request, res: Response) => {
     let stats
     if (config.environment === 'development') {
       stats = res.locals.webpackStats.toJson()
@@ -42,11 +42,7 @@ export default async function applyUiMiddleware(app: Application) {
     )
     res.send(
       ReactDOMServer.renderToString(
-        <Document
-          assets={assets}
-          graphqlContext={res.locals.graphqlContext}
-          graphqlSchema={res.locals.graphqlSchema}
-        />,
+        <Document assets={assets} req={req} res={res} />,
       ),
     )
     res.end()

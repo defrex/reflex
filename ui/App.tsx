@@ -5,7 +5,7 @@ import { ApolloClient } from 'apollo-client'
 import { NormalizedCacheObject } from 'apollo-cache-inmemory'
 
 import 'ui/lib/globalStyles'
-import IndexPage from 'ui/pages/index'
+import Routes from 'ui/Routes'
 
 interface ReflexAppProps {
   apollo: ApolloClient<NormalizedCacheObject>
@@ -17,7 +17,7 @@ export default class ReflexApp extends PureComponent<ReflexAppProps> {
 
     return (
       <ApolloProvider client={apollo}>
-        <IndexPage />
+        <Routes />
       </ApolloProvider>
     )
   }
