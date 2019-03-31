@@ -50,16 +50,15 @@ export default async function main() {
     app.use(webpackHotMiddleware(clientCompiler))
     app.get('*', webpackHotServerMiddleware(compiler, { chunkName: 'server' }))
   } else {
-    const stats = require(absolutePath('dist/server-stats.json'))
+    const serverStats = require(absolutePath('dist/server-stats.json'))
+    const clientStats = require(absolutePath('dist/client-stats.json'))
     const serverRendererPath = absolutePath(
-      `/dist/${stats.assetsByChunkName.server}`,
+      `/dist/${serverStats.assetsByChunkName.server[0]}`,
     )
-    console.log(serverRendererPath)
     const serverRenderer = require(serverRendererPath).default
-    console.log(serverRenderer)
 
     app.get('/dist', express.static('dist'))
-    app.get('*', serverRenderer(stats))
+    app.get('*', serverRenderer({ clientStats }))
   }
 
   if (config.environment === 'development') {

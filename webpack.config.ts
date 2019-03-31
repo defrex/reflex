@@ -15,6 +15,13 @@ const base = {
     publicPath: '/dist/',
   },
 
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      ui: absolutePath('./ui'),
+    },
+  },
+
   module: {
     rules: [
       {
@@ -53,13 +60,6 @@ export const client = {
     ],
   },
 
-  resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
-    alias: {
-      ui: absolutePath('./ui'),
-    },
-  },
-
   plugins: [
     ...base.plugins,
     new StatsWriterPlugin({ filename: 'client-stats.json' }),
@@ -78,14 +78,6 @@ export const server = {
   output: {
     ...base.output,
     libraryTarget: 'commonjs2',
-  },
-
-  resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
-    alias: {
-      ui: absolutePath('./ui'),
-      api: absolutePath('./api'),
-    },
   },
 
   plugins: [
