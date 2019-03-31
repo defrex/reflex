@@ -45,8 +45,8 @@ export default class Page extends PureComponent<PageProps> {
           onMenuclick={this.handleMenuClick}
         />
         <MainMenu visible={menuOpen} query={query} />
-        <div css={styles.contentWrapper}>
-          <div css={styles.content}>
+        <div className={styles.contentWrapper}>
+          <div className={styles.content}>
             {children}
             {debug && document && document.loc ? (
               <Code language='graphql'>{document.loc.source.body}</Code>

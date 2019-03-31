@@ -14,7 +14,7 @@ export default class Template extends PureComponent<
   render() {
     const { children, ...props } = this.props
     return (
-      <a css={styles.root} {...props}>
+      <a className={styles.root} {...props}>
         {children}
       </a>
     )

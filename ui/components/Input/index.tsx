@@ -19,15 +19,15 @@ export default class Input extends PureComponent<InputProps> {
   render() {
     const { name, value, onChange, label, optional } = this.props
     return (
-      <label css={styles.label}>
-        <div css={styles.labelText}>
+      <label className={styles.label}>
+        <div className={styles.labelText}>
           {label ? label : startCase(name)}
           {optional ? (
-            <span css={styles.labelOptional}>{' (optional)'}</span>
+            <span className={styles.labelOptional}>{' (optional)'}</span>
           ) : null}
         </div>
         <input
-          css={styles.input}
+          className={styles.input}
           type='text'
           name={name}
           onChange={onChange}

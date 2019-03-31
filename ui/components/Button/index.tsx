@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode, HTMLProps } from 'react'
 
 import styles from './styles'
+import { classes } from 'typestyle'
 
 interface ButtonProps {
   children: ReactNode
@@ -11,7 +12,19 @@ const defaultProps = {
   style: 'light',
 }
 
-class Button extends PureComponent<ButtonProps & HTMLProps<HTMLButtonElement>> {
+function getStyle(style: ButtonProps['style']): string {
+  if (style === 'light') {
+    return styles.light
+  } else if (style === 'primary') {
+    return styles.primary
+  } else {
+    return ''
+  }
+}
+
+export default class Button extends PureComponent<
+  ButtonProps & HTMLProps<HTMLButtonElement>
+> {
   static A: any = null
 
   static defaultProps = {
@@ -22,7 +35,7 @@ class Button extends PureComponent<ButtonProps & HTMLProps<HTMLButtonElement>> {
   render() {
     const { children, style, ...props } = this.props
     return (
-      <button css={[styles.button, styles[style]]} {...props}>
+      <button className={classes(styles.button, getStyle(style))} {...props}>
         {children}
       </button>
     )
@@ -37,11 +50,9 @@ Button.A = class AnchorButton extends PureComponent<
   render() {
     const { children, style, ...props } = this.props
     return (
-      <a css={[styles.button, styles[style]]} {...props}>
+      <a className={classes(styles.button, getStyle(style))} {...props}>
         {children}
       </a>
     )
   }
 }
-
-export default Button

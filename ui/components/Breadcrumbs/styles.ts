@@ -1,19 +1,20 @@
-import { css } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
-export default {
-  root: css`
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: center;
+export default stylesheet({
+  root: {
+    display: 'inline-flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    listStyle: 'none',
 
-    list-style: none;
-
-    & > li::after {
-      content: '>';
-      margin: 0 8px;
-    }
-    & > li:last-child::after {
-      content: '';
-    }
-  `,
-}
+    $nest: {
+      '& > li::after': {
+        content: '>',
+        margin: '0 8px',
+      },
+      '& > li:lastChild::after': {
+        content: '',
+      },
+    },
+  },
+})

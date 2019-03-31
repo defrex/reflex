@@ -1,5 +1,5 @@
-import { css } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
-export default {
-  root: css``,
-}
+export default stylesheet({
+  root: {},
+})

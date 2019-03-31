@@ -23,22 +23,26 @@ export default class AppBar extends PureComponent<AppBarProps> {
   render() {
     const { query, menuIcon } = this.props
     return (
-      <div css={styles.appBarOuter}>
-        <div css={styles.appBarInner}>
+      <div className={styles.appBarOuter}>
+        <div className={styles.appBarInner}>
           <a href='#' onClick={this.handleMenuClick}>
             <Icon src={menuIcon} alt='menu' />
           </a>
           <Link route='/dashboard'>
             <a>
-              <img css={styles.logo} src='/static/protologo.svg' alt='Reflex' />
+              <img
+                className={styles.logo}
+                src='/static/protologo.svg'
+                alt='Reflex'
+              />
             </a>
           </Link>
-          <div css={styles.spacer} />
+          <div className={styles.spacer} />
           <div>
             {query.currentUser ? (
-              <div css={styles.links}>
+              <div>
                 <Link route='/profile'>
-                  <a>{query.currentUser.name}</a>
+                  <a className={styles.link}>{query.currentUser.name}</a>
                 </Link>
               </div>
             ) : null}

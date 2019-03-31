@@ -36,38 +36,40 @@ class MainMenu extends PureComponent<MainMenuProps> {
         style={{
           display: visible ? 'block' : 'none',
         }}
-        css={styles.mainMenu}
+        className={styles.mainMenu}
       >
-        <ul css={styles.list}>
+        <ul className={styles.list}>
           {query.currentUser ? (
             <>
-              <li css={styles.item}>
-                <span css={styles.username}>{query.currentUser.name}</span>
+              <li className={styles.item}>
+                <span className={styles.username}>
+                  {query.currentUser.name}
+                </span>
                 <a
                   href='#'
-                  css={styles.lowEmphisis}
+                  className={styles.lowEmphisis}
                   onClick={this.handleLogoutClick}
                 >
                   Logout
                 </a>
               </li>
               {query.teams.map((team) => (
-                <li css={styles.item} key={team.id}>
+                <li className={styles.item} key={team.id}>
                   <Link route={`/teams/${team.id}/library`}>
                     <a>{team.name}</a>
                   </Link>
                 </li>
               ))}
-              <li css={styles.item}>
+              <li className={styles.item}>
                 <Link route='/team'>
-                  <a href='#' css={styles.lowEmphisis}>
+                  <a href='#' className={styles.lowEmphisis}>
                     New Team
                   </a>
                 </Link>
               </li>
             </>
           ) : (
-            <li css={styles.item}>
+            <li className={styles.item}>
               <GithubAuthButton query={query}>Login</GithubAuthButton>
             </li>
           )}

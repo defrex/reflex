@@ -9,7 +9,6 @@ import {
   CreateTeamPageMutationMutation,
   CreateTeamPageMutationMutationVariables,
 } from 'ui/lib/graphql'
-import styles from './styles'
 import { MutationFn } from 'react-apollo'
 
 export default class TeamsPage extends PureComponent {
@@ -39,7 +38,7 @@ export default class TeamsPage extends PureComponent {
       <TeamsPageQueryComponent>
         {({ data }) =>
           data ? (
-            <Page css={styles.root} query={data}>
+            <Page query={data}>
               <h1>Create Team</h1>
               <CreateTeamPageMutationComponent>
                 {(createTeam) => (

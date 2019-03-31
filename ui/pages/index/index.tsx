@@ -2,17 +2,20 @@ import React, { PureComponent } from 'react'
 
 import Button from 'ui/components/Button'
 
-import style from './style'
+import styles from './styles'
 
 export default class IndexPage extends PureComponent {
-  render () {
+  render() {
     return (
-      <div css={style.root}>
-        <img src='/static/protologo.svg' alt='Reflex' />
-        <div css={style.buttonWrapper}>
-          <Button href='https://airtable.com/shrT4LTkYvxqJRMSo'>
+      <div className={styles.root}>
+        <img className={styles.img} src='/static/protologo.svg' alt='Reflex' />
+        <div className={styles.buttonWrapper}>
+          <Button.A
+            href='https://airtable.com/shrT4LTkYvxqJRMSo'
+            style='primary'
+          >
             Learn More
-          </Button>
+          </Button.A>
         </div>
       </div>
     )

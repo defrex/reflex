@@ -10,7 +10,7 @@ export default function gen(): Promise<any> {
     generates: {
       [absolutePath('api/graphql/types.ts')]: {
         plugins: [
-          { add: '// tslint:disable' },
+          // { add: '// tslint:disable' },
           'typescript',
           'typescript-resolvers',
         ],

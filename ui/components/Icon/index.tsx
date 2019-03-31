@@ -9,6 +9,6 @@ interface IconProps {
 
 export default class Icon extends PureComponent<IconProps> {
   render() {
-    return <img css={style.icon} {...this.props} />
+    return <img className={style.icon} {...this.props} />
   }
 }

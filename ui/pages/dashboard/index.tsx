@@ -14,6 +14,7 @@ export default class Dashboard extends PureComponent {
           data ? (
             <Page query={data} document={DashboardQueryDocument}>
               <h1>Dashboard</h1>
+              {console.log(data)}
               {!data.currentUser ? (
                 <div>
                   <FigmaAuthButton query={data} />

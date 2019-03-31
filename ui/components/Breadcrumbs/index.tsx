@@ -19,7 +19,7 @@ export default class Button extends PureComponent<
   render() {
     const { children, ...props } = this.props
     return (
-      <ul css={styles.root} {...props}>
+      <ul className={styles.root} {...props}>
         {children.map(({ name, ...linkProps }, index) => (
           <li key={index}>
             <Link {...linkProps}>

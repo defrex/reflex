@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react'
 import Page from 'ui/components/Page'
 
 import { TeamPageQueryComponent } from 'ui/lib/graphql'
-import styles from './styles'
 
 interface TeamPageProps {
   teamId: string
@@ -20,7 +19,7 @@ export default class TeamPage extends PureComponent<TeamPageProps> {
       <TeamPageQueryComponent variables={{ teamId }}>
         {({ data }) =>
           data ? (
-            <Page css={styles.root} query={data}>
+            <Page query={data}>
               <h1>{data.team!.name}</h1>
             </Page>
           ) : null

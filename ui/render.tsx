@@ -1,5 +1,6 @@
 import React, { FunctionComponentElement } from 'react'
 import ReactDOM, { Renderer } from 'react-dom'
+import { setStylesTarget } from 'typestyle'
 // import Loadable from 'react-loadable'
 
 import { ApolloClient } from 'apollo-client'
@@ -7,11 +8,12 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
-// import { Global } from '@emotion/core'
 
-// import globalStyles from 'ui/lib/globalStyles'
 import { absoluteUrl } from 'ui/lib/url'
 import App from 'ui/App'
+
+const styles = document.getElementById('styles')
+if (styles) setStylesTarget(styles)
 
 const apolloClient = new ApolloClient({
   link: ApolloLink.from([

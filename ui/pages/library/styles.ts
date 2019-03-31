@@ -1,23 +1,19 @@
-import { css, SerializedStyles } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
-// import { primary, dark, light, gray } from 'ui/lib/colors'
-
-export default {
-  libraryItem: css`
-    margin-bottom: 64px;
-  `,
-  libraryItemTitle: css`
-    margin-bottom: 16px;
-    font-size: 18px;
-    font-weight: bold;
-  `,
-  libraryInstance: css`
-    margin-bottom: 16px;
-  `,
-  libraryInstanceTitle: css`
-    margin-bottom: 4px;
-    font-size: 16px;
-  `,
-} as {
-  [index: string]: SerializedStyles
-}
+export default stylesheet({
+  libraryItem: {
+    marginBottom: 64,
+  },
+  libraryItemTitle: {
+    marginBottom: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  libraryInstance: {
+    marginBottom: 16,
+  },
+  libraryInstanceTitle: {
+    marginBottom: 4,
+    fontSize: 16,
+  },
+})
