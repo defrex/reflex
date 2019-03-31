@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-// import fs from 'fs'
 import { Request, Response, NextFunction } from 'express'
 import { SchemaLink } from 'apollo-link-schema'
 import { ApolloClient } from 'apollo-client'
