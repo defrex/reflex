@@ -38,6 +38,7 @@
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.123",
     "@types/luxon": "^1.11.1",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^11.10.4",
     "@types/node-fetch": "^2.1.7",
     "@types/react-dom": "^16.8.3",
@@ -87,6 +88,7 @@
     "lodash": "^4.17.11",
     "luxon": "^1.11.4",
     "module-alias": "^2.2.0",
+    "morgan": "^1.9.1",
     "node-fetch": "^2.3.0",
     "prisma": "^1.29.1",
     "probot": "^7.5.1",
@@ -105,6 +107,7 @@
     "webpack": "^4.29.6",
     "webpack-dev-middleware": "^3.6.1",
     "webpack-hot-middleware": "^2.24.3",
+    "webpack-hot-server-middleware": "^0.6.0",
     "webpack-stats-plugin": "^0.2.1"
   },
   "devDependencies": {

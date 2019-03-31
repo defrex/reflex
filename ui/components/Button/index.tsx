@@ -5,7 +5,8 @@ import { classes } from 'typestyle'
 
 interface ButtonProps {
   children: ReactNode
-  style: 'light' | 'primary'
+  style?: 'light' | 'primary'
+  type?: 'button' | 'submit' | 'reset' | undefined
 }
 
 const defaultProps = {
@@ -26,11 +27,7 @@ export default class Button extends PureComponent<
   ButtonProps & HTMLProps<HTMLButtonElement>
 > {
   static A: any = null
-
-  static defaultProps = {
-    ...defaultProps,
-    type: 'button',
-  }
+  static defaultProps = defaultProps
 
   render() {
     const { children, style, ...props } = this.props

@@ -5,17 +5,8 @@ import { StatsWriterPlugin } from 'webpack-stats-plugin'
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
 
-export default {
+const base = {
   mode: config.environment,
-  name: 'ui',
-  target: 'web',
-
-  entry: [
-    ...(config.environment === 'development'
-      ? ['webpack-hot-middleware/client']
-      : []),
-    absolutePath('./ui/browser'),
-  ],
 
   output: {
     path: absolutePath('./dist'),
@@ -37,6 +28,31 @@ export default {
     ],
   },
 
+  plugins: [
+    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
+    new webpack.DefinePlugin({
+      IS_BROWSER: JSON.stringify(true),
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
+}
+
+export const client = {
+  ...base,
+
+  name: 'client',
+  target: 'web',
+
+  entry: {
+    client: [
+      ...(config.environment === 'development'
+        ? ['webpack-hot-middleware/client']
+        : []),
+      absolutePath('./ui/client'),
+    ],
+  },
+
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     alias: {
@@ -45,12 +61,37 @@ export default {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
-    new webpack.DefinePlugin({
-      IS_BROWSER: JSON.stringify(true),
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new StatsWriterPlugin(),
+    ...base.plugins,
+    new StatsWriterPlugin({ filename: 'client-stats.json' }),
   ],
 } as webpack.Configuration
+
+export const server = {
+  ...base,
+
+  name: 'server',
+  target: 'node',
+  devtool: 'source-map',
+
+  entry: { server: absolutePath('./ui/server') },
+
+  output: {
+    ...base.output,
+    libraryTarget: 'commonjs2',
+  },
+
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      ui: absolutePath('./ui'),
+      api: absolutePath('./api'),
+    },
+  },
+
+  plugins: [
+    ...base.plugins,
+    new StatsWriterPlugin({ filename: 'server-stats.json' }),
+  ],
+} as webpack.Configuration
+
+export default [client, server]

@@ -1,11 +1,6 @@
 import React from 'react'
-import fs from 'fs'
-import express from 'express'
 import ReactDOMServer from 'react-dom/server'
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import { Application, Request, Response } from 'express'
-import webpackHotMiddleware from 'webpack-hot-middleware'
+import { Request, Response, NextFunction } from 'express'
 import { SchemaLink } from 'apollo-link-schema'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -14,38 +9,32 @@ import { getStyles } from 'typestyle'
 import { renderToStringWithData } from 'react-apollo'
 
 import App from 'ui/App'
-import webpackConfig from '../webpack.config'
 import Document, { Script } from 'ui/Document'
 import config from 'api/config'
-import { absolutePath } from 'api/lib/path'
-
-const statsFilename = absolutePath('dist/stats.json')
-const statsFile = fs.existsSync(statsFilename)
-  ? JSON.parse(fs.readFileSync(statsFilename, 'utf-8'))
-  : null
+// import { absolutePath } from 'api/lib/path'
 
 interface RouterContext {
   url?: string
   status?: number
 }
 
-export default async function applyUiMiddleware(app: Application) {
-  if (config.environment === 'development') {
-    const compiler = webpack(webpackConfig)
-    app.use(
-      webpackDevMiddleware(compiler, {
-        publicPath: '/dist',
-        stats: 'minimal',
-        serverSideRender: true,
+export default () =>
+  async function uiServer(req: Request, res: Response, _next: NextFunction) {
+    // console.log(clientStats, serverStats)
+
+    let stats
+    if (config.environment === 'development') {
+      stats = res.locals.webpackStats.toJson()
+    } else {
+      stats = {}
+      // require(absolutePath('dist/browser-stats.json'))
+    }
+    const scripts: Script[] = Object.values(stats.assetsByChunkName).map(
+      (asset: any) => ({
+        src: `/dist/${asset}`,
       }),
     )
 
-    app.use(webpackHotMiddleware(compiler))
-  } else {
-    app.get('/dist', express.static('dist'))
-  }
-
-  app.get('*', async (req: Request, res: Response) => {
     const apollo = new ApolloClient({
       ssrMode: true,
       link: new SchemaLink({
@@ -72,23 +61,10 @@ export default async function applyUiMiddleware(app: Application) {
     }
 
     const css = getStyles()
-    const scripts: Script[] = [
-      {
-        content: `window.__APOLLO_STATE__=${JSON.stringify(apollo.extract())};`,
-      },
-    ]
 
-    let stats
-    if (config.environment === 'development') {
-      stats = res.locals.webpackStats.toJson()
-    } else {
-      stats = statsFile
-    }
-    scripts.concat(
-      Object.values(stats.assetsByChunkName).map((asset: any) => ({
-        src: `/dist/${asset}`,
-      })),
-    )
+    scripts.push({
+      content: `window.__APOLLO_STATE__=${JSON.stringify(apollo.extract())};`,
+    })
 
     res.send(
       ReactDOMServer.renderToStaticMarkup(
@@ -96,5 +72,4 @@ export default async function applyUiMiddleware(app: Application) {
       ),
     )
     res.end()
-  })
-}
+  }

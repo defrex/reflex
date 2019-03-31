@@ -5,11 +5,11 @@ import Link from 'ui/components/Link'
 
 import { AppBarQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
+import menuSvg from './icons/menu-light.svg'
 
 interface AppBarProps {
   query: AppBarQueryFragment
   onMenuclick: () => void
-  menuIcon: string
 }
 
 export default class AppBar extends PureComponent<AppBarProps> {
@@ -21,12 +21,12 @@ export default class AppBar extends PureComponent<AppBarProps> {
   }
 
   render() {
-    const { query, menuIcon } = this.props
+    const { query } = this.props
     return (
       <div className={styles.appBarOuter}>
         <div className={styles.appBarInner}>
           <a href='#' onClick={this.handleMenuClick}>
-            <Icon src={menuIcon} alt='menu' />
+            <Icon src={menuSvg} alt='menu' />
           </a>
           <Link to='/dashboard'>
             <img

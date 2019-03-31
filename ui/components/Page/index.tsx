@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react'
-import { DocumentNode } from 'graphql'
 import { ApolloError } from 'apollo-client'
 
 import AppBar from 'ui/components/AppBar'
@@ -10,13 +9,12 @@ import styles from './styles'
 import MainMenu from '../MainMenu'
 
 // const cancelSvg = require('./icons/cancel-light.svg')
-// const menuSvg = require('./icons/menu-light.svg')
 
 interface PageProps {
   query?: PageQueryFragment
   error?: ApolloError
   debug?: boolean
-  document?: DocumentNode
+  document?: any
   children: ReactNode
 }
 
@@ -43,11 +41,7 @@ export default class Page extends PureComponent<PageProps> {
       <div>
         {query && !error ? (
           <>
-            <AppBar
-              query={query}
-              menuIcon={''}
-              onMenuclick={this.handleMenuClick}
-            />
+            <AppBar query={query} onMenuclick={this.handleMenuClick} />
             <MainMenu visible={menuOpen} query={query} />
             <div className={styles.contentWrapper}>
               <div className={styles.content}>

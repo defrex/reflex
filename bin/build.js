@@ -2,16 +2,28 @@
 require('./lib/setup')
 
 const webpack = require('webpack')
-const webpackConfig = require('../webpack.config').default
+const config = require('../webpack.config').default
 
-webpack(webpackConfig, (err, stats) => {
+webpack(config, (err, stats) => {
   if (err) {
-    console.error('🛑')
-    console.error(err)
-  } else if (stats.hasErrors()) {
-    console.error('🛑')
-    for (const error of stats.compilation.errors) {
+    console.error(err.stack || err)
+    if (err.details) {
+      console.error(err.details)
+    }
+    return
+  }
+
+  const info = stats.toJson()
+
+  if (stats.hasErrors()) {
+    for (const error of info.errors) {
       console.error('\n\n', error)
+    }
+  }
+
+  if (stats.hasWarnings()) {
+    for (const warning of info.warnings) {
+      console.warn('\n\n', warning)
     }
   }
 })
