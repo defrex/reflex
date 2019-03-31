@@ -1,8 +1,5 @@
 /node_modules
-/config/secrets.*
-/build
 /dist
-/public/dist
 
 # misc
 .DS_Store

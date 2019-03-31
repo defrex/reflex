@@ -28,21 +28,19 @@ export default class AppBar extends PureComponent<AppBarProps> {
           <a href='#' onClick={this.handleMenuClick}>
             <Icon src={menuIcon} alt='menu' />
           </a>
-          <Link route='/dashboard'>
-            <a>
-              <img
-                className={styles.logo}
-                src='/static/protologo.svg'
-                alt='Reflex'
-              />
-            </a>
+          <Link to='/dashboard'>
+            <img
+              className={styles.logo}
+              src='/static/protologo.svg'
+              alt='Reflex'
+            />
           </Link>
           <div className={styles.spacer} />
           <div>
             {query.currentUser ? (
               <div>
-                <Link route='/profile'>
-                  <a className={styles.link}>{query.currentUser.name}</a>
+                <Link to='/profile' className={styles.link}>
+                  {query.currentUser.name}
                 </Link>
               </div>
             ) : null}

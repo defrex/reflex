@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'
 
-import Link from 'ui/components/Link'
+import Link, { LinkProps } from 'ui/components/Link'
 import styles from './styles'
 
-interface Crumb {
+interface Crumb extends LinkProps {
   name: string
-  route: string
-  params?: { [key: string]: string }
 }
 
 interface ButtonProps {

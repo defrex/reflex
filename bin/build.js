@@ -2,20 +2,16 @@
 require('./lib/setup')
 
 const webpack = require('webpack')
+const webpackConfig = require('../webpack.config').default
 
-const uiWebpackConfig = require('../webpack/ui').default
-// const apiWebpackConfig = require('../webpack/api').default
-
-const handler = (entry) => (err, stats) => {
-  if (err || stats.hasErrors()) {
-    console.error('🛑', entry)
+webpack(webpackConfig, (err, stats) => {
+  if (err) {
+    console.error('🛑')
+    console.error(err)
+  } else if (stats.hasErrors()) {
+    console.error('🛑')
     for (const error of stats.compilation.errors) {
       console.error('\n\n', error)
     }
-  } else {
-    console.log('✅', entry)
   }
-}
-
-webpack(uiWebpackConfig, handler('ui'))
-// webpack(apiWebpackConfig, handler('api'))
+})

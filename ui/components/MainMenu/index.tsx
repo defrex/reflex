@@ -55,13 +55,13 @@ class MainMenu extends PureComponent<MainMenuProps> {
               </li>
               {query.teams.map((team) => (
                 <li className={styles.item} key={team.id}>
-                  <Link route={`/teams/${team.id}/library`}>
+                  <Link to={`/teams/${team.id}/library`}>
                     <a>{team.name}</a>
                   </Link>
                 </li>
               ))}
               <li className={styles.item}>
-                <Link route='/team'>
+                <Link to='/team'>
                   <a href='#' className={styles.lowEmphisis}>
                     New Team
                   </a>

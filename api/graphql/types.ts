@@ -228,6 +228,3 @@ export type IResolvers<Context = ReflexContex> = {
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>
 }
-
-// @ts-ignore
-export type IDirectiveResolvers<Context = ReflexContex> = {}

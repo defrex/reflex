@@ -1,14 +1,12 @@
-/// <reference types="../@types/webpack-stats-plugin" />
+/// <reference types="./@types/webpack-stats-plugin" />
 import webpack from 'webpack'
-import merge from 'webpack-merge'
-// import { ReactLoadablePlugin } from 'react-loadable/webpack'
 import { StatsWriterPlugin } from 'webpack-stats-plugin'
 
 import config from 'api/config'
-import baseConfig from './base'
-import { absolutePath } from '../api/lib/path'
+import { absolutePath } from 'api/lib/path'
 
-export default merge.smart(baseConfig, {
+export default {
+  mode: config.environment,
   name: 'ui',
   target: 'web',
 
@@ -16,11 +14,11 @@ export default merge.smart(baseConfig, {
     ...(config.environment === 'development'
       ? ['webpack-hot-middleware/client']
       : []),
-    absolutePath('./ui/render'),
+    absolutePath('./ui/browser'),
   ],
 
   output: {
-    path: absolutePath('./public/dist'),
+    path: absolutePath('./dist'),
     filename: '[name].[hash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: '/dist/',
@@ -29,21 +27,30 @@ export default merge.smart(baseConfig, {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
+      },
+      {
         test: /\.(png|jpg|gif|eot|ttf|woff|woff2|ico|xml|manifest|svg)$/,
         use: 'file-loader',
       },
     ],
   },
 
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      ui: absolutePath('./ui'),
+    },
+  },
+
   plugins: [
+    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
     new webpack.DefinePlugin({
       IS_BROWSER: JSON.stringify(true),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new StatsWriterPlugin(),
-    // new ReactLoadablePlugin({
-    //   filename: './public/dist/react-loadable.json',
-    // }),
   ],
-})
+} as webpack.Configuration

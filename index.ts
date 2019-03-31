@@ -1,8 +1,10 @@
 import express from 'express'
 import cookieSession from 'cookie-session'
+import chokidar from 'chokidar'
 
+import gen from 'api/lib/gen'
 import applyApiMiddleware from 'api'
-import applyUiMiddleware from 'ui'
+import applyUiMiddleware from 'ui/server'
 import config from 'api/config'
 import { absoluteUrl } from 'api/lib/url'
 
@@ -21,6 +23,14 @@ export default async function main() {
 
   await applyApiMiddleware(app)
   await applyUiMiddleware(app)
+
+  if (config.environment === 'development') {
+    const files = [
+      config.graphqlSchemaPath.replace('index', '*'),
+      ...config.graphqlDocumentPaths,
+    ]
+    chokidar.watch(files, { ignoreInitial: true }).on('all', gen)
+  }
 
   app.listen(config.port, () => {
     console.log(absoluteUrl('/'))
