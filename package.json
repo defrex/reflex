@@ -8,9 +8,8 @@
   "scripts": {
     "start": "./bin/start.js",
     "build": "./bin/build.js",
-    "gen": "prisma generate && ./bin/gen.js",
-    "test": "ts-jest",
-    "heroku-postbuild": "yarn run build"
+    "gen": "./bin/gen.js",
+    "heroku-postbuild": "./bin/build.js"
   },
   "_moduleAliases": {
     "api": "./api",
