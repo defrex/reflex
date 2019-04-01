@@ -20,13 +20,7 @@ interface RouterContext {
 
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
-    const scripts: Script[] = Object.values<string[]>(
-      clientStats.assetsByChunkName,
-    )
-      .flat()
-      .map((asset: any) => ({
-        src: `/dist/${asset}`,
-      }))
+    const scripts: Script[] = []
 
     const apollo = new ApolloClient({
       ssrMode: true,
@@ -62,6 +56,13 @@ export default ({ clientStats }: { clientStats: any }) =>
     scripts.push({
       content: `window.__APOLLO_STATE__=${JSON.stringify(apollo.extract())};`,
     })
+    scripts.concat(
+      Object.values<string[]>(clientStats.assetsByChunkName)
+        .flat()
+        .map((asset: any) => ({
+          src: `/dist/${asset}`,
+        })),
+    )
 
     res.send(
       ReactDOMServer.renderToStaticMarkup(
