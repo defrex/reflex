@@ -24,9 +24,7 @@ export default async function main() {
       httpOnly: true,
     }),
   )
-
   app.use(morgan('dev'))
-
   app.use(express.static('public'))
 
   await applyApiMiddleware(app)
@@ -48,6 +46,8 @@ export default async function main() {
       throw new Error('Cannon find client compiler')
     }
     app.use(webpackHotMiddleware(clientCompiler))
+    app.get('/dist/*', (_req, res) => res.sendStatus(404))
+
     app.get('*', webpackHotServerMiddleware(compiler, { chunkName: 'server' }))
   } else {
     const serverStats = require(absolutePath('dist/server-stats.json'))

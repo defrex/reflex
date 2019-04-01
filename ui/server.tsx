@@ -20,11 +20,13 @@ interface RouterContext {
 
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
-    const scripts: Script[] = Object.values(clientStats.assetsByChunkName).map(
-      (asset: any) => ({
-        src: `/dist/${asset}`,
-      }),
+    const scripts: Script[] = Object.values<string[]>(
+      clientStats.assetsByChunkName,
     )
+      .flat()
+      .map((asset: any) => ({
+        src: `/dist/${asset}`,
+      }))
 
     const apollo = new ApolloClient({
       ssrMode: true,

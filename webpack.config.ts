@@ -7,6 +7,7 @@ import { absolutePath } from 'api/lib/path'
 
 const base = {
   mode: config.environment,
+  devtool: 'source-map',
 
   output: {
     path: absolutePath('./dist'),
@@ -37,11 +38,7 @@ const base = {
 
   plugins: [
     new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
-    new webpack.DefinePlugin({
-      IS_BROWSER: JSON.stringify(true),
-    }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
   ],
 }
 
@@ -71,7 +68,6 @@ export const server = {
 
   name: 'server',
   target: 'node',
-  devtool: 'source-map',
 
   entry: { server: absolutePath('./ui/server') },
 
