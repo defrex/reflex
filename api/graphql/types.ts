@@ -1,4 +1,5 @@
 type Maybe<T> = T | null
+/** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
   String: string
@@ -75,8 +76,6 @@ import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
 
-export type ArrayOrIterable<T> = Array<T> | Iterable<T>
-
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
@@ -107,12 +106,7 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
-export interface ISubscriptionResolverObject<
-  TResult,
-  TParent,
-  TContext,
-  TArgs
-> {
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   subscribe: SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs>
   resolve?: SubscriptionResolveFn<TResult, TParent, TContext, TArgs>
 }
@@ -125,8 +119,8 @@ export type SubscriptionResolver<
 > =
   | ((
       ...args: any[]
-    ) => ISubscriptionResolverObject<TResult, TParent, TContext, TArgs>)
-  | ISubscriptionResolverObject<TResult, TParent, TContext, TArgs>
+    ) => SubscriptionResolverObject<TResult, TParent, TContext, TArgs>)
+  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
@@ -193,7 +187,7 @@ export type MutationStatusResolvers<
   ParentType = MutationStatus
 > = {
   success?: Resolver<Scalars['Boolean'], ParentType, Context>
-  errors?: Resolver<Maybe<ArrayOrIterable<MutationError>>, ParentType, Context>
+  errors?: Resolver<Maybe<Array<MutationError>>, ParentType, Context>
 }
 
 export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
@@ -217,7 +211,7 @@ export type UserResolvers<Context = ReflexContex, ParentType = User> = {
   githubConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
 }
 
-export type IResolvers<Context = ReflexContex> = {
+export type Resolvers<Context = ReflexContex> = {
   Config?: ConfigResolvers<Context>
   CreateTeamResponse?: CreateTeamResponseResolvers<Context>
   LogoutResponse?: LogoutResponseResolvers<Context>
@@ -228,3 +222,8 @@ export type IResolvers<Context = ReflexContex> = {
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>
 }
+
+/**
+ * @deprecated
+ * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
+ */
