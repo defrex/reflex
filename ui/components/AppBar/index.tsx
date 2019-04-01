@@ -1,17 +1,15 @@
 import React, { PureComponent, MouseEvent } from 'react'
-import routes from 'ui/routes'
 
 import Icon from 'ui/components/Icon'
+import Link from 'ui/components/Link'
 
 import { AppBarQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
-
-const { Link } = routes
+import menuSvg from './icons/menu-light.svg'
 
 interface AppBarProps {
   query: AppBarQueryFragment
   onMenuclick: () => void
-  menuIcon: string
 }
 
 export default class AppBar extends PureComponent<AppBarProps> {
@@ -23,24 +21,26 @@ export default class AppBar extends PureComponent<AppBarProps> {
   }
 
   render() {
-    const { query, menuIcon } = this.props
+    const { query } = this.props
     return (
-      <div css={styles.appBarOuter}>
-        <div css={styles.appBarInner}>
+      <div className={styles.appBarOuter}>
+        <div className={styles.appBarInner}>
           <a href='#' onClick={this.handleMenuClick}>
-            <Icon src={menuIcon} alt='menu' />
+            <Icon src={menuSvg} alt='menu' />
           </a>
-          <Link route='/dashboard'>
-            <a>
-              <img css={styles.logo} src='/static/protologo.svg' alt='Reflex' />
-            </a>
+          <Link to='/dashboard'>
+            <img
+              className={styles.logo}
+              src='/static/protologo.svg'
+              alt='Reflex'
+            />
           </Link>
-          <div css={styles.spacer} />
+          <div className={styles.spacer} />
           <div>
             {query.currentUser ? (
-              <div css={styles.links}>
-                <Link route='/profile'>
-                  <a>{query.currentUser.name}</a>
+              <div>
+                <Link to='/profile' className={styles.link}>
+                  {query.currentUser.name}
                 </Link>
               </div>
             ) : null}

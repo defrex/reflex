@@ -1,23 +1,25 @@
-import { css } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
-export default {
-  contentWrapper: css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  `,
-  content: css`
-    flex-grow: 1;
-    max-width: 1024px;
-    margin-top: 32px;
-    margin-bottom: 32px;
+export default stylesheet({
+  contentWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    flexGrow: 1,
+    maxWidth: 1024,
+    marginTop: 32,
+    marginBottom: 32,
 
-    @media (max-width: 1024px) {
-      margin-left: 16px;
-      margin-right: 16px;
-      width: calc(100vw - 64px);
-      overflow: hidden;
-    }
-  `,
-}
+    $nest: {
+      '@media (max-width: 1024px)': {
+        marginLeft: 16,
+        marginRight: 16,
+        width: 'calc(100vw - 64px)',
+        overflow: 'hidden',
+      },
+    },
+  },
+})

@@ -1,9 +1,7 @@
-import { css, SerializedStyles } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
-export default {
-  code: css`
-    line-height: 1.5;
-  `,
-} as {
-  [index: string]: SerializedStyles
-}
+export default stylesheet({
+  code: {
+    lineHeight: 1.5,
+  },
+})

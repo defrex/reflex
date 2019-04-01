@@ -1,3 +1,4 @@
+import React from 'react'
 import Code from './index'
 
 export function Default() {

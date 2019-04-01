@@ -16,24 +16,24 @@ export default class Library extends PureComponent {
             <Page query={data} document={LibraryQueryDocument}>
               <h1>Library</h1>
 
-              <div css={styles.libraryItem}>
-                <div css={styles.libraryItemTitle}>Button</div>
+              <div className={styles.libraryItem}>
+                <div className={styles.libraryItemTitle}>Button</div>
                 {Object.entries(ButtonExamples).map(
                   ([name, ButtonExample], index) => (
-                    <div key={index} css={styles.libraryInstance}>
-                      <div css={styles.libraryInstanceTitle}>{name}</div>
+                    <div key={index} className={styles.libraryInstance}>
+                      <div className={styles.libraryInstanceTitle}>{name}</div>
                       <ButtonExample />
                     </div>
                   ),
                 )}
               </div>
 
-              <div css={styles.libraryItem}>
-                <div css={styles.libraryItemTitle}>Code</div>
+              <div className={styles.libraryItem}>
+                <div className={styles.libraryItemTitle}>Code</div>
                 {Object.entries(CodeExamples).map(
                   ([name, CodeExample], index) => (
-                    <div key={index} css={styles.libraryInstance}>
-                      <div css={styles.libraryInstanceTitle}>{name}</div>
+                    <div key={index} className={styles.libraryInstance}>
+                      <div className={styles.libraryInstanceTitle}>{name}</div>
                       <CodeExample />
                     </div>
                   ),

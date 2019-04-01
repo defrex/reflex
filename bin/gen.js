@@ -1,4 +1,7 @@
 #!/bin/env node
 
 require('./lib/setup')
-require('api/lib/gen').default()
+const run = require('./lib/run').default
+const gen = require('api/lib/gen').default
+
+run(['prisma', 'generate']).then(gen)

@@ -1,9 +1,5 @@
 /node_modules
-/config/secrets.*
-/build
 /dist
-/.next
-/ui/.next
 
 # misc
 .DS_Store

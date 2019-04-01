@@ -1,9 +1,0 @@
-{
-  "name": "Reflex",
-  "short_name": "Reflex",
-  "start_url": "/",
-  "display": "minimal-ui",
-  "background_color": "#fff",
-  "theme_color": "#0a1c35",
-  "orientation": "portrait-primary"
-}

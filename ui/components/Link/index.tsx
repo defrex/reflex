@@ -1,19 +1,14 @@
-import React, { PureComponent, ReactNode } from 'react'
-import { LinkProps as NextRoutesLinkProps } from 'next-routes'
+import React, { PureComponent } from 'react'
+import {
+  Link as ReactRouterLink,
+  LinkProps as ReactRouterLinkProps,
+} from 'react-router-dom'
 
-import routes from 'ui/routes'
+export type LinkProps = ReactRouterLinkProps
 
-const RoutesLink = routes.Link
-
-interface LinkProps {
-  children: ReactNode
-}
-
-export default class Link extends PureComponent<
-  LinkProps & NextRoutesLinkProps
-> {
+// We can extend this later to remove hard-coded paths
+export default class Link extends PureComponent<LinkProps> {
   render() {
-    const { children, ...props } = this.props
-    return <RoutesLink {...props}>{children}</RoutesLink>
+    return <ReactRouterLink {...this.props} />
   }
 }

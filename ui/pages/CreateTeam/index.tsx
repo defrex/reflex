@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 
-import routes from 'ui/routes'
 import Page from 'ui/components/Page'
 import CreateTeamForm from 'ui/components/CreateTeamForm'
 
@@ -10,7 +9,6 @@ import {
   CreateTeamPageMutationMutation,
   CreateTeamPageMutationMutationVariables,
 } from 'ui/lib/graphql'
-import styles from './styles'
 import { MutationFn } from 'react-apollo'
 
 export default class TeamsPage extends PureComponent {
@@ -27,9 +25,10 @@ export default class TeamsPage extends PureComponent {
       response.data.createTeam &&
       response.data.createTeam.status.success
     ) {
-      routes.pushRoute('team', {
-        id: response.data.createTeam.team!.id,
-      })
+      // routes.pushRoute('team', {
+      //   id: response.data.createTeam.team!.id,
+      // })
+      console.warn('🦙 HANDLE THIS')
     } else {
       console.error('💢', response)
     }
@@ -39,13 +38,11 @@ export default class TeamsPage extends PureComponent {
       <TeamsPageQueryComponent>
         {({ data }) =>
           data ? (
-            <Page css={styles.root} query={data}>
+            <Page query={data}>
               <h1>Create Team</h1>
               <CreateTeamPageMutationComponent>
                 {(createTeam) => (
-                  <CreateTeamForm
-                    onSubmit={this.handleSubmit(createTeam)}
-                  />
+                  <CreateTeamForm onSubmit={this.handleSubmit(createTeam)} />
                 )}
               </CreateTeamPageMutationComponent>
             </Page>

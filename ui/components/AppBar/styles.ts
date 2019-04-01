@@ -1,41 +1,40 @@
-import { css } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
 import { primary } from 'ui/lib/colors'
 
-export default {
-  appBarOuter: css`
-    height: 64px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+export default stylesheet({
+  appBarOuter: {
+    height: 64,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: primary,
+  },
+  appBarInner: {
+    width: '100%',
+    maxWidth: 1024,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'spaceBetween',
 
-    background-color: ${primary};
-  `,
-  appBarInner: css`
-    width: 100%;
-    max-width: 1024px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    @media (max-width: 1024px) {
-      margin-left: 16px;
-      margin-right: 16px;
-    }
-  `,
-  logo: css`
-    height: 32px;
-    margin: 16px;
-  `,
-  spacer: css`
-    flex-grow: 1;
-  `,
-  links: css`
-    a {
-      color: white;
-      text-decoration: none;
-    }
-  `,
-}
+    $nest: {
+      '@media (maxWidth: 1024px)': {
+        marginLeft: 16,
+        marginRight: 16,
+      },
+    },
+  },
+  logo: {
+    height: 32,
+    margin: 16,
+  },
+  spacer: {
+    flexGrow: 1,
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+  },
+})

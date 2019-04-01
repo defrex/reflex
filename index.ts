@@ -1,11 +1,18 @@
 import express from 'express'
 import cookieSession from 'cookie-session'
+import chokidar from 'chokidar'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
+import morgan from 'morgan'
 
-import applyGraphqlMiddleware from 'api/graphql'
-import applyNextMiddleware from 'api/next'
+import gen from 'api/lib/gen'
+import applyApiMiddleware from 'api'
 import config from 'api/config'
+import webpackConfigs from './webpack.config'
 import { absoluteUrl } from 'api/lib/url'
-import apiRoutes from 'api/routes'
+import { absolutePath } from 'api/lib/path'
 
 export default async function main() {
   const app = express()
@@ -17,11 +24,50 @@ export default async function main() {
       httpOnly: true,
     }),
   )
+  app.use(morgan('dev'))
+  app.use(express.static('public'))
 
-  app.use('/api', apiRoutes)
+  await applyApiMiddleware(app)
 
-  await applyGraphqlMiddleware(app)
-  await applyNextMiddleware(app)
+  if (config.environment === 'development') {
+    const compiler = webpack(webpackConfigs)
+    app.use(
+      webpackDevMiddleware(compiler, {
+        publicPath: '/dist',
+        stats: 'minimal',
+        serverSideRender: true,
+      }),
+    )
+
+    const clientCompiler = compiler.compilers.find(
+      ({ name }) => name === 'client',
+    )
+    if (!clientCompiler) {
+      throw new Error('Cannon find client compiler')
+    }
+    app.use(webpackHotMiddleware(clientCompiler))
+    app.get('/dist/*', (_req, res) => res.sendStatus(404))
+
+    app.get('*', webpackHotServerMiddleware(compiler, { chunkName: 'server' }))
+  } else {
+    const serverStats = require(absolutePath('dist/server-stats.json'))
+    const clientStats = require(absolutePath('dist/client-stats.json'))
+    const serverRendererPath = absolutePath(
+      `/dist/${serverStats.assetsByChunkName.server[0]}`,
+    )
+    const serverRenderer = require(serverRendererPath).default
+
+    app.get('/dist', express.static('dist'))
+    app.get('*', serverRenderer({ clientStats }))
+  }
+
+  if (config.environment === 'development') {
+    const files = [
+      config.graphqlSchemaPath.replace('index', '*'),
+      ...config.graphqlDocumentPaths,
+    ]
+    chokidar.watch(files, { ignoreInitial: true }).on('all', gen)
+  }
 
   app.listen(config.port, () => {
     console.log(absoluteUrl('/'))

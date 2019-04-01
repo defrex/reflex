@@ -1,25 +1,21 @@
 import React, { PureComponent, ReactNode } from 'react'
-import Head from 'next/head'
-import { DocumentNode } from 'graphql'
+import { ApolloError } from 'apollo-client'
 
 import AppBar from 'ui/components/AppBar'
 import Code from 'ui/components/Code'
 
-import menuSvg from './icons/menu-light.svg'
-import cancelSvg from './icons/cancel-light.svg'
 import { PageQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
 import MainMenu from '../MainMenu'
 
-interface PageProps {
-  query: PageQueryFragment
-  debug?: boolean
-  document?: DocumentNode
-  children: ReactNode
-}
+// const cancelSvg = require('./icons/cancel-light.svg')
 
-interface PageState {
-  menuOpen: boolean
+interface PageProps {
+  query?: PageQueryFragment
+  error?: ApolloError
+  debug?: boolean
+  document?: any
+  children: ReactNode
 }
 
 export default class Page extends PureComponent<PageProps> {
@@ -39,30 +35,31 @@ export default class Page extends PureComponent<PageProps> {
   }
 
   render() {
-    const { children, query, debug, document } = this.props
+    const { children, query, debug, document, error } = this.props
     const { menuOpen } = this.state
     return (
       <div>
-        <Head>
-          <title>Reflex</title>
-        </Head>
-        <AppBar
-          query={query}
-          menuIcon={menuOpen ? cancelSvg : menuSvg}
-          onMenuclick={this.handleMenuClick}
-        />
-        <MainMenu visible={menuOpen} query={query} />
-        <div css={styles.contentWrapper}>
-          <div css={styles.content}>
-            {children}
-            {debug && document && document.loc ? (
-              <Code language='graphql'>{document.loc.source.body}</Code>
-            ) : null}
-            {debug ? (
-              <Code language='json'>{JSON.stringify(query, null, 2)}</Code>
-            ) : null}
-          </div>
-        </div>
+        {query && !error ? (
+          <>
+            <AppBar query={query} onMenuclick={this.handleMenuClick} />
+            <MainMenu visible={menuOpen} query={query} />
+            <div className={styles.contentWrapper}>
+              <div className={styles.content}>
+                {children}
+                {debug && document && document.loc ? (
+                  <Code language='graphql'>{document.loc.source.body}</Code>
+                ) : null}
+                {debug ? (
+                  <Code language='json'>{JSON.stringify(query, null, 2)}</Code>
+                ) : null}
+              </div>
+            </div>
+          </>
+        ) : error ? (
+          <div>{error}</div>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     )
   }

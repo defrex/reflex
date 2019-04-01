@@ -1,10 +1,10 @@
-import { css } from '@emotion/core'
+import { stylesheet } from 'typestyle'
 
 // import { primary } from 'ui/lib/colors'
 
-export default {
-  icon: css`
-    width: 24px;
-    height: 24px;
-  `,
-}
+export default stylesheet({
+  icon: {
+    width: 24,
+    height: 24,
+  },
+})

@@ -20,7 +20,7 @@ export default class Template extends PureComponent<TemplateProps> {
       <SyntaxHighlighter
         language={language}
         style={solarisedDark}
-        css={styles.code}
+        className={styles.code}
       >
         {children}
       </SyntaxHighlighter>

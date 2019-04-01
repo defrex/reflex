@@ -4,12 +4,10 @@ import { MainMenuQueryFragment, withMainMenuMutation } from 'ui/lib/graphql'
 import styles from './styles'
 import GithubAuthButton from 'ui/components/GithubAuthButton'
 import Link from 'ui/components/Link'
-// import routes from 'ui/routes'
 
 interface MainMenuProps {
   query: MainMenuQueryFragment
   visible: boolean
-  logout: Function
 }
 
 class MainMenu extends PureComponent<MainMenuProps> {
@@ -18,7 +16,7 @@ class MainMenu extends PureComponent<MainMenuProps> {
   }
 
   handleLogoutClick = async (event: MouseEvent<HTMLAnchorElement>) => {
-    const { logout } = this.props
+    const { logout } = this.props as any
     event.preventDefault()
 
     console.log('🚪')
@@ -38,38 +36,40 @@ class MainMenu extends PureComponent<MainMenuProps> {
         style={{
           display: visible ? 'block' : 'none',
         }}
-        css={styles.mainMenu}
+        className={styles.mainMenu}
       >
-        <ul css={styles.list}>
+        <ul className={styles.list}>
           {query.currentUser ? (
             <>
-              <li css={styles.item}>
-                <span css={styles.username}>{query.currentUser.name}</span>
+              <li className={styles.item}>
+                <span className={styles.username}>
+                  {query.currentUser.name}
+                </span>
                 <a
                   href='#'
-                  css={styles.lowEmphisis}
+                  className={styles.lowEmphisis}
                   onClick={this.handleLogoutClick}
                 >
                   Logout
                 </a>
               </li>
               {query.teams.map((team) => (
-                <li css={styles.item} key={team.id}>
-                  <Link route={`/teams/${team.id}/library`}>
+                <li className={styles.item} key={team.id}>
+                  <Link to={`/teams/${team.id}/library`}>
                     <a>{team.name}</a>
                   </Link>
                 </li>
               ))}
-              <li css={styles.item}>
-                <Link route='/team'>
-                  <a href='#' css={styles.lowEmphisis}>
+              <li className={styles.item}>
+                <Link to='/team'>
+                  <a href='#' className={styles.lowEmphisis}>
                     New Team
                   </a>
                 </Link>
               </li>
             </>
           ) : (
-            <li css={styles.item}>
+            <li className={styles.item}>
               <GithubAuthButton query={query}>Login</GithubAuthButton>
             </li>
           )}

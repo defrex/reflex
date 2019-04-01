@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'
 
-import Link from 'ui/components/Link'
+import Link, { LinkProps } from 'ui/components/Link'
 import styles from './styles'
 
-interface Crumb {
+interface Crumb extends LinkProps {
   name: string
-  route: string
-  params?: { [key: string]: string }
 }
 
 interface ButtonProps {
@@ -19,7 +17,7 @@ export default class Button extends PureComponent<
   render() {
     const { children, ...props } = this.props
     return (
-      <ul css={styles.root} {...props}>
+      <ul className={styles.root} {...props}>
         {children.map(({ name, ...linkProps }, index) => (
           <li key={index}>
             <Link {...linkProps}>
