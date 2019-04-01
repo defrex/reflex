@@ -9,9 +9,9 @@
     "node": "8.15.0"
   },
   "scripts": {
-    "start": "./bin/start.js",
-    "build": "./bin/build.js",
-    "gen": "./bin/gen.js"
+    "start": "node ./bin/start.js",
+    "build": "node ./bin/build.js",
+    "gen": "node ./bin/gen.js"
   },
   "_moduleAliases": {
     "api": "./api",
