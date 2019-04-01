@@ -8,8 +8,7 @@
   "scripts": {
     "start": "./bin/start.js",
     "build": "./bin/build.js",
-    "gen": "./bin/gen.js",
-    "heroku-postbuild": "./bin/build.js"
+    "gen": "./bin/gen.js"
   },
   "_moduleAliases": {
     "api": "./api",
