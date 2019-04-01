@@ -1,10 +1,13 @@
 {
-  "name": "syncui",
+  "name": "reflex",
   "version": "0.1.0",
-  "main": "bin/start.js",
+  "main": "./bin/start.js",
   "author": "Aron Jones",
   "license": "RESERVED",
   "private": true,
+  "engines": {
+    "node": "8.15.0"
+  },
   "scripts": {
     "start": "./bin/start.js",
     "build": "./bin/build.js",
