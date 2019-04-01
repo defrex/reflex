@@ -13,7 +13,6 @@ import ReflexApp from 'ui/App'
 const styles = document.getElementById('styles')
 if (styles) setStylesTarget(styles)
 
-console.log('__APOLLO_STATE__', window.__APOLLO_STATE__)
 const apolloClient = new ApolloClient({
   link: new HttpLink({
     uri: absoluteUrl('/api/graphql'),

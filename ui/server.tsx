@@ -20,8 +20,6 @@ interface RouterContext {
 
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
-    const scripts: Script[] = []
-
     const apollo = new ApolloClient({
       ssrMode: true,
       // link: new SchemaLink({
@@ -53,16 +51,18 @@ export default ({ clientStats }: { clientStats: any }) =>
 
     const css = getStyles()
 
-    scripts.push({
+    const apolloState = {
       content: `window.__APOLLO_STATE__=${JSON.stringify(apollo.extract())};`,
-    })
-    scripts.concat(
-      Object.values<string[]>(clientStats.assetsByChunkName)
-        .flat()
-        .map((asset: any) => ({
-          src: `/dist/${asset}`,
-        })),
+    }
+    const assets = Object.values(clientStats.assetsByChunkName).map(
+      (asset: any) => {
+        if (typeof asset !== 'string') {
+          asset = asset[0] // Skip maps
+        }
+        return { src: `/dist/${asset}` }
+      },
     )
+    const scripts: Script[] = [apolloState, ...assets]
 
     res.send(
       ReactDOMServer.renderToStaticMarkup(
