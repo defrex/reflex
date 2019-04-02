@@ -1,6 +1,7 @@
 /// <reference types="./@types/webpack-stats-plugin" />
 import webpack from 'webpack'
 import { StatsWriterPlugin } from 'webpack-stats-plugin'
+import nodeExternals from 'webpack-node-externals'
 
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
@@ -75,6 +76,8 @@ export const server = {
     ...base.output,
     libraryTarget: 'commonjs2',
   },
+
+  externals: [nodeExternals()],
 
   plugins: [
     ...base.plugins,

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import Index from 'ui/pages/Index'
 import Dashboard from 'ui/pages/Dashboard'
@@ -10,13 +10,13 @@ import CreateTeam from 'ui/pages/CreateTeam'
 export default class Router extends PureComponent {
   render() {
     return (
-      <>
+      <Switch>
         <Route path='/' exact component={Index} />
         <Route path='/dashboard' component={Dashboard} />
-        <Route path='/teams/:id/library' component={Library} />
-        <Route path='/teams/:id' component={Team} />
+        <Route path='/teams/:teamId/library' component={Library} />
+        <Route path='/teams/:teamId' component={Team} />
         <Route path='/teams' component={CreateTeam} />
-      </>
+      </Switch>
     )
   }
 }

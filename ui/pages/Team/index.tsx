@@ -1,22 +1,25 @@
 import React, { PureComponent } from 'react'
+import { match } from 'react-router-dom'
 
 import Page from 'ui/components/Page'
 
 import { TeamPageQueryComponent } from 'ui/lib/graphql'
 
-interface TeamPageProps {
+interface RouteParams {
   teamId: string
 }
 
-export default class TeamPage extends PureComponent<TeamPageProps> {
-  static getInitialProps({ query }: { query: { id: string } }): TeamPageProps {
-    return { teamId: query.id }
-  }
+interface TeamPageProps {
+  teamId: string
+  match: match<RouteParams>
+}
 
+export default class TeamPage extends PureComponent<TeamPageProps> {
   render() {
-    const { teamId } = this.props
+    const { match } = this.props
+    console.log(match.params)
     return (
-      <TeamPageQueryComponent variables={{ teamId }}>
+      <TeamPageQueryComponent variables={{ teamId: match.params.teamId }}>
         {({ data }) =>
           data ? (
             <Page query={data}>

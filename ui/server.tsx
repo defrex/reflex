@@ -1,15 +1,13 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { Request, Response, NextFunction } from 'express'
-// import { SchemaLink } from 'apollo-link-schema'
-import { HttpLink } from 'apollo-link-http'
+import { SchemaLink } from 'apollo-link-schema'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { StaticRouter } from 'react-router-dom'
 import { getStyles } from 'typestyle'
 import { renderToStringWithData } from 'react-apollo'
 
-import { absoluteUrl } from 'ui/lib/url'
 import App from 'ui/App'
 import Document, { Script } from 'ui/Document'
 
@@ -22,13 +20,9 @@ export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
     const apollo = new ApolloClient({
       ssrMode: true,
-      // link: new SchemaLink({
-      //   schema: res.locals.graphqlSchema,
-      //   context: res.locals.graphqlContext,
-      // }),
-      link: new HttpLink({
-        uri: absoluteUrl('/api/graphql'),
-        credentials: 'same-origin',
+      link: new SchemaLink({
+        schema: res.locals.graphqlSchema,
+        context: res.locals.graphqlContext,
       }),
       cache: new InMemoryCache(),
     })
