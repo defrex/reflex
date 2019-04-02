@@ -19,6 +19,8 @@ export default class Document extends PureComponent<DocumentProps> {
     return (
       <html lang='en-US'>
         <head>
+          <title>Reflex</title>
+
           <meta name='viewport' content='width=device-width, initial-scale=1' />
           <meta name='theme-color' content={primary} />
           <link rel='manifest' href='/static/manifest.json' />
