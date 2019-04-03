@@ -36,4 +36,37 @@ type Team {
   name: String!
 
   memberships: [Membership]!
+  components: [Component]!
+}
+
+type Component {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String!
+
+  team: Team!
+  examples: [Example]!
+}
+
+type Example {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String!
+
+  component: Component!
+  renders: [Render]!
+}
+
+type Render {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  imageUrl: String!
+
+  example: Example!
 }

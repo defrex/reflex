@@ -8,10 +8,37 @@ export type Scalars = {
   Float: number
 }
 
+export type Component = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  team: Team
+  examples: Array<Example>
+}
+
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
   logoutUrl: Scalars['String']
+}
+
+export type CreateComponentInput = {
+  teamId: Scalars['ID']
+  name: Scalars['String']
+}
+
+export type CreateComponentResponse = {
+  component?: Maybe<Component>
+  status: MutationStatus
+}
+
+export type CreateExampleInput = {
+  componentId: Scalars['ID']
+  name: Scalars['String']
+}
+
+export type CreateExampleResponse = {
+  example?: Maybe<Example>
+  status: MutationStatus
 }
 
 export type CreateTeamInput = {
@@ -24,6 +51,14 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
+export type Example = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  component: Component
+  renders: Array<Maybe<Render>>
+}
+
 export type LogoutResponse = {
   status?: Maybe<MutationStatus>
 }
@@ -31,10 +66,20 @@ export type LogoutResponse = {
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
   createTeam?: Maybe<CreateTeamResponse>
+  createComponent?: Maybe<CreateComponentResponse>
+  createExample?: Maybe<CreateExampleResponse>
 }
 
 export type MutationCreateTeamArgs = {
   input: CreateTeamInput
+}
+
+export type MutationCreateComponentArgs = {
+  input: CreateComponentInput
+}
+
+export type MutationCreateExampleArgs = {
+  input: CreateExampleInput
 }
 
 export type MutationError = {
@@ -59,10 +104,17 @@ export type QueryTeamArgs = {
   id: Scalars['ID']
 }
 
+export type Render = {
+  id: Scalars['ID']
+  imageUrl: Scalars['String']
+  example: Example
+}
+
 export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
   role: Scalars['String']
+  components: Array<Component>
 }
 
 export type User = {

@@ -1,0 +1,48 @@
+type Component {
+  id: ID!
+  name: String!
+
+  team: Team!
+  examples: [Example!]!
+}
+
+type Example {
+  id: ID!
+  name: String!
+  slug: String!
+
+  component: Component!
+  renders: [Render]!
+}
+
+type Render {
+  id: ID!
+  imageUrl: String!
+
+  example: Example!
+}
+
+type Mutation {
+  createComponent(input: CreateComponentInput!): CreateComponentResponse
+  createExample(input: CreateExampleInput!): CreateExampleResponse
+}
+
+input CreateComponentInput {
+  teamId: ID!
+  name: String!
+}
+
+type CreateComponentResponse {
+  component: Component
+  status: MutationStatus!
+}
+
+input CreateExampleInput {
+  componentId: ID!
+  name: String!
+}
+
+type CreateExampleResponse {
+  example: Example
+  status: MutationStatus!
+}

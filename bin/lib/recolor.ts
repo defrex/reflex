@@ -17,6 +17,7 @@ function cleanOutput(output: string): string {
     .replace(style.grey.close, style.white.close)
   // .replace(style.reset.open, '(reset-')
   // .replace(style.reset.close, '-reset)')
+
   // .replace(style.bold.open, '(bold-')
   // .replace(style.bold.close, '-bold)')
   // .replace(style.dim.open, '(dim-')
@@ -31,6 +32,7 @@ function cleanOutput(output: string): string {
   // .replace(style.hidden.close, '-hidden)')
   // .replace(style.strikethrough.open, '(strikethrough-')
   // .replace(style.strikethrough.close, '-strikethrough)')
+
   // .replace(style.black.open, '(black-')
   // .replace(style.black.close, '-black)')
   // .replace(style.red.open, '(red-')
@@ -49,6 +51,7 @@ function cleanOutput(output: string): string {
   // .replace(style.white.close, '-white)')
   // .replace(style.grey.open, '(grey-')
   // .replace(style.grey.close, '-grey)')
+
   // .replace(style.redBright.open, '(redBright-')
   // .replace(style.redBright.close, '-redBright)')
   // .replace(style.greenBright.open, '(greenBright-')
@@ -63,6 +66,7 @@ function cleanOutput(output: string): string {
   // .replace(style.cyanBright.close, '-cyanBright)')
   // .replace(style.whiteBright.open, '(whiteBright-')
   // .replace(style.whiteBright.close, '-whiteBright)')
+
   // .replace(style.bgBlack.open, '(bgBlack-')
   // .replace(style.bgBlack.close, '-bgBlack)')
   // .replace(style.bgRed.open, '(bgRed-')
@@ -81,6 +85,7 @@ function cleanOutput(output: string): string {
   // .replace(style.bgWhite.close, '-bgWhite)')
   // .replace(style.bgGrey.open, '(bgGrey-')
   // .replace(style.bgGrey.close, '-bgGrey)')
+
   // .replace(style.bgRedBright.open, '(bgRedBright-')
   // .replace(style.bgRedBright.close, '-bgRedBright)')
   // .replace(style.bgGreenBright.open, '(bgGreenBright-')

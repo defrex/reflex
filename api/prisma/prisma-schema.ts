@@ -2,7 +2,19 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateMembership {
+export const typeDefs = /* GraphQL */ `type AggregateComponent {
+  count: Int!
+}
+
+type AggregateExample {
+  count: Int!
+}
+
+type AggregateMembership {
+  count: Int!
+}
+
+type AggregateRender {
   count: Int!
 }
 
@@ -18,7 +30,515 @@ type BatchPayload {
   count: Long!
 }
 
+type Component {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  team: Team!
+  examples(where: ExampleWhereInput, orderBy: ExampleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Example!]
+}
+
+type ComponentConnection {
+  pageInfo: PageInfo!
+  edges: [ComponentEdge]!
+  aggregate: AggregateComponent!
+}
+
+input ComponentCreateInput {
+  name: String!
+  team: TeamCreateOneWithoutComponentsInput!
+  examples: ExampleCreateManyWithoutComponentInput
+}
+
+input ComponentCreateManyWithoutTeamInput {
+  create: [ComponentCreateWithoutTeamInput!]
+  connect: [ComponentWhereUniqueInput!]
+}
+
+input ComponentCreateOneWithoutExamplesInput {
+  create: ComponentCreateWithoutExamplesInput
+  connect: ComponentWhereUniqueInput
+}
+
+input ComponentCreateWithoutExamplesInput {
+  name: String!
+  team: TeamCreateOneWithoutComponentsInput!
+}
+
+input ComponentCreateWithoutTeamInput {
+  name: String!
+  examples: ExampleCreateManyWithoutComponentInput
+}
+
+type ComponentEdge {
+  node: Component!
+  cursor: String!
+}
+
+enum ComponentOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+}
+
+type ComponentPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+}
+
+input ComponentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [ComponentScalarWhereInput!]
+  OR: [ComponentScalarWhereInput!]
+  NOT: [ComponentScalarWhereInput!]
+}
+
+type ComponentSubscriptionPayload {
+  mutation: MutationType!
+  node: Component
+  updatedFields: [String!]
+  previousValues: ComponentPreviousValues
+}
+
+input ComponentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ComponentWhereInput
+  AND: [ComponentSubscriptionWhereInput!]
+  OR: [ComponentSubscriptionWhereInput!]
+  NOT: [ComponentSubscriptionWhereInput!]
+}
+
+input ComponentUpdateInput {
+  name: String
+  team: TeamUpdateOneRequiredWithoutComponentsInput
+  examples: ExampleUpdateManyWithoutComponentInput
+}
+
+input ComponentUpdateManyDataInput {
+  name: String
+}
+
+input ComponentUpdateManyMutationInput {
+  name: String
+}
+
+input ComponentUpdateManyWithoutTeamInput {
+  create: [ComponentCreateWithoutTeamInput!]
+  delete: [ComponentWhereUniqueInput!]
+  connect: [ComponentWhereUniqueInput!]
+  set: [ComponentWhereUniqueInput!]
+  disconnect: [ComponentWhereUniqueInput!]
+  update: [ComponentUpdateWithWhereUniqueWithoutTeamInput!]
+  upsert: [ComponentUpsertWithWhereUniqueWithoutTeamInput!]
+  deleteMany: [ComponentScalarWhereInput!]
+  updateMany: [ComponentUpdateManyWithWhereNestedInput!]
+}
+
+input ComponentUpdateManyWithWhereNestedInput {
+  where: ComponentScalarWhereInput!
+  data: ComponentUpdateManyDataInput!
+}
+
+input ComponentUpdateOneRequiredWithoutExamplesInput {
+  create: ComponentCreateWithoutExamplesInput
+  update: ComponentUpdateWithoutExamplesDataInput
+  upsert: ComponentUpsertWithoutExamplesInput
+  connect: ComponentWhereUniqueInput
+}
+
+input ComponentUpdateWithoutExamplesDataInput {
+  name: String
+  team: TeamUpdateOneRequiredWithoutComponentsInput
+}
+
+input ComponentUpdateWithoutTeamDataInput {
+  name: String
+  examples: ExampleUpdateManyWithoutComponentInput
+}
+
+input ComponentUpdateWithWhereUniqueWithoutTeamInput {
+  where: ComponentWhereUniqueInput!
+  data: ComponentUpdateWithoutTeamDataInput!
+}
+
+input ComponentUpsertWithoutExamplesInput {
+  update: ComponentUpdateWithoutExamplesDataInput!
+  create: ComponentCreateWithoutExamplesInput!
+}
+
+input ComponentUpsertWithWhereUniqueWithoutTeamInput {
+  where: ComponentWhereUniqueInput!
+  update: ComponentUpdateWithoutTeamDataInput!
+  create: ComponentCreateWithoutTeamInput!
+}
+
+input ComponentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  team: TeamWhereInput
+  examples_every: ExampleWhereInput
+  examples_some: ExampleWhereInput
+  examples_none: ExampleWhereInput
+  AND: [ComponentWhereInput!]
+  OR: [ComponentWhereInput!]
+  NOT: [ComponentWhereInput!]
+}
+
+input ComponentWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
+
+type Example {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  component: Component!
+  renders(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Render!]
+}
+
+type ExampleConnection {
+  pageInfo: PageInfo!
+  edges: [ExampleEdge]!
+  aggregate: AggregateExample!
+}
+
+input ExampleCreateInput {
+  name: String!
+  component: ComponentCreateOneWithoutExamplesInput!
+  renders: RenderCreateManyWithoutExampleInput
+}
+
+input ExampleCreateManyWithoutComponentInput {
+  create: [ExampleCreateWithoutComponentInput!]
+  connect: [ExampleWhereUniqueInput!]
+}
+
+input ExampleCreateOneWithoutRendersInput {
+  create: ExampleCreateWithoutRendersInput
+  connect: ExampleWhereUniqueInput
+}
+
+input ExampleCreateWithoutComponentInput {
+  name: String!
+  renders: RenderCreateManyWithoutExampleInput
+}
+
+input ExampleCreateWithoutRendersInput {
+  name: String!
+  component: ComponentCreateOneWithoutExamplesInput!
+}
+
+type ExampleEdge {
+  node: Example!
+  cursor: String!
+}
+
+enum ExampleOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+}
+
+type ExamplePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+}
+
+input ExampleScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [ExampleScalarWhereInput!]
+  OR: [ExampleScalarWhereInput!]
+  NOT: [ExampleScalarWhereInput!]
+}
+
+type ExampleSubscriptionPayload {
+  mutation: MutationType!
+  node: Example
+  updatedFields: [String!]
+  previousValues: ExamplePreviousValues
+}
+
+input ExampleSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ExampleWhereInput
+  AND: [ExampleSubscriptionWhereInput!]
+  OR: [ExampleSubscriptionWhereInput!]
+  NOT: [ExampleSubscriptionWhereInput!]
+}
+
+input ExampleUpdateInput {
+  name: String
+  component: ComponentUpdateOneRequiredWithoutExamplesInput
+  renders: RenderUpdateManyWithoutExampleInput
+}
+
+input ExampleUpdateManyDataInput {
+  name: String
+}
+
+input ExampleUpdateManyMutationInput {
+  name: String
+}
+
+input ExampleUpdateManyWithoutComponentInput {
+  create: [ExampleCreateWithoutComponentInput!]
+  delete: [ExampleWhereUniqueInput!]
+  connect: [ExampleWhereUniqueInput!]
+  set: [ExampleWhereUniqueInput!]
+  disconnect: [ExampleWhereUniqueInput!]
+  update: [ExampleUpdateWithWhereUniqueWithoutComponentInput!]
+  upsert: [ExampleUpsertWithWhereUniqueWithoutComponentInput!]
+  deleteMany: [ExampleScalarWhereInput!]
+  updateMany: [ExampleUpdateManyWithWhereNestedInput!]
+}
+
+input ExampleUpdateManyWithWhereNestedInput {
+  where: ExampleScalarWhereInput!
+  data: ExampleUpdateManyDataInput!
+}
+
+input ExampleUpdateOneRequiredWithoutRendersInput {
+  create: ExampleCreateWithoutRendersInput
+  update: ExampleUpdateWithoutRendersDataInput
+  upsert: ExampleUpsertWithoutRendersInput
+  connect: ExampleWhereUniqueInput
+}
+
+input ExampleUpdateWithoutComponentDataInput {
+  name: String
+  renders: RenderUpdateManyWithoutExampleInput
+}
+
+input ExampleUpdateWithoutRendersDataInput {
+  name: String
+  component: ComponentUpdateOneRequiredWithoutExamplesInput
+}
+
+input ExampleUpdateWithWhereUniqueWithoutComponentInput {
+  where: ExampleWhereUniqueInput!
+  data: ExampleUpdateWithoutComponentDataInput!
+}
+
+input ExampleUpsertWithoutRendersInput {
+  update: ExampleUpdateWithoutRendersDataInput!
+  create: ExampleCreateWithoutRendersInput!
+}
+
+input ExampleUpsertWithWhereUniqueWithoutComponentInput {
+  where: ExampleWhereUniqueInput!
+  update: ExampleUpdateWithoutComponentDataInput!
+  create: ExampleCreateWithoutComponentInput!
+}
+
+input ExampleWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  component: ComponentWhereInput
+  renders_every: RenderWhereInput
+  renders_some: RenderWhereInput
+  renders_none: RenderWhereInput
+  AND: [ExampleWhereInput!]
+  OR: [ExampleWhereInput!]
+  NOT: [ExampleWhereInput!]
+}
+
+input ExampleWhereUniqueInput {
+  id: ID
+}
 
 scalar Long
 
@@ -266,12 +786,30 @@ input MembershipWhereUniqueInput {
 }
 
 type Mutation {
+  createComponent(data: ComponentCreateInput!): Component!
+  updateComponent(data: ComponentUpdateInput!, where: ComponentWhereUniqueInput!): Component
+  updateManyComponents(data: ComponentUpdateManyMutationInput!, where: ComponentWhereInput): BatchPayload!
+  upsertComponent(where: ComponentWhereUniqueInput!, create: ComponentCreateInput!, update: ComponentUpdateInput!): Component!
+  deleteComponent(where: ComponentWhereUniqueInput!): Component
+  deleteManyComponents(where: ComponentWhereInput): BatchPayload!
+  createExample(data: ExampleCreateInput!): Example!
+  updateExample(data: ExampleUpdateInput!, where: ExampleWhereUniqueInput!): Example
+  updateManyExamples(data: ExampleUpdateManyMutationInput!, where: ExampleWhereInput): BatchPayload!
+  upsertExample(where: ExampleWhereUniqueInput!, create: ExampleCreateInput!, update: ExampleUpdateInput!): Example!
+  deleteExample(where: ExampleWhereUniqueInput!): Example
+  deleteManyExamples(where: ExampleWhereInput): BatchPayload!
   createMembership(data: MembershipCreateInput!): Membership!
   updateMembership(data: MembershipUpdateInput!, where: MembershipWhereUniqueInput!): Membership
   updateManyMemberships(data: MembershipUpdateManyMutationInput!, where: MembershipWhereInput): BatchPayload!
   upsertMembership(where: MembershipWhereUniqueInput!, create: MembershipCreateInput!, update: MembershipUpdateInput!): Membership!
   deleteMembership(where: MembershipWhereUniqueInput!): Membership
   deleteManyMemberships(where: MembershipWhereInput): BatchPayload!
+  createRender(data: RenderCreateInput!): Render!
+  updateRender(data: RenderUpdateInput!, where: RenderWhereUniqueInput!): Render
+  updateManyRenders(data: RenderUpdateManyMutationInput!, where: RenderWhereInput): BatchPayload!
+  upsertRender(where: RenderWhereUniqueInput!, create: RenderCreateInput!, update: RenderUpdateInput!): Render!
+  deleteRender(where: RenderWhereUniqueInput!): Render
+  deleteManyRenders(where: RenderWhereInput): BatchPayload!
   createTeam(data: TeamCreateInput!): Team!
   updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
   updateManyTeams(data: TeamUpdateManyMutationInput!, where: TeamWhereInput): BatchPayload!
@@ -304,9 +842,18 @@ type PageInfo {
 }
 
 type Query {
+  component(where: ComponentWhereUniqueInput!): Component
+  components(where: ComponentWhereInput, orderBy: ComponentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Component]!
+  componentsConnection(where: ComponentWhereInput, orderBy: ComponentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComponentConnection!
+  example(where: ExampleWhereUniqueInput!): Example
+  examples(where: ExampleWhereInput, orderBy: ExampleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Example]!
+  examplesConnection(where: ExampleWhereInput, orderBy: ExampleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExampleConnection!
   membership(where: MembershipWhereUniqueInput!): Membership
   memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership]!
   membershipsConnection(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MembershipConnection!
+  render(where: RenderWhereUniqueInput!): Render
+  renders(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Render]!
+  rendersConnection(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RenderConnection!
   team(where: TeamWhereUniqueInput!): Team
   teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
   teamsConnection(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamConnection!
@@ -316,13 +863,235 @@ type Query {
   node(id: ID!): Node
 }
 
+type Render {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  imageUrl: String!
+  example: Example!
+}
+
+type RenderConnection {
+  pageInfo: PageInfo!
+  edges: [RenderEdge]!
+  aggregate: AggregateRender!
+}
+
+input RenderCreateInput {
+  imageUrl: String!
+  example: ExampleCreateOneWithoutRendersInput!
+}
+
+input RenderCreateManyWithoutExampleInput {
+  create: [RenderCreateWithoutExampleInput!]
+  connect: [RenderWhereUniqueInput!]
+}
+
+input RenderCreateWithoutExampleInput {
+  imageUrl: String!
+}
+
+type RenderEdge {
+  node: Render!
+  cursor: String!
+}
+
+enum RenderOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  imageUrl_ASC
+  imageUrl_DESC
+}
+
+type RenderPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  imageUrl: String!
+}
+
+input RenderScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  imageUrl: String
+  imageUrl_not: String
+  imageUrl_in: [String!]
+  imageUrl_not_in: [String!]
+  imageUrl_lt: String
+  imageUrl_lte: String
+  imageUrl_gt: String
+  imageUrl_gte: String
+  imageUrl_contains: String
+  imageUrl_not_contains: String
+  imageUrl_starts_with: String
+  imageUrl_not_starts_with: String
+  imageUrl_ends_with: String
+  imageUrl_not_ends_with: String
+  AND: [RenderScalarWhereInput!]
+  OR: [RenderScalarWhereInput!]
+  NOT: [RenderScalarWhereInput!]
+}
+
+type RenderSubscriptionPayload {
+  mutation: MutationType!
+  node: Render
+  updatedFields: [String!]
+  previousValues: RenderPreviousValues
+}
+
+input RenderSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: RenderWhereInput
+  AND: [RenderSubscriptionWhereInput!]
+  OR: [RenderSubscriptionWhereInput!]
+  NOT: [RenderSubscriptionWhereInput!]
+}
+
+input RenderUpdateInput {
+  imageUrl: String
+  example: ExampleUpdateOneRequiredWithoutRendersInput
+}
+
+input RenderUpdateManyDataInput {
+  imageUrl: String
+}
+
+input RenderUpdateManyMutationInput {
+  imageUrl: String
+}
+
+input RenderUpdateManyWithoutExampleInput {
+  create: [RenderCreateWithoutExampleInput!]
+  delete: [RenderWhereUniqueInput!]
+  connect: [RenderWhereUniqueInput!]
+  set: [RenderWhereUniqueInput!]
+  disconnect: [RenderWhereUniqueInput!]
+  update: [RenderUpdateWithWhereUniqueWithoutExampleInput!]
+  upsert: [RenderUpsertWithWhereUniqueWithoutExampleInput!]
+  deleteMany: [RenderScalarWhereInput!]
+  updateMany: [RenderUpdateManyWithWhereNestedInput!]
+}
+
+input RenderUpdateManyWithWhereNestedInput {
+  where: RenderScalarWhereInput!
+  data: RenderUpdateManyDataInput!
+}
+
+input RenderUpdateWithoutExampleDataInput {
+  imageUrl: String
+}
+
+input RenderUpdateWithWhereUniqueWithoutExampleInput {
+  where: RenderWhereUniqueInput!
+  data: RenderUpdateWithoutExampleDataInput!
+}
+
+input RenderUpsertWithWhereUniqueWithoutExampleInput {
+  where: RenderWhereUniqueInput!
+  update: RenderUpdateWithoutExampleDataInput!
+  create: RenderCreateWithoutExampleInput!
+}
+
+input RenderWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  imageUrl: String
+  imageUrl_not: String
+  imageUrl_in: [String!]
+  imageUrl_not_in: [String!]
+  imageUrl_lt: String
+  imageUrl_lte: String
+  imageUrl_gt: String
+  imageUrl_gte: String
+  imageUrl_contains: String
+  imageUrl_not_contains: String
+  imageUrl_starts_with: String
+  imageUrl_not_starts_with: String
+  imageUrl_ends_with: String
+  imageUrl_not_ends_with: String
+  example: ExampleWhereInput
+  AND: [RenderWhereInput!]
+  OR: [RenderWhereInput!]
+  NOT: [RenderWhereInput!]
+}
+
+input RenderWhereUniqueInput {
+  id: ID
+}
+
 enum Role {
   MEMBER
   ADMIN
 }
 
 type Subscription {
+  component(where: ComponentSubscriptionWhereInput): ComponentSubscriptionPayload
+  example(where: ExampleSubscriptionWhereInput): ExampleSubscriptionPayload
   membership(where: MembershipSubscriptionWhereInput): MembershipSubscriptionPayload
+  render(where: RenderSubscriptionWhereInput): RenderSubscriptionPayload
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -333,6 +1102,7 @@ type Team {
   updatedAt: DateTime!
   name: String!
   memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
+  components(where: ComponentWhereInput, orderBy: ComponentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Component!]
 }
 
 type TeamConnection {
@@ -344,6 +1114,12 @@ type TeamConnection {
 input TeamCreateInput {
   name: String!
   memberships: MembershipCreateManyWithoutTeamInput
+  components: ComponentCreateManyWithoutTeamInput
+}
+
+input TeamCreateOneWithoutComponentsInput {
+  create: TeamCreateWithoutComponentsInput
+  connect: TeamWhereUniqueInput
 }
 
 input TeamCreateOneWithoutMembershipsInput {
@@ -351,8 +1127,14 @@ input TeamCreateOneWithoutMembershipsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamCreateWithoutComponentsInput {
+  name: String!
+  memberships: MembershipCreateManyWithoutTeamInput
+}
+
 input TeamCreateWithoutMembershipsInput {
   name: String!
+  components: ComponentCreateManyWithoutTeamInput
 }
 
 type TeamEdge {
@@ -399,10 +1181,18 @@ input TeamSubscriptionWhereInput {
 input TeamUpdateInput {
   name: String
   memberships: MembershipUpdateManyWithoutTeamInput
+  components: ComponentUpdateManyWithoutTeamInput
 }
 
 input TeamUpdateManyMutationInput {
   name: String
+}
+
+input TeamUpdateOneRequiredWithoutComponentsInput {
+  create: TeamCreateWithoutComponentsInput
+  update: TeamUpdateWithoutComponentsDataInput
+  upsert: TeamUpsertWithoutComponentsInput
+  connect: TeamWhereUniqueInput
 }
 
 input TeamUpdateOneRequiredWithoutMembershipsInput {
@@ -412,8 +1202,19 @@ input TeamUpdateOneRequiredWithoutMembershipsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamUpdateWithoutComponentsDataInput {
+  name: String
+  memberships: MembershipUpdateManyWithoutTeamInput
+}
+
 input TeamUpdateWithoutMembershipsDataInput {
   name: String
+  components: ComponentUpdateManyWithoutTeamInput
+}
+
+input TeamUpsertWithoutComponentsInput {
+  update: TeamUpdateWithoutComponentsDataInput!
+  create: TeamCreateWithoutComponentsInput!
 }
 
 input TeamUpsertWithoutMembershipsInput {
@@ -469,6 +1270,9 @@ input TeamWhereInput {
   memberships_every: MembershipWhereInput
   memberships_some: MembershipWhereInput
   memberships_none: MembershipWhereInput
+  components_every: ComponentWhereInput
+  components_some: ComponentWhereInput
+  components_none: ComponentWhereInput
   AND: [TeamWhereInput!]
   OR: [TeamWhereInput!]
   NOT: [TeamWhereInput!]

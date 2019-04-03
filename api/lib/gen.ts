@@ -9,7 +9,6 @@ export default async function gen(): Promise<any> {
   const typesFilename = absolutePath('api/graphql/types.ts')
   await generate({
     schema: config.graphqlSchemaPath,
-    documents: config.graphqlDocumentPaths,
     generates: {
       [typesFilename]: {
         plugins: [
@@ -26,6 +25,7 @@ export default async function gen(): Promise<any> {
         },
       },
       [absolutePath('ui/lib/graphql.tsx')]: {
+        documents: config.graphqlDocumentPaths,
         plugins: [
           'typescript',
           'typescript-operations',

@@ -6,8 +6,10 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import morgan from 'morgan'
+import { debounce } from 'lodash'
 
 import gen from 'api/lib/gen'
+import run from 'api/lib/run'
 import applyApiMiddleware from 'api'
 import config from 'api/config'
 import webpackConfigs from './webpack.config'
@@ -62,6 +64,9 @@ export default async function main() {
   }
 
   if (config.environment === 'development') {
+    chokidar
+      .watch(absolutePath('api/datamodel.prisma'), { ignoreInitial: true })
+      .on('all', debounce(() => run(['prisma', 'generate']), 100))
     const files = [
       config.graphqlSchemaPath.replace('index', '*'),
       ...config.graphqlDocumentPaths,

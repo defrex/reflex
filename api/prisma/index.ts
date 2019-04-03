@@ -14,7 +14,10 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  component: (where?: ComponentWhereInput) => Promise<boolean>;
+  example: (where?: ExampleWhereInput) => Promise<boolean>;
   membership: (where?: MembershipWhereInput) => Promise<boolean>;
+  render: (where?: RenderWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -38,6 +41,52 @@ export interface Prisma {
    * Queries
    */
 
+  component: (where: ComponentWhereUniqueInput) => ComponentPromise;
+  components: (
+    args?: {
+      where?: ComponentWhereInput;
+      orderBy?: ComponentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Component>;
+  componentsConnection: (
+    args?: {
+      where?: ComponentWhereInput;
+      orderBy?: ComponentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ComponentConnectionPromise;
+  example: (where: ExampleWhereUniqueInput) => ExamplePromise;
+  examples: (
+    args?: {
+      where?: ExampleWhereInput;
+      orderBy?: ExampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Example>;
+  examplesConnection: (
+    args?: {
+      where?: ExampleWhereInput;
+      orderBy?: ExampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ExampleConnectionPromise;
   membership: (where: MembershipWhereUniqueInput) => MembershipPromise;
   memberships: (
     args?: {
@@ -61,6 +110,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => MembershipConnectionPromise;
+  render: (where: RenderWhereUniqueInput) => RenderPromise;
+  renders: (
+    args?: {
+      where?: RenderWhereInput;
+      orderBy?: RenderOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Render>;
+  rendersConnection: (
+    args?: {
+      where?: RenderWhereInput;
+      orderBy?: RenderOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => RenderConnectionPromise;
   team: (where: TeamWhereUniqueInput) => TeamPromise;
   teams: (
     args?: {
@@ -113,6 +185,41 @@ export interface Prisma {
    * Mutations
    */
 
+  createComponent: (data: ComponentCreateInput) => ComponentPromise;
+  updateComponent: (
+    args: { data: ComponentUpdateInput; where: ComponentWhereUniqueInput }
+  ) => ComponentPromise;
+  updateManyComponents: (
+    args: {
+      data: ComponentUpdateManyMutationInput;
+      where?: ComponentWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertComponent: (
+    args: {
+      where: ComponentWhereUniqueInput;
+      create: ComponentCreateInput;
+      update: ComponentUpdateInput;
+    }
+  ) => ComponentPromise;
+  deleteComponent: (where: ComponentWhereUniqueInput) => ComponentPromise;
+  deleteManyComponents: (where?: ComponentWhereInput) => BatchPayloadPromise;
+  createExample: (data: ExampleCreateInput) => ExamplePromise;
+  updateExample: (
+    args: { data: ExampleUpdateInput; where: ExampleWhereUniqueInput }
+  ) => ExamplePromise;
+  updateManyExamples: (
+    args: { data: ExampleUpdateManyMutationInput; where?: ExampleWhereInput }
+  ) => BatchPayloadPromise;
+  upsertExample: (
+    args: {
+      where: ExampleWhereUniqueInput;
+      create: ExampleCreateInput;
+      update: ExampleUpdateInput;
+    }
+  ) => ExamplePromise;
+  deleteExample: (where: ExampleWhereUniqueInput) => ExamplePromise;
+  deleteManyExamples: (where?: ExampleWhereInput) => BatchPayloadPromise;
   createMembership: (data: MembershipCreateInput) => MembershipPromise;
   updateMembership: (
     args: { data: MembershipUpdateInput; where: MembershipWhereUniqueInput }
@@ -132,6 +239,22 @@ export interface Prisma {
   ) => MembershipPromise;
   deleteMembership: (where: MembershipWhereUniqueInput) => MembershipPromise;
   deleteManyMemberships: (where?: MembershipWhereInput) => BatchPayloadPromise;
+  createRender: (data: RenderCreateInput) => RenderPromise;
+  updateRender: (
+    args: { data: RenderUpdateInput; where: RenderWhereUniqueInput }
+  ) => RenderPromise;
+  updateManyRenders: (
+    args: { data: RenderUpdateManyMutationInput; where?: RenderWhereInput }
+  ) => BatchPayloadPromise;
+  upsertRender: (
+    args: {
+      where: RenderWhereUniqueInput;
+      create: RenderCreateInput;
+      update: RenderUpdateInput;
+    }
+  ) => RenderPromise;
+  deleteRender: (where: RenderWhereUniqueInput) => RenderPromise;
+  deleteManyRenders: (where?: RenderWhereInput) => BatchPayloadPromise;
   createTeam: (data: TeamCreateInput) => TeamPromise;
   updateTeam: (
     args: { data: TeamUpdateInput; where: TeamWhereUniqueInput }
@@ -173,9 +296,18 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  component: (
+    where?: ComponentSubscriptionWhereInput
+  ) => ComponentSubscriptionPayloadSubscription;
+  example: (
+    where?: ExampleSubscriptionWhereInput
+  ) => ExampleSubscriptionPayloadSubscription;
   membership: (
     where?: MembershipSubscriptionWhereInput
   ) => MembershipSubscriptionPayloadSubscription;
+  render: (
+    where?: RenderSubscriptionWhereInput
+  ) => RenderSubscriptionPayloadSubscription;
   team: (
     where?: TeamSubscriptionWhereInput
   ) => TeamSubscriptionPayloadSubscription;
@@ -202,7 +334,7 @@ export type MembershipOrderByInput =
   | "role_ASC"
   | "role_DESC";
 
-export type TeamOrderByInput =
+export type ComponentOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
@@ -213,6 +345,36 @@ export type TeamOrderByInput =
   | "name_DESC";
 
 export type Role = "MEMBER" | "ADMIN";
+
+export type ExampleOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type RenderOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "imageUrl_ASC"
+  | "imageUrl_DESC";
+
+export type TeamOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "name_ASC"
+  | "name_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -234,80 +396,34 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserUpsertWithoutMembershipsInput {
-  update: UserUpdateWithoutMembershipsDataInput;
-  create: UserCreateWithoutMembershipsInput;
+export interface RenderUpdateManyWithoutExampleInput {
+  create?: RenderCreateWithoutExampleInput[] | RenderCreateWithoutExampleInput;
+  delete?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  set?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  disconnect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  update?:
+    | RenderUpdateWithWhereUniqueWithoutExampleInput[]
+    | RenderUpdateWithWhereUniqueWithoutExampleInput;
+  upsert?:
+    | RenderUpsertWithWhereUniqueWithoutExampleInput[]
+    | RenderUpsertWithWhereUniqueWithoutExampleInput;
+  deleteMany?: RenderScalarWhereInput[] | RenderScalarWhereInput;
+  updateMany?:
+    | RenderUpdateManyWithWhereNestedInput[]
+    | RenderUpdateManyWithWhereNestedInput;
 }
 
-export type MembershipWhereUniqueInput = AtLeastOne<{
+export type ComponentWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface MembershipUpdateManyMutationInput {
-  role?: Role;
+export interface RenderUpdateManyWithWhereNestedInput {
+  where: RenderScalarWhereInput;
+  data: RenderUpdateManyDataInput;
 }
 
-export interface MembershipWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  role?: Role;
-  role_not?: Role;
-  role_in?: Role[] | Role;
-  role_not_in?: Role[] | Role;
-  user?: UserWhereInput;
-  team?: TeamWhereInput;
-  AND?: MembershipWhereInput[] | MembershipWhereInput;
-  OR?: MembershipWhereInput[] | MembershipWhereInput;
-  NOT?: MembershipWhereInput[] | MembershipWhereInput;
-}
-
-export interface UserCreateOneWithoutMembershipsInput {
-  create?: UserCreateWithoutMembershipsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface MembershipUpdateWithWhereUniqueWithoutTeamInput {
-  where: MembershipWhereUniqueInput;
-  data: MembershipUpdateWithoutTeamDataInput;
-}
-
-export interface UserCreateWithoutMembershipsInput {
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-}
-
-export interface TeamWhereInput {
+export interface ComponentWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -352,82 +468,20 @@ export interface TeamWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  memberships_every?: MembershipWhereInput;
-  memberships_some?: MembershipWhereInput;
-  memberships_none?: MembershipWhereInput;
-  AND?: TeamWhereInput[] | TeamWhereInput;
-  OR?: TeamWhereInput[] | TeamWhereInput;
-  NOT?: TeamWhereInput[] | TeamWhereInput;
+  team?: TeamWhereInput;
+  examples_every?: ExampleWhereInput;
+  examples_some?: ExampleWhereInput;
+  examples_none?: ExampleWhereInput;
+  AND?: ComponentWhereInput[] | ComponentWhereInput;
+  OR?: ComponentWhereInput[] | ComponentWhereInput;
+  NOT?: ComponentWhereInput[] | ComponentWhereInput;
 }
 
-export interface TeamCreateOneWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
+export interface RenderUpdateManyDataInput {
+  imageUrl?: String;
 }
 
-export interface TeamSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TeamWhereInput;
-  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-}
-
-export interface TeamCreateWithoutMembershipsInput {
-  name: String;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-}
-
-export interface MembershipUpdateInput {
-  role?: Role;
-  user?: UserUpdateOneRequiredWithoutMembershipsInput;
-  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface MembershipUpdateWithoutUserDataInput {
-  role?: Role;
-  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface UserUpdateOneRequiredWithoutMembershipsInput {
-  create?: UserCreateWithoutMembershipsInput;
-  update?: UserUpdateWithoutMembershipsDataInput;
-  upsert?: UserUpsertWithoutMembershipsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export type TeamWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserUpdateWithoutMembershipsDataInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-}
-
-export interface UserUpdateInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipUpdateManyWithoutUserInput;
-}
-
-export interface MembershipScalarWhereInput {
+export interface RenderWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -458,60 +512,110 @@ export interface MembershipScalarWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  role?: Role;
-  role_not?: Role;
-  role_in?: Role[] | Role;
-  role_not_in?: Role[] | Role;
-  AND?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  OR?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  NOT?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  imageUrl?: String;
+  imageUrl_not?: String;
+  imageUrl_in?: String[] | String;
+  imageUrl_not_in?: String[] | String;
+  imageUrl_lt?: String;
+  imageUrl_lte?: String;
+  imageUrl_gt?: String;
+  imageUrl_gte?: String;
+  imageUrl_contains?: String;
+  imageUrl_not_contains?: String;
+  imageUrl_starts_with?: String;
+  imageUrl_not_starts_with?: String;
+  imageUrl_ends_with?: String;
+  imageUrl_not_ends_with?: String;
+  example?: ExampleWhereInput;
+  AND?: RenderWhereInput[] | RenderWhereInput;
+  OR?: RenderWhereInput[] | RenderWhereInput;
+  NOT?: RenderWhereInput[] | RenderWhereInput;
 }
 
-export interface MembershipCreateManyWithoutUserInput {
+export interface MembershipUpdateManyWithoutTeamInput {
   create?:
-    | MembershipCreateWithoutUserInput[]
-    | MembershipCreateWithoutUserInput;
+    | MembershipCreateWithoutTeamInput[]
+    | MembershipCreateWithoutTeamInput;
+  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
   connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  update?:
+    | MembershipUpdateWithWhereUniqueWithoutTeamInput[]
+    | MembershipUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | MembershipUpsertWithWhereUniqueWithoutTeamInput[]
+    | MembershipUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  updateMany?:
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput;
 }
 
-export interface TeamUpdateOneRequiredWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  update?: TeamUpdateWithoutMembershipsDataInput;
-  upsert?: TeamUpsertWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface UserCreateInput {
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipCreateManyWithoutUserInput;
-}
-
-export interface TeamUpdateWithoutMembershipsDataInput {
+export interface ComponentScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: ComponentScalarWhereInput[] | ComponentScalarWhereInput;
+  OR?: ComponentScalarWhereInput[] | ComponentScalarWhereInput;
+  NOT?: ComponentScalarWhereInput[] | ComponentScalarWhereInput;
 }
 
-export interface MembershipUpdateManyDataInput {
+export interface MembershipUpdateWithWhereUniqueWithoutTeamInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutTeamDataInput;
+}
+
+export interface ExampleUpsertWithWhereUniqueWithoutComponentInput {
+  where: ExampleWhereUniqueInput;
+  update: ExampleUpdateWithoutComponentDataInput;
+  create: ExampleCreateWithoutComponentInput;
+}
+
+export interface MembershipUpdateWithoutTeamDataInput {
   role?: Role;
-}
-
-export interface TeamUpsertWithoutMembershipsInput {
-  update: TeamUpdateWithoutMembershipsDataInput;
-  create: TeamCreateWithoutMembershipsInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  user?: UserUpdateOneRequiredWithoutMembershipsInput;
 }
 
 export interface UserWhereInput {
@@ -623,16 +727,118 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  update: MembershipUpdateWithoutUserDataInput;
-  create: MembershipCreateWithoutUserInput;
+export interface UserUpdateOneRequiredWithoutMembershipsInput {
+  create?: UserCreateWithoutMembershipsInput;
+  update?: UserUpdateWithoutMembershipsDataInput;
+  upsert?: UserUpsertWithoutMembershipsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface TeamSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TeamWhereInput;
+  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithoutMembershipsDataInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface MembershipSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MembershipWhereInput;
+  AND?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+  OR?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+  NOT?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+}
+
+export interface UserUpsertWithoutMembershipsInput {
+  update: UserUpdateWithoutMembershipsDataInput;
+  create: UserCreateWithoutMembershipsInput;
+}
+
+export interface ComponentSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ComponentWhereInput;
+  AND?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+  OR?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+  NOT?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
 }
 
 export interface MembershipUpsertWithWhereUniqueWithoutTeamInput {
   where: MembershipWhereUniqueInput;
   update: MembershipUpdateWithoutTeamDataInput;
   create: MembershipCreateWithoutTeamInput;
+}
+
+export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutUserDataInput;
+  create: MembershipCreateWithoutUserInput;
+}
+
+export interface MembershipScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
+  AND?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  OR?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  NOT?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+}
+
+export type ExampleWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpdateManyWithWhereNestedInput {
+  where: MembershipScalarWhereInput;
+  data: MembershipUpdateManyDataInput;
 }
 
 export interface MembershipUpdateManyWithoutUserInput {
@@ -655,54 +861,218 @@ export interface MembershipUpdateManyWithoutUserInput {
     | MembershipUpdateManyWithWhereNestedInput;
 }
 
-export interface MembershipUpdateWithoutTeamDataInput {
+export interface MembershipUpdateManyDataInput {
   role?: Role;
-  user?: UserUpdateOneRequiredWithoutMembershipsInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
+export type MembershipWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
-  email?: String;
 }>;
 
-export interface TeamCreateInput {
-  name: String;
-  memberships?: MembershipCreateManyWithoutTeamInput;
+export interface TeamUpsertWithoutComponentsInput {
+  update: TeamUpdateWithoutComponentsDataInput;
+  create: TeamCreateWithoutComponentsInput;
 }
 
-export interface MembershipUpdateManyWithWhereNestedInput {
-  where: MembershipScalarWhereInput;
-  data: MembershipUpdateManyDataInput;
-}
-
-export interface MembershipUpdateManyWithoutTeamInput {
+export interface MembershipCreateManyWithoutUserInput {
   create?:
-    | MembershipCreateWithoutTeamInput[]
-    | MembershipCreateWithoutTeamInput;
-  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+    | MembershipCreateWithoutUserInput[]
+    | MembershipCreateWithoutUserInput;
   connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+}
+
+export interface ExampleUpdateManyWithoutComponentInput {
+  create?:
+    | ExampleCreateWithoutComponentInput[]
+    | ExampleCreateWithoutComponentInput;
+  delete?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+  connect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+  set?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+  disconnect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
   update?:
-    | MembershipUpdateWithWhereUniqueWithoutTeamInput[]
-    | MembershipUpdateWithWhereUniqueWithoutTeamInput;
+    | ExampleUpdateWithWhereUniqueWithoutComponentInput[]
+    | ExampleUpdateWithWhereUniqueWithoutComponentInput;
   upsert?:
-    | MembershipUpsertWithWhereUniqueWithoutTeamInput[]
-    | MembershipUpsertWithWhereUniqueWithoutTeamInput;
-  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+    | ExampleUpsertWithWhereUniqueWithoutComponentInput[]
+    | ExampleUpsertWithWhereUniqueWithoutComponentInput;
+  deleteMany?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
   updateMany?:
-    | MembershipUpdateManyWithWhereNestedInput[]
-    | MembershipUpdateManyWithWhereNestedInput;
+    | ExampleUpdateManyWithWhereNestedInput[]
+    | ExampleUpdateManyWithWhereNestedInput;
+}
+
+export type RenderWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ExampleUpdateWithWhereUniqueWithoutComponentInput {
+  where: ExampleWhereUniqueInput;
+  data: ExampleUpdateWithoutComponentDataInput;
 }
 
 export interface TeamUpdateInput {
   name?: String;
   memberships?: MembershipUpdateManyWithoutTeamInput;
+  components?: ComponentUpdateManyWithoutTeamInput;
 }
 
-export interface MembershipCreateWithoutTeamInput {
+export interface ExampleUpdateWithoutComponentDataInput {
+  name?: String;
+  renders?: RenderUpdateManyWithoutExampleInput;
+}
+
+export type TeamWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpdateManyMutationInput {
   role?: Role;
-  user: UserCreateOneWithoutMembershipsInput;
+}
+
+export interface ExampleUpsertWithoutRendersInput {
+  update: ExampleUpdateWithoutRendersDataInput;
+  create: ExampleCreateWithoutRendersInput;
+}
+
+export interface RenderUpdateWithWhereUniqueWithoutExampleInput {
+  where: RenderWhereUniqueInput;
+  data: RenderUpdateWithoutExampleDataInput;
+}
+
+export interface ExampleUpdateOneRequiredWithoutRendersInput {
+  create?: ExampleCreateWithoutRendersInput;
+  update?: ExampleUpdateWithoutRendersDataInput;
+  upsert?: ExampleUpsertWithoutRendersInput;
+  connect?: ExampleWhereUniqueInput;
+}
+
+export interface RenderUpdateWithoutExampleDataInput {
+  imageUrl?: String;
+}
+
+export interface RenderUpdateInput {
+  imageUrl?: String;
+  example?: ExampleUpdateOneRequiredWithoutRendersInput;
+}
+
+export interface RenderUpsertWithWhereUniqueWithoutExampleInput {
+  where: RenderWhereUniqueInput;
+  update: RenderUpdateWithoutExampleDataInput;
+  create: RenderCreateWithoutExampleInput;
+}
+
+export interface ExampleCreateOneWithoutRendersInput {
+  create?: ExampleCreateWithoutRendersInput;
+  connect?: ExampleWhereUniqueInput;
+}
+
+export interface RenderScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  imageUrl?: String;
+  imageUrl_not?: String;
+  imageUrl_in?: String[] | String;
+  imageUrl_not_in?: String[] | String;
+  imageUrl_lt?: String;
+  imageUrl_lte?: String;
+  imageUrl_gt?: String;
+  imageUrl_gte?: String;
+  imageUrl_contains?: String;
+  imageUrl_not_contains?: String;
+  imageUrl_starts_with?: String;
+  imageUrl_not_starts_with?: String;
+  imageUrl_ends_with?: String;
+  imageUrl_not_ends_with?: String;
+  AND?: RenderScalarWhereInput[] | RenderScalarWhereInput;
+  OR?: RenderScalarWhereInput[] | RenderScalarWhereInput;
+  NOT?: RenderScalarWhereInput[] | RenderScalarWhereInput;
+}
+
+export interface TeamCreateOneWithoutComponentsInput {
+  create?: TeamCreateWithoutComponentsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface ExampleWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  component?: ComponentWhereInput;
+  renders_every?: RenderWhereInput;
+  renders_some?: RenderWhereInput;
+  renders_none?: RenderWhereInput;
+  AND?: ExampleWhereInput[] | ExampleWhereInput;
+  OR?: ExampleWhereInput[] | ExampleWhereInput;
+  NOT?: ExampleWhereInput[] | ExampleWhereInput;
 }
 
 export interface MembershipCreateManyWithoutTeamInput {
@@ -712,19 +1082,350 @@ export interface MembershipCreateManyWithoutTeamInput {
   connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
 }
 
+export interface TeamWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  memberships_every?: MembershipWhereInput;
+  memberships_some?: MembershipWhereInput;
+  memberships_none?: MembershipWhereInput;
+  components_every?: ComponentWhereInput;
+  components_some?: ComponentWhereInput;
+  components_none?: ComponentWhereInput;
+  AND?: TeamWhereInput[] | TeamWhereInput;
+  OR?: TeamWhereInput[] | TeamWhereInput;
+  NOT?: TeamWhereInput[] | TeamWhereInput;
+}
+
+export interface UserCreateOneWithoutMembershipsInput {
+  create?: UserCreateWithoutMembershipsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface TeamUpsertWithoutMembershipsInput {
+  update: TeamUpdateWithoutMembershipsDataInput;
+  create: TeamCreateWithoutMembershipsInput;
+}
+
+export interface ExampleCreateManyWithoutComponentInput {
+  create?:
+    | ExampleCreateWithoutComponentInput[]
+    | ExampleCreateWithoutComponentInput;
+  connect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+}
+
+export interface ExampleScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
+  OR?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
+  NOT?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
+}
+
+export interface RenderCreateManyWithoutExampleInput {
+  create?: RenderCreateWithoutExampleInput[] | RenderCreateWithoutExampleInput;
+  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+}
+
+export interface ExampleUpdateManyWithWhereNestedInput {
+  where: ExampleScalarWhereInput;
+  data: ExampleUpdateManyDataInput;
+}
+
+export interface ComponentUpdateInput {
+  name?: String;
+  team?: TeamUpdateOneRequiredWithoutComponentsInput;
+  examples?: ExampleUpdateManyWithoutComponentInput;
+}
+
+export interface ExampleUpdateManyDataInput {
+  name?: String;
+}
+
+export interface TeamUpdateWithoutComponentsDataInput {
+  name?: String;
+  memberships?: MembershipUpdateManyWithoutTeamInput;
+}
+
+export interface ComponentUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface MembershipWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
+  user?: UserWhereInput;
+  team?: TeamWhereInput;
+  AND?: MembershipWhereInput[] | MembershipWhereInput;
+  OR?: MembershipWhereInput[] | MembershipWhereInput;
+  NOT?: MembershipWhereInput[] | MembershipWhereInput;
+}
+
+export interface ComponentUpdateManyDataInput {
+  name?: String;
+}
+
+export interface ExampleSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ExampleWhereInput;
+  AND?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
+  OR?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
+  NOT?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
+}
+
+export interface ComponentUpdateManyWithWhereNestedInput {
+  where: ComponentScalarWhereInput;
+  data: ComponentUpdateManyDataInput;
+}
+
+export interface MembershipUpdateWithoutUserDataInput {
+  role?: Role;
+  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface ExampleCreateInput {
+  name: String;
+  component: ComponentCreateOneWithoutExamplesInput;
+  renders?: RenderCreateManyWithoutExampleInput;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipUpdateManyWithoutUserInput;
+}
+
+export interface ComponentCreateOneWithoutExamplesInput {
+  create?: ComponentCreateWithoutExamplesInput;
+  connect?: ComponentWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipCreateManyWithoutUserInput;
+}
+
+export interface ComponentCreateWithoutExamplesInput {
+  name: String;
+  team: TeamCreateOneWithoutComponentsInput;
+}
+
+export interface TeamCreateInput {
+  name: String;
+  memberships?: MembershipCreateManyWithoutTeamInput;
+  components?: ComponentCreateManyWithoutTeamInput;
+}
+
+export interface ExampleUpdateInput {
+  name?: String;
+  component?: ComponentUpdateOneRequiredWithoutExamplesInput;
+  renders?: RenderUpdateManyWithoutExampleInput;
+}
+
+export interface ExampleUpdateWithoutRendersDataInput {
+  name?: String;
+  component?: ComponentUpdateOneRequiredWithoutExamplesInput;
+}
+
+export interface ComponentUpdateOneRequiredWithoutExamplesInput {
+  create?: ComponentCreateWithoutExamplesInput;
+  update?: ComponentUpdateWithoutExamplesDataInput;
+  upsert?: ComponentUpsertWithoutExamplesInput;
+  connect?: ComponentWhereUniqueInput;
+}
+
+export interface ExampleCreateWithoutRendersInput {
+  name: String;
+  component: ComponentCreateOneWithoutExamplesInput;
+}
+
+export interface ComponentUpdateWithoutExamplesDataInput {
+  name?: String;
+  team?: TeamUpdateOneRequiredWithoutComponentsInput;
+}
+
+export interface ComponentCreateInput {
+  name: String;
+  team: TeamCreateOneWithoutComponentsInput;
+  examples?: ExampleCreateManyWithoutComponentInput;
+}
+
+export interface ComponentUpsertWithoutExamplesInput {
+  update: ComponentUpdateWithoutExamplesDataInput;
+  create: ComponentCreateWithoutExamplesInput;
+}
+
+export interface MembershipCreateWithoutTeamInput {
+  role?: Role;
+  user: UserCreateOneWithoutMembershipsInput;
+}
+
+export interface ExampleUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface ExampleCreateWithoutComponentInput {
+  name: String;
+  renders?: RenderCreateManyWithoutExampleInput;
+}
+
 export interface MembershipCreateInput {
   role?: Role;
   user: UserCreateOneWithoutMembershipsInput;
   team: TeamCreateOneWithoutMembershipsInput;
 }
 
-export interface TeamUpdateManyMutationInput {
-  name?: String;
+export interface TeamUpdateOneRequiredWithoutComponentsInput {
+  create?: TeamCreateWithoutComponentsInput;
+  update?: TeamUpdateWithoutComponentsDataInput;
+  upsert?: TeamUpsertWithoutComponentsInput;
+  connect?: TeamWhereUniqueInput;
 }
 
-export interface MembershipCreateWithoutUserInput {
-  role?: Role;
-  team: TeamCreateOneWithoutMembershipsInput;
+export interface TeamCreateOneWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface RenderSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RenderWhereInput;
+  AND?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+  OR?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+  NOT?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+}
+
+export interface TeamCreateWithoutMembershipsInput {
+  name: String;
+  components?: ComponentCreateManyWithoutTeamInput;
 }
 
 export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
@@ -732,54 +1433,129 @@ export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
   data: MembershipUpdateWithoutUserDataInput;
 }
 
-export interface MembershipSubscriptionWhereInput {
+export interface ComponentCreateManyWithoutTeamInput {
+  create?: ComponentCreateWithoutTeamInput[] | ComponentCreateWithoutTeamInput;
+  connect?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
+}
+
+export interface TeamUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface ComponentCreateWithoutTeamInput {
+  name: String;
+  examples?: ExampleCreateManyWithoutComponentInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface MembershipUpdateInput {
+  role?: Role;
+  user?: UserUpdateOneRequiredWithoutMembershipsInput;
+  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface TeamCreateWithoutComponentsInput {
+  name: String;
+  memberships?: MembershipCreateManyWithoutTeamInput;
+}
+
+export interface TeamUpdateOneRequiredWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  update?: TeamUpdateWithoutMembershipsDataInput;
+  upsert?: TeamUpsertWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface RenderCreateWithoutExampleInput {
+  imageUrl: String;
+}
+
+export interface TeamUpdateWithoutMembershipsDataInput {
+  name?: String;
+  components?: ComponentUpdateManyWithoutTeamInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface ComponentUpsertWithWhereUniqueWithoutTeamInput {
+  where: ComponentWhereUniqueInput;
+  update: ComponentUpdateWithoutTeamDataInput;
+  create: ComponentCreateWithoutTeamInput;
+}
+
+export interface ComponentUpdateWithoutTeamDataInput {
+  name?: String;
+  examples?: ExampleUpdateManyWithoutComponentInput;
+}
+
+export interface ComponentUpdateWithWhereUniqueWithoutTeamInput {
+  where: ComponentWhereUniqueInput;
+  data: ComponentUpdateWithoutTeamDataInput;
+}
+
+export interface ComponentUpdateManyWithoutTeamInput {
+  create?: ComponentCreateWithoutTeamInput[] | ComponentCreateWithoutTeamInput;
+  delete?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
+  connect?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
+  set?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
+  disconnect?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
+  update?:
+    | ComponentUpdateWithWhereUniqueWithoutTeamInput[]
+    | ComponentUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | ComponentUpsertWithWhereUniqueWithoutTeamInput[]
+    | ComponentUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: ComponentScalarWhereInput[] | ComponentScalarWhereInput;
+  updateMany?:
+    | ComponentUpdateManyWithWhereNestedInput[]
+    | ComponentUpdateManyWithWhereNestedInput;
+}
+
+export interface MembershipCreateWithoutUserInput {
+  role?: Role;
+  team: TeamCreateOneWithoutMembershipsInput;
+}
+
+export interface UserSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: MembershipWhereInput;
-  AND?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
-  OR?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
-  NOT?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface UserCreateWithoutMembershipsInput {
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface RenderCreateInput {
+  imageUrl: String;
+  example: ExampleCreateOneWithoutRendersInput;
+}
+
+export interface RenderUpdateManyMutationInput {
+  imageUrl?: String;
 }
 
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface MembershipEdge {
-  node: Membership;
-  cursor: String;
-}
-
-export interface MembershipEdgePromise
-  extends Promise<MembershipEdge>,
-    Fragmentable {
-  node: <T = MembershipPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MembershipEdgeSubscription
-  extends Promise<AsyncIterator<MembershipEdge>>,
-    Fragmentable {
-  node: <T = MembershipSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserPreviousValues {
@@ -819,29 +1595,182 @@ export interface UserPreviousValuesSubscription
   figmaRefreshToken: () => Promise<AsyncIterator<String>>;
 }
 
-export interface TeamPreviousValues {
+export interface ExampleEdge {
+  node: Example;
+  cursor: String;
+}
+
+export interface ExampleEdgePromise extends Promise<ExampleEdge>, Fragmentable {
+  node: <T = ExamplePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ExampleEdgeSubscription
+  extends Promise<AsyncIterator<ExampleEdge>>,
+    Fragmentable {
+  node: <T = ExampleSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Example {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   name: String;
 }
 
-export interface TeamPreviousValuesPromise
-  extends Promise<TeamPreviousValues>,
-    Fragmentable {
+export interface ExamplePromise extends Promise<Example>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
+  component: <T = ComponentPromise>() => T;
+  renders: <T = FragmentableArray<Render>>(
+    args?: {
+      where?: RenderWhereInput;
+      orderBy?: RenderOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
-export interface TeamPreviousValuesSubscription
-  extends Promise<AsyncIterator<TeamPreviousValues>>,
+export interface ExampleSubscription
+  extends Promise<AsyncIterator<Example>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
+  component: <T = ComponentSubscription>() => T;
+  renders: <T = Promise<AsyncIterator<RenderSubscription>>>(
+    args?: {
+      where?: RenderWhereInput;
+      orderBy?: RenderOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface ExampleConnection {
+  pageInfo: PageInfo;
+  edges: ExampleEdge[];
+}
+
+export interface ExampleConnectionPromise
+  extends Promise<ExampleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ExampleEdge>>() => T;
+  aggregate: <T = AggregateExamplePromise>() => T;
+}
+
+export interface ExampleConnectionSubscription
+  extends Promise<AsyncIterator<ExampleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ExampleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateExampleSubscription>() => T;
+}
+
+export interface AggregateComponent {
+  count: Int;
+}
+
+export interface AggregateComponentPromise
+  extends Promise<AggregateComponent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateComponentSubscription
+  extends Promise<AsyncIterator<AggregateComponent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface ComponentEdge {
+  node: Component;
+  cursor: String;
+}
+
+export interface ComponentEdgePromise
+  extends Promise<ComponentEdge>,
+    Fragmentable {
+  node: <T = ComponentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ComponentEdgeSubscription
+  extends Promise<AsyncIterator<ComponentEdge>>,
+    Fragmentable {
+  node: <T = ComponentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TeamSubscriptionPayload {
@@ -867,246 +1796,6 @@ export interface TeamSubscriptionPayloadSubscription
   node: <T = TeamSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = TeamPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateTeam {
-  count: Int;
-}
-
-export interface AggregateTeamPromise
-  extends Promise<AggregateTeam>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTeamSubscription
-  extends Promise<AsyncIterator<AggregateTeam>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MembershipConnection {
-  pageInfo: PageInfo;
-  edges: MembershipEdge[];
-}
-
-export interface MembershipConnectionPromise
-  extends Promise<MembershipConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MembershipEdge>>() => T;
-  aggregate: <T = AggregateMembershipPromise>() => T;
-}
-
-export interface MembershipConnectionSubscription
-  extends Promise<AsyncIterator<MembershipConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMembershipSubscription>() => T;
-}
-
-export interface TeamConnection {
-  pageInfo: PageInfo;
-  edges: TeamEdge[];
-}
-
-export interface TeamConnectionPromise
-  extends Promise<TeamConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TeamEdge>>() => T;
-  aggregate: <T = AggregateTeamPromise>() => T;
-}
-
-export interface TeamConnectionSubscription
-  extends Promise<AsyncIterator<TeamConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTeamSubscription>() => T;
-}
-
-export interface Team {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface TeamPromise extends Promise<Team>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  memberships: <T = FragmentableArray<Membership>>(
-    args?: {
-      where?: MembershipWhereInput;
-      orderBy?: MembershipOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface TeamSubscription
-  extends Promise<AsyncIterator<Team>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(
-    args?: {
-      where?: MembershipWhereInput;
-      orderBy?: MembershipOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface MembershipPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  role: Role;
-}
-
-export interface MembershipPreviousValuesPromise
-  extends Promise<MembershipPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  role: () => Promise<Role>;
-}
-
-export interface MembershipPreviousValuesSubscription
-  extends Promise<AsyncIterator<MembershipPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  role: () => Promise<AsyncIterator<Role>>;
-}
-
-export interface MembershipSubscriptionPayload {
-  mutation: MutationType;
-  node: Membership;
-  updatedFields: String[];
-  previousValues: MembershipPreviousValues;
-}
-
-export interface MembershipSubscriptionPayloadPromise
-  extends Promise<MembershipSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MembershipPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MembershipPreviousValuesPromise>() => T;
-}
-
-export interface MembershipSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MembershipSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MembershipSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MembershipPreviousValuesSubscription>() => T;
-}
-
-export interface Membership {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  role: Role;
-}
-
-export interface MembershipPromise extends Promise<Membership>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  role: () => Promise<Role>;
-  user: <T = UserPromise>() => T;
-  team: <T = TeamPromise>() => T;
-}
-
-export interface MembershipSubscription
-  extends Promise<AsyncIterator<Membership>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  role: () => Promise<AsyncIterator<Role>>;
-  user: <T = UserSubscription>() => T;
-  team: <T = TeamSubscription>() => T;
 }
 
 export interface User {
@@ -1166,6 +1855,29 @@ export interface UserSubscription
   ) => T;
 }
 
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
 export interface TeamEdge {
   node: Team;
   cursor: String;
@@ -1183,46 +1895,143 @@ export interface TeamEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
+export interface Component {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
 }
 
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
+export interface ComponentPromise extends Promise<Component>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  team: <T = TeamPromise>() => T;
+  examples: <T = FragmentableArray<Example>>(
+    args?: {
+      where?: ExampleWhereInput;
+      orderBy?: ExampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface ComponentSubscription
+  extends Promise<AsyncIterator<Component>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  team: <T = TeamSubscription>() => T;
+  examples: <T = Promise<AsyncIterator<ExampleSubscription>>>(
+    args?: {
+      where?: ExampleWhereInput;
+      orderBy?: ExampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface TeamPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface TeamPreviousValuesPromise
+  extends Promise<TeamPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface TeamPreviousValuesSubscription
+  extends Promise<AsyncIterator<TeamPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ComponentSubscriptionPayload {
+  mutation: MutationType;
+  node: Component;
+  updatedFields: String[];
+  previousValues: ComponentPreviousValues;
+}
+
+export interface ComponentSubscriptionPayloadPromise
+  extends Promise<ComponentSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
+  node: <T = ComponentPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
+  previousValues: <T = ComponentPreviousValuesPromise>() => T;
 }
 
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+export interface ComponentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ComponentSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
+  node: <T = ComponentSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
+  previousValues: <T = ComponentPreviousValuesSubscription>() => T;
 }
 
-export interface UserEdge {
-  node: User;
+export interface RenderEdge {
+  node: Render;
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
+export interface RenderEdgePromise extends Promise<RenderEdge>, Fragmentable {
+  node: <T = RenderPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface RenderEdgeSubscription
+  extends Promise<AsyncIterator<RenderEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = RenderSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ComponentPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface ComponentPreviousValuesPromise
+  extends Promise<ComponentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface ComponentPreviousValuesSubscription
+  extends Promise<AsyncIterator<ComponentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateMembership {
@@ -1241,10 +2050,467 @@ export interface AggregateMembershipSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface ComponentConnection {
+  pageInfo: PageInfo;
+  edges: ComponentEdge[];
+}
+
+export interface ComponentConnectionPromise
+  extends Promise<ComponentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ComponentEdge>>() => T;
+  aggregate: <T = AggregateComponentPromise>() => T;
+}
+
+export interface ComponentConnectionSubscription
+  extends Promise<AsyncIterator<ComponentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ComponentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateComponentSubscription>() => T;
+}
+
+export interface MembershipConnection {
+  pageInfo: PageInfo;
+  edges: MembershipEdge[];
+}
+
+export interface MembershipConnectionPromise
+  extends Promise<MembershipConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MembershipEdge>>() => T;
+  aggregate: <T = AggregateMembershipPromise>() => T;
+}
+
+export interface MembershipConnectionSubscription
+  extends Promise<AsyncIterator<MembershipConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMembershipSubscription>() => T;
+}
+
+export interface ExampleSubscriptionPayload {
+  mutation: MutationType;
+  node: Example;
+  updatedFields: String[];
+  previousValues: ExamplePreviousValues;
+}
+
+export interface ExampleSubscriptionPayloadPromise
+  extends Promise<ExampleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ExamplePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ExamplePreviousValuesPromise>() => T;
+}
+
+export interface ExampleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ExampleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ExampleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ExamplePreviousValuesSubscription>() => T;
+}
+
+export interface Membership {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  role: Role;
+}
+
+export interface MembershipPromise extends Promise<Membership>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  role: () => Promise<Role>;
+  user: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+}
+
+export interface MembershipSubscription
+  extends Promise<AsyncIterator<Membership>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  role: () => Promise<AsyncIterator<Role>>;
+  user: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+}
+
+export interface ExamplePreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface ExamplePreviousValuesPromise
+  extends Promise<ExamplePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface ExamplePreviousValuesSubscription
+  extends Promise<AsyncIterator<ExamplePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface Render {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  imageUrl: String;
+}
+
+export interface RenderPromise extends Promise<Render>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  imageUrl: () => Promise<String>;
+  example: <T = ExamplePromise>() => T;
+}
+
+export interface RenderSubscription
+  extends Promise<AsyncIterator<Render>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  imageUrl: () => Promise<AsyncIterator<String>>;
+  example: <T = ExampleSubscription>() => T;
+}
+
+export interface TeamConnection {
+  pageInfo: PageInfo;
+  edges: TeamEdge[];
+}
+
+export interface TeamConnectionPromise
+  extends Promise<TeamConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TeamEdge>>() => T;
+  aggregate: <T = AggregateTeamPromise>() => T;
+}
+
+export interface TeamConnectionSubscription
+  extends Promise<AsyncIterator<TeamConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTeamSubscription>() => T;
+}
+
+export interface MembershipSubscriptionPayload {
+  mutation: MutationType;
+  node: Membership;
+  updatedFields: String[];
+  previousValues: MembershipPreviousValues;
+}
+
+export interface MembershipSubscriptionPayloadPromise
+  extends Promise<MembershipSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MembershipPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MembershipPreviousValuesPromise>() => T;
+}
+
+export interface MembershipSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MembershipSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MembershipSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MembershipPreviousValuesSubscription>() => T;
+}
+
+export interface RenderConnection {
+  pageInfo: PageInfo;
+  edges: RenderEdge[];
+}
+
+export interface RenderConnectionPromise
+  extends Promise<RenderConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RenderEdge>>() => T;
+  aggregate: <T = AggregateRenderPromise>() => T;
+}
+
+export interface RenderConnectionSubscription
+  extends Promise<AsyncIterator<RenderConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RenderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRenderSubscription>() => T;
+}
+
+export interface AggregateExample {
+  count: Int;
+}
+
+export interface AggregateExamplePromise
+  extends Promise<AggregateExample>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateExampleSubscription
+  extends Promise<AsyncIterator<AggregateExample>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface RenderPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  imageUrl: String;
+}
+
+export interface RenderPreviousValuesPromise
+  extends Promise<RenderPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  imageUrl: () => Promise<String>;
+}
+
+export interface RenderPreviousValuesSubscription
+  extends Promise<AsyncIterator<RenderPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  imageUrl: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RenderSubscriptionPayload {
+  mutation: MutationType;
+  node: Render;
+  updatedFields: String[];
+  previousValues: RenderPreviousValues;
+}
+
+export interface RenderSubscriptionPayloadPromise
+  extends Promise<RenderSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RenderPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RenderPreviousValuesPromise>() => T;
+}
+
+export interface RenderSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RenderSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RenderSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RenderPreviousValuesSubscription>() => T;
+}
+
+export interface Team {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface TeamPromise extends Promise<Team>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  memberships: <T = FragmentableArray<Membership>>(
+    args?: {
+      where?: MembershipWhereInput;
+      orderBy?: MembershipOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  components: <T = FragmentableArray<Component>>(
+    args?: {
+      where?: ComponentWhereInput;
+      orderBy?: ComponentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface TeamSubscription
+  extends Promise<AsyncIterator<Team>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(
+    args?: {
+      where?: MembershipWhereInput;
+      orderBy?: MembershipOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  components: <T = Promise<AsyncIterator<ComponentSubscription>>>(
+    args?: {
+      where?: ComponentWhereInput;
+      orderBy?: ComponentOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface MembershipPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  role: Role;
+}
+
+export interface MembershipPreviousValuesPromise
+  extends Promise<MembershipPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  role: () => Promise<Role>;
+}
+
+export interface MembershipPreviousValuesSubscription
+  extends Promise<AsyncIterator<MembershipPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  role: () => Promise<AsyncIterator<Role>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MembershipEdge {
+  node: Membership;
+  cursor: String;
+}
+
+export interface MembershipEdgePromise
+  extends Promise<MembershipEdge>,
+    Fragmentable {
+  node: <T = MembershipPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MembershipEdgeSubscription
+  extends Promise<AsyncIterator<MembershipEdge>>,
+    Fragmentable {
+  node: <T = MembershipSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateRender {
+  count: Int;
+}
+
+export interface AggregateRenderPromise
+  extends Promise<AggregateRender>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRenderSubscription
+  extends Promise<AsyncIterator<AggregateRender>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateTeam {
+  count: Int;
+}
+
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTeamSubscription
+  extends Promise<AsyncIterator<AggregateTeam>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
-export type Boolean = boolean;
+export type Int = number;
 
 export type Long = string;
 
@@ -1265,14 +2531,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
-
-/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -1293,6 +2559,18 @@ export const models: Model[] = [
   },
   {
     name: "Team",
+    embedded: false
+  },
+  {
+    name: "Component",
+    embedded: false
+  },
+  {
+    name: "Example",
+    embedded: false
+  },
+  {
+    name: "Render",
     embedded: false
   }
 ];
