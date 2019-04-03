@@ -13,8 +13,8 @@ process.stdout.write = function(output: string): boolean {
 
 function cleanOutput(output: string): string {
   return output
-    .replace(style.grey.open, style.black.open)
-    .replace(style.grey.close, style.black.close)
+    .replace(style.grey.open, style.white.open)
+    .replace(style.grey.close, style.white.close)
   // .replace(style.reset.open, '(reset-')
   // .replace(style.reset.close, '-reset)')
   // .replace(style.bold.open, '(bold-')
