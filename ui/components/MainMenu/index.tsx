@@ -59,10 +59,8 @@ class MainMenu extends PureComponent<MainMenuProps> {
                 </li>
               ))}
               <li className={styles.item}>
-                <Link to='/team'>
-                  <a href='#' className={styles.lowEmphisis}>
-                    New Team
-                  </a>
+                <Link to='/team' className={styles.lowEmphisis}>
+                  New Team
                 </Link>
               </li>
             </>

@@ -17,7 +17,6 @@ interface TeamPageProps {
 export default class TeamPage extends PureComponent<TeamPageProps> {
   render() {
     const { match } = this.props
-    console.log(match.params)
     return (
       <TeamPageQueryComponent variables={{ teamId: match.params.teamId }}>
         {({ data }) =>
