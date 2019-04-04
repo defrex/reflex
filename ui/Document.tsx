@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 
 import { primary } from 'ui/lib/colors'
+import config from 'ui/config'
 
 export interface Script {
   src?: string
@@ -56,6 +57,23 @@ export default class Document extends PureComponent<DocumentProps> {
               }
             />
           ))}
+
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${
+              config.googleAnalyticsId
+            }`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${config.googleAnalyticsId}');
+              `,
+            }}
+          />
         </body>
       </html>
     )

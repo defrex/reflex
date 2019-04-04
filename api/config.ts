@@ -3,6 +3,10 @@ import * as path from 'path'
 const basePath = path.resolve(__dirname, '..')
 const absolutePath = path.join.bind(path, basePath)
 
+export type Environment = 'production' | 'development'
+const environment: Environment =
+  process.env.NODE_ENV === 'production' ? 'production' : 'development'
+
 const config = {
   basePath,
   graphqlSchemaPath: absolutePath('api/graphql/schema/index.graphql'),
@@ -13,9 +17,7 @@ const config = {
     absolutePath('ui/components/**/*.graphql'),
   ],
   uiPath: absolutePath('ui'),
-  environment: (process.env.NODE_ENV === 'production'
-    ? 'production'
-    : 'development') as 'production' | 'development',
+  environment,
   port: parseInt(process.env.PORT!),
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
@@ -28,6 +30,7 @@ const config = {
   githubAppPrivateKey: process.env.GITHUB_APP_PRIVATE_KEY!,
   githubAuthClientId: process.env.GITHUB_AUTH_CLIENT_ID!,
   githubAuthClientSecret: process.env.GITHUB_AUTH_CLIENT_SECRET!,
+  googleAnalyticsId: environment === 'production' ? 'UA-137693546-1' : '',
 }
 
 for (const [key, value] of Object.entries(config)) {

@@ -39,6 +39,12 @@ const base = {
 
   plugins: [
     new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
+    new webpack.DefinePlugin({
+      'process.env.ENV': JSON.stringify(config.environment),
+      'process.env.GOOGLE_ANALYTICS_ID': JSON.stringify(
+        config.googleAnalyticsId,
+      ),
+    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 }
