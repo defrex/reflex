@@ -4,6 +4,7 @@ import { prisma, User } from 'api/prisma'
 export async function loggedInUser(req: Request): Promise<User | undefined> {
   if (!req.session) {
     console.warn('⚠ api/lib/auth:loggedInUser req.session is undefined')
+    console.trace()
     return
   }
   if (req.session.userId) {

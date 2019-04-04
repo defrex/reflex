@@ -18,11 +18,25 @@ export default async (app: Application) => {
   const graphqlServer = new ApolloServer({
     schema,
     context: getContext,
+    playground: {
+      settings: {
+        'general.betaUpdates': false,
+        'editor.cursorShape': 'line',
+        'editor.fontSize': 14,
+        'editor.fontFamily':
+          "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace",
+        'editor.theme': 'dark',
+        'editor.reuseHeaders': true,
+        'prettier.printWidth': 80,
+        'request.credentials': 'same-origin',
+        'tracing.hideTracingResponse': true,
+      },
+    },
   })
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     res.locals.graphqlSchema = schema
-    res.locals.graphqlContext = await getContext(req, res)
+    res.locals.graphqlContext = await getContext({ req, res })
     next()
   })
 

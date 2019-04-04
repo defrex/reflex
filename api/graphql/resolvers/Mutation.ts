@@ -7,7 +7,7 @@ import {
 } from 'api/graphql/types'
 import { Context } from 'api/graphql/Context'
 import { LogoutResponse } from 'ui/lib/graphql'
-import { success, error } from 'api/graphql/resolvers/lib/MutationResponse'
+import { success } from 'api/graphql/resolvers/lib/MutationResponse'
 import { userInTeam } from 'api/lib/user'
 import { AuthenticationError, AuthorizationError } from 'api/exceptions'
 
@@ -19,7 +19,7 @@ export default {
 
   async createTeam(_parent, args, ctx): Promise<CreateTeamResponse> {
     if (!ctx.user) {
-      return error('You must be logged in to create an Team')
+      throw new AuthenticationError()
     }
 
     const membership = await prisma.createMembership({
@@ -49,6 +49,7 @@ export default {
     }
 
     const team = await prisma.team({ id: teamId })
+
     if (!(await userInTeam(ctx.user, team))) {
       throw new AuthorizationError()
     }
