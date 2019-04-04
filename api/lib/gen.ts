@@ -21,6 +21,8 @@ export default async function gen(): Promise<any> {
           mappers: {
             User: 'api/prisma#User',
             Team: 'api/prisma#Team',
+            Component: 'api/prisma#Component',
+            Example: 'api/prisma#Example',
           },
         },
       },

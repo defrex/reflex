@@ -123,7 +123,7 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
-import { User, Team } from 'api/prisma'
+import { User, Team, Component, Example } from 'api/prisma'
 import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
