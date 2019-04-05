@@ -37,6 +37,7 @@ type Team {
 
   memberships: [Membership]!
   components: [Component]!
+  repos: [Repo]!
 }
 
 type Component {
@@ -69,4 +70,29 @@ type Render {
   imageUrl: String!
 
   example: Example!
+  check: Check
+}
+
+type Check {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  headBranch: String!
+  headSha: String!
+
+  renders: [Render]!
+  repo: Repo
+}
+
+type Repo {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  owner: String!
+  name: String!
+
+  checks: [Check]!
+  team: Team
 }
