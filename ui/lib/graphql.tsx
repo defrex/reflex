@@ -68,6 +68,7 @@ export type Mutation = {
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
+  renderExample?: Maybe<RenderExampleResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -80,6 +81,10 @@ export type MutationCreateComponentArgs = {
 
 export type MutationCreateExampleArgs = {
   input: CreateExampleInput
+}
+
+export type MutationRenderExampleArgs = {
+  input: RenderExampleInput
 }
 
 export type MutationError = {
@@ -108,6 +113,15 @@ export type Render = {
   id: Scalars['ID']
   imageUrl: Scalars['String']
   example: Example
+}
+
+export type RenderExampleInput = {
+  exampleId: Scalars['ID']
+}
+
+export type RenderExampleResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
 }
 
 export type Team = {

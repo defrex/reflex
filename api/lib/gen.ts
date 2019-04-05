@@ -23,6 +23,7 @@ export default async function gen(): Promise<any> {
             Team: 'api/prisma#Team',
             Component: 'api/prisma#Component',
             Example: 'api/prisma#Example',
+            Render: 'api/prisma#Render',
           },
         },
       },

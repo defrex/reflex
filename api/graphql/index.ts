@@ -32,6 +32,10 @@ export default async (app: Application) => {
         'tracing.hideTracingResponse': true,
       },
     },
+    formatError: (error) => {
+      console.error(error)
+      return error
+    },
   })
 
   app.use(async (req: Request, res: Response, next: NextFunction) => {

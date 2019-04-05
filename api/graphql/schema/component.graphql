@@ -25,6 +25,7 @@ type Render {
 type Mutation {
   createComponent(input: CreateComponentInput!): CreateComponentResponse
   createExample(input: CreateExampleInput!): CreateExampleResponse
+  renderExample(input: RenderExampleInput!): RenderExampleResponse
 }
 
 input CreateComponentInput {
@@ -44,5 +45,14 @@ input CreateExampleInput {
 
 type CreateExampleResponse {
   example: Example
+  status: MutationStatus!
+}
+
+input RenderExampleInput {
+  exampleId: ID!
+}
+
+type RenderExampleResponse {
+  render: Render
   status: MutationStatus!
 }

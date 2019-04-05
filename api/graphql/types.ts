@@ -68,6 +68,7 @@ export type Mutation = {
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
+  renderExample?: Maybe<RenderExampleResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -80,6 +81,10 @@ export type MutationCreateComponentArgs = {
 
 export type MutationCreateExampleArgs = {
   input: CreateExampleInput
+}
+
+export type MutationRenderExampleArgs = {
+  input: RenderExampleInput
 }
 
 export type MutationError = {
@@ -110,6 +115,15 @@ export type Render = {
   example: Example
 }
 
+export type RenderExampleInput = {
+  exampleId: Scalars['ID']
+}
+
+export type RenderExampleResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
+}
+
 export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
@@ -123,7 +137,7 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
-import { User, Team, Component, Example } from 'api/prisma'
+import { User, Team, Component, Example, Render } from 'api/prisma'
 import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
@@ -270,6 +284,12 @@ export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
     Context,
     MutationCreateExampleArgs
   >
+  renderExample?: Resolver<
+    Maybe<RenderExampleResponse>,
+    ParentType,
+    Context,
+    MutationRenderExampleArgs
+  >
 }
 
 export type MutationErrorResolvers<
@@ -302,6 +322,14 @@ export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   example?: Resolver<Example, ParentType, Context>
 }
 
+export type RenderExampleResponseResolvers<
+  Context = ReflexContex,
+  ParentType = RenderExampleResponse
+> = {
+  render?: Resolver<Maybe<Render>, ParentType, Context>
+  status?: Resolver<MutationStatus, ParentType, Context>
+}
+
 export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
@@ -329,6 +357,7 @@ export type Resolvers<Context = ReflexContex> = {
   MutationStatus?: MutationStatusResolvers<Context>
   Query?: QueryResolvers<Context>
   Render?: RenderResolvers<Context>
+  RenderExampleResponse?: RenderExampleResponseResolvers<Context>
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>
 }
