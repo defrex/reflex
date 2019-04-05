@@ -1,10 +1,14 @@
 import puppeteer from 'puppeteer'
+import { promisify } from 'util'
 import fs from 'fs'
 
 import { Example, Render, prisma } from 'api/prisma'
 import { absoluteUrl } from 'api/lib/url'
 import { absolutePath } from 'api/lib/path'
 import { trimImage } from 'api/lib/image'
+
+const writeFile = promisify(fs.writeFile)
+const mkdir = promisify(fs.mkdir)
 
 export default async function renderExample(example: Example): Promise<Render> {
   const team = await prisma
@@ -25,19 +29,20 @@ export default async function renderExample(example: Example): Promise<Render> {
   await page.goto(
     absoluteUrl(`/teams/${team.id}/examples/${component.name}/${example.name}`),
   )
-
-  const directory = `/renders/${team.id}/${component.name}/`
-  fs.mkdirSync(absolutePath(`public${directory}`), {
-    recursive: true,
+  let image: Buffer = await page.screenshot({
+    encoding: 'binary',
+    omitBackground: true,
   })
-
-  const path = `${directory}/${example.name}.png`
-  const filename = absolutePath(`public${path}`)
-  await page.screenshot({ path: filename, omitBackground: true })
-
   await browser.close()
 
-  await trimImage(filename)
+  image = await trimImage(image)
+
+  const directory = `/renders/${team.id}/${component.name}/`
+  await mkdir(absolutePath(`public${directory}`), {
+    recursive: true,
+  })
+  const path = `${directory}/${example.name}.png`
+  await writeFile(absolutePath(`public${path}`), image)
 
   const render = await prisma.createRender({
     imageUrl: absoluteUrl(path),
