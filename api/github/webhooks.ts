@@ -79,36 +79,35 @@ export default (probot: Application) => {
       }
     }
 
-    console.log(
-      `✔️ ${repo.owner}/${repo.name}#${check.headBranch}/${check.headSha}`,
-    )
+    if (!check.githubCheckId) {
+      const createCheckPayload: Octokit.ChecksCreateParams = {
+        owner: repo.owner,
+        repo: repo.name,
+        name: 'reflex',
+        head_sha: check.headSha,
+        details_url: absoluteUrl(
+          `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
+        ),
+        external_id: `${check.id}`,
+        status: 'in_progress',
+        started_at: DateTime.fromSQL(check.createdAt).toISO(),
+      }
 
-    const createCheckPayload: Octokit.ChecksCreateParams = {
-      owner: repo.owner,
-      repo: repo.name,
-      name: 'reflex',
-      head_sha: check.headSha,
-      details_url: absoluteUrl(
-        `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
-      ),
-      external_id: `${check.id}`,
-      status: 'in_progress',
-      started_at: DateTime.fromSQL(check.createdAt).toISO(),
+      const githubCheck = await github.checks.create(createCheckPayload)
+
+      await prisma.updateCheck({
+        data: {
+          githubCheckId: githubCheck.data.id,
+        },
+        where: {
+          id: check.id,
+        },
+      })
+
+      console.log(
+        `✔️ ${repo.owner}/${repo.name}#${check.headBranch}/${check.headSha}`,
+      )
     }
-
-    console.log(createCheckPayload)
-    const githubCheck = await github.checks.create(createCheckPayload)
-
-    await prisma.updateCheck({
-      data: {
-        githubCheckId: githubCheck.data.id,
-      },
-      where: {
-        id: check.id,
-      },
-    })
-
-    probot.log(`Created check: ${repo.name} ${check.headSha}`)
   })
 
   // probot.on('check_run', async ({ name }) => {
