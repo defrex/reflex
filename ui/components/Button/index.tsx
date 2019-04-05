@@ -5,7 +5,7 @@ import { classes } from 'typestyle'
 
 interface ButtonProps {
   children: ReactNode
-  style?: 'light' | 'primary'
+  style?: 'light' | 'primary' | 'dark'
   type?: 'button' | 'submit' | 'reset' | undefined
 }
 
