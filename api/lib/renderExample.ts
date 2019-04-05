@@ -41,7 +41,7 @@ export default async function renderExample(example: Example): Promise<Render> {
   await mkdir(absolutePath(`public${directory}`), {
     recursive: true,
   })
-  const path = `${directory}/${example.name}.png`
+  const path = `${directory}${example.name}.png`
   await writeFile(absolutePath(`public${path}`), image)
 
   const render = await prisma.createRender({
