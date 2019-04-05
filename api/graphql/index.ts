@@ -18,6 +18,7 @@ export default async (app: Application) => {
   const graphqlServer = new ApolloServer({
     schema,
     context: getContext,
+    introspection: true,
     playground: {
       settings: {
         'general.betaUpdates': false,
