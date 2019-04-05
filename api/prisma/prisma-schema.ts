@@ -44,6 +44,7 @@ type Check {
   updatedAt: DateTime!
   headBranch: String!
   headSha: String!
+  githubCheckId: Int
   renders(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Render!]
   repo: Repo
 }
@@ -57,6 +58,7 @@ type CheckConnection {
 input CheckCreateInput {
   headBranch: String!
   headSha: String!
+  githubCheckId: Int
   renders: RenderCreateManyWithoutCheckInput
   repo: RepoCreateOneWithoutChecksInput
 }
@@ -74,12 +76,14 @@ input CheckCreateOneWithoutRendersInput {
 input CheckCreateWithoutRendersInput {
   headBranch: String!
   headSha: String!
+  githubCheckId: Int
   repo: RepoCreateOneWithoutChecksInput
 }
 
 input CheckCreateWithoutRepoInput {
   headBranch: String!
   headSha: String!
+  githubCheckId: Int
   renders: RenderCreateManyWithoutCheckInput
 }
 
@@ -99,6 +103,8 @@ enum CheckOrderByInput {
   headBranch_DESC
   headSha_ASC
   headSha_DESC
+  githubCheckId_ASC
+  githubCheckId_DESC
 }
 
 type CheckPreviousValues {
@@ -107,6 +113,7 @@ type CheckPreviousValues {
   updatedAt: DateTime!
   headBranch: String!
   headSha: String!
+  githubCheckId: Int
 }
 
 input CheckScalarWhereInput {
@@ -168,6 +175,14 @@ input CheckScalarWhereInput {
   headSha_not_starts_with: String
   headSha_ends_with: String
   headSha_not_ends_with: String
+  githubCheckId: Int
+  githubCheckId_not: Int
+  githubCheckId_in: [Int!]
+  githubCheckId_not_in: [Int!]
+  githubCheckId_lt: Int
+  githubCheckId_lte: Int
+  githubCheckId_gt: Int
+  githubCheckId_gte: Int
   AND: [CheckScalarWhereInput!]
   OR: [CheckScalarWhereInput!]
   NOT: [CheckScalarWhereInput!]
@@ -194,6 +209,7 @@ input CheckSubscriptionWhereInput {
 input CheckUpdateInput {
   headBranch: String
   headSha: String
+  githubCheckId: Int
   renders: RenderUpdateManyWithoutCheckInput
   repo: RepoUpdateOneWithoutChecksInput
 }
@@ -201,11 +217,13 @@ input CheckUpdateInput {
 input CheckUpdateManyDataInput {
   headBranch: String
   headSha: String
+  githubCheckId: Int
 }
 
 input CheckUpdateManyMutationInput {
   headBranch: String
   headSha: String
+  githubCheckId: Int
 }
 
 input CheckUpdateManyWithoutRepoInput {
@@ -237,12 +255,14 @@ input CheckUpdateOneWithoutRendersInput {
 input CheckUpdateWithoutRendersDataInput {
   headBranch: String
   headSha: String
+  githubCheckId: Int
   repo: RepoUpdateOneWithoutChecksInput
 }
 
 input CheckUpdateWithoutRepoDataInput {
   headBranch: String
   headSha: String
+  githubCheckId: Int
   renders: RenderUpdateManyWithoutCheckInput
 }
 
@@ -321,6 +341,14 @@ input CheckWhereInput {
   headSha_not_starts_with: String
   headSha_ends_with: String
   headSha_not_ends_with: String
+  githubCheckId: Int
+  githubCheckId_not: Int
+  githubCheckId_in: [Int!]
+  githubCheckId_not_in: [Int!]
+  githubCheckId_lt: Int
+  githubCheckId_lte: Int
+  githubCheckId_gt: Int
+  githubCheckId_gte: Int
   renders_every: RenderWhereInput
   renders_some: RenderWhereInput
   renders_none: RenderWhereInput

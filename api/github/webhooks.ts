@@ -1,10 +1,12 @@
-import { Application } from 'probot'
+import { Application, Octokit } from 'probot'
 import { Repo, Check, prisma, Render } from 'api/prisma'
 import { findOne } from 'api/lib/data'
 import renderExample from 'api/lib/renderExample'
+import { absoluteUrl } from 'api/lib/url'
+import { DateTime } from 'luxon'
 
 export default (probot: Application) => {
-  probot.on('check_suite', async ({ payload }) => {
+  probot.on('check_suite', async ({ payload, github }) => {
     const repo = await findOne<Repo>(
       prisma.repoes({
         where: {
@@ -81,25 +83,32 @@ export default (probot: Application) => {
       `✔️ ${repo.owner}/${repo.name}#${check.headBranch}/${check.headSha}`,
     )
 
-    // const createCheckPayload: Octokit.ChecksCreateParams = {
-    //   owner: repoOwner,
-    //   repo: repoName,
-    //   name: 'reflex',
-    //   head_sha: commitSha,
-    //   details_url: absoluteUrl(`/checks/${repoOwner}/${repoName}/${commitSha}`),
-    //   external_id: `${githubCheck.id}`,
-    //   status: 'in_progress',
-    //   started_at: DateTime.fromJSDate(githubCheck.createdAt).toISO(),
-    // }
+    const createCheckPayload: Octokit.ChecksCreateParams = {
+      owner: repo.owner,
+      repo: repo.name,
+      name: 'reflex',
+      head_sha: check.headSha,
+      details_url: absoluteUrl(
+        `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
+      ),
+      external_id: `${check.id}`,
+      status: 'in_progress',
+      started_at: DateTime.fromSQL(check.createdAt).toISO(),
+    }
 
-    // console.log(createCheckPayload)
-    // const octokit = (github as unknown) as Octokit
-    // const check = await octokit.checks.create(createCheckPayload)
+    console.log(createCheckPayload)
+    const githubCheck = await github.checks.create(createCheckPayload)
 
-    // githubCheck.githubCheckId = (check as any).id
-    // await githubCheck.save()
+    await prisma.updateCheck({
+      data: {
+        githubCheckId: githubCheck.data.id,
+      },
+      where: {
+        id: check.id,
+      },
+    })
 
-    // probot.log(`Created check: ${repoName} ${commitSha}`)
+    probot.log(`Created check: ${repo.name} ${check.headSha}`)
   })
 
   // probot.on('check_run', async ({ name }) => {
