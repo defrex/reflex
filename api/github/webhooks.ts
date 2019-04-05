@@ -90,7 +90,7 @@ export default (probot: Application) => {
         ),
         external_id: `${check.id}`,
         status: 'in_progress',
-        started_at: DateTime.fromSQL(check.createdAt).toISO(),
+        started_at: check.createdAt,
       }
 
       const githubCheck = await github.checks.create(createCheckPayload)
