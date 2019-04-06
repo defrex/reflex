@@ -9,10 +9,10 @@ const readFile = promisify(fs.readFile)
 describe('renderUrl', () => {
   it('renders', async () => {
     const result = await renderUrl('https://defrex.com')
-    const prevResult = await readFile(
+    const expectedResult = await readFile(
       absolutePath('api/lib/render/test.result.png'),
     )
 
-    expect(result).toEqual(prevResult)
+    expect(result).toEqual(expectedResult)
   })
 })
