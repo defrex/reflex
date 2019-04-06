@@ -1,7 +1,7 @@
-import { Probot } from 'probot'
+import { Probot, Application } from 'probot'
 
 import config from 'api/config'
-import webhookHandler from 'api/github/webhooks'
+import checkSuite from 'api/github/webhooks/checkSuite'
 
 const probot = new Probot({
   id: config.githubAppId,
@@ -9,6 +9,9 @@ const probot = new Probot({
   cert: config.githubAppPrivateKey,
   // tunnel: process.env.SUBDOMAIN || process.env.NODE_ENV !== 'production',
 })
-probot.load(webhookHandler)
+
+probot.load((probot: Application) => {
+  probot.on('check_suite', checkSuite)
+})
 
 export default probot.server
