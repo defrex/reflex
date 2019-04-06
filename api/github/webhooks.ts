@@ -3,7 +3,6 @@ import { Repo, Check, prisma, Render } from 'api/prisma'
 import { findOne } from 'api/lib/data'
 import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
-import { DateTime } from 'luxon'
 
 export default (probot: Application) => {
   probot.on('check_suite', async ({ payload, github }) => {
