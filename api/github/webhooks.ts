@@ -3,7 +3,6 @@ import { Repo, Check, prisma, Render } from 'api/prisma'
 import { findOne } from 'api/lib/data'
 import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
-import { DateTime } from 'luxon'
 
 export default (probot: Application) => {
   probot.on('check_suite', async ({ payload, github }) => {
@@ -90,7 +89,7 @@ export default (probot: Application) => {
         ),
         external_id: `${check.id}`,
         status: 'in_progress',
-        started_at: DateTime.fromSQL(check.createdAt).toISO(),
+        started_at: check.createdAt,
       }
 
       const githubCheck = await github.checks.create(createCheckPayload)
