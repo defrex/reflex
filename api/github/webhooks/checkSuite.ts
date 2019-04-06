@@ -91,7 +91,7 @@ export default async function({
       details_url: absoluteUrl(
         `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
       ),
-      external_id: `${check.id}`,
+      external_id: check.id,
       status: 'in_progress',
       started_at: check.createdAt,
     }
