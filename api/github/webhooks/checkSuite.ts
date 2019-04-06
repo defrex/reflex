@@ -1,7 +1,7 @@
 import { Octokit, Context } from 'probot'
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
 
-import { Repo, Check, prisma, Render } from 'api/prisma'
+import { Repo, Check, prisma } from 'api/prisma'
 import { findOne } from 'api/lib/data'
 import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
@@ -55,27 +55,27 @@ export default async function({
   for (const component of components) {
     const examples = await prisma.component({ id: component.id }).examples()
     for (const example of examples) {
-      const render = findOne<Render>(
-        prisma.example({ id: example.id }).renders({
-          where: {
-            check: {
+      const renderExists = await prisma.$exists.render({
+        check: {
+          id: check.id,
+        },
+        example: {
+          id: example.id,
+        },
+      })
+      if (!renderExists) {
+        const imageUrl = await renderExample(example)
+        await prisma.createRender({
+          imageUrl,
+          check: {
+            connect: {
               id: check.id,
             },
           },
-        }),
-      )
-      if (!render) {
-        const render = await renderExample(example)
-        prisma.updateRender({
-          data: {
-            check: {
-              connect: {
-                id: check.id,
-              },
+          example: {
+            connect: {
+              id: example.id,
             },
-          },
-          where: {
-            id: render.id,
           },
         })
       }

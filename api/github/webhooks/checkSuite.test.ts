@@ -47,8 +47,7 @@ describe('checkSuite', () => {
       },
     })
 
-    // const example =
-    await prisma.createExample({
+    const example = await prisma.createExample({
       name: 'Default',
       component: {
         connect: {
@@ -59,7 +58,7 @@ describe('checkSuite', () => {
 
     const headBranch = 'test_branch'
     const headSha = 'test_sha'
-    const githubChechId = 55
+    const githubCheckId = 55
     const params = {
       payload: {
         repository: {
@@ -83,14 +82,32 @@ describe('checkSuite', () => {
 
             return {
               data: {
-                id: githubChechId,
+                id: githubCheckId,
               },
             }
           }),
         },
       },
     }
+
     await checkSuite(params as any)
     expect(params.github.checks.create).toHaveBeenCalledTimes(1)
+
+    const check = await prisma.check({ githubCheckId })
+    expect(check.headBranch).toEqual(headBranch)
+    expect(check.headSha).toEqual(headSha)
+
+    const renders = await prisma.renders({
+      where: {
+        example: {
+          id: example.id,
+        },
+        check: {
+          id: check.id,
+        },
+      },
+    })
+    expect(renders.length).toBe(1)
+    expect(renders[0].imageUrl).not.toBeUndefined()
   })
 })

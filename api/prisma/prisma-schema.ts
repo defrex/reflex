@@ -42,9 +42,9 @@ type Check {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  githubCheckId: Int
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
   renders(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Render!]
   repo: Repo
 }
@@ -56,9 +56,9 @@ type CheckConnection {
 }
 
 input CheckCreateInput {
+  githubCheckId: Int
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
   renders: RenderCreateManyWithoutCheckInput
   repo: RepoCreateOneWithoutChecksInput
 }
@@ -74,16 +74,16 @@ input CheckCreateOneWithoutRendersInput {
 }
 
 input CheckCreateWithoutRendersInput {
+  githubCheckId: Int
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
   repo: RepoCreateOneWithoutChecksInput
 }
 
 input CheckCreateWithoutRepoInput {
+  githubCheckId: Int
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
   renders: RenderCreateManyWithoutCheckInput
 }
 
@@ -99,21 +99,21 @@ enum CheckOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  githubCheckId_ASC
+  githubCheckId_DESC
   headBranch_ASC
   headBranch_DESC
   headSha_ASC
   headSha_DESC
-  githubCheckId_ASC
-  githubCheckId_DESC
 }
 
 type CheckPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  githubCheckId: Int
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
 }
 
 input CheckScalarWhereInput {
@@ -147,6 +147,14 @@ input CheckScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  githubCheckId: Int
+  githubCheckId_not: Int
+  githubCheckId_in: [Int!]
+  githubCheckId_not_in: [Int!]
+  githubCheckId_lt: Int
+  githubCheckId_lte: Int
+  githubCheckId_gt: Int
+  githubCheckId_gte: Int
   headBranch: String
   headBranch_not: String
   headBranch_in: [String!]
@@ -175,14 +183,6 @@ input CheckScalarWhereInput {
   headSha_not_starts_with: String
   headSha_ends_with: String
   headSha_not_ends_with: String
-  githubCheckId: Int
-  githubCheckId_not: Int
-  githubCheckId_in: [Int!]
-  githubCheckId_not_in: [Int!]
-  githubCheckId_lt: Int
-  githubCheckId_lte: Int
-  githubCheckId_gt: Int
-  githubCheckId_gte: Int
   AND: [CheckScalarWhereInput!]
   OR: [CheckScalarWhereInput!]
   NOT: [CheckScalarWhereInput!]
@@ -207,23 +207,23 @@ input CheckSubscriptionWhereInput {
 }
 
 input CheckUpdateInput {
+  githubCheckId: Int
   headBranch: String
   headSha: String
-  githubCheckId: Int
   renders: RenderUpdateManyWithoutCheckInput
   repo: RepoUpdateOneWithoutChecksInput
 }
 
 input CheckUpdateManyDataInput {
+  githubCheckId: Int
   headBranch: String
   headSha: String
-  githubCheckId: Int
 }
 
 input CheckUpdateManyMutationInput {
+  githubCheckId: Int
   headBranch: String
   headSha: String
-  githubCheckId: Int
 }
 
 input CheckUpdateManyWithoutRepoInput {
@@ -253,16 +253,16 @@ input CheckUpdateOneWithoutRendersInput {
 }
 
 input CheckUpdateWithoutRendersDataInput {
+  githubCheckId: Int
   headBranch: String
   headSha: String
-  githubCheckId: Int
   repo: RepoUpdateOneWithoutChecksInput
 }
 
 input CheckUpdateWithoutRepoDataInput {
+  githubCheckId: Int
   headBranch: String
   headSha: String
-  githubCheckId: Int
   renders: RenderUpdateManyWithoutCheckInput
 }
 
@@ -313,6 +313,14 @@ input CheckWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  githubCheckId: Int
+  githubCheckId_not: Int
+  githubCheckId_in: [Int!]
+  githubCheckId_not_in: [Int!]
+  githubCheckId_lt: Int
+  githubCheckId_lte: Int
+  githubCheckId_gt: Int
+  githubCheckId_gte: Int
   headBranch: String
   headBranch_not: String
   headBranch_in: [String!]
@@ -341,14 +349,6 @@ input CheckWhereInput {
   headSha_not_starts_with: String
   headSha_ends_with: String
   headSha_not_ends_with: String
-  githubCheckId: Int
-  githubCheckId_not: Int
-  githubCheckId_in: [Int!]
-  githubCheckId_not_in: [Int!]
-  githubCheckId_lt: Int
-  githubCheckId_lte: Int
-  githubCheckId_gt: Int
-  githubCheckId_gte: Int
   renders_every: RenderWhereInput
   renders_some: RenderWhereInput
   renders_none: RenderWhereInput
@@ -360,6 +360,7 @@ input CheckWhereInput {
 
 input CheckWhereUniqueInput {
   id: ID
+  githubCheckId: Int
 }
 
 type Component {

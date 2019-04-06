@@ -461,12 +461,12 @@ export type CheckOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
+  | "githubCheckId_ASC"
+  | "githubCheckId_DESC"
   | "headBranch_ASC"
   | "headBranch_DESC"
   | "headSha_ASC"
-  | "headSha_DESC"
-  | "githubCheckId_ASC"
-  | "githubCheckId_DESC";
+  | "headSha_DESC";
 
 export type ExampleOrderByInput =
   | "id_ASC"
@@ -510,6 +510,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type CheckWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  githubCheckId?: Int;
 }>;
 
 export interface RenderWhereInput {
@@ -981,6 +982,14 @@ export interface CheckWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  githubCheckId?: Int;
+  githubCheckId_not?: Int;
+  githubCheckId_in?: Int[] | Int;
+  githubCheckId_not_in?: Int[] | Int;
+  githubCheckId_lt?: Int;
+  githubCheckId_lte?: Int;
+  githubCheckId_gt?: Int;
+  githubCheckId_gte?: Int;
   headBranch?: String;
   headBranch_not?: String;
   headBranch_in?: String[] | String;
@@ -1009,14 +1018,6 @@ export interface CheckWhereInput {
   headSha_not_starts_with?: String;
   headSha_ends_with?: String;
   headSha_not_ends_with?: String;
-  githubCheckId?: Int;
-  githubCheckId_not?: Int;
-  githubCheckId_in?: Int[] | Int;
-  githubCheckId_not_in?: Int[] | Int;
-  githubCheckId_lt?: Int;
-  githubCheckId_lte?: Int;
-  githubCheckId_gt?: Int;
-  githubCheckId_gte?: Int;
   renders_every?: RenderWhereInput;
   renders_some?: RenderWhereInput;
   renders_none?: RenderWhereInput;
@@ -1056,9 +1057,9 @@ export type UserWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface CheckCreateInput {
+  githubCheckId?: Int;
   headBranch: String;
   headSha: String;
-  githubCheckId?: Int;
   renders?: RenderCreateManyWithoutCheckInput;
   repo?: RepoCreateOneWithoutChecksInput;
 }
@@ -1146,9 +1147,9 @@ export interface CheckCreateManyWithoutRepoInput {
 }
 
 export interface CheckCreateWithoutRepoInput {
+  githubCheckId?: Int;
   headBranch: String;
   headSha: String;
-  githubCheckId?: Int;
   renders?: RenderCreateManyWithoutCheckInput;
 }
 
@@ -1212,16 +1213,16 @@ export interface CheckCreateOneWithoutRendersInput {
 }
 
 export interface CheckCreateWithoutRendersInput {
+  githubCheckId?: Int;
   headBranch: String;
   headSha: String;
-  githubCheckId?: Int;
   repo?: RepoCreateOneWithoutChecksInput;
 }
 
 export interface CheckUpdateInput {
+  githubCheckId?: Int;
   headBranch?: String;
   headSha?: String;
-  githubCheckId?: Int;
   renders?: RenderUpdateManyWithoutCheckInput;
   repo?: RepoUpdateOneWithoutChecksInput;
 }
@@ -1449,9 +1450,9 @@ export interface CheckUpdateWithWhereUniqueWithoutRepoInput {
 }
 
 export interface CheckUpdateWithoutRepoDataInput {
+  githubCheckId?: Int;
   headBranch?: String;
   headSha?: String;
-  githubCheckId?: Int;
   renders?: RenderUpdateManyWithoutCheckInput;
 }
 
@@ -1492,6 +1493,14 @@ export interface CheckScalarWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  githubCheckId?: Int;
+  githubCheckId_not?: Int;
+  githubCheckId_in?: Int[] | Int;
+  githubCheckId_not_in?: Int[] | Int;
+  githubCheckId_lt?: Int;
+  githubCheckId_lte?: Int;
+  githubCheckId_gt?: Int;
+  githubCheckId_gte?: Int;
   headBranch?: String;
   headBranch_not?: String;
   headBranch_in?: String[] | String;
@@ -1520,14 +1529,6 @@ export interface CheckScalarWhereInput {
   headSha_not_starts_with?: String;
   headSha_ends_with?: String;
   headSha_not_ends_with?: String;
-  githubCheckId?: Int;
-  githubCheckId_not?: Int;
-  githubCheckId_in?: Int[] | Int;
-  githubCheckId_not_in?: Int[] | Int;
-  githubCheckId_lt?: Int;
-  githubCheckId_lte?: Int;
-  githubCheckId_gt?: Int;
-  githubCheckId_gte?: Int;
   AND?: CheckScalarWhereInput[] | CheckScalarWhereInput;
   OR?: CheckScalarWhereInput[] | CheckScalarWhereInput;
   NOT?: CheckScalarWhereInput[] | CheckScalarWhereInput;
@@ -1539,9 +1540,9 @@ export interface CheckUpdateManyWithWhereNestedInput {
 }
 
 export interface CheckUpdateManyDataInput {
+  githubCheckId?: Int;
   headBranch?: String;
   headSha?: String;
-  githubCheckId?: Int;
 }
 
 export interface RepoUpsertWithWhereUniqueWithoutTeamInput {
@@ -1830,9 +1831,9 @@ export interface CheckUpdateOneWithoutRendersInput {
 }
 
 export interface CheckUpdateWithoutRendersDataInput {
+  githubCheckId?: Int;
   headBranch?: String;
   headSha?: String;
-  githubCheckId?: Int;
   repo?: RepoUpdateOneWithoutChecksInput;
 }
 
@@ -1988,9 +1989,9 @@ export interface RepoUpsertWithoutChecksInput {
 }
 
 export interface CheckUpdateManyMutationInput {
+  githubCheckId?: Int;
   headBranch?: String;
   headSha?: String;
-  githubCheckId?: Int;
 }
 
 export interface ComponentCreateInput {
@@ -2293,18 +2294,18 @@ export interface Check {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  githubCheckId?: Int;
   headBranch: String;
   headSha: String;
-  githubCheckId?: Int;
 }
 
 export interface CheckPromise extends Promise<Check>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  githubCheckId: () => Promise<Int>;
   headBranch: () => Promise<String>;
   headSha: () => Promise<String>;
-  githubCheckId: () => Promise<Int>;
   renders: <T = FragmentableArray<Render>>(
     args?: {
       where?: RenderWhereInput;
@@ -2325,9 +2326,9 @@ export interface CheckSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  githubCheckId: () => Promise<AsyncIterator<Int>>;
   headBranch: () => Promise<AsyncIterator<String>>;
   headSha: () => Promise<AsyncIterator<String>>;
-  githubCheckId: () => Promise<AsyncIterator<Int>>;
   renders: <T = Promise<AsyncIterator<RenderSubscription>>>(
     args?: {
       where?: RenderWhereInput;
@@ -3190,9 +3191,9 @@ export interface CheckPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  githubCheckId?: Int;
   headBranch: String;
   headSha: String;
-  githubCheckId?: Int;
 }
 
 export interface CheckPreviousValuesPromise
@@ -3201,9 +3202,9 @@ export interface CheckPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  githubCheckId: () => Promise<Int>;
   headBranch: () => Promise<String>;
   headSha: () => Promise<String>;
-  githubCheckId: () => Promise<Int>;
 }
 
 export interface CheckPreviousValuesSubscription
@@ -3212,9 +3213,9 @@ export interface CheckPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  githubCheckId: () => Promise<AsyncIterator<Int>>;
   headBranch: () => Promise<AsyncIterator<String>>;
   headSha: () => Promise<AsyncIterator<String>>;
-  githubCheckId: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface ComponentSubscriptionPayload {
@@ -3589,6 +3590,11 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -3602,11 +3608,6 @@ export type DateTimeOutput = string;
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
