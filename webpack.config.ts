@@ -1,17 +1,15 @@
 /// <reference types="./@types/webpack-stats-plugin" />
-import webpack from 'webpack'
-import { StatsWriterPlugin } from 'webpack-stats-plugin'
-import nodeExternals from 'webpack-node-externals'
-
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
+import webpack from 'webpack'
+import nodeExternals from 'webpack-node-externals'
+import { StatsWriterPlugin } from 'webpack-stats-plugin'
 
 const base = {
   mode: config.environment,
   devtool: 'source-map',
 
   output: {
-    path: absolutePath('./dist'),
     filename: '[name].[hash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: '/dist/',
@@ -64,6 +62,11 @@ export const client = {
     ],
   },
 
+  output: {
+    ...base.output,
+    path: absolutePath('public/dist'),
+  },
+
   plugins: [
     ...base.plugins,
     new StatsWriterPlugin({ filename: 'client-stats.json' }),
@@ -80,6 +83,7 @@ export const server = {
 
   output: {
     ...base.output,
+    path: absolutePath('dist'),
     libraryTarget: 'commonjs2',
   },
 

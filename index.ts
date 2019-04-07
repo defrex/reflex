@@ -1,19 +1,18 @@
-import express from 'express'
-import cookieSession from 'cookie-session'
+import applyApiMiddleware from 'api'
+import config from 'api/config'
+import gen from 'api/lib/gen'
+import { absolutePath } from 'api/lib/path'
+import run from 'api/lib/run'
+import { absoluteUrl } from 'api/lib/url'
 import chokidar from 'chokidar'
+import cookieSession from 'cookie-session'
+import express from 'express'
+import { debounce } from 'lodash'
+import morgan from 'morgan'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
-import morgan from 'morgan'
-import { debounce } from 'lodash'
-
-import applyApiMiddleware from 'api'
-import gen from 'api/lib/gen'
-import run from 'api/lib/run'
-import { absoluteUrl } from 'api/lib/url'
-import { absolutePath } from 'api/lib/path'
-import config from 'api/config'
 import webpackConfigs from './webpack.config'
 
 interface InitOptions {
@@ -66,13 +65,12 @@ export default async function main(options: InitOptions) {
       )
     } else {
       const serverStats = require(absolutePath('dist/server-stats.json'))
-      const clientStats = require(absolutePath('dist/client-stats.json'))
+      const clientStats = require(absolutePath('public/dist/client-stats.json'))
       const serverRendererPath = absolutePath(
         `/dist/${serverStats.assetsByChunkName.server[0]}`,
       )
       const serverRenderer = require(serverRendererPath).default
 
-      app.get('/dist', express.static('dist'))
       app.get('*', serverRenderer({ clientStats }))
     }
   }

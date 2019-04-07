@@ -1,6 +1,7 @@
 /node_modules
-/dist
 /public/renders
+/public/dist
+/dist
 
 # misc
 .DS_Store
