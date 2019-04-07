@@ -1,18 +1,40 @@
-import { promisify } from 'util'
-import fs from 'fs'
+import { Storage } from '@google-cloud/storage'
 
-import { absolutePath } from 'api/lib/path'
 import { trimImage } from 'api/lib/image'
 import { renderUrl } from 'api/lib/render'
+import config from 'api/config'
 
-const writeFile = promisify(fs.writeFile)
-const mkdir = promisify(fs.mkdir)
+const storage = new Storage({ projectId: config.gcpProjectId })
+const bucketName = 'reflexui.com'
+const directoryName = `renders/${config.environment}`
+const time = new Date().valueOf()
+
+async function upload(filename: string, content: Buffer) {
+  return new Promise((resolve, reject) => {
+    storage
+      .bucket(bucketName)
+      .file(filename)
+      .createWriteStream()
+      .on('error', reject)
+      .on('finish', resolve)
+      .end(content)
+  })
+}
 
 export default async function main() {
-  await mkdir(absolutePath('public/render-sample'))
-
   let image = await renderUrl('https://www.google.com/')
-  await writeFile(absolutePath(`public/render-sample/post-browser.png`), image)
+  try {
+    await upload(`${directoryName}/browser-${time}.png`, image)
+  } catch (error) {
+    console.error(error)
+    return
+  }
+
   image = await trimImage(image)
-  await writeFile(absolutePath(`public/render-sample/post-trim.png`), image)
+  try {
+    await upload(`${directoryName}/trim-${time}.png`, image)
+  } catch (error) {
+    console.error(error)
+    return
+  }
 }

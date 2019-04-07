@@ -31,6 +31,7 @@ const config = {
   githubAuthClientId: process.env.GITHUB_AUTH_CLIENT_ID!,
   githubAuthClientSecret: process.env.GITHUB_AUTH_CLIENT_SECRET!,
   googleAnalyticsId: environment === 'production' ? 'UA-137693546-1' : '',
+  gcpProjectId: 'reflex-236915',
 }
 
 for (const [key, value] of Object.entries(config)) {
