@@ -1,4 +1,5 @@
 import { Storage } from '@google-cloud/storage'
+import colors from 'colors'
 
 import { trimImage } from 'api/lib/image'
 import { renderUrl } from 'api/lib/render'
@@ -27,18 +28,39 @@ async function upload(filename: string, content: Buffer) {
 }
 
 export default async function main() {
-  let image = await renderUrl(url)
+  let image: Buffer
   try {
-    await upload(`${directoryName}/${time}-browser.png`, image)
+    image = await renderUrl(url)
   } catch (error) {
+    console.log(colors.dim('image = await renderUrl(url)'))
     console.error(error)
     return
   }
 
-  image = await trimImage(image)
+  try {
+    await upload(`${directoryName}/${time}-browser.png`, image)
+  } catch (error) {
+    console.log(
+      colors.dim('await upload(`${directoryName}/${time}-browser.png`, image)'),
+    )
+    console.error(error)
+    return
+  }
+
+  try {
+    image = await trimImage(image)
+  } catch (error) {
+    console.log(colors.dim('image = await trimImage(image)'))
+    console.error(error)
+    return
+  }
+
   try {
     await upload(`${directoryName}/${time}-trim.png`, image)
   } catch (error) {
+    console.log(
+      colors.dim('await upload(`${directoryName}/${time}-trim.png`, image)'),
+    )
     console.error(error)
     return
   }
