@@ -1,10 +1,8 @@
 import { Storage } from '@google-cloud/storage'
-import colors from 'colors'
-
+import config from 'api/config'
 import { trimImage } from 'api/lib/image'
 import { renderUrl } from 'api/lib/render'
-import config from 'api/config'
-import { absoluteUrl } from 'ui/lib/url'
+import colors from 'colors'
 
 const storage = new Storage({ projectId: config.gcpProjectId })
 const bucketName = 'reflexui.com'
@@ -13,7 +11,8 @@ const time = new Date().valueOf()
 
 // const teamId = 'cjtp6ia6s00as0748aq40bbwq' // dev
 const teamId = 'cjtpxdt9z00690804knk2emtz' // prod
-const url = absoluteUrl(`/teams/${teamId}/examples/Button/Primary`)
+// const url = absoluteUrl(`/teams/${teamId}/examples/Button/Primary`)
+const url = `https://reflexui.com/teams/${teamId}/examples/Button/Primary`
 
 async function upload(filename: string, content: Buffer) {
   return new Promise((resolve, reject) => {
