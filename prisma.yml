@@ -5,3 +5,7 @@ datamodel: ./api/datamodel.prisma
 generate:
   - generator: typescript-client
     output: ./api/prisma
+
+hooks:
+  post-deploy:
+    - prisma generate

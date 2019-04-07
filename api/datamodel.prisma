@@ -78,9 +78,9 @@ type Check {
   createdAt: DateTime!
   updatedAt: DateTime!
 
+  githubCheckId: Int @unique
   headBranch: String!
   headSha: String!
-  githubCheckId: Int
 
   renders: [Render]!
   repo: Repo
