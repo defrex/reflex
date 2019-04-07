@@ -28,6 +28,7 @@ async function upload(filename: string, content: Buffer) {
 }
 
 export default async function main() {
+  console.log(colors.green(`Rendering ${url}`))
   let image: Buffer
   try {
     image = await renderUrl(url)
