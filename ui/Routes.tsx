@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import { Route, Switch } from 'react-router-dom'
-
-import Index from 'ui/pages/Index'
-import Dashboard from 'ui/pages/Dashboard'
-import Library from 'ui/pages/Library'
-import Team from 'ui/pages/Team'
 import CreateTeam from 'ui/pages/CreateTeam'
+import Dashboard from 'ui/pages/Dashboard'
 import Example from 'ui/pages/Example'
+import Index from 'ui/pages/Index'
+import Library from 'ui/pages/Library'
+import NotFound from 'ui/pages/NotFound'
+import Team from 'ui/pages/Team'
 
 export default class Router extends PureComponent {
   render() {
@@ -21,6 +21,7 @@ export default class Router extends PureComponent {
         <Route path='/teams/:teamId/library' component={Library} />
         <Route path='/teams/:teamId' component={Team} />
         <Route path='/teams' component={CreateTeam} />
+        <Route component={NotFound} />
       </Switch>
     )
   }

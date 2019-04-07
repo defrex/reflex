@@ -1,9 +1,11 @@
 import config from 'api/config'
 
 export function absoluteUrl(path: string): string {
-  return `${config.ssl ? 'https' : 'http'}://${config.domain}${
-    config.environment === 'development' ? `:${config.port}` : ''
-  }${path}`
+  const domain =
+    config.environment === 'development'
+      ? `${config.domain}:${config.port}`
+      : config.domain.split(':')[0]
+  return `${config.ssl ? 'https' : 'http'}://${domain}${path}`
 }
 
 export function encodeGetParams(
