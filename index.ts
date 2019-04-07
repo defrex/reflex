@@ -35,7 +35,7 @@ export default async function main(options: InitOptions) {
     }),
   )
   app.use(morgan('dev'))
-  app.use(express.static('public'))
+  app.use(express.static(absolutePath('public')))
 
   await applyApiMiddleware(app)
 
