@@ -7,20 +7,24 @@ import Index from 'ui/pages/Index'
 import Library from 'ui/pages/Library'
 import NotFound from 'ui/pages/NotFound'
 import Team from 'ui/pages/Team'
+import {
+  createTeamRoute,
+  dashboardRoute,
+  exampleRoute,
+  libraryRoute,
+  teamRoute,
+} from './lib/routes'
 
 export default class Router extends PureComponent {
   render() {
     return (
       <Switch>
         <Route path='/' exact component={Index} />
-        <Route path='/dashboard' component={Dashboard} />
-        <Route
-          path='/teams/:teamId/examples/:component/:example'
-          component={Example}
-        />
-        <Route path='/teams/:teamId/library' component={Library} />
-        <Route path='/teams/:teamId' component={Team} />
-        <Route path='/teams' component={CreateTeam} />
+        <Route path={dashboardRoute()} component={Dashboard} />
+        <Route path={exampleRoute()} component={Example} />
+        <Route path={libraryRoute()} component={Library} />
+        <Route path={teamRoute()} component={Team} />
+        <Route path={createTeamRoute()} component={CreateTeam} />
         <Route component={NotFound} />
       </Switch>
     )

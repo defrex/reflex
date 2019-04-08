@@ -4,6 +4,7 @@ import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
 import { Check, prisma, Repo } from 'api/prisma'
 import { Context, Octokit } from 'probot'
+import { libraryRoute } from 'ui/lib/routes'
 
 export default async function({
   payload,
@@ -82,14 +83,13 @@ export default async function({
   }
 
   if (!check.githubCheckId) {
+    const team = await prisma.repo({ id: repo.id }).team()
     const createCheckPayload: Octokit.ChecksCreateParams = {
       owner: repo.owner,
       repo: repo.name,
       name: 'reflex',
       head_sha: check.headSha,
-      details_url: absoluteUrl(
-        `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
-      ),
+      details_url: absoluteUrl(libraryRoute({ teamId: team.id })),
       external_id: check.id,
       status: 'in_progress',
       started_at: check.createdAt,
