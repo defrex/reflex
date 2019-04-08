@@ -1,11 +1,10 @@
-import { promisify } from 'util'
-import fs from 'fs'
-
-import { Example, prisma } from 'api/prisma'
-import { absoluteUrl } from 'api/lib/url'
-import { absolutePath } from 'api/lib/path'
 import { trimImage } from 'api/lib/image'
+import { absolutePath } from 'api/lib/path'
 import { renderUrl } from 'api/lib/render'
+import { absoluteUrl } from 'api/lib/url'
+import { Example, prisma } from 'api/prisma'
+import fs from 'fs'
+import { promisify } from 'util'
 
 const writeFile = promisify(fs.writeFile)
 const mkdir = promisify(fs.mkdir)

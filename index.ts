@@ -34,7 +34,11 @@ export default async function main(options: InitOptions) {
       httpOnly: true,
     }),
   )
-  app.use(morgan('dev'))
+
+  if (config.environment === 'development') {
+    app.use(morgan('dev'))
+  }
+
   app.use(express.static(absolutePath('public')))
 
   await applyApiMiddleware(app)
@@ -88,22 +92,6 @@ export default async function main(options: InitOptions) {
         { ignoreInitial: true },
       )
       .on('all', gen)
-    // chokidar
-    //   .watch([absolutePath('api/*.ts'), absolutePath('api/**/*.ts')], {
-    //     ignoreInitial: true,
-    //   })
-    //   .on('all', async (_event, _path) => {
-    //     console.log('reloading')
-    //     const apiPath = absolutePath('api')
-    //     for (const path of Object.keys(require.cache)) {
-    //       if (path.startsWith(apiPath)) {
-    //         delete require.cache[require.resolve(path)]
-    //         require(path)
-    //       }
-    //     }
-    //     const { default: applyApiMiddleware } = await import('./api')
-    //     applyApiMiddleware(app)
-    //   })
   }
 
   app.listen(config.port, () => {
