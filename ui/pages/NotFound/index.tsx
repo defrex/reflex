@@ -9,7 +9,9 @@ interface NotFoundProps {
 }
 
 export default function NotFound({ location, staticContext }: NotFoundProps) {
-  staticContext.statusCode = 404
+  if (staticContext) {
+    staticContext.statusCode = 404
+  }
 
   return (
     <div className={styles.notFound}>
