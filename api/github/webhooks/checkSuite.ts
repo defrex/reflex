@@ -9,7 +9,7 @@ export default async function({
   payload,
   github,
 }: Context<WebhookPayloadCheckSuite>) {
-  console.log('🐛 in checkSuite handler')
+  console.log('🐛 checkSuite')
 
   const repo = await findOne<Repo>(
     prisma.repoes({
@@ -97,7 +97,9 @@ export default async function({
       started_at: check.createdAt,
     }
 
+    console.log('🐛 checkSuite:createCheckPayload', createCheckPayload)
     const githubCheck = await github.checks.create(createCheckPayload)
+    console.log('🐛 checkSuite:createCheckPayload.complete')
 
     await prisma.updateCheck({
       data: {
