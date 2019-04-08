@@ -1,11 +1,10 @@
-import { Router, Request, Response } from 'express'
-import fetch from 'node-fetch'
-
-import { loggedInUser } from 'api/lib/auth'
 import config from 'api/config'
-import { absoluteUrl, encodeGetParams } from 'api/lib/url'
+import { loggedInUser } from 'api/lib/auth'
 import { randomString } from 'api/lib/random'
+import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma } from 'api/prisma'
+import { Request, Response, Router } from 'express'
+import fetch from 'node-fetch'
 
 interface FigmaTokenData {
   error: boolean
