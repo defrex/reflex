@@ -1,15 +1,16 @@
-import { Octokit, Context } from 'probot'
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
-
-import { Repo, Check, prisma } from 'api/prisma'
 import { findOne } from 'api/lib/data'
 import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
+import { Check, prisma, Repo } from 'api/prisma'
+import { Context, Octokit } from 'probot'
 
 export default async function({
   payload,
   github,
 }: Context<WebhookPayloadCheckSuite>) {
+  console.log('🐛 in checkSuite handler')
+
   const repo = await findOne<Repo>(
     prisma.repoes({
       where: {
