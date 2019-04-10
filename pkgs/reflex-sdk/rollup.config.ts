@@ -1,4 +1,3 @@
-import camelCase from 'lodash.camelcase'
 import commonjs from 'rollup-plugin-commonjs'
 import json from 'rollup-plugin-json'
 import resolve from 'rollup-plugin-node-resolve'
@@ -12,11 +11,11 @@ const libraryName = 'sampler'
 export default {
   input: `src/${libraryName}.ts`,
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
+    { file: pkg.main, format: 'cjs', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: ['util', 'fs'],
+  external: ['util', 'fs', 'events', 'assert', 'path', 'stream'],
   watch: {
     include: 'src/**'
   },

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "keywords": [],
-  "main": "dist/sampler.umd.js",
+  "main": "dist/sampler.cjs.js",
   "module": "dist/sampler.es5.js",
   "typings": "dist/types/sampler.d.ts",
   "files": [

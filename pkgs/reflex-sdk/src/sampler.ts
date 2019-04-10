@@ -1,35 +1,48 @@
-import rawGlob from 'glob'
-import { ReactElement } from 'react'
-import ReactDomServer from 'react-dom/server'
-import { promisify } from 'util'
-
-const glob = promisify(rawGlob)
+import collectFilenames from './collectFilenames'
+import { getRenderSampleToDocument } from './renderSample'
+import { SampleSet } from './SampleSet'
+import { RenderedSampleToDocument, RenderSampleToDocument, RenderSampleToStrings } from './types'
 
 const sampleSets: Array<SampleSet> = []
 
-type RenderFn = () => ReactElement
-
-export interface Sample {
-  name: string
-  renderFn: RenderFn
+export interface SamplerOptions {
+  paths: string | string[]
+  renderSampleToDocument?: RenderSampleToDocument
+  renderSampleToStrings?: RenderSampleToStrings
+  renderedSampleToDocument?: RenderedSampleToDocument
 }
 
-export class SampleSet {
-  private samples: Array<Sample> = []
+export async function sampler({
+  paths,
+  renderSampleToDocument,
+  renderSampleToStrings,
+  renderedSampleToDocument
+}: SamplerOptions): Promise<void> {
+  const filenames = await collectFilenames(paths)
 
-  constructor(public componentName: string) {}
-
-  add(name: string, renderFn: RenderFn) {
-    this.samples.push({ name, renderFn })
-    return this
+  if (!renderSampleToDocument) {
+    renderSampleToDocument = getRenderSampleToDocument(
+      renderSampleToStrings,
+      renderedSampleToDocument
+    )
   }
 
-  async run() {
-    console.log(`Running samples for component ${this.componentName}`)
-    for (const sample of this.samples) {
-      console.log(`\t${sample.name}...`)
-      const htmlSample = ReactDomServer.renderToString(sample.renderFn())
-      console.log(htmlSample)
+  process.stdout.write('Loading files\n')
+  for (const filename of filenames) {
+    process.stdout.write(`\t${filename}...`)
+    require(filename)
+    process.stdout.write(' ✅\n')
+  }
+  process.stdout.write('\n')
+
+  process.stdout.write('Rendering samples\n')
+  let results: string[] = []
+  for (const sampleSet of sampleSets) {
+    for (const sample of sampleSet.samples) {
+      process.stdout.write(`\t${sample.name}...`)
+      const result = await renderSampleToDocument(sample.render)
+      results.push(result)
+      process.stdout.write(' ✅\n')
     }
   }
 }
@@ -38,22 +51,4 @@ export function samplesOf(componentName: string): SampleSet {
   const sampleSet = new SampleSet(componentName)
   sampleSets.push(sampleSet)
   return sampleSet
-}
-
-interface SamplerOptions {
-  path: string
-}
-
-export default async function sampler({ path }: SamplerOptions): Promise<void> {
-  const files = await glob(path)
-  console.log('Loading files...')
-  for (const file of files) {
-    require(file)
-    console.log(file)
-  }
-  console.log('')
-
-  for (const sampleSet of sampleSets) {
-    await sampleSet.run()
-  }
 }
