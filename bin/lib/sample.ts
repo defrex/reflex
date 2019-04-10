@@ -1,13 +1,18 @@
-import sampler from '@reflexui/sampler'
+import { sampler } from '@reflexui/sampler'
 import { absolutePath } from 'api/lib/path'
+import ReactDomServer from 'react-dom/server'
+import { getStyles } from 'typestyle'
 
 async function main() {
-  console.log('🏁')
-
   await sampler({
-    path: absolutePath('ui/components/*/samples.tsx'),
+    paths: absolutePath('ui/components/*/samples.tsx'),
+    renderSampleToStrings: async (sampleRender) => {
+      const rendered = await sampleRender()
+      return {
+        html: ReactDomServer.renderToString(rendered),
+        css: getStyles(),
+      }
+    },
   })
-
-  console.log('✅')
 }
 main()
