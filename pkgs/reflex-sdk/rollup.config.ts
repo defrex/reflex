@@ -11,11 +11,22 @@ const libraryName = 'sampler'
 export default {
   input: `src/${libraryName}.ts`,
   output: [
-    { file: pkg.main, format: 'cjs', sourcemap: true },
+    { file: pkg.main, format: 'cjs', sourcemap: true, banner: '#!/usr/bin/env node' },
     { file: pkg.module, format: 'es', sourcemap: true }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: ['util', 'fs', 'events', 'assert', 'path', 'stream'],
+  external: [
+    'util',
+    'fs',
+    'events',
+    'assert',
+    'path',
+    'stream',
+    'child_process',
+    'buffer',
+    'os',
+    'tty'
+  ],
   watch: {
     include: 'src/**'
   },

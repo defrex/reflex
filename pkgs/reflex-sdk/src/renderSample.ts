@@ -1,16 +1,12 @@
 import ReactDomServer from 'react-dom/server'
 import {
   Document,
+  RenderedSample,
   RenderedSampleToDocument,
   RenderSampleToDocument,
   RenderSampleToStrings,
   SampleRenderFn
 } from './types'
-
-export interface RenderedSample {
-  html: string
-  css?: string
-}
 
 export async function renderSampleToStrings(sampleRender: SampleRenderFn): Promise<RenderedSample> {
   const rendered = await sampleRender()

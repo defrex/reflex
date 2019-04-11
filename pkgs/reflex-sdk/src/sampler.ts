@@ -1,7 +1,9 @@
+import cli from './cli'
 import collectFilenames from './collectFilenames'
 import { getRenderSampleToDocument } from './renderSample'
 import { SampleSet } from './SampleSet'
 import { RenderedSampleToDocument, RenderSampleToDocument, RenderSampleToStrings } from './types'
+export * from './types'
 
 const sampleSets: Array<SampleSet> = []
 
@@ -52,4 +54,8 @@ export function samplesOf(componentName: string): SampleSet {
   const sampleSet = new SampleSet(componentName)
   sampleSets.push(sampleSet)
   return sampleSet
+}
+
+if (!module.parent) {
+  cli().catch(console.error)
 }
