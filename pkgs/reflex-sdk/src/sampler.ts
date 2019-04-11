@@ -39,11 +39,12 @@ export async function sampler({
   let results: string[] = []
   for (const sampleSet of sampleSets) {
     for (const sample of sampleSet.samples) {
-      process.stdout.write(`\t${sample.name}...`)
+      process.stdout.write(`\t${sampleSet.componentName}/${sample.name}...`)
       const result = await renderSampleToDocument(sample.render)
       results.push(result)
       process.stdout.write(' ✅\n')
     }
+    process.stdout.write('\n')
   }
 }
 
