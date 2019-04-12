@@ -1,6 +1,8 @@
 import Octokit from '@octokit/rest'
 import config from 'api/config'
-import { finishOAuthState, logInUser, startOAuthState } from 'api/lib/auth'
+import { logInUser } from 'api/lib/auth'
+import { checkCliAuthSession } from 'api/lib/cliAuth'
+import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma, User } from 'api/prisma'
 import { Request, Response, Router } from 'express'
@@ -12,6 +14,10 @@ interface GithubTokenData {
   token_type: string
 }
 
+interface GithubAuthSessionPayload {
+  cliAuthToken: string
+}
+
 const router = Router()
 
 export const authUrl = absoluteUrl('/api/github/auth/start')
@@ -19,7 +25,9 @@ export const authUrl = absoluteUrl('/api/github/auth/start')
 const redirectUri = absoluteUrl('/api/github/auth/finish')
 
 router.get('/start', (req: Request, res: Response) => {
-  const state = startOAuthState(req, res)
+  const session = startOAuthSession<GithubAuthSessionPayload>(req, res, {
+    cliAuthToken: req.param('cliAuthToken'),
+  })
 
   const githubRedirectUrl = encodeGetParams(
     'https://github.com/login/oauth/authorize',
@@ -27,7 +35,7 @@ router.get('/start', (req: Request, res: Response) => {
       client_id: config.githubAuthClientId,
       redirect_uri: redirectUri,
       scope: 'read:org read:user',
-      state: state,
+      state: session.state,
     },
   )
 
@@ -37,8 +45,9 @@ router.get('/start', (req: Request, res: Response) => {
 router.get('/finish', async (req: Request, res: Response) => {
   const code = req.query.code
   const state = req.query.state
+  const session = finishOAuthSession<GithubAuthSessionPayload>(req, res)
 
-  if (finishOAuthState(req, res) !== state) {
+  if (session.state !== state) {
     return res.send(400)
   }
 
@@ -86,6 +95,24 @@ router.get('/finish', async (req: Request, res: Response) => {
   }
 
   await logInUser(req, res, user)
+
+  if (session.cliAuthToken) {
+    const cliAuthSession = await checkCliAuthSession(session.cliAuthToken)
+    if (cliAuthSession) {
+      await prisma.updateCliAuthSession({
+        data: {
+          authenticatedUser: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+        where: {
+          id: cliAuthSession.id,
+        },
+      })
+    }
+  }
 
   res.redirect('/dashboard')
 })

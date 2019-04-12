@@ -8,6 +8,15 @@ export type Scalars = {
   Float: number
 }
 
+export type BeginCliAuthResponse = {
+  cliAuthToken: Scalars['String']
+  url: Scalars['String']
+}
+
+export type CheckCliAuthResponse = {
+  userAuthToken?: Maybe<Scalars['String']>
+}
+
 export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
@@ -65,10 +74,16 @@ export type LogoutResponse = {
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
+  beginCliAuth?: Maybe<BeginCliAuthResponse>
+  checkCliAuth?: Maybe<CheckCliAuthResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
   renderExample?: Maybe<RenderExampleResponse>
+}
+
+export type MutationCheckCliAuthArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type MutationCreateTeamArgs = {

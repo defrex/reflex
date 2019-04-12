@@ -1,19 +1,22 @@
-import { prisma } from 'api/prisma'
+import { AuthenticationError, AuthorizationError } from 'api/exceptions'
+import { Context } from 'api/graphql/Context'
+import { success } from 'api/graphql/resolvers/lib/MutationResponse'
+import cliAuth from 'api/graphql/resolvers/Mutation/cliAuth'
 import {
-  MutationResolvers,
-  CreateTeamResponse,
   CreateComponentResponse,
   CreateExampleResponse,
+  CreateTeamResponse,
+  MutationResolvers,
   RenderExampleResponse,
 } from 'api/graphql/types'
-import { Context } from 'api/graphql/Context'
-import { LogoutResponse } from 'ui/lib/graphql'
-import { success } from 'api/graphql/resolvers/lib/MutationResponse'
-import { userInTeam } from 'api/lib/user'
-import { AuthenticationError, AuthorizationError } from 'api/exceptions'
 import renderExample from 'api/lib/renderExample'
+import { userInTeam } from 'api/lib/user'
+import { prisma } from 'api/prisma'
+import { LogoutResponse } from 'ui/lib/graphql'
 
 export default {
+  ...cliAuth,
+
   async logout(_parent, _args, ctx): Promise<LogoutResponse> {
     ctx.logout()
     return success()

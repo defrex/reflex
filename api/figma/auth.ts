@@ -1,5 +1,6 @@
 import config from 'api/config'
-import { finishOAuthState, loggedInUser, startOAuthState } from 'api/lib/auth'
+import { loggedInUser } from 'api/lib/auth'
+import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma } from 'api/prisma'
 import { Request, Response, Router } from 'express'
@@ -27,12 +28,12 @@ router.get('/start', async (req: Request, res: Response) => {
     return
   }
 
-  const state = startOAuthState(req, res)
+  const session = startOAuthSession(req, res)
 
   const figmaUrl = encodeGetParams('https://www.figma.com/oauth', {
     client_id: config.figmaClientId,
     redirect_uri: redirectUri,
-    state: state,
+    state: session.state,
     scope: 'file_read',
     response_type: 'code',
   })
@@ -52,7 +53,7 @@ router.get('/finish', async (req: Request, res: Response) => {
   const code = req.query.code
   const state = req.query.state
 
-  if (finishOAuthState(req, res) !== state) {
+  if (finishOAuthSession(req, res).state !== state) {
     return res.send(400)
   }
 

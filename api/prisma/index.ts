@@ -15,6 +15,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   check: (where?: CheckWhereInput) => Promise<boolean>;
+  cliAuthSession: (where?: CliAuthSessionWhereInput) => Promise<boolean>;
   component: (where?: ComponentWhereInput) => Promise<boolean>;
   example: (where?: ExampleWhereInput) => Promise<boolean>;
   membership: (where?: MembershipWhereInput) => Promise<boolean>;
@@ -66,6 +67,31 @@ export interface Prisma {
       last?: Int;
     }
   ) => CheckConnectionPromise;
+  cliAuthSession: (
+    where: CliAuthSessionWhereUniqueInput
+  ) => CliAuthSessionPromise;
+  cliAuthSessions: (
+    args?: {
+      where?: CliAuthSessionWhereInput;
+      orderBy?: CliAuthSessionOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<CliAuthSession>;
+  cliAuthSessionsConnection: (
+    args?: {
+      where?: CliAuthSessionWhereInput;
+      orderBy?: CliAuthSessionOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => CliAuthSessionConnectionPromise;
   component: (where: ComponentWhereUniqueInput) => ComponentPromise;
   components: (
     args?: {
@@ -249,6 +275,34 @@ export interface Prisma {
   ) => CheckPromise;
   deleteCheck: (where: CheckWhereUniqueInput) => CheckPromise;
   deleteManyChecks: (where?: CheckWhereInput) => BatchPayloadPromise;
+  createCliAuthSession: (
+    data: CliAuthSessionCreateInput
+  ) => CliAuthSessionPromise;
+  updateCliAuthSession: (
+    args: {
+      data: CliAuthSessionUpdateInput;
+      where: CliAuthSessionWhereUniqueInput;
+    }
+  ) => CliAuthSessionPromise;
+  updateManyCliAuthSessions: (
+    args: {
+      data: CliAuthSessionUpdateManyMutationInput;
+      where?: CliAuthSessionWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertCliAuthSession: (
+    args: {
+      where: CliAuthSessionWhereUniqueInput;
+      create: CliAuthSessionCreateInput;
+      update: CliAuthSessionUpdateInput;
+    }
+  ) => CliAuthSessionPromise;
+  deleteCliAuthSession: (
+    where: CliAuthSessionWhereUniqueInput
+  ) => CliAuthSessionPromise;
+  deleteManyCliAuthSessions: (
+    where?: CliAuthSessionWhereInput
+  ) => BatchPayloadPromise;
   createComponent: (data: ComponentCreateInput) => ComponentPromise;
   updateComponent: (
     args: { data: ComponentUpdateInput; where: ComponentWhereUniqueInput }
@@ -379,6 +433,9 @@ export interface Subscription {
   check: (
     where?: CheckSubscriptionWhereInput
   ) => CheckSubscriptionPayloadSubscription;
+  cliAuthSession: (
+    where?: CliAuthSessionSubscriptionWhereInput
+  ) => CliAuthSessionSubscriptionPayloadSubscription;
   component: (
     where?: ComponentSubscriptionWhereInput
   ) => ComponentSubscriptionPayloadSubscription;
@@ -477,6 +534,16 @@ export type ExampleOrderByInput =
   | "updatedAt_DESC"
   | "name_ASC"
   | "name_DESC";
+
+export type CliAuthSessionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "expiresAt_ASC"
+  | "expiresAt_DESC";
 
 export type TeamOrderByInput =
   | "id_ASC"
@@ -1025,6 +1092,55 @@ export interface CheckWhereInput {
   AND?: CheckWhereInput[] | CheckWhereInput;
   OR?: CheckWhereInput[] | CheckWhereInput;
   NOT?: CheckWhereInput[] | CheckWhereInput;
+}
+
+export type CliAuthSessionWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CliAuthSessionWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  expiresAt?: DateTimeInput;
+  expiresAt_not?: DateTimeInput;
+  expiresAt_in?: DateTimeInput[] | DateTimeInput;
+  expiresAt_not_in?: DateTimeInput[] | DateTimeInput;
+  expiresAt_lt?: DateTimeInput;
+  expiresAt_lte?: DateTimeInput;
+  expiresAt_gt?: DateTimeInput;
+  expiresAt_gte?: DateTimeInput;
+  authenticatedUser?: UserWhereInput;
+  AND?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
+  OR?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
+  NOT?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
 }
 
 export type ComponentWhereUniqueInput = AtLeastOne<{
@@ -1994,6 +2110,134 @@ export interface CheckUpdateManyMutationInput {
   headSha?: String;
 }
 
+export interface CliAuthSessionCreateInput {
+  expiresAt: DateTimeInput;
+  authenticatedUser?: UserCreateOneInput;
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipCreateManyWithoutUserInput;
+}
+
+export interface MembershipCreateManyWithoutUserInput {
+  create?:
+    | MembershipCreateWithoutUserInput[]
+    | MembershipCreateWithoutUserInput;
+  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+}
+
+export interface MembershipCreateWithoutUserInput {
+  role?: Role;
+  team: TeamCreateOneWithoutMembershipsInput;
+}
+
+export interface TeamCreateOneWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface TeamCreateWithoutMembershipsInput {
+  name: String;
+  components?: ComponentCreateManyWithoutTeamInput;
+  repos?: RepoCreateManyWithoutTeamInput;
+}
+
+export interface CliAuthSessionUpdateInput {
+  expiresAt?: DateTimeInput;
+  authenticatedUser?: UserUpdateOneInput;
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateDataInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipUpdateManyWithoutUserInput;
+}
+
+export interface MembershipUpdateManyWithoutUserInput {
+  create?:
+    | MembershipCreateWithoutUserInput[]
+    | MembershipCreateWithoutUserInput;
+  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  update?:
+    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
+    | MembershipUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
+    | MembershipUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  updateMany?:
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput;
+}
+
+export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutUserDataInput;
+}
+
+export interface MembershipUpdateWithoutUserDataInput {
+  role?: Role;
+  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface TeamUpdateOneRequiredWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  update?: TeamUpdateWithoutMembershipsDataInput;
+  upsert?: TeamUpsertWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface TeamUpdateWithoutMembershipsDataInput {
+  name?: String;
+  components?: ComponentUpdateManyWithoutTeamInput;
+  repos?: RepoUpdateManyWithoutTeamInput;
+}
+
+export interface TeamUpsertWithoutMembershipsInput {
+  update: TeamUpdateWithoutMembershipsDataInput;
+  create: TeamCreateWithoutMembershipsInput;
+}
+
+export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutUserDataInput;
+  create: MembershipCreateWithoutUserInput;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface CliAuthSessionUpdateManyMutationInput {
+  expiresAt?: DateTimeInput;
+}
+
 export interface ComponentCreateInput {
   name: String;
   team: TeamCreateOneWithoutComponentsInput;
@@ -2032,39 +2276,10 @@ export interface MembershipCreateInput {
   team: TeamCreateOneWithoutMembershipsInput;
 }
 
-export interface TeamCreateOneWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamCreateWithoutMembershipsInput {
-  name: String;
-  components?: ComponentCreateManyWithoutTeamInput;
-  repos?: RepoCreateManyWithoutTeamInput;
-}
-
 export interface MembershipUpdateInput {
   role?: Role;
   user?: UserUpdateOneRequiredWithoutMembershipsInput;
   team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface TeamUpdateOneRequiredWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  update?: TeamUpdateWithoutMembershipsDataInput;
-  upsert?: TeamUpsertWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamUpdateWithoutMembershipsDataInput {
-  name?: String;
-  components?: ComponentUpdateManyWithoutTeamInput;
-  repos?: RepoUpdateManyWithoutTeamInput;
-}
-
-export interface TeamUpsertWithoutMembershipsInput {
-  update: TeamUpdateWithoutMembershipsDataInput;
-  create: TeamCreateWithoutMembershipsInput;
 }
 
 export interface MembershipUpdateManyMutationInput {
@@ -2124,27 +2339,6 @@ export interface TeamUpdateManyMutationInput {
   name?: String;
 }
 
-export interface UserCreateInput {
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipCreateManyWithoutUserInput;
-}
-
-export interface MembershipCreateManyWithoutUserInput {
-  create?:
-    | MembershipCreateWithoutUserInput[]
-    | MembershipCreateWithoutUserInput;
-  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-}
-
-export interface MembershipCreateWithoutUserInput {
-  role?: Role;
-  team: TeamCreateOneWithoutMembershipsInput;
-}
-
 export interface UserUpdateInput {
   email?: String;
   name?: String;
@@ -2152,42 +2346,6 @@ export interface UserUpdateInput {
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
   memberships?: MembershipUpdateManyWithoutUserInput;
-}
-
-export interface MembershipUpdateManyWithoutUserInput {
-  create?:
-    | MembershipCreateWithoutUserInput[]
-    | MembershipCreateWithoutUserInput;
-  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  update?:
-    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
-    | MembershipUpdateWithWhereUniqueWithoutUserInput;
-  upsert?:
-    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
-    | MembershipUpsertWithWhereUniqueWithoutUserInput;
-  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  updateMany?:
-    | MembershipUpdateManyWithWhereNestedInput[]
-    | MembershipUpdateManyWithWhereNestedInput;
-}
-
-export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  data: MembershipUpdateWithoutUserDataInput;
-}
-
-export interface MembershipUpdateWithoutUserDataInput {
-  role?: Role;
-  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  update: MembershipUpdateWithoutUserDataInput;
-  create: MembershipCreateWithoutUserInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -2207,6 +2365,23 @@ export interface CheckSubscriptionWhereInput {
   AND?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
   OR?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
   NOT?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
+}
+
+export interface CliAuthSessionSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CliAuthSessionWhereInput;
+  AND?:
+    | CliAuthSessionSubscriptionWhereInput[]
+    | CliAuthSessionSubscriptionWhereInput;
+  OR?:
+    | CliAuthSessionSubscriptionWhereInput[]
+    | CliAuthSessionSubscriptionWhereInput;
+  NOT?:
+    | CliAuthSessionSubscriptionWhereInput[]
+    | CliAuthSessionSubscriptionWhereInput;
 }
 
 export interface ComponentSubscriptionWhereInput {
@@ -2764,6 +2939,89 @@ export interface AggregateCheckSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface CliAuthSession {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  expiresAt: DateTimeOutput;
+}
+
+export interface CliAuthSessionPromise
+  extends Promise<CliAuthSession>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  expiresAt: () => Promise<DateTimeOutput>;
+  authenticatedUser: <T = UserPromise>() => T;
+}
+
+export interface CliAuthSessionSubscription
+  extends Promise<AsyncIterator<CliAuthSession>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  authenticatedUser: <T = UserSubscription>() => T;
+}
+
+export interface CliAuthSessionConnection {
+  pageInfo: PageInfo;
+  edges: CliAuthSessionEdge[];
+}
+
+export interface CliAuthSessionConnectionPromise
+  extends Promise<CliAuthSessionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CliAuthSessionEdge>>() => T;
+  aggregate: <T = AggregateCliAuthSessionPromise>() => T;
+}
+
+export interface CliAuthSessionConnectionSubscription
+  extends Promise<AsyncIterator<CliAuthSessionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CliAuthSessionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCliAuthSessionSubscription>() => T;
+}
+
+export interface CliAuthSessionEdge {
+  node: CliAuthSession;
+  cursor: String;
+}
+
+export interface CliAuthSessionEdgePromise
+  extends Promise<CliAuthSessionEdge>,
+    Fragmentable {
+  node: <T = CliAuthSessionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CliAuthSessionEdgeSubscription
+  extends Promise<AsyncIterator<CliAuthSessionEdge>>,
+    Fragmentable {
+  node: <T = CliAuthSessionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCliAuthSession {
+  count: Int;
+}
+
+export interface AggregateCliAuthSessionPromise
+  extends Promise<AggregateCliAuthSession>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCliAuthSessionSubscription
+  extends Promise<AsyncIterator<AggregateCliAuthSession>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface ComponentConnection {
   pageInfo: PageInfo;
   edges: ComponentEdge[];
@@ -3218,6 +3476,56 @@ export interface CheckPreviousValuesSubscription
   headSha: () => Promise<AsyncIterator<String>>;
 }
 
+export interface CliAuthSessionSubscriptionPayload {
+  mutation: MutationType;
+  node: CliAuthSession;
+  updatedFields: String[];
+  previousValues: CliAuthSessionPreviousValues;
+}
+
+export interface CliAuthSessionSubscriptionPayloadPromise
+  extends Promise<CliAuthSessionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CliAuthSessionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CliAuthSessionPreviousValuesPromise>() => T;
+}
+
+export interface CliAuthSessionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CliAuthSessionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CliAuthSessionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CliAuthSessionPreviousValuesSubscription>() => T;
+}
+
+export interface CliAuthSessionPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  expiresAt: DateTimeOutput;
+}
+
+export interface CliAuthSessionPreviousValuesPromise
+  extends Promise<CliAuthSessionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  expiresAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CliAuthSessionPreviousValuesSubscription
+  extends Promise<AsyncIterator<CliAuthSessionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface ComponentSubscriptionPayload {
   mutation: MutationType;
   node: Component;
@@ -3655,6 +3963,10 @@ export const models: Model[] = [
   },
   {
     name: "Repo",
+    embedded: false
+  },
+  {
+    name: "CliAuthSession",
     embedded: false
   }
 ];

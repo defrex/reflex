@@ -11,8 +11,20 @@ type User {
 
 type Mutation {
   logout: LogoutResponse
+
+  beginCliAuth: BeginCliAuthResponse
+  checkCliAuth(cliAuthToken: String!): CheckCliAuthResponse
 }
 
 type LogoutResponse {
   status: MutationStatus
+}
+
+type BeginCliAuthResponse {
+  cliAuthToken: String!
+  url: String!
+}
+
+type CheckCliAuthResponse {
+  userAuthToken: String
 }

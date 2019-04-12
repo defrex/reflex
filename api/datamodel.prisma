@@ -97,3 +97,12 @@ type Repo {
   checks: [Check]!
   team: Team
 }
+
+type CliAuthSession {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiresAt: DateTime!
+
+  authenticatedUser: User
+}

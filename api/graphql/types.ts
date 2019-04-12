@@ -8,6 +8,15 @@ export type Scalars = {
   Float: number
 }
 
+export type BeginCliAuthResponse = {
+  cliAuthToken: Scalars['String']
+  url: Scalars['String']
+}
+
+export type CheckCliAuthResponse = {
+  userAuthToken?: Maybe<Scalars['String']>
+}
+
 export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
@@ -65,10 +74,16 @@ export type LogoutResponse = {
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
+  beginCliAuth?: Maybe<BeginCliAuthResponse>
+  checkCliAuth?: Maybe<CheckCliAuthResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
   renderExample?: Maybe<RenderExampleResponse>
+}
+
+export type MutationCheckCliAuthArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type MutationCreateTeamArgs = {
@@ -209,6 +224,21 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
+export type BeginCliAuthResponseResolvers<
+  Context = ReflexContex,
+  ParentType = BeginCliAuthResponse
+> = {
+  cliAuthToken?: Resolver<Scalars['String'], ParentType, Context>
+  url?: Resolver<Scalars['String'], ParentType, Context>
+}
+
+export type CheckCliAuthResponseResolvers<
+  Context = ReflexContex,
+  ParentType = CheckCliAuthResponse
+> = {
+  userAuthToken?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+}
+
 export type ComponentResolvers<
   Context = ReflexContex,
   ParentType = Component
@@ -266,6 +296,13 @@ export type LogoutResponseResolvers<
 
 export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
   logout?: Resolver<Maybe<LogoutResponse>, ParentType, Context>
+  beginCliAuth?: Resolver<Maybe<BeginCliAuthResponse>, ParentType, Context>
+  checkCliAuth?: Resolver<
+    Maybe<CheckCliAuthResponse>,
+    ParentType,
+    Context,
+    MutationCheckCliAuthArgs
+  >
   createTeam?: Resolver<
     Maybe<CreateTeamResponse>,
     ParentType,
@@ -345,6 +382,8 @@ export type UserResolvers<Context = ReflexContex, ParentType = User> = {
 }
 
 export type Resolvers<Context = ReflexContex> = {
+  BeginCliAuthResponse?: BeginCliAuthResponseResolvers<Context>
+  CheckCliAuthResponse?: CheckCliAuthResponseResolvers<Context>
   Component?: ComponentResolvers<Context>
   Config?: ConfigResolvers<Context>
   CreateComponentResponse?: CreateComponentResponseResolvers<Context>

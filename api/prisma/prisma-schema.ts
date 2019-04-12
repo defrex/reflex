@@ -6,6 +6,10 @@ export const typeDefs = /* GraphQL */ `type AggregateCheck {
   count: Int!
 }
 
+type AggregateCliAuthSession {
+  count: Int!
+}
+
 type AggregateComponent {
   count: Int!
 }
@@ -361,6 +365,124 @@ input CheckWhereInput {
 input CheckWhereUniqueInput {
   id: ID
   githubCheckId: Int
+}
+
+type CliAuthSession {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiresAt: DateTime!
+  authenticatedUser: User
+}
+
+type CliAuthSessionConnection {
+  pageInfo: PageInfo!
+  edges: [CliAuthSessionEdge]!
+  aggregate: AggregateCliAuthSession!
+}
+
+input CliAuthSessionCreateInput {
+  expiresAt: DateTime!
+  authenticatedUser: UserCreateOneInput
+}
+
+type CliAuthSessionEdge {
+  node: CliAuthSession!
+  cursor: String!
+}
+
+enum CliAuthSessionOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  expiresAt_ASC
+  expiresAt_DESC
+}
+
+type CliAuthSessionPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiresAt: DateTime!
+}
+
+type CliAuthSessionSubscriptionPayload {
+  mutation: MutationType!
+  node: CliAuthSession
+  updatedFields: [String!]
+  previousValues: CliAuthSessionPreviousValues
+}
+
+input CliAuthSessionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CliAuthSessionWhereInput
+  AND: [CliAuthSessionSubscriptionWhereInput!]
+  OR: [CliAuthSessionSubscriptionWhereInput!]
+  NOT: [CliAuthSessionSubscriptionWhereInput!]
+}
+
+input CliAuthSessionUpdateInput {
+  expiresAt: DateTime
+  authenticatedUser: UserUpdateOneInput
+}
+
+input CliAuthSessionUpdateManyMutationInput {
+  expiresAt: DateTime
+}
+
+input CliAuthSessionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  expiresAt: DateTime
+  expiresAt_not: DateTime
+  expiresAt_in: [DateTime!]
+  expiresAt_not_in: [DateTime!]
+  expiresAt_lt: DateTime
+  expiresAt_lte: DateTime
+  expiresAt_gt: DateTime
+  expiresAt_gte: DateTime
+  authenticatedUser: UserWhereInput
+  AND: [CliAuthSessionWhereInput!]
+  OR: [CliAuthSessionWhereInput!]
+  NOT: [CliAuthSessionWhereInput!]
+}
+
+input CliAuthSessionWhereUniqueInput {
+  id: ID
 }
 
 type Component {
@@ -1125,6 +1247,12 @@ type Mutation {
   upsertCheck(where: CheckWhereUniqueInput!, create: CheckCreateInput!, update: CheckUpdateInput!): Check!
   deleteCheck(where: CheckWhereUniqueInput!): Check
   deleteManyChecks(where: CheckWhereInput): BatchPayload!
+  createCliAuthSession(data: CliAuthSessionCreateInput!): CliAuthSession!
+  updateCliAuthSession(data: CliAuthSessionUpdateInput!, where: CliAuthSessionWhereUniqueInput!): CliAuthSession
+  updateManyCliAuthSessions(data: CliAuthSessionUpdateManyMutationInput!, where: CliAuthSessionWhereInput): BatchPayload!
+  upsertCliAuthSession(where: CliAuthSessionWhereUniqueInput!, create: CliAuthSessionCreateInput!, update: CliAuthSessionUpdateInput!): CliAuthSession!
+  deleteCliAuthSession(where: CliAuthSessionWhereUniqueInput!): CliAuthSession
+  deleteManyCliAuthSessions(where: CliAuthSessionWhereInput): BatchPayload!
   createComponent(data: ComponentCreateInput!): Component!
   updateComponent(data: ComponentUpdateInput!, where: ComponentWhereUniqueInput!): Component
   updateManyComponents(data: ComponentUpdateManyMutationInput!, where: ComponentWhereInput): BatchPayload!
@@ -1190,6 +1318,9 @@ type Query {
   check(where: CheckWhereUniqueInput!): Check
   checks(where: CheckWhereInput, orderBy: CheckOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Check]!
   checksConnection(where: CheckWhereInput, orderBy: CheckOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CheckConnection!
+  cliAuthSession(where: CliAuthSessionWhereUniqueInput!): CliAuthSession
+  cliAuthSessions(where: CliAuthSessionWhereInput, orderBy: CliAuthSessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CliAuthSession]!
+  cliAuthSessionsConnection(where: CliAuthSessionWhereInput, orderBy: CliAuthSessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CliAuthSessionConnection!
   component(where: ComponentWhereUniqueInput!): Component
   components(where: ComponentWhereInput, orderBy: ComponentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Component]!
   componentsConnection(where: ComponentWhereInput, orderBy: ComponentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComponentConnection!
@@ -1780,6 +1911,7 @@ enum Role {
 
 type Subscription {
   check(where: CheckSubscriptionWhereInput): CheckSubscriptionPayload
+  cliAuthSession(where: CliAuthSessionSubscriptionWhereInput): CliAuthSessionSubscriptionPayload
   component(where: ComponentSubscriptionWhereInput): ComponentSubscriptionPayload
   example(where: ExampleSubscriptionWhereInput): ExampleSubscriptionPayload
   membership(where: MembershipSubscriptionWhereInput): MembershipSubscriptionPayload
@@ -2043,6 +2175,11 @@ input UserCreateInput {
   memberships: MembershipCreateManyWithoutUserInput
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutMembershipsInput {
   create: UserCreateWithoutMembershipsInput
   connect: UserWhereUniqueInput
@@ -2109,6 +2246,15 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  email: String
+  name: String
+  githubAccessToken: String
+  figmaAccessToken: String
+  figmaRefreshToken: String
+  memberships: MembershipUpdateManyWithoutUserInput
+}
+
 input UserUpdateInput {
   email: String
   name: String
@@ -2126,6 +2272,15 @@ input UserUpdateManyMutationInput {
   figmaRefreshToken: String
 }
 
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutMembershipsInput {
   create: UserCreateWithoutMembershipsInput
   update: UserUpdateWithoutMembershipsDataInput
@@ -2139,6 +2294,11 @@ input UserUpdateWithoutMembershipsDataInput {
   githubAccessToken: String
   figmaAccessToken: String
   figmaRefreshToken: String
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMembershipsInput {
