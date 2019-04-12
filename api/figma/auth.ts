@@ -1,6 +1,5 @@
 import config from 'api/config'
-import { loggedInUser } from 'api/lib/auth'
-import { randomString } from 'api/lib/random'
+import { finishOAuthState, loggedInUser, startOAuthState } from 'api/lib/auth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma } from 'api/prisma'
 import { Request, Response, Router } from 'express'
@@ -21,17 +20,14 @@ export const authUrl = absoluteUrl('/api/figma/auth/start')
 const redirectUri = absoluteUrl('/api/figma/auth/finish')
 
 router.get('/start', async (req: Request, res: Response) => {
-  const user = await loggedInUser(req)
+  const user = await loggedInUser(req, res)
   if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')
     return
   }
 
-  req.session!.figmaAuthReferrer = req.get('Referrer')
-
-  const state = randomString()
-  req.session!.figmaAuthState = state
+  const state = startOAuthState(req, res)
 
   const figmaUrl = encodeGetParams('https://www.figma.com/oauth', {
     client_id: config.figmaClientId,
@@ -46,7 +42,7 @@ router.get('/start', async (req: Request, res: Response) => {
 })
 
 router.get('/finish', async (req: Request, res: Response) => {
-  const user = await loggedInUser(req)
+  const user = await loggedInUser(req, res)
   if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')
@@ -56,7 +52,7 @@ router.get('/finish', async (req: Request, res: Response) => {
   const code = req.query.code
   const state = req.query.state
 
-  if (req.session!.figmaAuthState !== state) {
+  if (finishOAuthState(req, res) !== state) {
     return res.send(400)
   }
 
@@ -87,9 +83,7 @@ router.get('/finish', async (req: Request, res: Response) => {
     },
   })
 
-  const referrer = req.session!.figmaAuthReferrer || '/'
-  req.session!.figmaAuthReferrer = null
-  res.redirect(referrer)
+  res.redirect('/dashboard')
 })
 
 export default router

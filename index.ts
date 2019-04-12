@@ -5,7 +5,7 @@ import { absolutePath } from 'api/lib/path'
 import run from 'api/lib/run'
 import { absoluteUrl } from 'api/lib/url'
 import chokidar from 'chokidar'
-import cookieSession from 'cookie-session'
+import cookieParser from 'cookie-parser'
 import express from 'express'
 import { debounce } from 'lodash'
 import morgan from 'morgan'
@@ -27,13 +27,7 @@ export default async function main(options: InitOptions) {
   const { ui: enableUi } = { ...defaultOptions, ...options }
   const app = express()
 
-  app.use(
-    cookieSession({
-      secret: config.secretKey,
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      httpOnly: true,
-    }),
-  )
+  app.use(cookieParser())
 
   if (config.environment === 'development') {
     app.use(morgan('dev'))

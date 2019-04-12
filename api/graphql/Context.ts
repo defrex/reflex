@@ -1,5 +1,5 @@
-import { User } from 'api/prisma'
 import { loggedInUser } from 'api/lib/auth'
+import { User } from 'api/prisma'
 import { Request, Response } from 'express'
 
 export type Context = {
@@ -11,11 +11,12 @@ export type ReflexContex = Context
 
 export async function getContext({
   req,
+  res,
 }: {
   req: Request
   res: Response
 }): Promise<Context> {
-  const user = await loggedInUser(req)
+  const user = await loggedInUser(req, res)
   return {
     user,
     logout: () => {

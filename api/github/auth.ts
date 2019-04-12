@@ -1,12 +1,10 @@
-import { Router, Request, Response } from 'express'
-import fetch from 'node-fetch'
 import Octokit from '@octokit/rest'
-
 import config from 'api/config'
+import { finishOAuthState, logInUser, startOAuthState } from 'api/lib/auth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
-import { randomString } from 'api/lib/random'
-import { logInUser } from 'api/lib/auth'
-import { User, prisma } from 'api/prisma'
+import { prisma, User } from 'api/prisma'
+import { Request, Response, Router } from 'express'
+import fetch from 'node-fetch'
 
 interface GithubTokenData {
   access_token: string
@@ -21,8 +19,7 @@ export const authUrl = absoluteUrl('/api/github/auth/start')
 const redirectUri = absoluteUrl('/api/github/auth/finish')
 
 router.get('/start', (req: Request, res: Response) => {
-  const state = randomString()
-  req.session!.githubAuthState = state
+  const state = startOAuthState(req, res)
 
   const githubRedirectUrl = encodeGetParams(
     'https://github.com/login/oauth/authorize',
@@ -41,7 +38,7 @@ router.get('/finish', async (req: Request, res: Response) => {
   const code = req.query.code
   const state = req.query.state
 
-  if (req.session!.githubAuthState !== state) {
+  if (finishOAuthState(req, res) !== state) {
     return res.send(400)
   }
 
@@ -88,7 +85,7 @@ router.get('/finish', async (req: Request, res: Response) => {
     })
   }
 
-  await logInUser(req, user)
+  await logInUser(req, res, user)
 
   res.redirect('/dashboard')
 })
