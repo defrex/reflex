@@ -1,8 +1,13 @@
 import { ReactElement } from 'react'
 
 export type MaybePromise<T> = T | Promise<T>
-export type Document = string
 export type SampleRenderFn = () => MaybePromise<ReactElement>
+export type Document = string
+export type Sample = {
+  name: string
+  render: SampleRenderFn
+  document?: Document
+}
 export type RenderedSample = {
   html: string
   css?: string

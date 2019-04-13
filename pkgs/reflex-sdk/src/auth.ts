@@ -1,5 +1,6 @@
 import ora from 'ora'
-import graphqlRequest from './graphqlRequest'
+import graphqlRequest from './lib/graphqlRequest'
+import sleep from './lib/sleep'
 
 interface CliAuthSession {
   url: string
@@ -9,12 +10,6 @@ interface CliAuthSession {
 
 const POLL_WAIT_RUN = 2000 // 2 sec
 const POLL_WAIT_TOTAL = 1000 * 60 * 30 // 30 min
-
-async function sleep(milis: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, milis)
-  })
-}
 
 async function createCliAuthSession(): Promise<CliAuthSession> {
   const response = await graphqlRequest({
@@ -68,12 +63,37 @@ async function waitForUserAuthToken(cliAuthToken: string, runs: number = 0): Pro
 }
 
 export async function getAuthToken(): Promise<string> {
-  const cliAuthSession = await createCliAuthSession()
-
-  console.log(`\nPlease visit:\n${cliAuthSession.url}\n`)
-  const spinner = ora('waiting')
+  const spinner = ora('Authenticating')
   spinner.start()
-  const authToken = await waitForUserAuthToken(cliAuthSession.cliAuthToken)
-  spinner.stop()
+
+  let cliAuthSession: CliAuthSession | null = null
+  try {
+    cliAuthSession = await createCliAuthSession()
+  } catch (error) {
+    spinner.fail()
+    console.error(error)
+  }
+  if (cliAuthSession === null) {
+    return process.exit()
+  }
+
+  spinner.clear()
+
+  console.log(`Please visit › ${cliAuthSession.url}`)
+
+  spinner.start()
+
+  let authToken = null
+  try {
+    authToken = await waitForUserAuthToken(cliAuthSession.cliAuthToken)
+  } catch (error) {
+    spinner.fail()
+    console.error(error)
+  }
+  if (authToken === null) {
+    return process.exit()
+  }
+  spinner.succeed()
+
   return authToken
 }

@@ -1,5 +1,8 @@
 import cli from './cli'
-import collectFilenames from './collectFilenames'
+import collectFilenames from './lib/collectFilenames'
+import ensureAuthenticated from './lib/ensureAuthenticated'
+import spinnerOp from './lib/spinnerOp'
+import trimCwd from './lib/trimCwd'
 import { getRenderSampleToDocument } from './renderSample'
 import { SampleSet } from './SampleSet'
 import { RenderedSampleToDocument, RenderSampleToDocument, RenderSampleToStrings } from './types'
@@ -20,33 +23,35 @@ export async function sampler({
   renderSampleToStrings,
   renderedSampleToDocument
 }: SamplerOptions): Promise<void> {
-  const filenames = await collectFilenames(paths)
-
   if (!renderSampleToDocument) {
     renderSampleToDocument = getRenderSampleToDocument(
       renderSampleToStrings,
       renderedSampleToDocument
     )
   }
+  await ensureAuthenticated()
 
-  process.stdout.write('Loading files\n')
+  let filenames: string[] = []
+  await spinnerOp({
+    text: `Collecting ${
+      typeof paths === 'string' ? trimCwd(paths) : paths.map(path => trimCwd(path)).join(',')
+    }`,
+    run: async () => (filenames = await collectFilenames(paths))
+  })
+
   for (const filename of filenames) {
-    process.stdout.write(`\t${filename}...`)
-    require(filename)
-    process.stdout.write(' ✅\n')
+    await spinnerOp({
+      text: `Loading ${trimCwd(filename)}`,
+      run: async () => require(filename)
+    })
   }
-  process.stdout.write('\n')
 
-  process.stdout.write('Rendering samples\n')
-  let results: string[] = []
   for (const sampleSet of sampleSets) {
-    for (const sample of sampleSet.samples) {
-      process.stdout.write(`\t${sampleSet.componentName}/${sample.name}...`)
-      const result = await renderSampleToDocument(sample.render)
-      results.push(result)
-      process.stdout.write(' ✅\n')
-    }
-    process.stdout.write('\n')
+    await sampleSet.render(renderSampleToDocument)
+  }
+
+  for (const sampleSet of sampleSets) {
+    await sampleSet.upload()
   }
 }
 
