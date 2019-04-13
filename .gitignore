@@ -2,6 +2,7 @@
 /public/renders
 /public/dist
 /dist
+/ui/**/samples.tsx
 
 # misc
 .DS_Store
