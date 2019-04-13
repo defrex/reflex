@@ -8,12 +8,9 @@ export type Scalars = {
   Float: number
 }
 
-export type BeginCliAuthResponse = {
-  cliAuthToken: Scalars['String']
+export type CliAuthSession = {
   url: Scalars['String']
-}
-
-export type CheckCliAuthResponse = {
+  cliAuthToken: Scalars['String']
   userAuthToken?: Maybe<Scalars['String']>
 }
 
@@ -28,6 +25,11 @@ export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
   logoutUrl: Scalars['String']
+}
+
+export type CreateCliAuthSessionResponse = {
+  cliAuthSession?: Maybe<CliAuthSession>
+  status: MutationStatus
 }
 
 export type CreateComponentInput = {
@@ -74,16 +76,11 @@ export type LogoutResponse = {
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
-  beginCliAuth?: Maybe<BeginCliAuthResponse>
-  checkCliAuth?: Maybe<CheckCliAuthResponse>
+  createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
   renderExample?: Maybe<RenderExampleResponse>
-}
-
-export type MutationCheckCliAuthArgs = {
-  cliAuthToken: Scalars['String']
 }
 
 export type MutationCreateTeamArgs = {
@@ -116,8 +113,13 @@ export type Query = {
   hello: Scalars['String']
   config: Config
   currentUser?: Maybe<User>
+  cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+}
+
+export type QueryCliAuthSessionArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type QueryTeamArgs = {

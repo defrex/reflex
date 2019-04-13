@@ -1,7 +1,7 @@
 import Octokit from '@octokit/rest'
 import config from 'api/config'
 import { logInUser } from 'api/lib/auth'
-import { checkCliAuthSession } from 'api/lib/cliAuth'
+import { authSessionForToken } from 'api/lib/cliAuth'
 import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma, User } from 'api/prisma'
@@ -26,7 +26,7 @@ const redirectUri = absoluteUrl('/api/github/auth/finish')
 
 router.get('/start', (req: Request, res: Response) => {
   const session = startOAuthSession<GithubAuthSessionPayload>(req, res, {
-    cliAuthToken: req.param('cliAuthToken'),
+    cliAuthToken: req.query.cliAuthToken,
   })
 
   const githubRedirectUrl = encodeGetParams(
@@ -97,7 +97,7 @@ router.get('/finish', async (req: Request, res: Response) => {
   await logInUser(req, res, user)
 
   if (session.cliAuthToken) {
-    const cliAuthSession = await checkCliAuthSession(session.cliAuthToken)
+    const cliAuthSession = await authSessionForToken(session.cliAuthToken)
     if (cliAuthSession) {
       await prisma.updateCliAuthSession({
         data: {

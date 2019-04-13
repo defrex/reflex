@@ -10,22 +10,25 @@ export interface CliSessionPayload {
   exp: number
 }
 
-export async function startCliAuthSession(): Promise<Token> {
-  const expiresAt = DateTime.local().plus({ hours: 1 })
+export function defaultExpiresAt(): string {
+  return DateTime.local()
+    .plus({ hours: 1 })
+    .toISO()
+}
 
-  const cliAuthSession = await prisma.createCliAuthSession({
-    expiresAt: expiresAt.toISO(),
-  })
-  const payload: CliSessionPayload = {
-    sessionId: cliAuthSession.id,
-    exp: expiresAt.toSeconds(),
-  }
+export function tokenForAuthSession(session: CliAuthSession): Token {
+  const payload = {
+    sessionId: session.id,
+    exp: DateTime.fromISO(session.expiresAt).toSeconds(),
+  } as CliSessionPayload
   return jwt.sign(payload, config.secretKey)
 }
 
-export async function checkCliAuthSession(
+export async function authSessionForToken(
   token: Token,
 ): Promise<CliAuthSession | void> {
-  const payload = jwt.verify(token, config.secretKey) as CliSessionPayload
-  return prisma.cliAuthSession({ id: payload.sessionId })
+  const payload = jwt.verify(token, config.secretKey) as any
+  if (payload && payload.sessionId) {
+    return prisma.cliAuthSession({ id: payload.sessionId })
+  }
 }

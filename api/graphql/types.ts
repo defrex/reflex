@@ -8,12 +8,9 @@ export type Scalars = {
   Float: number
 }
 
-export type BeginCliAuthResponse = {
-  cliAuthToken: Scalars['String']
+export type CliAuthSession = {
   url: Scalars['String']
-}
-
-export type CheckCliAuthResponse = {
+  cliAuthToken: Scalars['String']
   userAuthToken?: Maybe<Scalars['String']>
 }
 
@@ -28,6 +25,11 @@ export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
   logoutUrl: Scalars['String']
+}
+
+export type CreateCliAuthSessionResponse = {
+  cliAuthSession?: Maybe<CliAuthSession>
+  status: MutationStatus
 }
 
 export type CreateComponentInput = {
@@ -74,16 +76,11 @@ export type LogoutResponse = {
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
-  beginCliAuth?: Maybe<BeginCliAuthResponse>
-  checkCliAuth?: Maybe<CheckCliAuthResponse>
+  createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
   createExample?: Maybe<CreateExampleResponse>
   renderExample?: Maybe<RenderExampleResponse>
-}
-
-export type MutationCheckCliAuthArgs = {
-  cliAuthToken: Scalars['String']
 }
 
 export type MutationCreateTeamArgs = {
@@ -116,8 +113,13 @@ export type Query = {
   hello: Scalars['String']
   config: Config
   currentUser?: Maybe<User>
+  cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+}
+
+export type QueryCliAuthSessionArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type QueryTeamArgs = {
@@ -152,7 +154,14 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
-import { User, Team, Component, Example, Render } from 'api/prisma'
+import {
+  User,
+  Team,
+  Component,
+  Example,
+  Render,
+  CliAuthSession,
+} from 'api/prisma'
 import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
@@ -224,18 +233,12 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
-export type BeginCliAuthResponseResolvers<
+export type CliAuthSessionResolvers<
   Context = ReflexContex,
-  ParentType = BeginCliAuthResponse
+  ParentType = CliAuthSession
 > = {
-  cliAuthToken?: Resolver<Scalars['String'], ParentType, Context>
   url?: Resolver<Scalars['String'], ParentType, Context>
-}
-
-export type CheckCliAuthResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CheckCliAuthResponse
-> = {
+  cliAuthToken?: Resolver<Scalars['String'], ParentType, Context>
   userAuthToken?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
 }
 
@@ -253,6 +256,14 @@ export type ConfigResolvers<Context = ReflexContex, ParentType = Config> = {
   figmaAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   githubAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   logoutUrl?: Resolver<Scalars['String'], ParentType, Context>
+}
+
+export type CreateCliAuthSessionResponseResolvers<
+  Context = ReflexContex,
+  ParentType = CreateCliAuthSessionResponse
+> = {
+  cliAuthSession?: Resolver<Maybe<CliAuthSession>, ParentType, Context>
+  status?: Resolver<MutationStatus, ParentType, Context>
 }
 
 export type CreateComponentResponseResolvers<
@@ -296,12 +307,10 @@ export type LogoutResponseResolvers<
 
 export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
   logout?: Resolver<Maybe<LogoutResponse>, ParentType, Context>
-  beginCliAuth?: Resolver<Maybe<BeginCliAuthResponse>, ParentType, Context>
-  checkCliAuth?: Resolver<
-    Maybe<CheckCliAuthResponse>,
+  createCliAuthSession?: Resolver<
+    Maybe<CreateCliAuthSessionResponse>,
     ParentType,
-    Context,
-    MutationCheckCliAuthArgs
+    Context
   >
   createTeam?: Resolver<
     Maybe<CreateTeamResponse>,
@@ -349,6 +358,12 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
   hello?: Resolver<Scalars['String'], ParentType, Context>
   config?: Resolver<Config, ParentType, Context>
   currentUser?: Resolver<Maybe<User>, ParentType, Context>
+  cliAuthSession?: Resolver<
+    Maybe<CliAuthSession>,
+    ParentType,
+    Context,
+    QueryCliAuthSessionArgs
+  >
   teams?: Resolver<Array<Team>, ParentType, Context>
   team?: Resolver<Maybe<Team>, ParentType, Context, QueryTeamArgs>
 }
@@ -382,10 +397,10 @@ export type UserResolvers<Context = ReflexContex, ParentType = User> = {
 }
 
 export type Resolvers<Context = ReflexContex> = {
-  BeginCliAuthResponse?: BeginCliAuthResponseResolvers<Context>
-  CheckCliAuthResponse?: CheckCliAuthResponseResolvers<Context>
+  CliAuthSession?: CliAuthSessionResolvers<Context>
   Component?: ComponentResolvers<Context>
   Config?: ConfigResolvers<Context>
+  CreateCliAuthSessionResponse?: CreateCliAuthSessionResponseResolvers<Context>
   CreateComponentResponse?: CreateComponentResponseResolvers<Context>
   CreateExampleResponse?: CreateExampleResponseResolvers<Context>
   CreateTeamResponse?: CreateTeamResponseResolvers<Context>

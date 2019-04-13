@@ -1,22 +1,21 @@
 import { AuthenticationError, AuthorizationError } from 'api/exceptions'
 import { Context } from 'api/graphql/Context'
-import { success } from 'api/graphql/resolvers/lib/MutationResponse'
-import cliAuth from 'api/graphql/resolvers/Mutation/cliAuth'
+import { error, success } from 'api/graphql/resolvers/lib/MutationResponse'
 import {
+  CreateCliAuthSessionResponse,
   CreateComponentResponse,
   CreateExampleResponse,
   CreateTeamResponse,
   MutationResolvers,
   RenderExampleResponse,
 } from 'api/graphql/types'
+import { defaultExpiresAt } from 'api/lib/cliAuth'
 import renderExample from 'api/lib/renderExample'
 import { userInTeam } from 'api/lib/user'
 import { prisma } from 'api/prisma'
 import { LogoutResponse } from 'ui/lib/graphql'
 
 export default {
-  ...cliAuth,
-
   async logout(_parent, _args, ctx): Promise<LogoutResponse> {
     ctx.logout()
     return success()
@@ -113,5 +112,18 @@ export default {
     const render = await renderExample(example)
 
     return success({ render })
+  },
+
+  async createCliAuthSession(): Promise<CreateCliAuthSessionResponse> {
+    let cliAuthSession
+    try {
+      cliAuthSession = await prisma.createCliAuthSession({
+        expiresAt: defaultExpiresAt(),
+      })
+    } catch (e) {
+      console.error(e)
+      return error('Unable to create CliAuthSession')
+    }
+    return success({ cliAuthSession })
   },
 } as MutationResolvers<Context>
