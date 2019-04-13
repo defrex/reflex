@@ -25,7 +25,14 @@ export default {
     'child_process',
     'buffer',
     'os',
-    'tty'
+    'tty',
+    'worker_threads',
+    'constants',
+    'crypto',
+    'http',
+    'https',
+    'url',
+    'zlib'
   ],
   watch: {
     include: 'src/**'
