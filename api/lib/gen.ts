@@ -21,7 +21,7 @@ export default async function gen(): Promise<any> {
             User: 'api/prisma#User',
             Team: 'api/prisma#Team',
             Component: 'api/prisma#Component',
-            Example: 'api/prisma#Example',
+            Sample: 'api/prisma#Sample',
             Render: 'api/prisma#Render',
             CliAuthSession: 'api/prisma#CliAuthSession',
           },

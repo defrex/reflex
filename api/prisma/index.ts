@@ -17,10 +17,10 @@ export interface Exists {
   check: (where?: CheckWhereInput) => Promise<boolean>;
   cliAuthSession: (where?: CliAuthSessionWhereInput) => Promise<boolean>;
   component: (where?: ComponentWhereInput) => Promise<boolean>;
-  example: (where?: ExampleWhereInput) => Promise<boolean>;
   membership: (where?: MembershipWhereInput) => Promise<boolean>;
   render: (where?: RenderWhereInput) => Promise<boolean>;
   repo: (where?: RepoWhereInput) => Promise<boolean>;
+  sample: (where?: SampleWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -115,29 +115,6 @@ export interface Prisma {
       last?: Int;
     }
   ) => ComponentConnectionPromise;
-  example: (where: ExampleWhereUniqueInput) => ExamplePromise;
-  examples: (
-    args?: {
-      where?: ExampleWhereInput;
-      orderBy?: ExampleOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<Example>;
-  examplesConnection: (
-    args?: {
-      where?: ExampleWhereInput;
-      orderBy?: ExampleOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => ExampleConnectionPromise;
   membership: (where: MembershipWhereUniqueInput) => MembershipPromise;
   memberships: (
     args?: {
@@ -207,6 +184,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => RepoConnectionPromise;
+  sample: (where: SampleWhereUniqueInput) => SamplePromise;
+  samples: (
+    args?: {
+      where?: SampleWhereInput;
+      orderBy?: SampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Sample>;
+  samplesConnection: (
+    args?: {
+      where?: SampleWhereInput;
+      orderBy?: SampleOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => SampleConnectionPromise;
   team: (where: TeamWhereUniqueInput) => TeamPromise;
   teams: (
     args?: {
@@ -322,22 +322,6 @@ export interface Prisma {
   ) => ComponentPromise;
   deleteComponent: (where: ComponentWhereUniqueInput) => ComponentPromise;
   deleteManyComponents: (where?: ComponentWhereInput) => BatchPayloadPromise;
-  createExample: (data: ExampleCreateInput) => ExamplePromise;
-  updateExample: (
-    args: { data: ExampleUpdateInput; where: ExampleWhereUniqueInput }
-  ) => ExamplePromise;
-  updateManyExamples: (
-    args: { data: ExampleUpdateManyMutationInput; where?: ExampleWhereInput }
-  ) => BatchPayloadPromise;
-  upsertExample: (
-    args: {
-      where: ExampleWhereUniqueInput;
-      create: ExampleCreateInput;
-      update: ExampleUpdateInput;
-    }
-  ) => ExamplePromise;
-  deleteExample: (where: ExampleWhereUniqueInput) => ExamplePromise;
-  deleteManyExamples: (where?: ExampleWhereInput) => BatchPayloadPromise;
   createMembership: (data: MembershipCreateInput) => MembershipPromise;
   updateMembership: (
     args: { data: MembershipUpdateInput; where: MembershipWhereUniqueInput }
@@ -389,6 +373,22 @@ export interface Prisma {
   ) => RepoPromise;
   deleteRepo: (where: RepoWhereUniqueInput) => RepoPromise;
   deleteManyRepoes: (where?: RepoWhereInput) => BatchPayloadPromise;
+  createSample: (data: SampleCreateInput) => SamplePromise;
+  updateSample: (
+    args: { data: SampleUpdateInput; where: SampleWhereUniqueInput }
+  ) => SamplePromise;
+  updateManySamples: (
+    args: { data: SampleUpdateManyMutationInput; where?: SampleWhereInput }
+  ) => BatchPayloadPromise;
+  upsertSample: (
+    args: {
+      where: SampleWhereUniqueInput;
+      create: SampleCreateInput;
+      update: SampleUpdateInput;
+    }
+  ) => SamplePromise;
+  deleteSample: (where: SampleWhereUniqueInput) => SamplePromise;
+  deleteManySamples: (where?: SampleWhereInput) => BatchPayloadPromise;
   createTeam: (data: TeamCreateInput) => TeamPromise;
   updateTeam: (
     args: { data: TeamUpdateInput; where: TeamWhereUniqueInput }
@@ -439,9 +439,6 @@ export interface Subscription {
   component: (
     where?: ComponentSubscriptionWhereInput
   ) => ComponentSubscriptionPayloadSubscription;
-  example: (
-    where?: ExampleSubscriptionWhereInput
-  ) => ExampleSubscriptionPayloadSubscription;
   membership: (
     where?: MembershipSubscriptionWhereInput
   ) => MembershipSubscriptionPayloadSubscription;
@@ -451,6 +448,9 @@ export interface Subscription {
   repo: (
     where?: RepoSubscriptionWhereInput
   ) => RepoSubscriptionPayloadSubscription;
+  sample: (
+    where?: SampleSubscriptionWhereInput
+  ) => SampleSubscriptionPayloadSubscription;
   team: (
     where?: TeamSubscriptionWhereInput
   ) => TeamSubscriptionPayloadSubscription;
@@ -477,7 +477,13 @@ export type RenderOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "imageUrl_ASC"
-  | "imageUrl_DESC";
+  | "imageUrl_DESC"
+  | "html_ASC"
+  | "html_DESC"
+  | "branch_ASC"
+  | "branch_DESC"
+  | "commit_ASC"
+  | "commit_DESC";
 
 export type MembershipOrderByInput =
   | "id_ASC"
@@ -520,12 +526,12 @@ export type CheckOrderByInput =
   | "updatedAt_DESC"
   | "githubCheckId_ASC"
   | "githubCheckId_DESC"
-  | "headBranch_ASC"
-  | "headBranch_DESC"
-  | "headSha_ASC"
-  | "headSha_DESC";
+  | "branch_ASC"
+  | "branch_DESC"
+  | "commit_ASC"
+  | "commit_DESC";
 
-export type ExampleOrderByInput =
+export type SampleOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
@@ -625,14 +631,56 @@ export interface RenderWhereInput {
   imageUrl_not_starts_with?: String;
   imageUrl_ends_with?: String;
   imageUrl_not_ends_with?: String;
-  example?: ExampleWhereInput;
+  html?: String;
+  html_not?: String;
+  html_in?: String[] | String;
+  html_not_in?: String[] | String;
+  html_lt?: String;
+  html_lte?: String;
+  html_gt?: String;
+  html_gte?: String;
+  html_contains?: String;
+  html_not_contains?: String;
+  html_starts_with?: String;
+  html_not_starts_with?: String;
+  html_ends_with?: String;
+  html_not_ends_with?: String;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
+  sample?: SampleWhereInput;
   check?: CheckWhereInput;
   AND?: RenderWhereInput[] | RenderWhereInput;
   OR?: RenderWhereInput[] | RenderWhereInput;
   NOT?: RenderWhereInput[] | RenderWhereInput;
 }
 
-export interface ExampleWhereInput {
+export interface SampleWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -681,9 +729,9 @@ export interface ExampleWhereInput {
   renders_every?: RenderWhereInput;
   renders_some?: RenderWhereInput;
   renders_none?: RenderWhereInput;
-  AND?: ExampleWhereInput[] | ExampleWhereInput;
-  OR?: ExampleWhereInput[] | ExampleWhereInput;
-  NOT?: ExampleWhereInput[] | ExampleWhereInput;
+  AND?: SampleWhereInput[] | SampleWhereInput;
+  OR?: SampleWhereInput[] | SampleWhereInput;
+  NOT?: SampleWhereInput[] | SampleWhereInput;
 }
 
 export interface ComponentWhereInput {
@@ -732,9 +780,9 @@ export interface ComponentWhereInput {
   name_ends_with?: String;
   name_not_ends_with?: String;
   team?: TeamWhereInput;
-  examples_every?: ExampleWhereInput;
-  examples_some?: ExampleWhereInput;
-  examples_none?: ExampleWhereInput;
+  samples_every?: SampleWhereInput;
+  samples_some?: SampleWhereInput;
+  samples_none?: SampleWhereInput;
   AND?: ComponentWhereInput[] | ComponentWhereInput;
   OR?: ComponentWhereInput[] | ComponentWhereInput;
   NOT?: ComponentWhereInput[] | ComponentWhereInput;
@@ -1057,34 +1105,34 @@ export interface CheckWhereInput {
   githubCheckId_lte?: Int;
   githubCheckId_gt?: Int;
   githubCheckId_gte?: Int;
-  headBranch?: String;
-  headBranch_not?: String;
-  headBranch_in?: String[] | String;
-  headBranch_not_in?: String[] | String;
-  headBranch_lt?: String;
-  headBranch_lte?: String;
-  headBranch_gt?: String;
-  headBranch_gte?: String;
-  headBranch_contains?: String;
-  headBranch_not_contains?: String;
-  headBranch_starts_with?: String;
-  headBranch_not_starts_with?: String;
-  headBranch_ends_with?: String;
-  headBranch_not_ends_with?: String;
-  headSha?: String;
-  headSha_not?: String;
-  headSha_in?: String[] | String;
-  headSha_not_in?: String[] | String;
-  headSha_lt?: String;
-  headSha_lte?: String;
-  headSha_gt?: String;
-  headSha_gte?: String;
-  headSha_contains?: String;
-  headSha_not_contains?: String;
-  headSha_starts_with?: String;
-  headSha_not_starts_with?: String;
-  headSha_ends_with?: String;
-  headSha_not_ends_with?: String;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
   renders_every?: RenderWhereInput;
   renders_some?: RenderWhereInput;
   renders_none?: RenderWhereInput;
@@ -1147,10 +1195,6 @@ export type ComponentWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export type ExampleWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
 export type MembershipWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
@@ -1160,6 +1204,10 @@ export type RenderWhereUniqueInput = AtLeastOne<{
 }>;
 
 export type RepoWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type SampleWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
@@ -1174,8 +1222,8 @@ export type UserWhereUniqueInput = AtLeastOne<{
 
 export interface CheckCreateInput {
   githubCheckId?: Int;
-  headBranch: String;
-  headSha: String;
+  branch: String;
+  commit: String;
   renders?: RenderCreateManyWithoutCheckInput;
   repo?: RepoCreateOneWithoutChecksInput;
 }
@@ -1186,26 +1234,29 @@ export interface RenderCreateManyWithoutCheckInput {
 }
 
 export interface RenderCreateWithoutCheckInput {
-  imageUrl: String;
-  example: ExampleCreateOneWithoutRendersInput;
+  imageUrl?: String;
+  html?: String;
+  branch: String;
+  commit: String;
+  sample: SampleCreateOneWithoutRendersInput;
 }
 
-export interface ExampleCreateOneWithoutRendersInput {
-  create?: ExampleCreateWithoutRendersInput;
-  connect?: ExampleWhereUniqueInput;
+export interface SampleCreateOneWithoutRendersInput {
+  create?: SampleCreateWithoutRendersInput;
+  connect?: SampleWhereUniqueInput;
 }
 
-export interface ExampleCreateWithoutRendersInput {
+export interface SampleCreateWithoutRendersInput {
   name: String;
-  component: ComponentCreateOneWithoutExamplesInput;
+  component: ComponentCreateOneWithoutSamplesInput;
 }
 
-export interface ComponentCreateOneWithoutExamplesInput {
-  create?: ComponentCreateWithoutExamplesInput;
+export interface ComponentCreateOneWithoutSamplesInput {
+  create?: ComponentCreateWithoutSamplesInput;
   connect?: ComponentWhereUniqueInput;
 }
 
-export interface ComponentCreateWithoutExamplesInput {
+export interface ComponentCreateWithoutSamplesInput {
   name: String;
   team: TeamCreateOneWithoutComponentsInput;
 }
@@ -1264,8 +1315,8 @@ export interface CheckCreateManyWithoutRepoInput {
 
 export interface CheckCreateWithoutRepoInput {
   githubCheckId?: Int;
-  headBranch: String;
-  headSha: String;
+  branch: String;
+  commit: String;
   renders?: RenderCreateManyWithoutCheckInput;
 }
 
@@ -1298,28 +1349,31 @@ export interface ComponentCreateManyWithoutTeamInput {
 
 export interface ComponentCreateWithoutTeamInput {
   name: String;
-  examples?: ExampleCreateManyWithoutComponentInput;
+  samples?: SampleCreateManyWithoutComponentInput;
 }
 
-export interface ExampleCreateManyWithoutComponentInput {
+export interface SampleCreateManyWithoutComponentInput {
   create?:
-    | ExampleCreateWithoutComponentInput[]
-    | ExampleCreateWithoutComponentInput;
-  connect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+    | SampleCreateWithoutComponentInput[]
+    | SampleCreateWithoutComponentInput;
+  connect?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
 }
 
-export interface ExampleCreateWithoutComponentInput {
+export interface SampleCreateWithoutComponentInput {
   name: String;
-  renders?: RenderCreateManyWithoutExampleInput;
+  renders?: RenderCreateManyWithoutSampleInput;
 }
 
-export interface RenderCreateManyWithoutExampleInput {
-  create?: RenderCreateWithoutExampleInput[] | RenderCreateWithoutExampleInput;
+export interface RenderCreateManyWithoutSampleInput {
+  create?: RenderCreateWithoutSampleInput[] | RenderCreateWithoutSampleInput;
   connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
 }
 
-export interface RenderCreateWithoutExampleInput {
-  imageUrl: String;
+export interface RenderCreateWithoutSampleInput {
+  imageUrl?: String;
+  html?: String;
+  branch: String;
+  commit: String;
   check?: CheckCreateOneWithoutRendersInput;
 }
 
@@ -1330,15 +1384,15 @@ export interface CheckCreateOneWithoutRendersInput {
 
 export interface CheckCreateWithoutRendersInput {
   githubCheckId?: Int;
-  headBranch: String;
-  headSha: String;
+  branch: String;
+  commit: String;
   repo?: RepoCreateOneWithoutChecksInput;
 }
 
 export interface CheckUpdateInput {
   githubCheckId?: Int;
-  headBranch?: String;
-  headSha?: String;
+  branch?: String;
+  commit?: String;
   renders?: RenderUpdateManyWithoutCheckInput;
   repo?: RepoUpdateOneWithoutChecksInput;
 }
@@ -1368,29 +1422,32 @@ export interface RenderUpdateWithWhereUniqueWithoutCheckInput {
 
 export interface RenderUpdateWithoutCheckDataInput {
   imageUrl?: String;
-  example?: ExampleUpdateOneRequiredWithoutRendersInput;
+  html?: String;
+  branch?: String;
+  commit?: String;
+  sample?: SampleUpdateOneRequiredWithoutRendersInput;
 }
 
-export interface ExampleUpdateOneRequiredWithoutRendersInput {
-  create?: ExampleCreateWithoutRendersInput;
-  update?: ExampleUpdateWithoutRendersDataInput;
-  upsert?: ExampleUpsertWithoutRendersInput;
-  connect?: ExampleWhereUniqueInput;
+export interface SampleUpdateOneRequiredWithoutRendersInput {
+  create?: SampleCreateWithoutRendersInput;
+  update?: SampleUpdateWithoutRendersDataInput;
+  upsert?: SampleUpsertWithoutRendersInput;
+  connect?: SampleWhereUniqueInput;
 }
 
-export interface ExampleUpdateWithoutRendersDataInput {
+export interface SampleUpdateWithoutRendersDataInput {
   name?: String;
-  component?: ComponentUpdateOneRequiredWithoutExamplesInput;
+  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
 }
 
-export interface ComponentUpdateOneRequiredWithoutExamplesInput {
-  create?: ComponentCreateWithoutExamplesInput;
-  update?: ComponentUpdateWithoutExamplesDataInput;
-  upsert?: ComponentUpsertWithoutExamplesInput;
+export interface ComponentUpdateOneRequiredWithoutSamplesInput {
+  create?: ComponentCreateWithoutSamplesInput;
+  update?: ComponentUpdateWithoutSamplesDataInput;
+  upsert?: ComponentUpsertWithoutSamplesInput;
   connect?: ComponentWhereUniqueInput;
 }
 
-export interface ComponentUpdateWithoutExamplesDataInput {
+export interface ComponentUpdateWithoutSamplesDataInput {
   name?: String;
   team?: TeamUpdateOneRequiredWithoutComponentsInput;
 }
@@ -1567,8 +1624,8 @@ export interface CheckUpdateWithWhereUniqueWithoutRepoInput {
 
 export interface CheckUpdateWithoutRepoDataInput {
   githubCheckId?: Int;
-  headBranch?: String;
-  headSha?: String;
+  branch?: String;
+  commit?: String;
   renders?: RenderUpdateManyWithoutCheckInput;
 }
 
@@ -1617,34 +1674,34 @@ export interface CheckScalarWhereInput {
   githubCheckId_lte?: Int;
   githubCheckId_gt?: Int;
   githubCheckId_gte?: Int;
-  headBranch?: String;
-  headBranch_not?: String;
-  headBranch_in?: String[] | String;
-  headBranch_not_in?: String[] | String;
-  headBranch_lt?: String;
-  headBranch_lte?: String;
-  headBranch_gt?: String;
-  headBranch_gte?: String;
-  headBranch_contains?: String;
-  headBranch_not_contains?: String;
-  headBranch_starts_with?: String;
-  headBranch_not_starts_with?: String;
-  headBranch_ends_with?: String;
-  headBranch_not_ends_with?: String;
-  headSha?: String;
-  headSha_not?: String;
-  headSha_in?: String[] | String;
-  headSha_not_in?: String[] | String;
-  headSha_lt?: String;
-  headSha_lte?: String;
-  headSha_gt?: String;
-  headSha_gte?: String;
-  headSha_contains?: String;
-  headSha_not_contains?: String;
-  headSha_starts_with?: String;
-  headSha_not_starts_with?: String;
-  headSha_ends_with?: String;
-  headSha_not_ends_with?: String;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
   AND?: CheckScalarWhereInput[] | CheckScalarWhereInput;
   OR?: CheckScalarWhereInput[] | CheckScalarWhereInput;
   NOT?: CheckScalarWhereInput[] | CheckScalarWhereInput;
@@ -1657,8 +1714,8 @@ export interface CheckUpdateManyWithWhereNestedInput {
 
 export interface CheckUpdateManyDataInput {
   githubCheckId?: Int;
-  headBranch?: String;
-  headSha?: String;
+  branch?: String;
+  commit?: String;
 }
 
 export interface RepoUpsertWithWhereUniqueWithoutTeamInput {
@@ -1746,14 +1803,14 @@ export interface TeamUpsertWithoutComponentsInput {
   create: TeamCreateWithoutComponentsInput;
 }
 
-export interface ComponentUpsertWithoutExamplesInput {
-  update: ComponentUpdateWithoutExamplesDataInput;
-  create: ComponentCreateWithoutExamplesInput;
+export interface ComponentUpsertWithoutSamplesInput {
+  update: ComponentUpdateWithoutSamplesDataInput;
+  create: ComponentCreateWithoutSamplesInput;
 }
 
-export interface ExampleUpsertWithoutRendersInput {
-  update: ExampleUpdateWithoutRendersDataInput;
-  create: ExampleCreateWithoutRendersInput;
+export interface SampleUpsertWithoutRendersInput {
+  update: SampleUpdateWithoutRendersDataInput;
+  create: SampleCreateWithoutRendersInput;
 }
 
 export interface RenderUpsertWithWhereUniqueWithoutCheckInput {
@@ -1807,6 +1864,48 @@ export interface RenderScalarWhereInput {
   imageUrl_not_starts_with?: String;
   imageUrl_ends_with?: String;
   imageUrl_not_ends_with?: String;
+  html?: String;
+  html_not?: String;
+  html_in?: String[] | String;
+  html_not_in?: String[] | String;
+  html_lt?: String;
+  html_lte?: String;
+  html_gt?: String;
+  html_gte?: String;
+  html_contains?: String;
+  html_not_contains?: String;
+  html_starts_with?: String;
+  html_not_starts_with?: String;
+  html_ends_with?: String;
+  html_not_ends_with?: String;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
   AND?: RenderScalarWhereInput[] | RenderScalarWhereInput;
   OR?: RenderScalarWhereInput[] | RenderScalarWhereInput;
   NOT?: RenderScalarWhereInput[] | RenderScalarWhereInput;
@@ -1819,6 +1918,9 @@ export interface RenderUpdateManyWithWhereNestedInput {
 
 export interface RenderUpdateManyDataInput {
   imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
 }
 
 export interface RepoUpdateOneWithoutChecksInput {
@@ -1876,64 +1978,67 @@ export interface ComponentUpdateWithWhereUniqueWithoutTeamInput {
 
 export interface ComponentUpdateWithoutTeamDataInput {
   name?: String;
-  examples?: ExampleUpdateManyWithoutComponentInput;
+  samples?: SampleUpdateManyWithoutComponentInput;
 }
 
-export interface ExampleUpdateManyWithoutComponentInput {
+export interface SampleUpdateManyWithoutComponentInput {
   create?:
-    | ExampleCreateWithoutComponentInput[]
-    | ExampleCreateWithoutComponentInput;
-  delete?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
-  connect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
-  set?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
-  disconnect?: ExampleWhereUniqueInput[] | ExampleWhereUniqueInput;
+    | SampleCreateWithoutComponentInput[]
+    | SampleCreateWithoutComponentInput;
+  delete?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
+  connect?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
+  set?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
+  disconnect?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
   update?:
-    | ExampleUpdateWithWhereUniqueWithoutComponentInput[]
-    | ExampleUpdateWithWhereUniqueWithoutComponentInput;
+    | SampleUpdateWithWhereUniqueWithoutComponentInput[]
+    | SampleUpdateWithWhereUniqueWithoutComponentInput;
   upsert?:
-    | ExampleUpsertWithWhereUniqueWithoutComponentInput[]
-    | ExampleUpsertWithWhereUniqueWithoutComponentInput;
-  deleteMany?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
+    | SampleUpsertWithWhereUniqueWithoutComponentInput[]
+    | SampleUpsertWithWhereUniqueWithoutComponentInput;
+  deleteMany?: SampleScalarWhereInput[] | SampleScalarWhereInput;
   updateMany?:
-    | ExampleUpdateManyWithWhereNestedInput[]
-    | ExampleUpdateManyWithWhereNestedInput;
+    | SampleUpdateManyWithWhereNestedInput[]
+    | SampleUpdateManyWithWhereNestedInput;
 }
 
-export interface ExampleUpdateWithWhereUniqueWithoutComponentInput {
-  where: ExampleWhereUniqueInput;
-  data: ExampleUpdateWithoutComponentDataInput;
+export interface SampleUpdateWithWhereUniqueWithoutComponentInput {
+  where: SampleWhereUniqueInput;
+  data: SampleUpdateWithoutComponentDataInput;
 }
 
-export interface ExampleUpdateWithoutComponentDataInput {
+export interface SampleUpdateWithoutComponentDataInput {
   name?: String;
-  renders?: RenderUpdateManyWithoutExampleInput;
+  renders?: RenderUpdateManyWithoutSampleInput;
 }
 
-export interface RenderUpdateManyWithoutExampleInput {
-  create?: RenderCreateWithoutExampleInput[] | RenderCreateWithoutExampleInput;
+export interface RenderUpdateManyWithoutSampleInput {
+  create?: RenderCreateWithoutSampleInput[] | RenderCreateWithoutSampleInput;
   delete?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
   connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
   set?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
   disconnect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
   update?:
-    | RenderUpdateWithWhereUniqueWithoutExampleInput[]
-    | RenderUpdateWithWhereUniqueWithoutExampleInput;
+    | RenderUpdateWithWhereUniqueWithoutSampleInput[]
+    | RenderUpdateWithWhereUniqueWithoutSampleInput;
   upsert?:
-    | RenderUpsertWithWhereUniqueWithoutExampleInput[]
-    | RenderUpsertWithWhereUniqueWithoutExampleInput;
+    | RenderUpsertWithWhereUniqueWithoutSampleInput[]
+    | RenderUpsertWithWhereUniqueWithoutSampleInput;
   deleteMany?: RenderScalarWhereInput[] | RenderScalarWhereInput;
   updateMany?:
     | RenderUpdateManyWithWhereNestedInput[]
     | RenderUpdateManyWithWhereNestedInput;
 }
 
-export interface RenderUpdateWithWhereUniqueWithoutExampleInput {
+export interface RenderUpdateWithWhereUniqueWithoutSampleInput {
   where: RenderWhereUniqueInput;
-  data: RenderUpdateWithoutExampleDataInput;
+  data: RenderUpdateWithoutSampleDataInput;
 }
 
-export interface RenderUpdateWithoutExampleDataInput {
+export interface RenderUpdateWithoutSampleDataInput {
   imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
   check?: CheckUpdateOneWithoutRendersInput;
 }
 
@@ -1948,8 +2053,8 @@ export interface CheckUpdateOneWithoutRendersInput {
 
 export interface CheckUpdateWithoutRendersDataInput {
   githubCheckId?: Int;
-  headBranch?: String;
-  headSha?: String;
+  branch?: String;
+  commit?: String;
   repo?: RepoUpdateOneWithoutChecksInput;
 }
 
@@ -1958,19 +2063,19 @@ export interface CheckUpsertWithoutRendersInput {
   create: CheckCreateWithoutRendersInput;
 }
 
-export interface RenderUpsertWithWhereUniqueWithoutExampleInput {
+export interface RenderUpsertWithWhereUniqueWithoutSampleInput {
   where: RenderWhereUniqueInput;
-  update: RenderUpdateWithoutExampleDataInput;
-  create: RenderCreateWithoutExampleInput;
+  update: RenderUpdateWithoutSampleDataInput;
+  create: RenderCreateWithoutSampleInput;
 }
 
-export interface ExampleUpsertWithWhereUniqueWithoutComponentInput {
-  where: ExampleWhereUniqueInput;
-  update: ExampleUpdateWithoutComponentDataInput;
-  create: ExampleCreateWithoutComponentInput;
+export interface SampleUpsertWithWhereUniqueWithoutComponentInput {
+  where: SampleWhereUniqueInput;
+  update: SampleUpdateWithoutComponentDataInput;
+  create: SampleCreateWithoutComponentInput;
 }
 
-export interface ExampleScalarWhereInput {
+export interface SampleScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -2015,17 +2120,17 @@ export interface ExampleScalarWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  AND?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
-  OR?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
-  NOT?: ExampleScalarWhereInput[] | ExampleScalarWhereInput;
+  AND?: SampleScalarWhereInput[] | SampleScalarWhereInput;
+  OR?: SampleScalarWhereInput[] | SampleScalarWhereInput;
+  NOT?: SampleScalarWhereInput[] | SampleScalarWhereInput;
 }
 
-export interface ExampleUpdateManyWithWhereNestedInput {
-  where: ExampleScalarWhereInput;
-  data: ExampleUpdateManyDataInput;
+export interface SampleUpdateManyWithWhereNestedInput {
+  where: SampleScalarWhereInput;
+  data: SampleUpdateManyDataInput;
 }
 
-export interface ExampleUpdateManyDataInput {
+export interface SampleUpdateManyDataInput {
   name?: String;
 }
 
@@ -2106,8 +2211,8 @@ export interface RepoUpsertWithoutChecksInput {
 
 export interface CheckUpdateManyMutationInput {
   githubCheckId?: Int;
-  headBranch?: String;
-  headSha?: String;
+  branch?: String;
+  commit?: String;
 }
 
 export interface CliAuthSessionCreateInput {
@@ -2241,32 +2346,16 @@ export interface CliAuthSessionUpdateManyMutationInput {
 export interface ComponentCreateInput {
   name: String;
   team: TeamCreateOneWithoutComponentsInput;
-  examples?: ExampleCreateManyWithoutComponentInput;
+  samples?: SampleCreateManyWithoutComponentInput;
 }
 
 export interface ComponentUpdateInput {
   name?: String;
   team?: TeamUpdateOneRequiredWithoutComponentsInput;
-  examples?: ExampleUpdateManyWithoutComponentInput;
+  samples?: SampleUpdateManyWithoutComponentInput;
 }
 
 export interface ComponentUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface ExampleCreateInput {
-  name: String;
-  component: ComponentCreateOneWithoutExamplesInput;
-  renders?: RenderCreateManyWithoutExampleInput;
-}
-
-export interface ExampleUpdateInput {
-  name?: String;
-  component?: ComponentUpdateOneRequiredWithoutExamplesInput;
-  renders?: RenderUpdateManyWithoutExampleInput;
-}
-
-export interface ExampleUpdateManyMutationInput {
   name?: String;
 }
 
@@ -2287,19 +2376,28 @@ export interface MembershipUpdateManyMutationInput {
 }
 
 export interface RenderCreateInput {
-  imageUrl: String;
-  example: ExampleCreateOneWithoutRendersInput;
+  imageUrl?: String;
+  html?: String;
+  branch: String;
+  commit: String;
+  sample: SampleCreateOneWithoutRendersInput;
   check?: CheckCreateOneWithoutRendersInput;
 }
 
 export interface RenderUpdateInput {
   imageUrl?: String;
-  example?: ExampleUpdateOneRequiredWithoutRendersInput;
+  html?: String;
+  branch?: String;
+  commit?: String;
+  sample?: SampleUpdateOneRequiredWithoutRendersInput;
   check?: CheckUpdateOneWithoutRendersInput;
 }
 
 export interface RenderUpdateManyMutationInput {
   imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
 }
 
 export interface RepoCreateInput {
@@ -2318,6 +2416,22 @@ export interface RepoUpdateInput {
 
 export interface RepoUpdateManyMutationInput {
   owner?: String;
+  name?: String;
+}
+
+export interface SampleCreateInput {
+  name: String;
+  component: ComponentCreateOneWithoutSamplesInput;
+  renders?: RenderCreateManyWithoutSampleInput;
+}
+
+export interface SampleUpdateInput {
+  name?: String;
+  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
+  renders?: RenderUpdateManyWithoutSampleInput;
+}
+
+export interface SampleUpdateManyMutationInput {
   name?: String;
 }
 
@@ -2395,17 +2509,6 @@ export interface ComponentSubscriptionWhereInput {
   NOT?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
 }
 
-export interface ExampleSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ExampleWhereInput;
-  AND?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
-  OR?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
-  NOT?: ExampleSubscriptionWhereInput[] | ExampleSubscriptionWhereInput;
-}
-
 export interface MembershipSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -2439,6 +2542,17 @@ export interface RepoSubscriptionWhereInput {
   NOT?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
 }
 
+export interface SampleSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SampleWhereInput;
+  AND?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+  OR?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+  NOT?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+}
+
 export interface TeamSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -2470,8 +2584,8 @@ export interface Check {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   githubCheckId?: Int;
-  headBranch: String;
-  headSha: String;
+  branch: String;
+  commit: String;
 }
 
 export interface CheckPromise extends Promise<Check>, Fragmentable {
@@ -2479,8 +2593,8 @@ export interface CheckPromise extends Promise<Check>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   githubCheckId: () => Promise<Int>;
-  headBranch: () => Promise<String>;
-  headSha: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
   renders: <T = FragmentableArray<Render>>(
     args?: {
       where?: RenderWhereInput;
@@ -2502,8 +2616,8 @@ export interface CheckSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   githubCheckId: () => Promise<AsyncIterator<Int>>;
-  headBranch: () => Promise<AsyncIterator<String>>;
-  headSha: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
   renders: <T = Promise<AsyncIterator<RenderSubscription>>>(
     args?: {
       where?: RenderWhereInput;
@@ -2522,7 +2636,10 @@ export interface Render {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  imageUrl: String;
+  imageUrl?: String;
+  html?: String;
+  branch: String;
+  commit: String;
 }
 
 export interface RenderPromise extends Promise<Render>, Fragmentable {
@@ -2530,7 +2647,10 @@ export interface RenderPromise extends Promise<Render>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   imageUrl: () => Promise<String>;
-  example: <T = ExamplePromise>() => T;
+  html: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
+  sample: <T = SamplePromise>() => T;
   check: <T = CheckPromise>() => T;
 }
 
@@ -2541,18 +2661,21 @@ export interface RenderSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   imageUrl: () => Promise<AsyncIterator<String>>;
-  example: <T = ExampleSubscription>() => T;
+  html: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
+  sample: <T = SampleSubscription>() => T;
   check: <T = CheckSubscription>() => T;
 }
 
-export interface Example {
+export interface Sample {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   name: String;
 }
 
-export interface ExamplePromise extends Promise<Example>, Fragmentable {
+export interface SamplePromise extends Promise<Sample>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -2571,8 +2694,8 @@ export interface ExamplePromise extends Promise<Example>, Fragmentable {
   ) => T;
 }
 
-export interface ExampleSubscription
-  extends Promise<AsyncIterator<Example>>,
+export interface SampleSubscription
+  extends Promise<AsyncIterator<Sample>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2605,10 +2728,10 @@ export interface ComponentPromise extends Promise<Component>, Fragmentable {
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   team: <T = TeamPromise>() => T;
-  examples: <T = FragmentableArray<Example>>(
+  samples: <T = FragmentableArray<Sample>>(
     args?: {
-      where?: ExampleWhereInput;
-      orderBy?: ExampleOrderByInput;
+      where?: SampleWhereInput;
+      orderBy?: SampleOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -2626,10 +2749,10 @@ export interface ComponentSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
   team: <T = TeamSubscription>() => T;
-  examples: <T = Promise<AsyncIterator<ExampleSubscription>>>(
+  samples: <T = Promise<AsyncIterator<SampleSubscription>>>(
     args?: {
-      where?: ExampleWhereInput;
-      orderBy?: ExampleOrderByInput;
+      where?: SampleWhereInput;
+      orderBy?: SampleOrderByInput;
       skip?: Int;
       after?: String;
       before?: String;
@@ -3078,60 +3201,6 @@ export interface AggregateComponentSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ExampleConnection {
-  pageInfo: PageInfo;
-  edges: ExampleEdge[];
-}
-
-export interface ExampleConnectionPromise
-  extends Promise<ExampleConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ExampleEdge>>() => T;
-  aggregate: <T = AggregateExamplePromise>() => T;
-}
-
-export interface ExampleConnectionSubscription
-  extends Promise<AsyncIterator<ExampleConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ExampleEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateExampleSubscription>() => T;
-}
-
-export interface ExampleEdge {
-  node: Example;
-  cursor: String;
-}
-
-export interface ExampleEdgePromise extends Promise<ExampleEdge>, Fragmentable {
-  node: <T = ExamplePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ExampleEdgeSubscription
-  extends Promise<AsyncIterator<ExampleEdge>>,
-    Fragmentable {
-  node: <T = ExampleSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateExample {
-  count: Int;
-}
-
-export interface AggregateExamplePromise
-  extends Promise<AggregateExample>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateExampleSubscription
-  extends Promise<AsyncIterator<AggregateExample>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface MembershipConnection {
   pageInfo: PageInfo;
   edges: MembershipEdge[];
@@ -3296,6 +3365,60 @@ export interface AggregateRepoSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface SampleConnection {
+  pageInfo: PageInfo;
+  edges: SampleEdge[];
+}
+
+export interface SampleConnectionPromise
+  extends Promise<SampleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SampleEdge>>() => T;
+  aggregate: <T = AggregateSamplePromise>() => T;
+}
+
+export interface SampleConnectionSubscription
+  extends Promise<AsyncIterator<SampleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SampleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSampleSubscription>() => T;
+}
+
+export interface SampleEdge {
+  node: Sample;
+  cursor: String;
+}
+
+export interface SampleEdgePromise extends Promise<SampleEdge>, Fragmentable {
+  node: <T = SamplePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SampleEdgeSubscription
+  extends Promise<AsyncIterator<SampleEdge>>,
+    Fragmentable {
+  node: <T = SampleSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSample {
+  count: Int;
+}
+
+export interface AggregateSamplePromise
+  extends Promise<AggregateSample>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSampleSubscription
+  extends Promise<AsyncIterator<AggregateSample>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface TeamConnection {
   pageInfo: PageInfo;
   edges: TeamEdge[];
@@ -3450,8 +3573,8 @@ export interface CheckPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   githubCheckId?: Int;
-  headBranch: String;
-  headSha: String;
+  branch: String;
+  commit: String;
 }
 
 export interface CheckPreviousValuesPromise
@@ -3461,8 +3584,8 @@ export interface CheckPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   githubCheckId: () => Promise<Int>;
-  headBranch: () => Promise<String>;
-  headSha: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
 }
 
 export interface CheckPreviousValuesSubscription
@@ -3472,8 +3595,8 @@ export interface CheckPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   githubCheckId: () => Promise<AsyncIterator<Int>>;
-  headBranch: () => Promise<AsyncIterator<String>>;
-  headSha: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CliAuthSessionSubscriptionPayload {
@@ -3576,56 +3699,6 @@ export interface ComponentPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ExampleSubscriptionPayload {
-  mutation: MutationType;
-  node: Example;
-  updatedFields: String[];
-  previousValues: ExamplePreviousValues;
-}
-
-export interface ExampleSubscriptionPayloadPromise
-  extends Promise<ExampleSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ExamplePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ExamplePreviousValuesPromise>() => T;
-}
-
-export interface ExampleSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ExampleSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ExampleSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ExamplePreviousValuesSubscription>() => T;
-}
-
-export interface ExamplePreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface ExamplePreviousValuesPromise
-  extends Promise<ExamplePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-}
-
-export interface ExamplePreviousValuesSubscription
-  extends Promise<AsyncIterator<ExamplePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
 export interface MembershipSubscriptionPayload {
   mutation: MutationType;
   node: Membership;
@@ -3705,7 +3778,10 @@ export interface RenderPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  imageUrl: String;
+  imageUrl?: String;
+  html?: String;
+  branch: String;
+  commit: String;
 }
 
 export interface RenderPreviousValuesPromise
@@ -3715,6 +3791,9 @@ export interface RenderPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   imageUrl: () => Promise<String>;
+  html: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
 }
 
 export interface RenderPreviousValuesSubscription
@@ -3724,6 +3803,9 @@ export interface RenderPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   imageUrl: () => Promise<AsyncIterator<String>>;
+  html: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
 }
 
 export interface RepoSubscriptionPayload {
@@ -3776,6 +3858,56 @@ export interface RepoPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   owner: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SampleSubscriptionPayload {
+  mutation: MutationType;
+  node: Sample;
+  updatedFields: String[];
+  previousValues: SamplePreviousValues;
+}
+
+export interface SampleSubscriptionPayloadPromise
+  extends Promise<SampleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SamplePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SamplePreviousValuesPromise>() => T;
+}
+
+export interface SampleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SampleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SampleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SamplePreviousValuesSubscription>() => T;
+}
+
+export interface SamplePreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface SamplePreviousValuesPromise
+  extends Promise<SamplePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface SamplePreviousValuesSubscription
+  extends Promise<AsyncIterator<SamplePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
@@ -3950,7 +4082,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Example",
+    name: "Sample",
     embedded: false
   },
   {

@@ -1,6 +1,6 @@
 import Octokit from '@octokit/rest'
 import config from 'api/config'
-import { logInUser } from 'api/lib/auth'
+import { login } from 'api/lib/auth'
 import { authSessionForToken } from 'api/lib/cliAuth'
 import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
@@ -94,7 +94,7 @@ router.get('/finish', async (req: Request, res: Response) => {
     })
   }
 
-  await logInUser(req, res, user)
+  await login(req, res, user)
 
   if (session.cliAuthToken) {
     const cliAuthSession = await authSessionForToken(session.cliAuthToken)

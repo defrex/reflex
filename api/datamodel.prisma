@@ -48,10 +48,10 @@ type Component {
   name: String!
 
   team: Team!
-  examples: [Example]!
+  samples: [Sample]!
 }
 
-type Example {
+type Sample {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -67,9 +67,12 @@ type Render {
   createdAt: DateTime!
   updatedAt: DateTime!
 
-  imageUrl: String!
+  imageUrl: String
+  html: String
+  branch: String!
+  commit: String!
 
-  example: Example!
+  sample: Sample!
   check: Check
 }
 
@@ -79,8 +82,8 @@ type Check {
   updatedAt: DateTime!
 
   githubCheckId: Int @unique
-  headBranch: String!
-  headSha: String!
+  branch: String!
+  commit: String!
 
   renders: [Render]!
   repo: Repo

@@ -3,21 +3,19 @@ export function dashboardRoute(_values?: DashboardRouteParams) {
   return '/dashboard'
 }
 
-export interface ExampleRouteParams {
+export interface SampleRouteParams {
   teamId: string
   component: string
-  example: string
+  sample: string
 }
-export function exampleRoute(values?: ExampleRouteParams) {
+export function sampleRoute(values?: SampleRouteParams) {
   const params = {
     teamId: ':teamId',
     component: ':component',
-    example: ':example',
+    sample: ':sample',
     ...values,
   }
-  return `/teams/${params.teamId}/examples/${params.component}/${
-    params.example
-  }`
+  return `/teams/${params.teamId}/samples/${params.component}/${params.sample}`
 }
 
 export interface LibraryRouteParams {

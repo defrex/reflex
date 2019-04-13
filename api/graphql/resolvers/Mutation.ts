@@ -4,13 +4,12 @@ import { error, success } from 'api/graphql/resolvers/lib/MutationResponse'
 import {
   CreateCliAuthSessionResponse,
   CreateComponentResponse,
-  CreateExampleResponse,
+  CreateRenderResponse,
+  CreateSampleResponse,
   CreateTeamResponse,
   MutationResolvers,
-  RenderExampleResponse,
 } from 'api/graphql/types'
 import { defaultExpiresAt } from 'api/lib/cliAuth'
-import renderExample from 'api/lib/renderExample'
 import { userInTeam } from 'api/lib/user'
 import { prisma } from 'api/prisma'
 import { LogoutResponse } from 'ui/lib/graphql'
@@ -70,7 +69,7 @@ export default {
     return success({ component })
   },
 
-  async createExample(_parent, { input }, ctx): Promise<CreateExampleResponse> {
+  async createSample(_parent, { input }, ctx): Promise<CreateSampleResponse> {
     const { componentId, name } = input
     if (!ctx.user) {
       throw new AuthenticationError()
@@ -83,7 +82,7 @@ export default {
       throw new AuthorizationError()
     }
 
-    const example = await prisma.createExample({
+    const sample = await prisma.createSample({
       name,
       component: {
         connect: {
@@ -92,24 +91,34 @@ export default {
       },
     })
 
-    return success({ example })
+    return success({ sample })
   },
 
-  async renderExample(_parent, { input }, ctx): Promise<RenderExampleResponse> {
-    const { exampleId } = input
+  async createRender(_parent, { input }, ctx): Promise<CreateRenderResponse> {
+    const { sampleId, html, imageUrl, branch, commit } = input
+
     if (!ctx.user) {
       throw new AuthenticationError()
     }
 
-    const example = await prisma.example({ id: exampleId })
-    const component = await prisma.example({ id: exampleId }).component()
+    const component = await prisma.sample({ id: sampleId }).component()
     const team = await prisma.component({ id: component.id }).team()
 
     if (!(await userInTeam(ctx.user, team))) {
       throw new AuthorizationError()
     }
 
-    const render = await renderExample(example)
+    const render = await prisma.createRender({
+      html,
+      imageUrl: imageUrl ? imageUrl : undefined,
+      branch,
+      commit,
+      sample: {
+        connect: {
+          id: sampleId,
+        },
+      },
+    })
 
     return success({ render })
   },

@@ -18,7 +18,7 @@ export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
   team: Team
-  examples: Array<Example>
+  samples: Array<Sample>
 }
 
 export type Config = {
@@ -42,13 +42,26 @@ export type CreateComponentResponse = {
   status: MutationStatus
 }
 
-export type CreateExampleInput = {
+export type CreateRenderInput = {
+  sampleId: Scalars['ID']
+  html: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+}
+
+export type CreateRenderResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
+}
+
+export type CreateSampleInput = {
   componentId: Scalars['ID']
   name: Scalars['String']
 }
 
-export type CreateExampleResponse = {
-  example?: Maybe<Example>
+export type CreateSampleResponse = {
+  sample?: Maybe<Sample>
   status: MutationStatus
 }
 
@@ -62,14 +75,6 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type Example = {
-  id: Scalars['ID']
-  name: Scalars['String']
-  slug: Scalars['String']
-  component: Component
-  renders: Array<Maybe<Render>>
-}
-
 export type LogoutResponse = {
   status?: Maybe<MutationStatus>
 }
@@ -79,8 +84,8 @@ export type Mutation = {
   createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
-  createExample?: Maybe<CreateExampleResponse>
-  renderExample?: Maybe<RenderExampleResponse>
+  createSample?: Maybe<CreateSampleResponse>
+  createRender?: Maybe<CreateRenderResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -91,12 +96,12 @@ export type MutationCreateComponentArgs = {
   input: CreateComponentInput
 }
 
-export type MutationCreateExampleArgs = {
-  input: CreateExampleInput
+export type MutationCreateSampleArgs = {
+  input: CreateSampleInput
 }
 
-export type MutationRenderExampleArgs = {
-  input: RenderExampleInput
+export type MutationCreateRenderArgs = {
+  input: CreateRenderInput
 }
 
 export type MutationError = {
@@ -128,17 +133,17 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
-  imageUrl: Scalars['String']
-  example: Example
+  imageUrl?: Maybe<Scalars['String']>
+  html?: Maybe<Scalars['String']>
+  sample: Sample
 }
 
-export type RenderExampleInput = {
-  exampleId: Scalars['ID']
-}
-
-export type RenderExampleResponse = {
-  render?: Maybe<Render>
-  status: MutationStatus
+export type Sample = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  component: Component
+  renders: Array<Maybe<Render>>
 }
 
 export type Team = {
@@ -158,7 +163,7 @@ import {
   User,
   Team,
   Component,
-  Example,
+  Sample,
   Render,
   CliAuthSession,
 } from 'api/prisma'
@@ -249,7 +254,7 @@ export type ComponentResolvers<
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   team?: Resolver<Team, ParentType, Context>
-  examples?: Resolver<Array<Example>, ParentType, Context>
+  samples?: Resolver<Array<Sample>, ParentType, Context>
 }
 
 export type ConfigResolvers<Context = ReflexContex, ParentType = Config> = {
@@ -274,11 +279,19 @@ export type CreateComponentResponseResolvers<
   status?: Resolver<MutationStatus, ParentType, Context>
 }
 
-export type CreateExampleResponseResolvers<
+export type CreateRenderResponseResolvers<
   Context = ReflexContex,
-  ParentType = CreateExampleResponse
+  ParentType = CreateRenderResponse
 > = {
-  example?: Resolver<Maybe<Example>, ParentType, Context>
+  render?: Resolver<Maybe<Render>, ParentType, Context>
+  status?: Resolver<MutationStatus, ParentType, Context>
+}
+
+export type CreateSampleResponseResolvers<
+  Context = ReflexContex,
+  ParentType = CreateSampleResponse
+> = {
+  sample?: Resolver<Maybe<Sample>, ParentType, Context>
   status?: Resolver<MutationStatus, ParentType, Context>
 }
 
@@ -288,14 +301,6 @@ export type CreateTeamResponseResolvers<
 > = {
   team?: Resolver<Maybe<Team>, ParentType, Context>
   status?: Resolver<MutationStatus, ParentType, Context>
-}
-
-export type ExampleResolvers<Context = ReflexContex, ParentType = Example> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  slug?: Resolver<Scalars['String'], ParentType, Context>
-  component?: Resolver<Component, ParentType, Context>
-  renders?: Resolver<Array<Maybe<Render>>, ParentType, Context>
 }
 
 export type LogoutResponseResolvers<
@@ -324,17 +329,17 @@ export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
     Context,
     MutationCreateComponentArgs
   >
-  createExample?: Resolver<
-    Maybe<CreateExampleResponse>,
+  createSample?: Resolver<
+    Maybe<CreateSampleResponse>,
     ParentType,
     Context,
-    MutationCreateExampleArgs
+    MutationCreateSampleArgs
   >
-  renderExample?: Resolver<
-    Maybe<RenderExampleResponse>,
+  createRender?: Resolver<
+    Maybe<CreateRenderResponse>,
     ParentType,
     Context,
-    MutationRenderExampleArgs
+    MutationCreateRenderArgs
   >
 }
 
@@ -370,16 +375,17 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
 
 export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
-  imageUrl?: Resolver<Scalars['String'], ParentType, Context>
-  example?: Resolver<Example, ParentType, Context>
+  imageUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  html?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  sample?: Resolver<Sample, ParentType, Context>
 }
 
-export type RenderExampleResponseResolvers<
-  Context = ReflexContex,
-  ParentType = RenderExampleResponse
-> = {
-  render?: Resolver<Maybe<Render>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+export type SampleResolvers<Context = ReflexContex, ParentType = Sample> = {
+  id?: Resolver<Scalars['ID'], ParentType, Context>
+  name?: Resolver<Scalars['String'], ParentType, Context>
+  slug?: Resolver<Scalars['String'], ParentType, Context>
+  component?: Resolver<Component, ParentType, Context>
+  renders?: Resolver<Array<Maybe<Render>>, ParentType, Context>
 }
 
 export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
@@ -402,16 +408,16 @@ export type Resolvers<Context = ReflexContex> = {
   Config?: ConfigResolvers<Context>
   CreateCliAuthSessionResponse?: CreateCliAuthSessionResponseResolvers<Context>
   CreateComponentResponse?: CreateComponentResponseResolvers<Context>
-  CreateExampleResponse?: CreateExampleResponseResolvers<Context>
+  CreateRenderResponse?: CreateRenderResponseResolvers<Context>
+  CreateSampleResponse?: CreateSampleResponseResolvers<Context>
   CreateTeamResponse?: CreateTeamResponseResolvers<Context>
-  Example?: ExampleResolvers<Context>
   LogoutResponse?: LogoutResponseResolvers<Context>
   Mutation?: MutationResolvers<Context>
   MutationError?: MutationErrorResolvers<Context>
   MutationStatus?: MutationStatusResolvers<Context>
   Query?: QueryResolvers<Context>
   Render?: RenderResolvers<Context>
-  RenderExampleResponse?: RenderExampleResponseResolvers<Context>
+  Sample?: SampleResolvers<Context>
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>
 }

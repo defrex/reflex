@@ -1,5 +1,5 @@
 import config from 'api/config'
-import { loggedInUser } from 'api/lib/auth'
+import { currentUser } from 'api/lib/auth'
 import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
 import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma } from 'api/prisma'
@@ -21,7 +21,7 @@ export const authUrl = absoluteUrl('/api/figma/auth/start')
 const redirectUri = absoluteUrl('/api/figma/auth/finish')
 
 router.get('/start', async (req: Request, res: Response) => {
-  const user = await loggedInUser(req, res)
+  const user = await currentUser(req, res)
   if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')
@@ -43,7 +43,7 @@ router.get('/start', async (req: Request, res: Response) => {
 })
 
 router.get('/finish', async (req: Request, res: Response) => {
-  const user = await loggedInUser(req, res)
+  const user = await currentUser(req, res)
   if (!user) {
     res.status(403)
     res.send('Only authenticated users can connect Figma.')

@@ -18,7 +18,7 @@ export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
   team: Team
-  examples: Array<Example>
+  samples: Array<Sample>
 }
 
 export type Config = {
@@ -42,13 +42,26 @@ export type CreateComponentResponse = {
   status: MutationStatus
 }
 
-export type CreateExampleInput = {
+export type CreateRenderInput = {
+  sampleId: Scalars['ID']
+  html: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+}
+
+export type CreateRenderResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
+}
+
+export type CreateSampleInput = {
   componentId: Scalars['ID']
   name: Scalars['String']
 }
 
-export type CreateExampleResponse = {
-  example?: Maybe<Example>
+export type CreateSampleResponse = {
+  sample?: Maybe<Sample>
   status: MutationStatus
 }
 
@@ -62,14 +75,6 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type Example = {
-  id: Scalars['ID']
-  name: Scalars['String']
-  slug: Scalars['String']
-  component: Component
-  renders: Array<Maybe<Render>>
-}
-
 export type LogoutResponse = {
   status?: Maybe<MutationStatus>
 }
@@ -79,8 +84,8 @@ export type Mutation = {
   createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
-  createExample?: Maybe<CreateExampleResponse>
-  renderExample?: Maybe<RenderExampleResponse>
+  createSample?: Maybe<CreateSampleResponse>
+  createRender?: Maybe<CreateRenderResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -91,12 +96,12 @@ export type MutationCreateComponentArgs = {
   input: CreateComponentInput
 }
 
-export type MutationCreateExampleArgs = {
-  input: CreateExampleInput
+export type MutationCreateSampleArgs = {
+  input: CreateSampleInput
 }
 
-export type MutationRenderExampleArgs = {
-  input: RenderExampleInput
+export type MutationCreateRenderArgs = {
+  input: CreateRenderInput
 }
 
 export type MutationError = {
@@ -128,17 +133,17 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
-  imageUrl: Scalars['String']
-  example: Example
+  imageUrl?: Maybe<Scalars['String']>
+  html?: Maybe<Scalars['String']>
+  sample: Sample
 }
 
-export type RenderExampleInput = {
-  exampleId: Scalars['ID']
-}
-
-export type RenderExampleResponse = {
-  render?: Maybe<Render>
-  status: MutationStatus
+export type Sample = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  component: Component
+  renders: Array<Maybe<Render>>
 }
 
 export type Team = {

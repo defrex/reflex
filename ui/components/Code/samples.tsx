@@ -1,9 +1,9 @@
+import { samplesOf } from '@reflexui/sampler'
 import React from 'react'
 import Code from './index'
 
-export function Default() {
-  return (
-    <Code>{`
+samplesOf('Code').add('Default', () => (
+  <Code>{`
       import React, { PureComponent } from 'react'
       import SyntaxHighlighter from 'react-syntax-highlighter'
       import solarisedDark from 'react-syntax-highlighter/dist/styles/hljs/solarized-dark'
@@ -28,5 +28,4 @@ export function Default() {
         }
       }
     `}</Code>
-  )
-}
+))

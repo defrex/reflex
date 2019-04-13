@@ -1,4 +1,4 @@
-import { loggedInUser } from 'api/lib/auth'
+import { currentUser, logout } from 'api/lib/auth'
 import { User } from 'api/prisma'
 import { Request, Response } from 'express'
 
@@ -16,14 +16,8 @@ export async function getContext({
   req: Request
   res: Response
 }): Promise<Context> {
-  const user = await loggedInUser(req, res)
   return {
-    user,
-    logout: () => {
-      console.log('TODO: 🚪 fix logout')
-      // @ts-ignore
-      req.session = null
-      // TODO: this isn't working
-    },
+    user: await currentUser(req, res),
+    logout: logout.bind(null, req, res),
   }
 }

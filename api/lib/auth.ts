@@ -27,7 +27,7 @@ export function userForToken(token: AuthToken): Promise<User> {
   return prisma.user({ id: payload.userId })
 }
 
-export async function loggedInUser(
+export async function currentUser(
   req: Request,
   _res: Response,
 ): Promise<User | undefined> {
@@ -44,12 +44,12 @@ export async function loggedInUser(
   return await userForToken(token)
 }
 
-export function logInUser(_req: Request, res: Response, user: User): AuthToken {
+export function login(_req: Request, res: Response, user: User): AuthToken {
   const token = tokenForUser(user)
   res.cookie('Authorization', `Bearer ${token}`, cookieOptions)
   return token
 }
 
-export function logOutUser(_req: Request, res: Response) {
+export function logout(_req: Request, res: Response) {
   res.clearCookie('Authorization')
 }
