@@ -17,15 +17,15 @@ interface SampleState {
 export default class Sample extends PureComponent<SampleProps, SampleState> {
   state: SampleState = {}
 
-  componentDidMount() {
-    const { match } = this.props
-    import(`ui/components/${match.params.component}/samples`).then(
-      (samples: { [key: string]: ComponentClass }) => {
-        console.log(samples)
-        this.setState({ Example: samples[match.params.sample] })
-      },
-    )
-  }
+  // componentDidMount() {
+  //   const { match } = this.props
+  //   import(`ui/components/${match.params.component}/samples`).then(
+  //     (samples: { [key: string]: ComponentClass }) => {
+  //       console.log(samples)
+  //       this.setState({ Example: samples[match.params.sample] })
+  //     },
+  //   )
+  // }
 
   render() {
     const { Example } = this.state
