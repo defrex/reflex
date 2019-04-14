@@ -17,10 +17,21 @@ export default stylesheet({
     fontSize: 16,
   },
 
-  component: {},
-  componentName: {},
-  sample: {},
-  sampleName: {},
+  component: {
+    marginBottom: 64,
+  },
+  componentName: {
+    marginBottom: 4,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  sample: {
+    marginBottom: 32,
+  },
+  sampleName: {
+    marginBottom: 4,
+    fontWeight: 'bold',
+  },
   render: {},
   renderName: {},
 })

@@ -12,4 +12,4 @@ export const darkGray = tinycolor('black')
 export const gray = tinycolor('black')
   .lighten(50)
   .toString()
-export const primary = '#0a1c35'
+export const primary = 'tomato'

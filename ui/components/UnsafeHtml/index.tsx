@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import styles from './styles'
 
 interface UnsafeHmtlProps {
   children: string
@@ -35,6 +34,6 @@ export default class UnsafeHmtl extends PureComponent<UnsafeHmtlProps> {
   }
 
   render() {
-    return <iframe ref='iframe' className={styles.iframe} frameBorder='0' />
+    return <iframe ref='iframe' frameBorder='0' />
   }
 }
