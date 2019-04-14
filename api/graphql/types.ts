@@ -43,7 +43,8 @@ export type CreateComponentResponse = {
 }
 
 export type CreateRenderInput = {
-  sampleId: Scalars['ID']
+  componentName: Scalars['String']
+  sampleName: Scalars['String']
   html: Scalars['String']
   imageUrl?: Maybe<Scalars['String']>
   branch: Scalars['String']

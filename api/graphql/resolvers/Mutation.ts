@@ -95,17 +95,61 @@ export default {
   },
 
   async createRender(_parent, { input }, ctx): Promise<CreateRenderResponse> {
-    const { sampleId, html, imageUrl, branch, commit } = input
+    const { componentName, sampleName, html, imageUrl, branch, commit } = input
+    const { user, team } = ctx
 
-    if (!ctx.user) {
+    if (!user || !team) {
       throw new AuthenticationError()
     }
 
-    const component = await prisma.sample({ id: sampleId }).component()
-    const team = await prisma.component({ id: component.id }).team()
+    let component
+    const components = await prisma.team({ id: team.id }).components({
+      where: {
+        name: componentName,
+      },
+    })
+    if (components.length === 0) {
+      component = await prisma.createComponent({
+        name: componentName,
+        team: {
+          connect: {
+            id: team.id,
+          },
+        },
+      })
+    } else if (components.length > 1) {
+      throw new Error(
+        `Multiple components found for team ${
+          team.name
+        } with name ${componentName}. 1 expected.`,
+      )
+    } else {
+      component = components[0]
+    }
 
-    if (!(await userInTeam(ctx.user, team))) {
-      throw new AuthorizationError()
+    let sample
+    const samples = await prisma.component({ id: component.id }).samples({
+      where: {
+        name: sampleName,
+      },
+    })
+    if (samples.length === 0) {
+      sample = await prisma.createSample({
+        name: sampleName,
+        component: {
+          connect: {
+            id: component.id,
+          },
+        },
+      })
+    } else if (samples.length > 1) {
+      throw new Error(
+        `Multiple samples found for team ${
+          team.name
+        } & component ${componentName} with name ${sampleName}. 1 expected.`,
+      )
+    } else {
+      sample = samples[0]
     }
 
     const render = await prisma.createRender({
@@ -115,7 +159,7 @@ export default {
       commit,
       sample: {
         connect: {
-          id: sampleId,
+          id: sample.id,
         },
       },
     })

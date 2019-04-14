@@ -1,5 +1,6 @@
 import config from 'api/config'
-import { prisma, User } from 'api/prisma'
+import { NotImplementedError } from 'api/exceptions'
+import { prisma, Team, User } from 'api/prisma'
 import { CookieOptions, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
@@ -42,6 +43,28 @@ export async function currentUser(
 
   const token: AuthToken = authorization.replace(/^Bearer\s/, '')
   return await userForToken(token)
+}
+
+export async function currentTeam(
+  _req: Request,
+  _res: Response,
+  user?: User,
+): Promise<Team | undefined> {
+  if (!user) {
+    return
+  }
+
+  const memberships = await prisma.memberships({
+    where: { user: { id: user.id } },
+  })
+  console.log(memberships)
+  if (memberships.length === 0) {
+    return
+  } else if (memberships.length > 1) {
+    throw new NotImplementedError('TODO: handle multiple memberships in auth')
+  }
+
+  return await prisma.membership({ id: memberships[0].id }).team()
 }
 
 export function login(_req: Request, res: Response, user: User): AuthToken {
