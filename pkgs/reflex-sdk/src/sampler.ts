@@ -36,7 +36,9 @@ export async function sampler({
     text: `Collecting ${
       typeof paths === 'string' ? trimCwd(paths) : paths.map(path => trimCwd(path)).join(',')
     }`,
-    run: async () => (filenames = await collectFilenames(paths))
+    run: async () => {
+      filenames = await collectFilenames(paths)
+    }
   })
 
   for (const filename of filenames) {
