@@ -3,8 +3,9 @@ require('./lib/setup')
 
 const webpack = require('webpack')
 const config = require('../webpack.config').default
+const buildInfo = require('./lib/buildInfo').default
 
-webpack(config, (err, stats) => {
+webpack(config, async (err, stats) => {
   if (err) {
     console.error(err.stack || err)
     if (err.details) {
@@ -26,4 +27,6 @@ webpack(config, (err, stats) => {
       console.warn('\n\n', warning)
     }
   }
+
+  await buildInfo(info)
 })
