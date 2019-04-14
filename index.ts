@@ -1,11 +1,11 @@
 import applyApiMiddleware from 'api'
 import config from 'api/config'
+import apiDevMiddleware from 'api/lib/apiDevMiddleware'
 import gen from 'api/lib/gen'
 import { absolutePath } from 'api/lib/path'
 import run from 'api/lib/run'
 import { absoluteUrl } from 'api/lib/url'
 import chokidar from 'chokidar'
-import cookieParser from 'cookie-parser'
 import express from 'express'
 import { debounce } from 'lodash'
 import morgan from 'morgan'
@@ -27,15 +27,17 @@ export default async function main(options: InitOptions) {
   const { ui: enableUi } = { ...defaultOptions, ...options }
   const app = express()
 
-  app.use(cookieParser())
-
   if (config.environment === 'development') {
     app.use(morgan('dev'))
   }
 
   app.use(express.static(absolutePath('public')))
 
-  await applyApiMiddleware(app)
+  if (config.environment === 'development') {
+    app.use(await apiDevMiddleware())
+  } else {
+    await applyApiMiddleware(app)
+  }
 
   if (enableUi) {
     if (config.environment === 'development') {

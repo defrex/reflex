@@ -1,17 +1,23 @@
 /// <reference path="../../@types/ansi-styles.d.ts" />
 
 import style from 'ansi-styles'
+import config from 'api/config'
 
-const trueWrite = process.stdout.write
-process.stdout.write = function(output: string): boolean {
-  ;(trueWrite as any).apply(process.stdout, [
-    cleanOutput(output),
-    ...Array.prototype.slice.call(arguments, 1),
-  ])
-  return true
+if (process.stdout.isTTY && config.environment === 'development') {
+  const trueWrite = process.stdout.write
+  process.stdout.write = function(output: string): boolean {
+    ;(trueWrite as any).apply(process.stdout, [
+      cleanOutput(output),
+      ...Array.prototype.slice.call(arguments, 1),
+    ])
+    return true
+  }
 }
 
 function cleanOutput(output: string): string {
+  if (typeof output !== 'string') {
+    return output
+  }
   return output
     .replace(style.grey.open, style.white.open)
     .replace(style.grey.close, style.white.close)

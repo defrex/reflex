@@ -8,7 +8,7 @@ import { CliAuthSession, prisma, Team } from 'api/prisma'
 
 export default {
   hello(_parent, _args, _ctx) {
-    return 'Hello!'
+    return 'Hello API!'
   },
 
   config(_parent, _args, _ctx) {
