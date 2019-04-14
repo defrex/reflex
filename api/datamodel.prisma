@@ -68,7 +68,7 @@ type Render {
   updatedAt: DateTime!
 
   imageUrl: String
-  html: String
+  html: String!
   branch: String!
   commit: String!
 

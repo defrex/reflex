@@ -1,4 +1,25 @@
 #import "../../components/Page/fragments.graphql"
-query LibraryQuery {
+query LibraryQuery($teamId: ID!) {
   ...PageQuery
+
+  team(id: $teamId) {
+    name
+
+    components {
+      id
+      name
+
+      samples {
+        id
+        name
+
+        renders {
+          id
+          branch
+          commit
+          html
+        }
+      }
+    }
+  }
 }

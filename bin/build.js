@@ -3,7 +3,7 @@ require('./lib/setup')
 
 const webpack = require('webpack')
 const config = require('../webpack.config').default
-const buildInfo = require('./lib/buildInfo').default
+// const buildInfo = require('./lib/buildInfo').default
 
 webpack(config, async (err, stats) => {
   if (err) {
@@ -28,5 +28,5 @@ webpack(config, async (err, stats) => {
     }
   }
 
-  await buildInfo(info)
+  // await buildInfo(info)
 })

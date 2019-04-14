@@ -9,16 +9,17 @@ type Component {
 type Sample {
   id: ID!
   name: String!
-  slug: String!
 
   component: Component!
-  renders: [Render]!
+  renders: [Render!]!
 }
 
 type Render {
   id: ID!
   imageUrl: String
-  html: String
+  html: String!
+  branch: String!
+  commit: String!
 
   sample: Sample!
 }

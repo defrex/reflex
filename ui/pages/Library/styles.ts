@@ -16,4 +16,11 @@ export default stylesheet({
     marginBottom: 4,
     fontSize: 16,
   },
+
+  component: {},
+  componentName: {},
+  sample: {},
+  sampleName: {},
+  render: {},
+  renderName: {},
 })

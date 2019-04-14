@@ -135,16 +135,17 @@ export type QueryTeamArgs = {
 export type Render = {
   id: Scalars['ID']
   imageUrl?: Maybe<Scalars['String']>
-  html?: Maybe<Scalars['String']>
+  html: Scalars['String']
+  branch: Scalars['String']
+  commit: Scalars['String']
   sample: Sample
 }
 
 export type Sample = {
   id: Scalars['ID']
   name: Scalars['String']
-  slug: Scalars['String']
   component: Component
-  renders: Array<Maybe<Render>>
+  renders: Array<Render>
 }
 
 export type Team = {
@@ -199,9 +200,30 @@ export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
-export type LibraryQueryQueryVariables = {}
+export type LibraryQueryQueryVariables = {
+  teamId: Scalars['ID']
+}
 
-export type LibraryQueryQuery = { __typename?: 'Query' } & PageQueryFragment
+export type LibraryQueryQuery = { __typename?: 'Query' } & {
+  team: Maybe<
+    { __typename?: 'Team' } & Pick<Team, 'name'> & {
+        components: Array<
+          { __typename?: 'Component' } & Pick<Component, 'id' | 'name'> & {
+              samples: Array<
+                { __typename?: 'Sample' } & Pick<Sample, 'id' | 'name'> & {
+                    renders: Array<
+                      { __typename?: 'Render' } & Pick<
+                        Render,
+                        'id' | 'branch' | 'commit' | 'html'
+                      >
+                    >
+                  }
+              >
+            }
+        >
+      }
+  >
+} & PageQueryFragment
 
 export type TeamPageQueryQueryVariables = {
   teamId: Scalars['ID']
@@ -518,8 +540,25 @@ export function withIndexQuery<TProps, TChildProps = {}>(
   >(IndexQueryDocument, operationOptions)
 }
 export const LibraryQueryDocument = gql`
-  query LibraryQuery {
+  query LibraryQuery($teamId: ID!) {
     ...PageQuery
+    team(id: $teamId) {
+      name
+      components {
+        id
+        name
+        samples {
+          id
+          name
+          renders {
+            id
+            branch
+            commit
+            html
+          }
+        }
+      }
+    }
   }
   ${PageQueryFragmentDoc}
 `

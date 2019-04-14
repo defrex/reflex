@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import { match } from 'react-router-dom'
-
 import Page from 'ui/components/Page'
-
 import { TeamPageQueryComponent } from 'ui/lib/graphql'
 
 interface RouteParams {
@@ -20,9 +18,9 @@ export default class TeamPage extends PureComponent<TeamPageProps> {
     return (
       <TeamPageQueryComponent variables={{ teamId: match.params.teamId }}>
         {({ data }) =>
-          data ? (
+          data && data.team ? (
             <Page query={data}>
-              <h1>{data.team!.name}</h1>
+              <h1>{data.team.name}</h1>
             </Page>
           ) : null
         }

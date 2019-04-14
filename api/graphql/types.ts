@@ -135,16 +135,17 @@ export type QueryTeamArgs = {
 export type Render = {
   id: Scalars['ID']
   imageUrl?: Maybe<Scalars['String']>
-  html?: Maybe<Scalars['String']>
+  html: Scalars['String']
+  branch: Scalars['String']
+  commit: Scalars['String']
   sample: Sample
 }
 
 export type Sample = {
   id: Scalars['ID']
   name: Scalars['String']
-  slug: Scalars['String']
   component: Component
-  renders: Array<Maybe<Render>>
+  renders: Array<Render>
 }
 
 export type Team = {
@@ -377,16 +378,17 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
 export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   imageUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
-  html?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  html?: Resolver<Scalars['String'], ParentType, Context>
+  branch?: Resolver<Scalars['String'], ParentType, Context>
+  commit?: Resolver<Scalars['String'], ParentType, Context>
   sample?: Resolver<Sample, ParentType, Context>
 }
 
 export type SampleResolvers<Context = ReflexContex, ParentType = Sample> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
-  slug?: Resolver<Scalars['String'], ParentType, Context>
   component?: Resolver<Component, ParentType, Context>
-  renders?: Resolver<Array<Maybe<Render>>, ParentType, Context>
+  renders?: Resolver<Array<Render>, ParentType, Context>
 }
 
 export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
