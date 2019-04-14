@@ -1,4 +1,3 @@
-import applyApiMiddleware from 'api'
 import config from 'api/config'
 import apiDevMiddleware from 'api/lib/apiDevMiddleware'
 import gen from 'api/lib/gen'
@@ -36,6 +35,7 @@ export default async function main(options: InitOptions) {
   if (config.environment === 'development') {
     app.use(await apiDevMiddleware())
   } else {
+    const applyApiMiddleware = require('api')
     await applyApiMiddleware(app)
   }
 
