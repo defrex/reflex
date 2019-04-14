@@ -34,7 +34,8 @@ export default class Library extends PureComponent<LibraryProps> {
                       {sample.renders.map((render) => (
                         <div className={styles.render} key={render.id}>
                           <div className={styles.renderName}>
-                            {render.branch}/{render.commit.slice(0, 7)}
+                            {render.branch}/{render.commit.slice(0, 7)}/
+                            {render.createdAt}
                           </div>
                           <UnsafeHmtl>{render.html}</UnsafeHmtl>
                         </div>

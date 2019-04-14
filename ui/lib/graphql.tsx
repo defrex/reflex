@@ -134,6 +134,7 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
+  createdAt: Scalars['String']
   imageUrl?: Maybe<Scalars['String']>
   html: Scalars['String']
   branch: Scalars['String']
@@ -214,7 +215,7 @@ export type LibraryQueryQuery = { __typename?: 'Query' } & {
                     renders: Array<
                       { __typename?: 'Render' } & Pick<
                         Render,
-                        'id' | 'branch' | 'commit' | 'html'
+                        'id' | 'createdAt' | 'branch' | 'commit' | 'html'
                       >
                     >
                   }
@@ -552,6 +553,7 @@ export const LibraryQueryDocument = gql`
           name
           renders {
             id
+            createdAt
             branch
             commit
             html

@@ -134,6 +134,7 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
+  createdAt: Scalars['String']
   imageUrl?: Maybe<Scalars['String']>
   html: Scalars['String']
   branch: Scalars['String']
@@ -377,6 +378,7 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
 
 export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
+  createdAt?: Resolver<Scalars['String'], ParentType, Context>
   imageUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
   html?: Resolver<Scalars['String'], ParentType, Context>
   branch?: Resolver<Scalars['String'], ParentType, Context>

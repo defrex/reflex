@@ -16,6 +16,7 @@ type Sample {
 
 type Render {
   id: ID!
+  createdAt: String!
   imageUrl: String
   html: String!
   branch: String!
