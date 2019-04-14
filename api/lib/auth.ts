@@ -57,7 +57,6 @@ export async function currentTeam(
   const memberships = await prisma.memberships({
     where: { user: { id: user.id } },
   })
-  console.log(memberships)
   if (memberships.length === 0) {
     return
   } else if (memberships.length > 1) {
