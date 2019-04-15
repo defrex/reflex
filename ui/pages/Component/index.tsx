@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react'
 import { match } from 'react-router'
+import Link from 'ui/components/Link'
 import Page from 'ui/components/Page'
 import UnsafeHmtl from 'ui/components/UnsafeHtml'
 import { ComponentQueryComponent, ComponentQueryDocument } from 'ui/lib/graphql'
+import { libraryRoute } from 'ui/lib/routes'
 import styles from './styles'
 
 interface RouteParams {
@@ -23,6 +25,10 @@ export default class Component extends PureComponent<ComponentProps> {
         {({ data }) =>
           data && data.team && data.team.component ? (
             <Page query={data} document={ComponentQueryDocument}>
+              <Link to={libraryRoute({ teamId: teamId })}>
+                {data.team.name}
+              </Link>
+              {'  /'}
               <h1>{data.team.component.name}</h1>
               {data.team.component.samples.map((sample) => (
                 <div className={styles.sample} key={sample.id}>
