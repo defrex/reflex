@@ -3,16 +3,26 @@ import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
 import { NextFunction, Request, Response } from 'express'
 import httpProxy from 'http-proxy'
+import debounce from 'lodash/debounce'
 import ora from 'ora'
 import { absolutePath } from './path'
 
 let devApiProc: ChildProcess
-function spawnApiServer(): Promise<ChildProcess> {
+function killApiServer(): Promise<void> {
+  return new Promise((resolve, _reject) => {
+    devApiProc.on('exit', () => {
+      resolve()
+    })
+    devApiProc.kill()
+  })
+}
+
+async function spawnApiServer(): Promise<ChildProcess> {
   const spinner = ora('Starting API')
   spinner.start()
 
-  if (devApiProc) {
-    devApiProc.kill()
+  if (devApiProc && !devApiProc.killed) {
+    await killApiServer()
   }
 
   devApiProc = spawn(absolutePath('bin/dev-api.js'), {
@@ -35,9 +45,10 @@ function spawnApiServer(): Promise<ChildProcess> {
 export default async function setupDevApiServer() {
   await spawnApiServer()
 
+  const respawnQueue = Promise.resolve()
   chokidar
     .watch(absolutePath('api/**/*.ts'), { ignoreInitial: true })
-    .on('all', spawnApiServer)
+    .on('all', debounce(() => respawnQueue.then(spawnApiServer), 1000))
 
   const proxy = httpProxy.createProxyServer({
     target: `http://localhost:${config.devApiPort}`,

@@ -153,7 +153,12 @@ export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
   role: Scalars['String']
+  component?: Maybe<Component>
   components: Array<Component>
+}
+
+export type TeamComponentArgs = {
+  id: Scalars['ID']
 }
 
 export type User = {
@@ -397,6 +402,7 @@ export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   role?: Resolver<Scalars['String'], ParentType, Context>
+  component?: Resolver<Maybe<Component>, ParentType, Context, TeamComponentArgs>
   components?: Resolver<Array<Component>, ParentType, Context>
 }
 

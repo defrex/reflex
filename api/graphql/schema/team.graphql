@@ -8,6 +8,7 @@ type Team {
   name: String!
   role: String!
 
+  component(id: ID!): Component
   components: [Component!]!
 }
 

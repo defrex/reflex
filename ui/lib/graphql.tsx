@@ -153,7 +153,12 @@ export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
   role: Scalars['String']
+  component?: Maybe<Component>
   components: Array<Component>
+}
+
+export type TeamComponentArgs = {
+  id: Scalars['ID']
 }
 
 export type User = {
@@ -162,6 +167,32 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
+export type ComponentQueryQueryVariables = {
+  teamId: Scalars['ID']
+  componentId: Scalars['ID']
+}
+
+export type ComponentQueryQuery = { __typename?: 'Query' } & {
+  team: Maybe<
+    { __typename?: 'Team' } & Pick<Team, 'name'> & {
+        component: Maybe<
+          { __typename?: 'Component' } & Pick<Component, 'id' | 'name'> & {
+              samples: Array<
+                { __typename?: 'Sample' } & Pick<Sample, 'id' | 'name'> & {
+                    renders: Array<
+                      { __typename?: 'Render' } & Pick<
+                        Render,
+                        'id' | 'createdAt' | 'branch' | 'commit' | 'html'
+                      >
+                    >
+                  }
+              >
+            }
+        >
+      }
+  >
+} & PageQueryFragment
+
 export type CreateTeamPageMutationMutationVariables = {
   name: Scalars['String']
 }
@@ -207,7 +238,7 @@ export type LibraryQueryQueryVariables = {
 
 export type LibraryQueryQuery = { __typename?: 'Query' } & {
   team: Maybe<
-    { __typename?: 'Team' } & Pick<Team, 'name'> & {
+    { __typename?: 'Team' } & Pick<Team, 'id' | 'name'> & {
         components: Array<
           { __typename?: 'Component' } & Pick<Component, 'id' | 'name'> & {
               samples: Array<
@@ -343,6 +374,66 @@ export const TemplateQueryFragmentDoc = gql`
     hello
   }
 `
+export const ComponentQueryDocument = gql`
+  query ComponentQuery($teamId: ID!, $componentId: ID!) {
+    ...PageQuery
+    team(id: $teamId) {
+      name
+      component(id: $componentId) {
+        id
+        name
+        samples {
+          id
+          name
+          renders {
+            id
+            createdAt
+            branch
+            commit
+            html
+          }
+        }
+      }
+    }
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class ComponentQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<ComponentQueryQuery, ComponentQueryQueryVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<ComponentQueryQuery, ComponentQueryQueryVariables>
+        query={ComponentQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type ComponentQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ComponentQueryQuery, ComponentQueryQueryVariables>
+> &
+  TChildProps
+export function withComponentQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ComponentQueryQuery,
+        ComponentQueryQueryVariables,
+        ComponentQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ComponentQueryQuery,
+    ComponentQueryQueryVariables,
+    ComponentQueryProps<TChildProps>
+  >(ComponentQueryDocument, operationOptions)
+}
 export const CreateTeamPageMutationDocument = gql`
   mutation CreateTeamPageMutation($name: String!) {
     createTeam(input: { name: $name }) {
@@ -544,6 +635,7 @@ export const LibraryQueryDocument = gql`
   query LibraryQuery($teamId: ID!) {
     ...PageQuery
     team(id: $teamId) {
+      id
       name
       components {
         id

@@ -44,3 +44,16 @@ export interface CreateTeamRouteParams {}
 export function createTeamRoute(_values?: CreateTeamRouteParams) {
   return '/teams'
 }
+
+export interface ComponentRouteParams {
+  teamId: string
+  componentId: string
+}
+export function componentRoute(values?: ComponentRouteParams) {
+  const params = {
+    teamId: ':teamId',
+    componentId: ':componentId',
+    ...values,
+  }
+  return `/teams/${params.teamId}/component/${params.componentId}`
+}

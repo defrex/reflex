@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import { match } from 'react-router'
+import Link from 'ui/components/Link'
 import Page from 'ui/components/Page'
-import UnsafeHmtl from 'ui/components/UnsafeHtml'
 import { LibraryQueryComponent, LibraryQueryDocument } from 'ui/lib/graphql'
+import { componentRoute } from 'ui/lib/routes'
 import styles from './styles'
 
 interface RouteParams {
@@ -25,23 +26,14 @@ export default class Library extends PureComponent<LibraryProps> {
               <h1>Library</h1>
               {data.team.components.map((component) => (
                 <div className={styles.component} key={component.id}>
-                  <div className={styles.componentName}>{component.name}</div>
-
-                  {component.samples.map((sample) => (
-                    <div className={styles.sample} key={sample.id}>
-                      <div className={styles.sampleName}>{sample.name}</div>
-
-                      {sample.renders.map((render) => (
-                        <div className={styles.render} key={render.id}>
-                          <div className={styles.renderName}>
-                            {render.branch}/{render.commit.slice(0, 7)}/
-                            {render.createdAt}
-                          </div>
-                          <UnsafeHmtl>{render.html}</UnsafeHmtl>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
+                  <Link
+                    to={componentRoute({
+                      teamId: data.team!.id,
+                      componentId: component.id,
+                    })}
+                  >
+                    <div className={styles.componentName}>{component.name}</div>
+                  </Link>
                 </div>
               ))}
             </Page>
