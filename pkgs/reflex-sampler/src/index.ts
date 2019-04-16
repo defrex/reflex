@@ -1,10 +1,10 @@
+import { Message } from '@google-cloud/pubsub'
+
 interface Event {
   eventId: string
   resource: any
 }
 
-interface Payload {}
-
-export function main(payload: Payload, event: Event) {
-  console.log(payload)
+export function main(message: Message, event: Event) {
+  console.log(message.data.toString())
 }
