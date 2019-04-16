@@ -14,7 +14,6 @@
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "start": "rollup -c rollup.config.ts -w",
-    "package": "./bin/package.js",
     "deploy": "./bin/deploy.js"
   },
   "devDependencies": {
