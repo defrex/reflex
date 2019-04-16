@@ -5,6 +5,13 @@ interface Event {
   resource: any
 }
 
+interface Payload {
+  hello: string
+}
+
 export function main(message: Message, event: Event) {
-  console.log(message.data.toString())
+  const payload: Payload = JSON.parse(
+    Buffer.from((message.data as unknown) as string, 'base64').toString(),
+  )
+  console.log(`Hello ${payload.hello}`)
 }
