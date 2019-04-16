@@ -35,7 +35,7 @@ export default async function main(options: InitOptions) {
   if (config.environment === 'development') {
     app.use(await apiDevMiddleware())
   } else {
-    const applyApiMiddleware = require('api')
+    const applyApiMiddleware = require('api').default
     await applyApiMiddleware(app)
   }
 
