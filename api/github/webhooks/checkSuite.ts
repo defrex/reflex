@@ -46,43 +46,6 @@ export default async function({
     })
   }
 
-  // TODO: use new render style
-
-  // const components = await prisma
-  //   .repo({ id: repo.id })
-  //   .team()
-  //   .components()
-
-  // for (const component of components) {
-  //   const samples = await prisma.component({ id: component.id }).samples()
-  //   for (const sample of samples) {
-  //     const renderExists = await prisma.$exists.render({
-  //       check: {
-  //         id: check.id,
-  //       },
-  //       sample: {
-  //         id: sample.id,
-  //       },
-  //     })
-  //     if (!renderExists) {
-  //       const imageUrl = await renderSample(sample)
-  //       await prisma.createRender({
-  //         imageUrl,
-  //         check: {
-  //           connect: {
-  //             id: check.id,
-  //           },
-  //         },
-  //         sample: {
-  //           connect: {
-  //             id: sample.id,
-  //           },
-  //         },
-  //       })
-  //     }
-  //   }
-  // }
-
   if (!check.githubCheckId) {
     const team = await prisma.repo({ id: repo.id }).team()
     const createCheckPayload: Octokit.ChecksCreateParams = {
