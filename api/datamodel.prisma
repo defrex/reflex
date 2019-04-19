@@ -1,7 +1,7 @@
 type User {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   email: String! @unique
   name: String!
@@ -18,9 +18,9 @@ enum Role {
 }
 
 type Membership {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   role: Role! @default(value: MEMBER)
 
@@ -29,9 +29,9 @@ type Membership {
 }
 
 type Team {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   name: String!
 
@@ -41,9 +41,9 @@ type Team {
 }
 
 type Component {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   name: String!
 
@@ -52,9 +52,9 @@ type Component {
 }
 
 type Sample {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   name: String!
 
@@ -63,9 +63,9 @@ type Sample {
 }
 
 type Render {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   imageUrl: String
   html: String!
@@ -77,9 +77,9 @@ type Render {
 }
 
 type Check {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   githubCheckId: Int @unique
   branch: String!
@@ -90,9 +90,9 @@ type Check {
 }
 
 type Repo {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   owner: String!
   name: String!
@@ -102,9 +102,9 @@ type Repo {
 }
 
 type CliAuthSession {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   expiresAt: DateTime!
 
   authenticatedUser: User
