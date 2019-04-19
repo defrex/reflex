@@ -1,14 +1,18 @@
-import { Message } from '@google-cloud/pubsub'
+import { exec as _exec } from 'child_process'
+import { promisify } from 'util'
+
+const exec = promisify(_exec)
 
 interface Payload {
   hello: string
+  checkId: string
 }
 
-export function main(message: Message) {
+export async function main(message: { data: string }) {
   const payload: Payload = JSON.parse(
-    Buffer.from((message.data as unknown) as string, 'base64').toString(),
+    Buffer.from(message.data, 'base64').toString(),
   )
   console.log(`Hello ${payload.hello}`)
 
-  message.ack()
+  console.log(await exec('git --version'))
 }
