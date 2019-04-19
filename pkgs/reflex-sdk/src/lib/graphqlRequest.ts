@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-const REFLEX_URL = 'http://localhost:8080'
+const REFLEX_URL = 'https://reflexui.com'
 
 interface GraphQLRequest {
   query: string

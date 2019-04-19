@@ -3,7 +3,7 @@ import config, { AUTH_KEY } from '../config'
 
 class ReflexClient extends GraphQLClient {
   constructor() {
-    super('http://localhost:8080/api/graphql')
+    super('https://reflexui.com/api/graphql')
 
     const authToken = config.get(AUTH_KEY)
     if (authToken) {

@@ -7,7 +7,7 @@
   "module": "dist/sampler.cjs.js",
   "typings": "dist/types/sampler.d.ts",
   "bin": {
-    "reflex": "dist/sampler.cjs.js"
+    "reflex": "dist/cli.cjs.js"
   },
   "files": [
     "dist"
