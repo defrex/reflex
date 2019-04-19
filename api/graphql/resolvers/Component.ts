@@ -1,11 +1,11 @@
+import { AuthenticationError, AuthorizationError } from 'api/exceptions'
 import { Context } from 'api/graphql/Context'
 import { ComponentResolvers } from 'api/graphql/types'
-import { prisma } from 'api/prisma'
-import { AuthenticationError, AuthorizationError } from 'api/exceptions'
 import { userInTeam } from 'api/lib/user'
+import { prisma } from 'api/prisma'
 
 export default {
-  examples: async (component, _args, ctx) => {
+  samples: async (component, _args, ctx) => {
     if (!ctx.user) {
       throw new AuthenticationError()
     }
@@ -15,6 +15,6 @@ export default {
       throw new AuthorizationError()
     }
 
-    return await prisma.component({ id: component.id }).examples()
+    return await prisma.component({ id: component.id }).samples()
   },
 } as ComponentResolvers<Context>

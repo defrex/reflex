@@ -1,8 +1,7 @@
 import { generate } from '@graphql-codegen/cli'
-import fs from 'fs'
-
 import config from 'api/config'
 import { absolutePath } from 'api/lib/path'
+import fs from 'fs'
 import { promisify } from 'util'
 
 export default async function gen(): Promise<any> {
@@ -22,8 +21,9 @@ export default async function gen(): Promise<any> {
             User: 'api/prisma#User',
             Team: 'api/prisma#Team',
             Component: 'api/prisma#Component',
-            Example: 'api/prisma#Example',
+            Sample: 'api/prisma#Sample',
             Render: 'api/prisma#Render',
+            CliAuthSession: 'api/prisma#CliAuthSession',
           },
         },
       },

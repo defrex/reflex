@@ -1,44 +1,41 @@
 import React, { PureComponent } from 'react'
-
+import { match } from 'react-router'
+import Link from 'ui/components/Link'
 import Page from 'ui/components/Page'
-import * as ButtonExamples from 'ui/components/Button/examples'
-import * as CodeExamples from 'ui/components/Code/examples'
-
 import { LibraryQueryComponent, LibraryQueryDocument } from 'ui/lib/graphql'
+import { componentRoute } from 'ui/lib/routes'
 import styles from './styles'
 
-export default class Library extends PureComponent {
+interface RouteParams {
+  teamId: string
+}
+
+interface LibraryProps {
+  teamId: string
+  match: match<RouteParams>
+}
+
+export default class Library extends PureComponent<LibraryProps> {
   render() {
+    const { match } = this.props
     return (
-      <LibraryQueryComponent>
+      <LibraryQueryComponent variables={{ teamId: match.params.teamId }}>
         {({ data }) =>
-          data ? (
+          data && data.team ? (
             <Page query={data} document={LibraryQueryDocument}>
               <h1>Library</h1>
-
-              <div className={styles.libraryItem}>
-                <div className={styles.libraryItemTitle}>Button</div>
-                {Object.entries(ButtonExamples).map(
-                  ([name, ButtonExample], index) => (
-                    <div key={index} className={styles.libraryInstance}>
-                      <div className={styles.libraryInstanceTitle}>{name}</div>
-                      <ButtonExample />
-                    </div>
-                  ),
-                )}
-              </div>
-
-              <div className={styles.libraryItem}>
-                <div className={styles.libraryItemTitle}>Code</div>
-                {Object.entries(CodeExamples).map(
-                  ([name, CodeExample], index) => (
-                    <div key={index} className={styles.libraryInstance}>
-                      <div className={styles.libraryInstanceTitle}>{name}</div>
-                      <CodeExample />
-                    </div>
-                  ),
-                )}
-              </div>
+              {data.team.components.map((component) => (
+                <div className={styles.component} key={component.id}>
+                  <Link
+                    to={componentRoute({
+                      teamId: data.team!.id,
+                      componentId: component.id,
+                    })}
+                  >
+                    <div className={styles.componentName}>{component.name}</div>
+                  </Link>
+                </div>
+              ))}
             </Page>
           ) : null
         }

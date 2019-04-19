@@ -1,9 +1,24 @@
+import { PubSub } from '@google-cloud/pubsub'
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
 import { findOne } from 'api/lib/data'
-import renderExample from 'api/lib/renderExample'
 import { absoluteUrl } from 'api/lib/url'
 import { Check, prisma, Repo } from 'api/prisma'
 import { Context, Octokit } from 'probot'
+import { libraryRoute } from 'ui/lib/routes'
+
+const pubsub = new PubSub()
+const sampleRequestsTopic = 'sample-requests'
+
+interface Payload {
+  hello: string
+  checkId: string
+}
+
+async function publishSampleRequest(payload: Payload) {
+  const data = Buffer.from(JSON.stringify(payload))
+  const messageId = await pubsub.topic(sampleRequestsTopic).publish(data)
+  console.info(`Published ${sampleRequestsTopic}/${messageId}`)
+}
 
 export default async function({
   payload,
@@ -25,8 +40,8 @@ export default async function({
   let check = await findOne<Check>(
     prisma.checks({
       where: {
-        headBranch: payload.check_suite.head_branch,
-        headSha: payload.check_suite.head_sha,
+        branch: payload.check_suite.head_branch,
+        commit: payload.check_suite.head_sha,
         repo: {
           id: repo.id,
         },
@@ -36,8 +51,8 @@ export default async function({
 
   if (!check) {
     check = await prisma.createCheck({
-      headBranch: payload.check_suite.head_branch,
-      headSha: payload.check_suite.head_sha,
+      branch: payload.check_suite.head_branch,
+      commit: payload.check_suite.head_sha,
       repo: {
         connect: {
           id: repo.id,
@@ -46,50 +61,14 @@ export default async function({
     })
   }
 
-  const components = await prisma
-    .repo({ id: repo.id })
-    .team()
-    .components()
-
-  for (const component of components) {
-    const examples = await prisma.component({ id: component.id }).examples()
-    for (const example of examples) {
-      const renderExists = await prisma.$exists.render({
-        check: {
-          id: check.id,
-        },
-        example: {
-          id: example.id,
-        },
-      })
-      if (!renderExists) {
-        const imageUrl = await renderExample(example)
-        await prisma.createRender({
-          imageUrl,
-          check: {
-            connect: {
-              id: check.id,
-            },
-          },
-          example: {
-            connect: {
-              id: example.id,
-            },
-          },
-        })
-      }
-    }
-  }
-
   if (!check.githubCheckId) {
+    const team = await prisma.repo({ id: repo.id }).team()
     const createCheckPayload: Octokit.ChecksCreateParams = {
       owner: repo.owner,
       repo: repo.name,
       name: 'reflex',
-      head_sha: check.headSha,
-      details_url: absoluteUrl(
-        `/checks/${repo.owner}/${repo.name}/${check.headSha}`,
-      ),
+      head_sha: check.commit,
+      details_url: absoluteUrl(libraryRoute({ teamId: team.id })),
       external_id: check.id,
       status: 'in_progress',
       started_at: check.createdAt,
@@ -106,8 +85,11 @@ export default async function({
       },
     })
 
-    console.log(
-      `✔️ ${repo.owner}/${repo.name}#${check.headBranch}/${check.headSha}`,
-    )
+    await publishSampleRequest({
+      hello: 'GitHub',
+      checkId: check.id,
+    })
+
+    console.log(`✔️ ${repo.owner}/${repo.name}#${check.branch}/${check.commit}`)
   }
 }

@@ -5,3 +5,5 @@ export class AuthenticationError extends Error {
 export class AuthorizationError extends Error {
   message = 'You do not have permissions'
 }
+
+export class NotImplementedError extends Error {}

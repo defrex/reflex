@@ -8,17 +8,28 @@ export type Scalars = {
   Float: number
 }
 
+export type CliAuthSession = {
+  url: Scalars['String']
+  cliAuthToken: Scalars['String']
+  userAuthToken?: Maybe<Scalars['String']>
+}
+
 export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
   team: Team
-  examples: Array<Example>
+  samples: Array<Sample>
 }
 
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
   logoutUrl: Scalars['String']
+}
+
+export type CreateCliAuthSessionResponse = {
+  cliAuthSession?: Maybe<CliAuthSession>
+  status: MutationStatus
 }
 
 export type CreateComponentInput = {
@@ -31,13 +42,27 @@ export type CreateComponentResponse = {
   status: MutationStatus
 }
 
-export type CreateExampleInput = {
+export type CreateRenderInput = {
+  componentName: Scalars['String']
+  sampleName: Scalars['String']
+  html: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+}
+
+export type CreateRenderResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
+}
+
+export type CreateSampleInput = {
   componentId: Scalars['ID']
   name: Scalars['String']
 }
 
-export type CreateExampleResponse = {
-  example?: Maybe<Example>
+export type CreateSampleResponse = {
+  sample?: Maybe<Sample>
   status: MutationStatus
 }
 
@@ -51,24 +76,17 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type Example = {
-  id: Scalars['ID']
-  name: Scalars['String']
-  slug: Scalars['String']
-  component: Component
-  renders: Array<Maybe<Render>>
-}
-
 export type LogoutResponse = {
   status?: Maybe<MutationStatus>
 }
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
+  createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
-  createExample?: Maybe<CreateExampleResponse>
-  renderExample?: Maybe<RenderExampleResponse>
+  createSample?: Maybe<CreateSampleResponse>
+  createRender?: Maybe<CreateRenderResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -79,12 +97,12 @@ export type MutationCreateComponentArgs = {
   input: CreateComponentInput
 }
 
-export type MutationCreateExampleArgs = {
-  input: CreateExampleInput
+export type MutationCreateSampleArgs = {
+  input: CreateSampleInput
 }
 
-export type MutationRenderExampleArgs = {
-  input: RenderExampleInput
+export type MutationCreateRenderArgs = {
+  input: CreateRenderInput
 }
 
 export type MutationError = {
@@ -101,8 +119,13 @@ export type Query = {
   hello: Scalars['String']
   config: Config
   currentUser?: Maybe<User>
+  cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+}
+
+export type QueryCliAuthSessionArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type QueryTeamArgs = {
@@ -111,24 +134,31 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
-  imageUrl: Scalars['String']
-  example: Example
+  createdAt: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  html: Scalars['String']
+  branch: Scalars['String']
+  commit: Scalars['String']
+  sample: Sample
 }
 
-export type RenderExampleInput = {
-  exampleId: Scalars['ID']
-}
-
-export type RenderExampleResponse = {
-  render?: Maybe<Render>
-  status: MutationStatus
+export type Sample = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  component: Component
+  renders: Array<Render>
 }
 
 export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
   role: Scalars['String']
+  component?: Maybe<Component>
   components: Array<Component>
+}
+
+export type TeamComponentArgs = {
+  id: Scalars['ID']
 }
 
 export type User = {
@@ -137,6 +167,32 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
+export type ComponentQueryQueryVariables = {
+  teamId: Scalars['ID']
+  componentId: Scalars['ID']
+}
+
+export type ComponentQueryQuery = { __typename?: 'Query' } & {
+  team: Maybe<
+    { __typename?: 'Team' } & Pick<Team, 'name'> & {
+        component: Maybe<
+          { __typename?: 'Component' } & Pick<Component, 'id' | 'name'> & {
+              samples: Array<
+                { __typename?: 'Sample' } & Pick<Sample, 'id' | 'name'> & {
+                    renders: Array<
+                      { __typename?: 'Render' } & Pick<
+                        Render,
+                        'id' | 'createdAt' | 'branch' | 'commit' | 'html'
+                      >
+                    >
+                  }
+              >
+            }
+        >
+      }
+  >
+} & PageQueryFragment
+
 export type CreateTeamPageMutationMutationVariables = {
   name: Scalars['String']
 }
@@ -176,9 +232,30 @@ export type IndexQueryQueryVariables = {}
 
 export type IndexQueryQuery = { __typename?: 'Query' } & Pick<Query, 'hello'>
 
-export type LibraryQueryQueryVariables = {}
+export type LibraryQueryQueryVariables = {
+  teamId: Scalars['ID']
+}
 
-export type LibraryQueryQuery = { __typename?: 'Query' } & PageQueryFragment
+export type LibraryQueryQuery = { __typename?: 'Query' } & {
+  team: Maybe<
+    { __typename?: 'Team' } & Pick<Team, 'id' | 'name'> & {
+        components: Array<
+          { __typename?: 'Component' } & Pick<Component, 'id' | 'name'> & {
+              samples: Array<
+                { __typename?: 'Sample' } & Pick<Sample, 'id' | 'name'> & {
+                    renders: Array<
+                      { __typename?: 'Render' } & Pick<
+                        Render,
+                        'id' | 'createdAt' | 'branch' | 'commit' | 'html'
+                      >
+                    >
+                  }
+              >
+            }
+        >
+      }
+  >
+} & PageQueryFragment
 
 export type TeamPageQueryQueryVariables = {
   teamId: Scalars['ID']
@@ -297,6 +374,66 @@ export const TemplateQueryFragmentDoc = gql`
     hello
   }
 `
+export const ComponentQueryDocument = gql`
+  query ComponentQuery($teamId: ID!, $componentId: ID!) {
+    ...PageQuery
+    team(id: $teamId) {
+      name
+      component(id: $componentId) {
+        id
+        name
+        samples {
+          id
+          name
+          renders {
+            id
+            createdAt
+            branch
+            commit
+            html
+          }
+        }
+      }
+    }
+  }
+  ${PageQueryFragmentDoc}
+`
+
+export class ComponentQueryComponent extends React.Component<
+  Partial<
+    ReactApollo.QueryProps<ComponentQueryQuery, ComponentQueryQueryVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Query<ComponentQueryQuery, ComponentQueryQueryVariables>
+        query={ComponentQueryDocument}
+        {...(this as any)['props'] as any}
+      />
+    )
+  }
+}
+export type ComponentQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<ComponentQueryQuery, ComponentQueryQueryVariables>
+> &
+  TChildProps
+export function withComponentQuery<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        ComponentQueryQuery,
+        ComponentQueryQueryVariables,
+        ComponentQueryProps<TChildProps>
+      >
+    | undefined,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    ComponentQueryQuery,
+    ComponentQueryQueryVariables,
+    ComponentQueryProps<TChildProps>
+  >(ComponentQueryDocument, operationOptions)
+}
 export const CreateTeamPageMutationDocument = gql`
   mutation CreateTeamPageMutation($name: String!) {
     createTeam(input: { name: $name }) {
@@ -495,8 +632,27 @@ export function withIndexQuery<TProps, TChildProps = {}>(
   >(IndexQueryDocument, operationOptions)
 }
 export const LibraryQueryDocument = gql`
-  query LibraryQuery {
+  query LibraryQuery($teamId: ID!) {
     ...PageQuery
+    team(id: $teamId) {
+      id
+      name
+      components {
+        id
+        name
+        samples {
+          id
+          name
+          renders {
+            id
+            createdAt
+            branch
+            commit
+            html
+          }
+        }
+      }
+    }
   }
   ${PageQueryFragmentDoc}
 `

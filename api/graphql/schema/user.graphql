@@ -1,5 +1,6 @@
 type Query {
   currentUser: User
+  cliAuthSession(cliAuthToken: String!): CliAuthSession
 }
 
 type User {
@@ -9,10 +10,23 @@ type User {
   githubConnected: Boolean!
 }
 
+type CliAuthSession {
+  url: String!
+  cliAuthToken: String!
+  userAuthToken: String
+}
+
 type Mutation {
   logout: LogoutResponse
+
+  createCliAuthSession: CreateCliAuthSessionResponse
 }
 
 type LogoutResponse {
   status: MutationStatus
+}
+
+type CreateCliAuthSessionResponse {
+  cliAuthSession: CliAuthSession
+  status: MutationStatus!
 }

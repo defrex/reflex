@@ -2,6 +2,7 @@ import * as path from 'path'
 
 const basePath = path.resolve(__dirname, '..')
 const absolutePath = path.join.bind(path, basePath)
+const port = parseInt(process.env.PORT!)
 
 export type Environment = 'production' | 'development'
 const environment: Environment =
@@ -18,9 +19,13 @@ const config = {
   ],
   uiPath: absolutePath('ui'),
   environment,
-  port: parseInt(process.env.PORT!),
+  port,
   ssl: process.env.SSL! === 'true',
   domain: process.env.DOMAIN!,
+  devApiPort: process.env.DEV_API_PORT
+    ? parseInt(process.env.DEV_API_PORT)
+    : port + 1,
+  devApiReadyIndicator: '--devApi:listening--',
   secretKey: process.env.SECRET_KEY!,
   figmaClientId: 'EO68f7Vfj53SlHlAr4Pudo',
   figmaClientSecret: process.env.FIGMA_CLIENT_SECRET!,

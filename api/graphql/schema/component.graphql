@@ -3,29 +3,32 @@ type Component {
   name: String!
 
   team: Team!
-  examples: [Example!]!
+  samples: [Sample!]!
 }
 
-type Example {
+type Sample {
   id: ID!
   name: String!
-  slug: String!
 
   component: Component!
-  renders: [Render]!
+  renders: [Render!]!
 }
 
 type Render {
   id: ID!
-  imageUrl: String!
+  createdAt: String!
+  imageUrl: String
+  html: String!
+  branch: String!
+  commit: String!
 
-  example: Example!
+  sample: Sample!
 }
 
 type Mutation {
   createComponent(input: CreateComponentInput!): CreateComponentResponse
-  createExample(input: CreateExampleInput!): CreateExampleResponse
-  renderExample(input: RenderExampleInput!): RenderExampleResponse
+  createSample(input: CreateSampleInput!): CreateSampleResponse
+  createRender(input: CreateRenderInput!): CreateRenderResponse
 }
 
 input CreateComponentInput {
@@ -38,21 +41,26 @@ type CreateComponentResponse {
   status: MutationStatus!
 }
 
-input CreateExampleInput {
+input CreateSampleInput {
   componentId: ID!
   name: String!
 }
 
-type CreateExampleResponse {
-  example: Example
+type CreateSampleResponse {
+  sample: Sample
   status: MutationStatus!
 }
 
-input RenderExampleInput {
-  exampleId: ID!
+input CreateRenderInput {
+  componentName: String!
+  sampleName: String!
+  html: String!
+  imageUrl: String
+  branch: String!
+  commit: String!
 }
 
-type RenderExampleResponse {
+type CreateRenderResponse {
   render: Render
   status: MutationStatus!
 }

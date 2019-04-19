@@ -12,8 +12,8 @@ const time = new Date().valueOf()
 
 // const teamId = 'cjtp6ia6s00as0748aq40bbwq' // dev
 const teamId = 'cjtpxdt9z00690804knk2emtz' // prod
-const url = absoluteUrl(`/teams/${teamId}/examples/Button/Primary`)
-// const url = `https://reflexui.com/teams/${teamId}/examples/Button/Primary`
+const url = absoluteUrl(`/teams/${teamId}/samples/Button/Primary`)
+// const url = `https://reflexui.com/teams/${teamId}/samples/Button/Primary`
 
 async function upload(filename: string, content: Buffer) {
   return new Promise((resolve, reject) => {

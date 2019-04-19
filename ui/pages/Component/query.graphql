@@ -1,12 +1,11 @@
 #import "../../components/Page/fragments.graphql"
-query LibraryQuery($teamId: ID!) {
+query ComponentQuery($teamId: ID!, $componentId: ID!) {
   ...PageQuery
 
   team(id: $teamId) {
-    id
     name
 
-    components {
+    component(id: $componentId) {
       id
       name
 

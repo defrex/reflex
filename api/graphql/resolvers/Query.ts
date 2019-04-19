@@ -1,16 +1,17 @@
-import { prisma, Team } from 'api/prisma'
-import { QueryResolvers } from 'api/graphql/types'
-import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { authUrl as figmaAuthUrl } from 'api/figma/auth'
+import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { Context } from 'api/graphql/Context'
+import { QueryResolvers } from 'api/graphql/types'
+import { authSessionForToken } from 'api/lib/cliAuth'
 import { absoluteUrl } from 'api/lib/url'
+import { CliAuthSession, prisma, Team } from 'api/prisma'
 
 export default {
-  hello: (_parent, _args, _ctx) => {
+  hello(_parent, _args, _ctx) {
     return 'Hello!'
   },
 
-  config: (_parent, _args, _ctx) => {
+  config(_parent, _args, _ctx) {
     return {
       figmaAuthUrl,
       githubAuthUrl,
@@ -18,15 +19,15 @@ export default {
     }
   },
 
-  currentUser: (_parent, _args, ctx) => {
+  currentUser(_parent, _args, ctx) {
     return ctx.user
   },
 
-  team: async (_parent, args, _ctx) => {
+  async team(_parent, args, _ctx) {
     return prisma.team(args)
   },
 
-  teams: async (_parent, _args, ctx) => {
+  async teams(_parent, _args, ctx) {
     if (!ctx.user) {
       return []
     }
@@ -36,5 +37,9 @@ export default {
       teams.push(await prisma.membership({ id: membership.id }).team())
     }
     return teams
+  },
+
+  async cliAuthSession(_parent, args): Promise<CliAuthSession | void> {
+    return authSessionForToken(args.cliAuthToken)
   },
 } as QueryResolvers<Context>

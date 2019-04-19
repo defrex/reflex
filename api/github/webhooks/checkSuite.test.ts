@@ -1,7 +1,6 @@
-import { prisma } from 'api/prisma'
-
-import checkSuite from './checkSuite'
 import { ChecksCreateParams } from '@octokit/rest'
+import { prisma } from 'api/prisma'
+import checkSuite from './checkSuite'
 
 describe('checkSuite', () => {
   it('runs', async () => {
@@ -47,7 +46,7 @@ describe('checkSuite', () => {
       },
     })
 
-    const example = await prisma.createExample({
+    const sample = await prisma.createSample({
       name: 'Default',
       component: {
         connect: {
@@ -56,8 +55,8 @@ describe('checkSuite', () => {
       },
     })
 
-    const headBranch = 'test_branch'
-    const headSha = 'test_sha'
+    const branch = 'test_branch'
+    const commit = 'test_sha'
     const githubCheckId = 55
     const params = {
       payload: {
@@ -68,8 +67,8 @@ describe('checkSuite', () => {
           },
         },
         check_suite: {
-          head_branch: headBranch,
-          head_sha: headSha,
+          head_branch: branch,
+          head_sha: commit,
         },
       },
       github: {
@@ -77,7 +76,7 @@ describe('checkSuite', () => {
           create: jest.fn((params: ChecksCreateParams) => {
             expect(params.owner).toEqual(repo.owner)
             expect(params.name).toEqual(repo.name)
-            expect(params.head_sha).toEqual(headSha)
+            expect(params.head_sha).toEqual(commit)
             expect(params.status).toEqual('in_progress')
 
             return {
@@ -94,13 +93,13 @@ describe('checkSuite', () => {
     expect(params.github.checks.create).toHaveBeenCalledTimes(1)
 
     const check = await prisma.check({ githubCheckId })
-    expect(check.headBranch).toEqual(headBranch)
-    expect(check.headSha).toEqual(headSha)
+    expect(check.branch).toEqual(branch)
+    expect(check.commit).toEqual(commit)
 
     const renders = await prisma.renders({
       where: {
-        example: {
-          id: example.id,
+        sample: {
+          id: sample.id,
         },
         check: {
           id: check.id,

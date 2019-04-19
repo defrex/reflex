@@ -8,17 +8,28 @@ export type Scalars = {
   Float: number
 }
 
+export type CliAuthSession = {
+  url: Scalars['String']
+  cliAuthToken: Scalars['String']
+  userAuthToken?: Maybe<Scalars['String']>
+}
+
 export type Component = {
   id: Scalars['ID']
   name: Scalars['String']
   team: Team
-  examples: Array<Example>
+  samples: Array<Sample>
 }
 
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
   logoutUrl: Scalars['String']
+}
+
+export type CreateCliAuthSessionResponse = {
+  cliAuthSession?: Maybe<CliAuthSession>
+  status: MutationStatus
 }
 
 export type CreateComponentInput = {
@@ -31,13 +42,27 @@ export type CreateComponentResponse = {
   status: MutationStatus
 }
 
-export type CreateExampleInput = {
+export type CreateRenderInput = {
+  componentName: Scalars['String']
+  sampleName: Scalars['String']
+  html: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+}
+
+export type CreateRenderResponse = {
+  render?: Maybe<Render>
+  status: MutationStatus
+}
+
+export type CreateSampleInput = {
   componentId: Scalars['ID']
   name: Scalars['String']
 }
 
-export type CreateExampleResponse = {
-  example?: Maybe<Example>
+export type CreateSampleResponse = {
+  sample?: Maybe<Sample>
   status: MutationStatus
 }
 
@@ -51,24 +76,17 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type Example = {
-  id: Scalars['ID']
-  name: Scalars['String']
-  slug: Scalars['String']
-  component: Component
-  renders: Array<Maybe<Render>>
-}
-
 export type LogoutResponse = {
   status?: Maybe<MutationStatus>
 }
 
 export type Mutation = {
   logout?: Maybe<LogoutResponse>
+  createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
-  createExample?: Maybe<CreateExampleResponse>
-  renderExample?: Maybe<RenderExampleResponse>
+  createSample?: Maybe<CreateSampleResponse>
+  createRender?: Maybe<CreateRenderResponse>
 }
 
 export type MutationCreateTeamArgs = {
@@ -79,12 +97,12 @@ export type MutationCreateComponentArgs = {
   input: CreateComponentInput
 }
 
-export type MutationCreateExampleArgs = {
-  input: CreateExampleInput
+export type MutationCreateSampleArgs = {
+  input: CreateSampleInput
 }
 
-export type MutationRenderExampleArgs = {
-  input: RenderExampleInput
+export type MutationCreateRenderArgs = {
+  input: CreateRenderInput
 }
 
 export type MutationError = {
@@ -101,8 +119,13 @@ export type Query = {
   hello: Scalars['String']
   config: Config
   currentUser?: Maybe<User>
+  cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+}
+
+export type QueryCliAuthSessionArgs = {
+  cliAuthToken: Scalars['String']
 }
 
 export type QueryTeamArgs = {
@@ -111,24 +134,31 @@ export type QueryTeamArgs = {
 
 export type Render = {
   id: Scalars['ID']
-  imageUrl: Scalars['String']
-  example: Example
+  createdAt: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  html: Scalars['String']
+  branch: Scalars['String']
+  commit: Scalars['String']
+  sample: Sample
 }
 
-export type RenderExampleInput = {
-  exampleId: Scalars['ID']
-}
-
-export type RenderExampleResponse = {
-  render?: Maybe<Render>
-  status: MutationStatus
+export type Sample = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  component: Component
+  renders: Array<Render>
 }
 
 export type Team = {
   id: Scalars['ID']
   name: Scalars['String']
   role: Scalars['String']
+  component?: Maybe<Component>
   components: Array<Component>
+}
+
+export type TeamComponentArgs = {
+  id: Scalars['ID']
 }
 
 export type User = {
@@ -137,7 +167,14 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
-import { User, Team, Component, Example, Render } from 'api/prisma'
+import {
+  User,
+  Team,
+  Component,
+  Sample,
+  Render,
+  CliAuthSession,
+} from 'api/prisma'
 import { ReflexContex } from 'api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
@@ -209,6 +246,15 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
+export type CliAuthSessionResolvers<
+  Context = ReflexContex,
+  ParentType = CliAuthSession
+> = {
+  url?: Resolver<Scalars['String'], ParentType, Context>
+  cliAuthToken?: Resolver<Scalars['String'], ParentType, Context>
+  userAuthToken?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+}
+
 export type ComponentResolvers<
   Context = ReflexContex,
   ParentType = Component
@@ -216,13 +262,21 @@ export type ComponentResolvers<
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   team?: Resolver<Team, ParentType, Context>
-  examples?: Resolver<Array<Example>, ParentType, Context>
+  samples?: Resolver<Array<Sample>, ParentType, Context>
 }
 
 export type ConfigResolvers<Context = ReflexContex, ParentType = Config> = {
   figmaAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   githubAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
   logoutUrl?: Resolver<Scalars['String'], ParentType, Context>
+}
+
+export type CreateCliAuthSessionResponseResolvers<
+  Context = ReflexContex,
+  ParentType = CreateCliAuthSessionResponse
+> = {
+  cliAuthSession?: Resolver<Maybe<CliAuthSession>, ParentType, Context>
+  status?: Resolver<MutationStatus, ParentType, Context>
 }
 
 export type CreateComponentResponseResolvers<
@@ -233,11 +287,19 @@ export type CreateComponentResponseResolvers<
   status?: Resolver<MutationStatus, ParentType, Context>
 }
 
-export type CreateExampleResponseResolvers<
+export type CreateRenderResponseResolvers<
   Context = ReflexContex,
-  ParentType = CreateExampleResponse
+  ParentType = CreateRenderResponse
 > = {
-  example?: Resolver<Maybe<Example>, ParentType, Context>
+  render?: Resolver<Maybe<Render>, ParentType, Context>
+  status?: Resolver<MutationStatus, ParentType, Context>
+}
+
+export type CreateSampleResponseResolvers<
+  Context = ReflexContex,
+  ParentType = CreateSampleResponse
+> = {
+  sample?: Resolver<Maybe<Sample>, ParentType, Context>
   status?: Resolver<MutationStatus, ParentType, Context>
 }
 
@@ -249,14 +311,6 @@ export type CreateTeamResponseResolvers<
   status?: Resolver<MutationStatus, ParentType, Context>
 }
 
-export type ExampleResolvers<Context = ReflexContex, ParentType = Example> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  slug?: Resolver<Scalars['String'], ParentType, Context>
-  component?: Resolver<Component, ParentType, Context>
-  renders?: Resolver<Array<Maybe<Render>>, ParentType, Context>
-}
-
 export type LogoutResponseResolvers<
   Context = ReflexContex,
   ParentType = LogoutResponse
@@ -266,6 +320,11 @@ export type LogoutResponseResolvers<
 
 export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
   logout?: Resolver<Maybe<LogoutResponse>, ParentType, Context>
+  createCliAuthSession?: Resolver<
+    Maybe<CreateCliAuthSessionResponse>,
+    ParentType,
+    Context
+  >
   createTeam?: Resolver<
     Maybe<CreateTeamResponse>,
     ParentType,
@@ -278,17 +337,17 @@ export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
     Context,
     MutationCreateComponentArgs
   >
-  createExample?: Resolver<
-    Maybe<CreateExampleResponse>,
+  createSample?: Resolver<
+    Maybe<CreateSampleResponse>,
     ParentType,
     Context,
-    MutationCreateExampleArgs
+    MutationCreateSampleArgs
   >
-  renderExample?: Resolver<
-    Maybe<RenderExampleResponse>,
+  createRender?: Resolver<
+    Maybe<CreateRenderResponse>,
     ParentType,
     Context,
-    MutationRenderExampleArgs
+    MutationCreateRenderArgs
   >
 }
 
@@ -312,28 +371,38 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
   hello?: Resolver<Scalars['String'], ParentType, Context>
   config?: Resolver<Config, ParentType, Context>
   currentUser?: Resolver<Maybe<User>, ParentType, Context>
+  cliAuthSession?: Resolver<
+    Maybe<CliAuthSession>,
+    ParentType,
+    Context,
+    QueryCliAuthSessionArgs
+  >
   teams?: Resolver<Array<Team>, ParentType, Context>
   team?: Resolver<Maybe<Team>, ParentType, Context, QueryTeamArgs>
 }
 
 export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
-  imageUrl?: Resolver<Scalars['String'], ParentType, Context>
-  example?: Resolver<Example, ParentType, Context>
+  createdAt?: Resolver<Scalars['String'], ParentType, Context>
+  imageUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  html?: Resolver<Scalars['String'], ParentType, Context>
+  branch?: Resolver<Scalars['String'], ParentType, Context>
+  commit?: Resolver<Scalars['String'], ParentType, Context>
+  sample?: Resolver<Sample, ParentType, Context>
 }
 
-export type RenderExampleResponseResolvers<
-  Context = ReflexContex,
-  ParentType = RenderExampleResponse
-> = {
-  render?: Resolver<Maybe<Render>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+export type SampleResolvers<Context = ReflexContex, ParentType = Sample> = {
+  id?: Resolver<Scalars['ID'], ParentType, Context>
+  name?: Resolver<Scalars['String'], ParentType, Context>
+  component?: Resolver<Component, ParentType, Context>
+  renders?: Resolver<Array<Render>, ParentType, Context>
 }
 
 export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>
   name?: Resolver<Scalars['String'], ParentType, Context>
   role?: Resolver<Scalars['String'], ParentType, Context>
+  component?: Resolver<Maybe<Component>, ParentType, Context, TeamComponentArgs>
   components?: Resolver<Array<Component>, ParentType, Context>
 }
 
@@ -345,19 +414,21 @@ export type UserResolvers<Context = ReflexContex, ParentType = User> = {
 }
 
 export type Resolvers<Context = ReflexContex> = {
+  CliAuthSession?: CliAuthSessionResolvers<Context>
   Component?: ComponentResolvers<Context>
   Config?: ConfigResolvers<Context>
+  CreateCliAuthSessionResponse?: CreateCliAuthSessionResponseResolvers<Context>
   CreateComponentResponse?: CreateComponentResponseResolvers<Context>
-  CreateExampleResponse?: CreateExampleResponseResolvers<Context>
+  CreateRenderResponse?: CreateRenderResponseResolvers<Context>
+  CreateSampleResponse?: CreateSampleResponseResolvers<Context>
   CreateTeamResponse?: CreateTeamResponseResolvers<Context>
-  Example?: ExampleResolvers<Context>
   LogoutResponse?: LogoutResponseResolvers<Context>
   Mutation?: MutationResolvers<Context>
   MutationError?: MutationErrorResolvers<Context>
   MutationStatus?: MutationStatusResolvers<Context>
   Query?: QueryResolvers<Context>
   Render?: RenderResolvers<Context>
-  RenderExampleResponse?: RenderExampleResponseResolvers<Context>
+  Sample?: SampleResolvers<Context>
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>
 }
