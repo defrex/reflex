@@ -1,4 +1,4 @@
 {
-  "packages": ["pkgs/*"],
+  "packages": ["pkgs/*", "functions/*"],
   "version": "0.0.0"
 }
