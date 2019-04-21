@@ -1,8 +1,7 @@
 {
-  "name": "@reflexui/sampler",
+  "name": "@reflexui/sdk",
   "version": "0.2.1",
-  "description": "",
-  "keywords": [],
+  "private": false,
   "main": "dist/cli.cjs.js",
   "module": "dist/sampler.cjs.js",
   "typings": "dist/types/sampler.d.ts",

@@ -1,6 +1,7 @@
 {
-  "name": "reflex-sampler",
+  "name": "@reflexui/sampler",
   "version": "0.1.0",
+  "private": true,
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "files": [

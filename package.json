@@ -1,10 +1,10 @@
 {
-  "name": "reflex",
+  "name": "@reflexui/reflex",
   "version": "0.1.0",
+  "private": true,
   "main": "./bin/start.js",
   "author": "Aron Jones",
   "license": "RESERVED",
-  "private": true,
   "engines": {
     "node": "11.13.0"
   },
