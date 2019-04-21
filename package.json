@@ -119,6 +119,7 @@
     "webpack-stats-plugin": "^0.2.1"
   },
   "devDependencies": {
+    "graphql-typed-client": "^1.5.1",
     "lerna": "^3.13.3"
   }
 }

@@ -1,0 +1,20 @@
+type Config {
+  figmaAuthUrl: String!
+  githubAuthUrl: String!
+  logoutUrl: String!
+}
+
+type MutationError {
+  field: String
+  message: String!
+}
+
+type MutationStatus {
+  success: Boolean!
+  errors: [MutationError!]
+}
+
+type Query {
+  hello: String!
+  config: Config!
+}
