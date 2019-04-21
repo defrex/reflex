@@ -1,0 +1,131 @@
+type CliAuthSession {
+  url: String!
+  cliAuthToken: String!
+  userAuthToken: String
+}
+
+type Component {
+  id: ID!
+  name: String!
+  team: Team!
+  samples: [Sample!]!
+}
+
+type Config {
+  figmaAuthUrl: String!
+  githubAuthUrl: String!
+  logoutUrl: String!
+}
+
+type CreateCliAuthSessionResponse {
+  cliAuthSession: CliAuthSession
+  status: MutationStatus!
+}
+
+input CreateComponentInput {
+  teamId: ID!
+  name: String!
+}
+
+type CreateComponentResponse {
+  component: Component
+  status: MutationStatus!
+}
+
+input CreateRenderInput {
+  componentName: String!
+  sampleName: String!
+  html: String!
+  imageUrl: String
+  branch: String!
+  commit: String!
+}
+
+type CreateRenderResponse {
+  render: Render
+  status: MutationStatus!
+}
+
+input CreateSampleInput {
+  componentId: ID!
+  name: String!
+}
+
+type CreateSampleResponse {
+  sample: Sample
+  status: MutationStatus!
+}
+
+input CreateTeamInput {
+  name: String!
+  figmaTeamId: String
+}
+
+type CreateTeamResponse {
+  team: Team
+  status: MutationStatus!
+}
+
+type LogoutResponse {
+  status: MutationStatus
+}
+
+type Mutation {
+  logout: LogoutResponse
+  createCliAuthSession: CreateCliAuthSessionResponse
+  createTeam(input: CreateTeamInput!): CreateTeamResponse
+  createComponent(input: CreateComponentInput!): CreateComponentResponse
+  createSample(input: CreateSampleInput!): CreateSampleResponse
+  createRender(input: CreateRenderInput!): CreateRenderResponse
+}
+
+type MutationError {
+  field: String
+  message: String!
+}
+
+type MutationStatus {
+  success: Boolean!
+  errors: [MutationError!]
+}
+
+type Query {
+  hello: String!
+  config: Config!
+  currentUser: User
+  cliAuthSession(cliAuthToken: String!): CliAuthSession
+  teams: [Team!]!
+  team(id: ID!): Team
+}
+
+type Render {
+  id: ID!
+  createdAt: String!
+  imageUrl: String
+  html: String!
+  branch: String!
+  commit: String!
+  sample: Sample!
+}
+
+type Sample {
+  id: ID!
+  name: String!
+  component: Component!
+  renders: [Render!]!
+}
+
+type Team {
+  id: ID!
+  name: String!
+  role: String!
+  component(id: ID!): Component
+  components: [Component!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  figmaConnected: Boolean!
+  githubConnected: Boolean!
+}
