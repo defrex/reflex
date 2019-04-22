@@ -28,7 +28,6 @@
     "@graphql-codegen/typescript-react-apollo": "^1.0.0",
     "@graphql-codegen/typescript-resolvers": "^1.0.0",
     "@octokit/rest": "^16.17.0",
-    "@reflexui/sdk": "^0.2.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.16.1",
     "@types/graphql": "^14.0.7",
