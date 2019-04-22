@@ -1399,10 +1399,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@reflexui/sampler@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@reflexui/sampler/-/sampler-0.2.0.tgz#7f3aba51ff1cb107aadbb3d10559822b8730f0c0"
-  integrity sha512-cl6TsgJv8faPgCiKEsyjv702IcOF5idPc1bdTxQRxPIrsQQFTL1BDnKkb9yfACcM/2JWpAr/fJDLvc4Hn0c2QA==
+"@reflexui/sdk@^0.2.0":
+  version "1.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@reflexui/sdk/-/sdk-1.0.0-alpha.1.tgz#ecb27960a0dd537dbe1db495e14689662f84bbf7"
+  integrity sha512-1ZRqZ0XWDc3IRQZ0wEyq1c0aavBmT973SfnNCy2EPTE8ewjQJJi3VqWpy7+qJG07hDj46y47vPSJEQ8T0Cx2AA==
   dependencies:
     configstore "^4.0.0"
     glob "^7.1.3"
@@ -1431,6 +1431,13 @@
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@types/accepts/-/accepts-1.3.5.tgz#c34bec115cfc746e04fe5a059df4ce7e7b391575"
   integrity sha512-jOdnI/3qTpHABjM5cx1Hc0sKsPoYCp+DP/GJRGtDlPd7fiV9oXGGIcjW/ZOxLIvjGz8MA+uMZI9metHlgqbgwQ==
+  dependencies:
+    "@types/node" "*"
+
+"@types/adm-zip@^0.4.32":
+  version "0.4.32"
+  resolved "https://registry.yarnpkg.com/@types/adm-zip/-/adm-zip-0.4.32.tgz#6de01309af60677065d2e52b417a023303220931"
+  integrity sha512-hv1O7ySn+XvP5OeDQcJFWwVb2v+GFGO1A9aMTQ5B/bzxb7WW21O8iRhVdsKKr8QwuiagzGmPP+gsUAYZ6bRddQ==
   dependencies:
     "@types/node" "*"
 
@@ -1660,6 +1667,11 @@
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
   integrity sha512-FwI9gX75FgVBJ7ywgnq/P7tw+/o1GUbtP0KzbtusLigAOgIgNISRK0ZPl4qertvXSIE8YbsVJueQ90cDt9YYyw==
+
+"@types/minimist@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
+  integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
 "@types/mkdirp@0.5.2":
   version "0.5.2"
@@ -2179,6 +2191,11 @@ acorn@^6.0.1, acorn@^6.0.5, acorn@^6.0.7:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
+
+adm-zip@^0.4.13:
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.13.tgz#597e2f8cc3672151e1307d3e95cddbc75672314a"
+  integrity sha512-fERNJX8sOXfel6qCBCMPvZLzENBEhZTzKqg6vrOW5pvoEaQuJhRU4ndTAh6lHOxn1I6jnz2NHra56ZODM751uw==
 
 aes256@^1.0.4:
   version "1.0.4"

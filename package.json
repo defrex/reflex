@@ -119,6 +119,9 @@
     "webpack-stats-plugin": "^0.2.1"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.4.32",
+    "@types/minimist": "^1.2.0",
+    "adm-zip": "^0.4.13",
     "graphql-typed-client": "^1.5.1",
     "lerna": "^3.13.3"
   }
