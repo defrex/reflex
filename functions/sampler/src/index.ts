@@ -1,9 +1,5 @@
 import { ReflexClient } from '@reflexui/sdk'
-import { exec as _exec } from 'child_process'
 import gql from 'gql-tag'
-import { promisify } from 'util'
-
-const exec = promisify(_exec)
 
 interface Payload {
   hello: string
