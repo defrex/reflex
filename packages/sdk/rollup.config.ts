@@ -5,13 +5,12 @@ import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 
 const pkg = require('./package.json')
-const libraryName = 'sampler'
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/index.ts`,
   output: [
     { file: pkg.main, format: 'cjs', sourcemap: true, banner: '#!/usr/bin/env node' },
-    { file: pkg.module, format: 'cjs', sourcemap: true }
+    { file: pkg.module, format: 'cjs', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [
@@ -32,10 +31,10 @@ export default {
     'http',
     'https',
     'url',
-    'zlib'
+    'zlib',
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -50,6 +49,6 @@ export default {
     resolve(),
 
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
+    sourceMaps(),
+  ],
 }

@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
 import config, { AUTH_KEY } from '../config'
 
-class ReflexClient extends GraphQLClient {
+export class ReflexClient extends GraphQLClient {
   constructor() {
     super('https://reflexui.com/api/graphql')
 

@@ -2,11 +2,11 @@
   "name": "@reflexui/sdk",
   "version": "1.0.0-alpha.1",
   "private": false,
-  "main": "dist/cli.cjs.js",
-  "module": "dist/sampler.cjs.js",
-  "typings": "dist/types/sampler.d.ts",
+  "main": "dist/cli.js",
+  "module": "dist/index.js",
+  "typings": "dist/types/index.d.ts",
   "bin": {
-    "reflex": "dist/cli.cjs.js"
+    "reflex": "dist/cli.js"
   },
   "files": [
     "dist"
