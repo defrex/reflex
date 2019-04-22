@@ -163,10 +163,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@reflexui/sdk@^1.0.0-alpha.1":
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@reflexui/sdk/-/sdk-1.0.0-alpha.1.tgz#ecb27960a0dd537dbe1db495e14689662f84bbf7"
-  integrity sha512-1ZRqZ0XWDc3IRQZ0wEyq1c0aavBmT973SfnNCy2EPTE8ewjQJJi3VqWpy7+qJG07hDj46y47vPSJEQ8T0Cx2AA==
+"@reflexui/sdk@^1.0.0-alpha.2":
+  version "1.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@reflexui/sdk/-/sdk-1.0.0-alpha.2.tgz#b02d93d2b6fa67310e49fdcffa092550fd97277f"
+  integrity sha512-778lp0a6wrb5th5+tLXJ0LPky1qOGJQpQWOjoUbGMnIkL29uqRoUn9E7m8q/azTln644yqsNwn9XRhMXd3T1WQ==
   dependencies:
     configstore "^4.0.0"
     glob "^7.1.3"
