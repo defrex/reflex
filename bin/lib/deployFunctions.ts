@@ -3,8 +3,8 @@ import { readdir as _readdir } from 'fs'
 import { ParsedArgs } from 'minimist'
 import { promisify } from 'util'
 import build from './functions/build'
-// import deploy from './functions/deploy'
-// import upload from './functions/upload'
+import deploy from './functions/deploy'
+import upload from './functions/upload'
 
 const readdir = promisify(_readdir)
 
@@ -21,7 +21,7 @@ export default async function main(argv: ParsedArgs) {
 
   for (const functionName of functionNames) {
     await build(functionName)
-    // const uri = await upload(functionName)
-    // await deploy(functionName, uri)
+    const uri = await upload(functionName)
+    await deploy(functionName, uri)
   }
 }
