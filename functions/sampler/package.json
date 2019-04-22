@@ -14,8 +14,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "start": "rollup -c rollup.config.ts -w",
-    "deploy": "./bin/deploy.js"
+    "start": "rollup -c rollup.config.ts -w"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.32",
