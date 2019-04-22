@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@google-cloud/pubsub": "^0.28.1",
-    "@google-cloud/storage": "^2.5.0"
+    "@google-cloud/storage": "^2.5.0",
+    "@reflexui/sdk": "^1.0.0-alpha.1"
   }
 }
