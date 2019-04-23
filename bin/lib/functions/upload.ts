@@ -1,6 +1,7 @@
 import { Storage } from '@google-cloud/storage'
 import Zip from 'adm-zip'
 import { absolutePath } from 'api/lib/path'
+import { createHash } from 'crypto'
 import ora from 'ora'
 
 const projectId = 'reflex-236915'
@@ -25,11 +26,16 @@ export default async function uploadFunction(
   const spinner = ora('📁')
   spinner.start()
 
-  const filename = `builds/${functionName}-${new Date().valueOf()}.zip`
-  const uri = `gs://${bucketName}/${filename}`
-
   var zip = new Zip()
   zip.addLocalFolder(absolutePath(`functions/${functionName}/dist`))
+  const data = zip.toBuffer()
+
+  const hash = createHash('sha256')
+  hash.update(data)
+  const hexDigest = hash.digest('hex')
+
+  const filename = `builds/${functionName}-${hexDigest}.zip`
+  const uri = `gs://${bucketName}/${filename}`
 
   spinner.text = `📤 ${uri}`
   await upload(filename, zip.toBuffer())
