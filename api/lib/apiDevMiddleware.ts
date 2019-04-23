@@ -7,6 +7,8 @@ import debounce from 'lodash/debounce'
 import ora from 'ora'
 import { absolutePath } from './path'
 
+let count = 0
+
 let devApiProc: ChildProcess
 function killApiServer(): Promise<void> {
   return new Promise((resolve, _reject) => {
@@ -18,7 +20,7 @@ function killApiServer(): Promise<void> {
 }
 
 async function spawnApiServer(): Promise<ChildProcess> {
-  const spinner = ora('Starting API')
+  const spinner = ora(`Starting API ${count++}`)
   spinner.start()
 
   if (devApiProc && !devApiProc.killed) {
@@ -33,8 +35,8 @@ async function spawnApiServer(): Promise<ChildProcess> {
   return new Promise((resolve, _reject) => {
     devApiProc.stdout!.on('data', (data) => {
       if (data.toString('utf8') === config.devApiReadyIndicator) {
-        resolve(devApiProc)
         spinner.succeed()
+        resolve(devApiProc)
       } else {
         process.stdout.write(data)
       }

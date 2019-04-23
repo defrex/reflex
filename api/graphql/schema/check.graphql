@@ -8,7 +8,7 @@ type Check {
   githubCheckId: Int
   branch: String!
   commit: String!
-  repoSource: String
+  repoArchiveUrl: String
 
   repo: Repo
 }

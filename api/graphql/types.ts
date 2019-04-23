@@ -13,7 +13,7 @@ export type Check = {
   githubCheckId?: Maybe<Scalars['Int']>
   branch: Scalars['String']
   commit: Scalars['String']
-  repoSource?: Maybe<Scalars['String']>
+  repoArchiveUrl?: Maybe<Scalars['String']>
   repo?: Maybe<Repo>
 }
 
@@ -274,7 +274,7 @@ export type CheckResolvers<Context = ReflexContex, ParentType = Check> = {
   githubCheckId?: Resolver<Maybe<Scalars['Int']>, ParentType, Context>
   branch?: Resolver<Scalars['String'], ParentType, Context>
   commit?: Resolver<Scalars['String'], ParentType, Context>
-  repoSource?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  repoArchiveUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
   repo?: Resolver<Maybe<Repo>, ParentType, Context>
 }
 

@@ -13,7 +13,7 @@ export type Check = {
   githubCheckId?: Maybe<Scalars['Int']>
   branch: Scalars['String']
   commit: Scalars['String']
-  repoSource?: Maybe<Scalars['String']>
+  repoArchiveUrl?: Maybe<Scalars['String']>
   repo?: Maybe<Repo>
 }
 

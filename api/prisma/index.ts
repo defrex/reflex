@@ -419,7 +419,19 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type Role = "MEMBER" | "ADMIN";
+export type CheckOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "githubCheckId_ASC"
+  | "githubCheckId_DESC"
+  | "branch_ASC"
+  | "branch_DESC"
+  | "commit_ASC"
+  | "commit_DESC";
 
 export type RenderOrderByInput =
   | "id_ASC"
@@ -436,6 +448,8 @@ export type RenderOrderByInput =
   | "branch_DESC"
   | "commit_ASC"
   | "commit_DESC";
+
+export type Role = "MEMBER" | "ADMIN";
 
 export type MembershipOrderByInput =
   | "id_ASC"
@@ -469,19 +483,7 @@ export type RepoOrderByInput =
   | "name_ASC"
   | "name_DESC";
 
-export type CheckOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "githubCheckId_ASC"
-  | "githubCheckId_DESC"
-  | "branch_ASC"
-  | "branch_DESC"
-  | "commit_ASC"
-  | "commit_DESC";
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type SampleOrderByInput =
   | "id_ASC"
@@ -531,108 +533,23 @@ export type UserOrderByInput =
   | "figmaRefreshToken_ASC"
   | "figmaRefreshToken_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export interface MembershipUpdateManyDataInput {
+  role?: Role;
+}
 
 export type CheckWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   githubCheckId?: Int;
 }>;
 
-export interface RenderWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  imageUrl?: String;
-  imageUrl_not?: String;
-  imageUrl_in?: String[] | String;
-  imageUrl_not_in?: String[] | String;
-  imageUrl_lt?: String;
-  imageUrl_lte?: String;
-  imageUrl_gt?: String;
-  imageUrl_gte?: String;
-  imageUrl_contains?: String;
-  imageUrl_not_contains?: String;
-  imageUrl_starts_with?: String;
-  imageUrl_not_starts_with?: String;
-  imageUrl_ends_with?: String;
-  imageUrl_not_ends_with?: String;
-  html?: String;
-  html_not?: String;
-  html_in?: String[] | String;
-  html_not_in?: String[] | String;
-  html_lt?: String;
-  html_lte?: String;
-  html_gt?: String;
-  html_gte?: String;
-  html_contains?: String;
-  html_not_contains?: String;
-  html_starts_with?: String;
-  html_not_starts_with?: String;
-  html_ends_with?: String;
-  html_not_ends_with?: String;
+export interface CheckUpdateWithoutRepoDataInput {
+  githubCheckId?: Int;
   branch?: String;
-  branch_not?: String;
-  branch_in?: String[] | String;
-  branch_not_in?: String[] | String;
-  branch_lt?: String;
-  branch_lte?: String;
-  branch_gt?: String;
-  branch_gte?: String;
-  branch_contains?: String;
-  branch_not_contains?: String;
-  branch_starts_with?: String;
-  branch_not_starts_with?: String;
-  branch_ends_with?: String;
-  branch_not_ends_with?: String;
   commit?: String;
-  commit_not?: String;
-  commit_in?: String[] | String;
-  commit_not_in?: String[] | String;
-  commit_lt?: String;
-  commit_lte?: String;
-  commit_gt?: String;
-  commit_gte?: String;
-  commit_contains?: String;
-  commit_not_contains?: String;
-  commit_starts_with?: String;
-  commit_not_starts_with?: String;
-  commit_ends_with?: String;
-  commit_not_ends_with?: String;
-  sample?: SampleWhereInput;
-  check?: CheckWhereInput;
-  AND?: RenderWhereInput[] | RenderWhereInput;
-  OR?: RenderWhereInput[] | RenderWhereInput;
-  NOT?: RenderWhereInput[] | RenderWhereInput;
+  renders?: RenderUpdateManyWithoutCheckInput;
 }
 
-export interface SampleWhereInput {
+export interface RepoWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -663,6 +580,20 @@ export interface SampleWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  owner?: String;
+  owner_not?: String;
+  owner_in?: String[] | String;
+  owner_not_in?: String[] | String;
+  owner_lt?: String;
+  owner_lte?: String;
+  owner_gt?: String;
+  owner_gte?: String;
+  owner_contains?: String;
+  owner_not_contains?: String;
+  owner_starts_with?: String;
+  owner_not_starts_with?: String;
+  owner_ends_with?: String;
+  owner_not_ends_with?: String;
   name?: String;
   name_not?: String;
   name_in?: String[] | String;
@@ -677,168 +608,19 @@ export interface SampleWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  component?: ComponentWhereInput;
-  renders_every?: RenderWhereInput;
-  renders_some?: RenderWhereInput;
-  renders_none?: RenderWhereInput;
-  AND?: SampleWhereInput[] | SampleWhereInput;
-  OR?: SampleWhereInput[] | SampleWhereInput;
-  NOT?: SampleWhereInput[] | SampleWhereInput;
-}
-
-export interface ComponentWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
+  checks_every?: CheckWhereInput;
+  checks_some?: CheckWhereInput;
+  checks_none?: CheckWhereInput;
   team?: TeamWhereInput;
-  samples_every?: SampleWhereInput;
-  samples_some?: SampleWhereInput;
-  samples_none?: SampleWhereInput;
-  AND?: ComponentWhereInput[] | ComponentWhereInput;
-  OR?: ComponentWhereInput[] | ComponentWhereInput;
-  NOT?: ComponentWhereInput[] | ComponentWhereInput;
+  AND?: RepoWhereInput[] | RepoWhereInput;
+  OR?: RepoWhereInput[] | RepoWhereInput;
+  NOT?: RepoWhereInput[] | RepoWhereInput;
 }
 
-export interface TeamWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  memberships_every?: MembershipWhereInput;
-  memberships_some?: MembershipWhereInput;
-  memberships_none?: MembershipWhereInput;
-  components_every?: ComponentWhereInput;
-  components_some?: ComponentWhereInput;
-  components_none?: ComponentWhereInput;
-  repos_every?: RepoWhereInput;
-  repos_some?: RepoWhereInput;
-  repos_none?: RepoWhereInput;
-  AND?: TeamWhereInput[] | TeamWhereInput;
-  OR?: TeamWhereInput[] | TeamWhereInput;
-  NOT?: TeamWhereInput[] | TeamWhereInput;
-}
-
-export interface MembershipWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  role?: Role;
-  role_not?: Role;
-  role_in?: Role[] | Role;
-  role_not_in?: Role[] | Role;
-  user?: UserWhereInput;
-  team?: TeamWhereInput;
-  AND?: MembershipWhereInput[] | MembershipWhereInput;
-  OR?: MembershipWhereInput[] | MembershipWhereInput;
-  NOT?: MembershipWhereInput[] | MembershipWhereInput;
+export interface CheckUpsertWithWhereUniqueWithoutRepoInput {
+  where: CheckWhereUniqueInput;
+  update: CheckUpdateWithoutRepoDataInput;
+  create: CheckCreateWithoutRepoInput;
 }
 
 export interface UserWhereInput {
@@ -950,7 +732,26 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface RepoWhereInput {
+export interface RenderCreateWithoutSampleInput {
+  id?: ID_Input;
+  imageUrl?: String;
+  html: String;
+  branch: String;
+  commit: String;
+  check?: CheckCreateOneWithoutRendersInput;
+}
+
+export interface TeamCreateOneWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface CheckCreateOneWithoutRendersInput {
+  create?: CheckCreateWithoutRendersInput;
+  connect?: CheckWhereUniqueInput;
+}
+
+export interface CheckScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -981,20 +782,165 @@ export interface RepoWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  owner?: String;
-  owner_not?: String;
-  owner_in?: String[] | String;
-  owner_not_in?: String[] | String;
-  owner_lt?: String;
-  owner_lte?: String;
-  owner_gt?: String;
-  owner_gte?: String;
-  owner_contains?: String;
-  owner_not_contains?: String;
-  owner_starts_with?: String;
-  owner_not_starts_with?: String;
-  owner_ends_with?: String;
-  owner_not_ends_with?: String;
+  githubCheckId?: Int;
+  githubCheckId_not?: Int;
+  githubCheckId_in?: Int[] | Int;
+  githubCheckId_not_in?: Int[] | Int;
+  githubCheckId_lt?: Int;
+  githubCheckId_lte?: Int;
+  githubCheckId_gt?: Int;
+  githubCheckId_gte?: Int;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
+  AND?: CheckScalarWhereInput[] | CheckScalarWhereInput;
+  OR?: CheckScalarWhereInput[] | CheckScalarWhereInput;
+  NOT?: CheckScalarWhereInput[] | CheckScalarWhereInput;
+}
+
+export interface CheckCreateWithoutRendersInput {
+  id?: ID_Input;
+  githubCheckId?: Int;
+  branch: String;
+  commit: String;
+  repo?: RepoCreateOneWithoutChecksInput;
+}
+
+export interface MembershipWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
+  user?: UserWhereInput;
+  team?: TeamWhereInput;
+  AND?: MembershipWhereInput[] | MembershipWhereInput;
+  OR?: MembershipWhereInput[] | MembershipWhereInput;
+  NOT?: MembershipWhereInput[] | MembershipWhereInput;
+}
+
+export interface CheckUpdateInput {
+  githubCheckId?: Int;
+  branch?: String;
+  commit?: String;
+  renders?: RenderUpdateManyWithoutCheckInput;
+  repo?: RepoUpdateOneWithoutChecksInput;
+}
+
+export interface SampleSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SampleWhereInput;
+  AND?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+  OR?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+  NOT?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+}
+
+export interface RenderUpdateManyWithoutCheckInput {
+  create?: RenderCreateWithoutCheckInput[] | RenderCreateWithoutCheckInput;
+  delete?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  set?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  disconnect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
+  update?:
+    | RenderUpdateWithWhereUniqueWithoutCheckInput[]
+    | RenderUpdateWithWhereUniqueWithoutCheckInput;
+  upsert?:
+    | RenderUpsertWithWhereUniqueWithoutCheckInput[]
+    | RenderUpsertWithWhereUniqueWithoutCheckInput;
+  deleteMany?: RenderScalarWhereInput[] | RenderScalarWhereInput;
+  updateMany?:
+    | RenderUpdateManyWithWhereNestedInput[]
+    | RenderUpdateManyWithWhereNestedInput;
+}
+
+export interface ComponentWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   name?: String;
   name_not?: String;
   name_in?: String[] | String;
@@ -1009,13 +955,431 @@ export interface RepoWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  checks_every?: CheckWhereInput;
-  checks_some?: CheckWhereInput;
-  checks_none?: CheckWhereInput;
   team?: TeamWhereInput;
-  AND?: RepoWhereInput[] | RepoWhereInput;
-  OR?: RepoWhereInput[] | RepoWhereInput;
-  NOT?: RepoWhereInput[] | RepoWhereInput;
+  samples_every?: SampleWhereInput;
+  samples_some?: SampleWhereInput;
+  samples_none?: SampleWhereInput;
+  AND?: ComponentWhereInput[] | ComponentWhereInput;
+  OR?: ComponentWhereInput[] | ComponentWhereInput;
+  NOT?: ComponentWhereInput[] | ComponentWhereInput;
+}
+
+export interface RenderUpdateWithWhereUniqueWithoutCheckInput {
+  where: RenderWhereUniqueInput;
+  data: RenderUpdateWithoutCheckDataInput;
+}
+
+export interface SampleWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  component?: ComponentWhereInput;
+  renders_every?: RenderWhereInput;
+  renders_some?: RenderWhereInput;
+  renders_none?: RenderWhereInput;
+  AND?: SampleWhereInput[] | SampleWhereInput;
+  OR?: SampleWhereInput[] | SampleWhereInput;
+  NOT?: SampleWhereInput[] | SampleWhereInput;
+}
+
+export interface RenderUpdateWithoutCheckDataInput {
+  imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
+  sample?: SampleUpdateOneRequiredWithoutRendersInput;
+}
+
+export interface RenderSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RenderWhereInput;
+  AND?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+  OR?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+  NOT?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+}
+
+export interface SampleUpdateOneRequiredWithoutRendersInput {
+  create?: SampleCreateWithoutRendersInput;
+  update?: SampleUpdateWithoutRendersDataInput;
+  upsert?: SampleUpsertWithoutRendersInput;
+  connect?: SampleWhereUniqueInput;
+}
+
+export interface ComponentSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ComponentWhereInput;
+  AND?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+  OR?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+  NOT?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+}
+
+export interface SampleUpdateWithoutRendersDataInput {
+  name?: String;
+  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
+}
+
+export interface CheckSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CheckWhereInput;
+  AND?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
+  OR?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
+  NOT?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
+}
+
+export interface ComponentUpdateOneRequiredWithoutSamplesInput {
+  create?: ComponentCreateWithoutSamplesInput;
+  update?: ComponentUpdateWithoutSamplesDataInput;
+  upsert?: ComponentUpsertWithoutSamplesInput;
+  connect?: ComponentWhereUniqueInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface ComponentUpdateWithoutSamplesDataInput {
+  name?: String;
+  team?: TeamUpdateOneRequiredWithoutComponentsInput;
+}
+
+export interface UserUpdateInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipUpdateManyWithoutUserInput;
+}
+
+export interface TeamUpdateOneRequiredWithoutComponentsInput {
+  create?: TeamCreateWithoutComponentsInput;
+  update?: TeamUpdateWithoutComponentsDataInput;
+  upsert?: TeamUpsertWithoutComponentsInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface TeamUpdateInput {
+  name?: String;
+  memberships?: MembershipUpdateManyWithoutTeamInput;
+  components?: ComponentUpdateManyWithoutTeamInput;
+  repos?: RepoUpdateManyWithoutTeamInput;
+}
+
+export interface TeamUpdateWithoutComponentsDataInput {
+  name?: String;
+  memberships?: MembershipUpdateManyWithoutTeamInput;
+  repos?: RepoUpdateManyWithoutTeamInput;
+}
+
+export type ComponentWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpdateManyWithoutTeamInput {
+  create?:
+    | MembershipCreateWithoutTeamInput[]
+    | MembershipCreateWithoutTeamInput;
+  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  update?:
+    | MembershipUpdateWithWhereUniqueWithoutTeamInput[]
+    | MembershipUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | MembershipUpsertWithWhereUniqueWithoutTeamInput[]
+    | MembershipUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  updateMany?:
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput;
+}
+
+export interface SampleUpdateInput {
+  name?: String;
+  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
+  renders?: RenderUpdateManyWithoutSampleInput;
+}
+
+export interface MembershipUpdateWithWhereUniqueWithoutTeamInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutTeamDataInput;
+}
+
+export type MembershipWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpdateWithoutTeamDataInput {
+  role?: Role;
+  user?: UserUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface RepoUpdateInput {
+  owner?: String;
+  name?: String;
+  checks?: CheckUpdateManyWithoutRepoInput;
+  team?: TeamUpdateOneWithoutReposInput;
+}
+
+export interface UserUpdateOneRequiredWithoutMembershipsInput {
+  create?: UserCreateWithoutMembershipsInput;
+  update?: UserUpdateWithoutMembershipsDataInput;
+  upsert?: UserUpsertWithoutMembershipsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export type RenderWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface UserUpdateWithoutMembershipsDataInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface RenderUpdateInput {
+  imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
+  sample?: SampleUpdateOneRequiredWithoutRendersInput;
+  check?: CheckUpdateOneWithoutRendersInput;
+}
+
+export interface UserUpsertWithoutMembershipsInput {
+  update: UserUpdateWithoutMembershipsDataInput;
+  create: UserCreateWithoutMembershipsInput;
+}
+
+export type RepoWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpsertWithWhereUniqueWithoutTeamInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutTeamDataInput;
+  create: MembershipCreateWithoutTeamInput;
+}
+
+export interface MembershipUpdateInput {
+  role?: Role;
+  user?: UserUpdateOneRequiredWithoutMembershipsInput;
+  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface MembershipScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  role?: Role;
+  role_not?: Role;
+  role_in?: Role[] | Role;
+  role_not_in?: Role[] | Role;
+  AND?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  OR?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  NOT?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+}
+
+export type SampleWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MembershipUpdateManyWithWhereNestedInput {
+  where: MembershipScalarWhereInput;
+  data: MembershipUpdateManyDataInput;
+}
+
+export interface ComponentUpdateInput {
+  name?: String;
+  team?: TeamUpdateOneRequiredWithoutComponentsInput;
+  samples?: SampleUpdateManyWithoutComponentInput;
+}
+
+export interface MembershipUpdateManyWithoutUserInput {
+  create?:
+    | MembershipCreateWithoutUserInput[]
+    | MembershipCreateWithoutUserInput;
+  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
+  update?:
+    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
+    | MembershipUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
+    | MembershipUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
+  updateMany?:
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput;
+}
+
+export type TeamWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface RepoUpdateManyWithoutTeamInput {
+  create?: RepoCreateWithoutTeamInput[] | RepoCreateWithoutTeamInput;
+  delete?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
+  connect?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
+  set?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
+  disconnect?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
+  update?:
+    | RepoUpdateWithWhereUniqueWithoutTeamInput[]
+    | RepoUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | RepoUpsertWithWhereUniqueWithoutTeamInput[]
+    | RepoUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: RepoScalarWhereInput[] | RepoScalarWhereInput;
+  updateMany?:
+    | RepoUpdateManyWithWhereNestedInput[]
+    | RepoUpdateManyWithWhereNestedInput;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface RepoUpdateWithWhereUniqueWithoutTeamInput {
+  where: RepoWhereUniqueInput;
+  data: RepoUpdateWithoutTeamDataInput;
+}
+
+export interface TeamUpsertWithoutMembershipsInput {
+  update: TeamUpdateWithoutMembershipsDataInput;
+  create: TeamCreateWithoutMembershipsInput;
+}
+
+export interface RepoUpdateWithoutTeamDataInput {
+  owner?: String;
+  name?: String;
+  checks?: CheckUpdateManyWithoutRepoInput;
+}
+
+export interface TeamUpdateWithoutMembershipsDataInput {
+  name?: String;
+  components?: ComponentUpdateManyWithoutTeamInput;
+  repos?: RepoUpdateManyWithoutTeamInput;
+}
+
+export interface CheckUpdateManyWithoutRepoInput {
+  create?: CheckCreateWithoutRepoInput[] | CheckCreateWithoutRepoInput;
+  delete?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
+  connect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
+  set?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
+  disconnect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
+  update?:
+    | CheckUpdateWithWhereUniqueWithoutRepoInput[]
+    | CheckUpdateWithWhereUniqueWithoutRepoInput;
+  upsert?:
+    | CheckUpsertWithWhereUniqueWithoutRepoInput[]
+    | CheckUpsertWithWhereUniqueWithoutRepoInput;
+  deleteMany?: CheckScalarWhereInput[] | CheckScalarWhereInput;
+  updateMany?:
+    | CheckUpdateManyWithWhereNestedInput[]
+    | CheckUpdateManyWithWhereNestedInput;
+}
+
+export interface MembershipUpdateWithoutUserDataInput {
+  role?: Role;
+  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
+}
+
+export interface CheckUpdateWithWhereUniqueWithoutRepoInput {
+  where: CheckWhereUniqueInput;
+  data: CheckUpdateWithoutRepoDataInput;
+}
+
+export interface RenderCreateManyWithoutCheckInput {
+  create?: RenderCreateWithoutCheckInput[] | RenderCreateWithoutCheckInput;
+  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
 }
 
 export interface CheckWhereInput {
@@ -1094,116 +1458,18 @@ export interface CheckWhereInput {
   NOT?: CheckWhereInput[] | CheckWhereInput;
 }
 
-export type CliAuthSessionWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CliAuthSessionWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  expiresAt?: DateTimeInput;
-  expiresAt_not?: DateTimeInput;
-  expiresAt_in?: DateTimeInput[] | DateTimeInput;
-  expiresAt_not_in?: DateTimeInput[] | DateTimeInput;
-  expiresAt_lt?: DateTimeInput;
-  expiresAt_lte?: DateTimeInput;
-  expiresAt_gt?: DateTimeInput;
-  expiresAt_gte?: DateTimeInput;
-  authenticatedUser?: UserWhereInput;
-  AND?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
-  OR?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
-  NOT?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
-}
-
-export type ComponentWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type MembershipWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type RenderWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type RepoWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type SampleWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type TeamWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
-export interface CheckCreateInput {
-  id?: ID_Input;
-  githubCheckId?: Int;
-  branch: String;
-  commit: String;
-  renders?: RenderCreateManyWithoutCheckInput;
-  repo?: RepoCreateOneWithoutChecksInput;
-}
-
-export interface RenderCreateManyWithoutCheckInput {
-  create?: RenderCreateWithoutCheckInput[] | RenderCreateWithoutCheckInput;
-  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-}
-
-export interface RenderCreateWithoutCheckInput {
-  id?: ID_Input;
-  imageUrl?: String;
-  html: String;
-  branch: String;
-  commit: String;
-  sample: SampleCreateOneWithoutRendersInput;
-}
-
 export interface SampleCreateOneWithoutRendersInput {
   create?: SampleCreateWithoutRendersInput;
   connect?: SampleWhereUniqueInput;
 }
 
-export interface SampleCreateWithoutRendersInput {
-  id?: ID_Input;
-  name: String;
-  component: ComponentCreateOneWithoutSamplesInput;
+export interface UserUpdateDataInput {
+  email?: String;
+  name?: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipUpdateManyWithoutUserInput;
 }
 
 export interface ComponentCreateOneWithoutSamplesInput {
@@ -1211,10 +1477,13 @@ export interface ComponentCreateOneWithoutSamplesInput {
   connect?: ComponentWhereUniqueInput;
 }
 
-export interface ComponentCreateWithoutSamplesInput {
-  id?: ID_Input;
-  name: String;
-  team: TeamCreateOneWithoutComponentsInput;
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface TeamCreateOneWithoutComponentsInput {
@@ -1222,11 +1491,9 @@ export interface TeamCreateOneWithoutComponentsInput {
   connect?: TeamWhereUniqueInput;
 }
 
-export interface TeamCreateWithoutComponentsInput {
-  id?: ID_Input;
-  name: String;
-  memberships?: MembershipCreateManyWithoutTeamInput;
-  repos?: RepoCreateManyWithoutTeamInput;
+export interface CheckUpdateManyWithWhereNestedInput {
+  where: CheckScalarWhereInput;
+  data: CheckUpdateManyDataInput;
 }
 
 export interface MembershipCreateManyWithoutTeamInput {
@@ -1236,10 +1503,10 @@ export interface MembershipCreateManyWithoutTeamInput {
   connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
 }
 
-export interface MembershipCreateWithoutTeamInput {
-  id?: ID_Input;
-  role?: Role;
-  user: UserCreateOneWithoutMembershipsInput;
+export interface CheckUpdateManyDataInput {
+  githubCheckId?: Int;
+  branch?: String;
+  commit?: String;
 }
 
 export interface UserCreateOneWithoutMembershipsInput {
@@ -1247,448 +1514,15 @@ export interface UserCreateOneWithoutMembershipsInput {
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserCreateWithoutMembershipsInput {
-  id?: ID_Input;
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
+export interface RepoUpsertWithWhereUniqueWithoutTeamInput {
+  where: RepoWhereUniqueInput;
+  update: RepoUpdateWithoutTeamDataInput;
+  create: RepoCreateWithoutTeamInput;
 }
 
 export interface RepoCreateManyWithoutTeamInput {
   create?: RepoCreateWithoutTeamInput[] | RepoCreateWithoutTeamInput;
   connect?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
-}
-
-export interface RepoCreateWithoutTeamInput {
-  id?: ID_Input;
-  owner: String;
-  name: String;
-  checks?: CheckCreateManyWithoutRepoInput;
-}
-
-export interface CheckCreateManyWithoutRepoInput {
-  create?: CheckCreateWithoutRepoInput[] | CheckCreateWithoutRepoInput;
-  connect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
-}
-
-export interface CheckCreateWithoutRepoInput {
-  id?: ID_Input;
-  githubCheckId?: Int;
-  branch: String;
-  commit: String;
-  renders?: RenderCreateManyWithoutCheckInput;
-}
-
-export interface RepoCreateOneWithoutChecksInput {
-  create?: RepoCreateWithoutChecksInput;
-  connect?: RepoWhereUniqueInput;
-}
-
-export interface RepoCreateWithoutChecksInput {
-  id?: ID_Input;
-  owner: String;
-  name: String;
-  team?: TeamCreateOneWithoutReposInput;
-}
-
-export interface TeamCreateOneWithoutReposInput {
-  create?: TeamCreateWithoutReposInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamCreateWithoutReposInput {
-  id?: ID_Input;
-  name: String;
-  memberships?: MembershipCreateManyWithoutTeamInput;
-  components?: ComponentCreateManyWithoutTeamInput;
-}
-
-export interface ComponentCreateManyWithoutTeamInput {
-  create?: ComponentCreateWithoutTeamInput[] | ComponentCreateWithoutTeamInput;
-  connect?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
-}
-
-export interface ComponentCreateWithoutTeamInput {
-  id?: ID_Input;
-  name: String;
-  samples?: SampleCreateManyWithoutComponentInput;
-}
-
-export interface SampleCreateManyWithoutComponentInput {
-  create?:
-    | SampleCreateWithoutComponentInput[]
-    | SampleCreateWithoutComponentInput;
-  connect?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
-}
-
-export interface SampleCreateWithoutComponentInput {
-  id?: ID_Input;
-  name: String;
-  renders?: RenderCreateManyWithoutSampleInput;
-}
-
-export interface RenderCreateManyWithoutSampleInput {
-  create?: RenderCreateWithoutSampleInput[] | RenderCreateWithoutSampleInput;
-  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-}
-
-export interface RenderCreateWithoutSampleInput {
-  id?: ID_Input;
-  imageUrl?: String;
-  html: String;
-  branch: String;
-  commit: String;
-  check?: CheckCreateOneWithoutRendersInput;
-}
-
-export interface CheckCreateOneWithoutRendersInput {
-  create?: CheckCreateWithoutRendersInput;
-  connect?: CheckWhereUniqueInput;
-}
-
-export interface CheckCreateWithoutRendersInput {
-  id?: ID_Input;
-  githubCheckId?: Int;
-  branch: String;
-  commit: String;
-  repo?: RepoCreateOneWithoutChecksInput;
-}
-
-export interface CheckUpdateInput {
-  githubCheckId?: Int;
-  branch?: String;
-  commit?: String;
-  renders?: RenderUpdateManyWithoutCheckInput;
-  repo?: RepoUpdateOneWithoutChecksInput;
-}
-
-export interface RenderUpdateManyWithoutCheckInput {
-  create?: RenderCreateWithoutCheckInput[] | RenderCreateWithoutCheckInput;
-  delete?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-  set?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-  disconnect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
-  update?:
-    | RenderUpdateWithWhereUniqueWithoutCheckInput[]
-    | RenderUpdateWithWhereUniqueWithoutCheckInput;
-  upsert?:
-    | RenderUpsertWithWhereUniqueWithoutCheckInput[]
-    | RenderUpsertWithWhereUniqueWithoutCheckInput;
-  deleteMany?: RenderScalarWhereInput[] | RenderScalarWhereInput;
-  updateMany?:
-    | RenderUpdateManyWithWhereNestedInput[]
-    | RenderUpdateManyWithWhereNestedInput;
-}
-
-export interface RenderUpdateWithWhereUniqueWithoutCheckInput {
-  where: RenderWhereUniqueInput;
-  data: RenderUpdateWithoutCheckDataInput;
-}
-
-export interface RenderUpdateWithoutCheckDataInput {
-  imageUrl?: String;
-  html?: String;
-  branch?: String;
-  commit?: String;
-  sample?: SampleUpdateOneRequiredWithoutRendersInput;
-}
-
-export interface SampleUpdateOneRequiredWithoutRendersInput {
-  create?: SampleCreateWithoutRendersInput;
-  update?: SampleUpdateWithoutRendersDataInput;
-  upsert?: SampleUpsertWithoutRendersInput;
-  connect?: SampleWhereUniqueInput;
-}
-
-export interface SampleUpdateWithoutRendersDataInput {
-  name?: String;
-  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
-}
-
-export interface ComponentUpdateOneRequiredWithoutSamplesInput {
-  create?: ComponentCreateWithoutSamplesInput;
-  update?: ComponentUpdateWithoutSamplesDataInput;
-  upsert?: ComponentUpsertWithoutSamplesInput;
-  connect?: ComponentWhereUniqueInput;
-}
-
-export interface ComponentUpdateWithoutSamplesDataInput {
-  name?: String;
-  team?: TeamUpdateOneRequiredWithoutComponentsInput;
-}
-
-export interface TeamUpdateOneRequiredWithoutComponentsInput {
-  create?: TeamCreateWithoutComponentsInput;
-  update?: TeamUpdateWithoutComponentsDataInput;
-  upsert?: TeamUpsertWithoutComponentsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamUpdateWithoutComponentsDataInput {
-  name?: String;
-  memberships?: MembershipUpdateManyWithoutTeamInput;
-  repos?: RepoUpdateManyWithoutTeamInput;
-}
-
-export interface MembershipUpdateManyWithoutTeamInput {
-  create?:
-    | MembershipCreateWithoutTeamInput[]
-    | MembershipCreateWithoutTeamInput;
-  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  update?:
-    | MembershipUpdateWithWhereUniqueWithoutTeamInput[]
-    | MembershipUpdateWithWhereUniqueWithoutTeamInput;
-  upsert?:
-    | MembershipUpsertWithWhereUniqueWithoutTeamInput[]
-    | MembershipUpsertWithWhereUniqueWithoutTeamInput;
-  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  updateMany?:
-    | MembershipUpdateManyWithWhereNestedInput[]
-    | MembershipUpdateManyWithWhereNestedInput;
-}
-
-export interface MembershipUpdateWithWhereUniqueWithoutTeamInput {
-  where: MembershipWhereUniqueInput;
-  data: MembershipUpdateWithoutTeamDataInput;
-}
-
-export interface MembershipUpdateWithoutTeamDataInput {
-  role?: Role;
-  user?: UserUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface UserUpdateOneRequiredWithoutMembershipsInput {
-  create?: UserCreateWithoutMembershipsInput;
-  update?: UserUpdateWithoutMembershipsDataInput;
-  upsert?: UserUpsertWithoutMembershipsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpdateWithoutMembershipsDataInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-}
-
-export interface UserUpsertWithoutMembershipsInput {
-  update: UserUpdateWithoutMembershipsDataInput;
-  create: UserCreateWithoutMembershipsInput;
-}
-
-export interface MembershipUpsertWithWhereUniqueWithoutTeamInput {
-  where: MembershipWhereUniqueInput;
-  update: MembershipUpdateWithoutTeamDataInput;
-  create: MembershipCreateWithoutTeamInput;
-}
-
-export interface MembershipScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  role?: Role;
-  role_not?: Role;
-  role_in?: Role[] | Role;
-  role_not_in?: Role[] | Role;
-  AND?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  OR?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  NOT?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-}
-
-export interface MembershipUpdateManyWithWhereNestedInput {
-  where: MembershipScalarWhereInput;
-  data: MembershipUpdateManyDataInput;
-}
-
-export interface MembershipUpdateManyDataInput {
-  role?: Role;
-}
-
-export interface RepoUpdateManyWithoutTeamInput {
-  create?: RepoCreateWithoutTeamInput[] | RepoCreateWithoutTeamInput;
-  delete?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
-  connect?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
-  set?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
-  disconnect?: RepoWhereUniqueInput[] | RepoWhereUniqueInput;
-  update?:
-    | RepoUpdateWithWhereUniqueWithoutTeamInput[]
-    | RepoUpdateWithWhereUniqueWithoutTeamInput;
-  upsert?:
-    | RepoUpsertWithWhereUniqueWithoutTeamInput[]
-    | RepoUpsertWithWhereUniqueWithoutTeamInput;
-  deleteMany?: RepoScalarWhereInput[] | RepoScalarWhereInput;
-  updateMany?:
-    | RepoUpdateManyWithWhereNestedInput[]
-    | RepoUpdateManyWithWhereNestedInput;
-}
-
-export interface RepoUpdateWithWhereUniqueWithoutTeamInput {
-  where: RepoWhereUniqueInput;
-  data: RepoUpdateWithoutTeamDataInput;
-}
-
-export interface RepoUpdateWithoutTeamDataInput {
-  owner?: String;
-  name?: String;
-  checks?: CheckUpdateManyWithoutRepoInput;
-}
-
-export interface CheckUpdateManyWithoutRepoInput {
-  create?: CheckCreateWithoutRepoInput[] | CheckCreateWithoutRepoInput;
-  delete?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
-  connect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
-  set?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
-  disconnect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
-  update?:
-    | CheckUpdateWithWhereUniqueWithoutRepoInput[]
-    | CheckUpdateWithWhereUniqueWithoutRepoInput;
-  upsert?:
-    | CheckUpsertWithWhereUniqueWithoutRepoInput[]
-    | CheckUpsertWithWhereUniqueWithoutRepoInput;
-  deleteMany?: CheckScalarWhereInput[] | CheckScalarWhereInput;
-  updateMany?:
-    | CheckUpdateManyWithWhereNestedInput[]
-    | CheckUpdateManyWithWhereNestedInput;
-}
-
-export interface CheckUpdateWithWhereUniqueWithoutRepoInput {
-  where: CheckWhereUniqueInput;
-  data: CheckUpdateWithoutRepoDataInput;
-}
-
-export interface CheckUpdateWithoutRepoDataInput {
-  githubCheckId?: Int;
-  branch?: String;
-  commit?: String;
-  renders?: RenderUpdateManyWithoutCheckInput;
-}
-
-export interface CheckUpsertWithWhereUniqueWithoutRepoInput {
-  where: CheckWhereUniqueInput;
-  update: CheckUpdateWithoutRepoDataInput;
-  create: CheckCreateWithoutRepoInput;
-}
-
-export interface CheckScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  githubCheckId?: Int;
-  githubCheckId_not?: Int;
-  githubCheckId_in?: Int[] | Int;
-  githubCheckId_not_in?: Int[] | Int;
-  githubCheckId_lt?: Int;
-  githubCheckId_lte?: Int;
-  githubCheckId_gt?: Int;
-  githubCheckId_gte?: Int;
-  branch?: String;
-  branch_not?: String;
-  branch_in?: String[] | String;
-  branch_not_in?: String[] | String;
-  branch_lt?: String;
-  branch_lte?: String;
-  branch_gt?: String;
-  branch_gte?: String;
-  branch_contains?: String;
-  branch_not_contains?: String;
-  branch_starts_with?: String;
-  branch_not_starts_with?: String;
-  branch_ends_with?: String;
-  branch_not_ends_with?: String;
-  commit?: String;
-  commit_not?: String;
-  commit_in?: String[] | String;
-  commit_not_in?: String[] | String;
-  commit_lt?: String;
-  commit_lte?: String;
-  commit_gt?: String;
-  commit_gte?: String;
-  commit_contains?: String;
-  commit_not_contains?: String;
-  commit_starts_with?: String;
-  commit_not_starts_with?: String;
-  commit_ends_with?: String;
-  commit_not_ends_with?: String;
-  AND?: CheckScalarWhereInput[] | CheckScalarWhereInput;
-  OR?: CheckScalarWhereInput[] | CheckScalarWhereInput;
-  NOT?: CheckScalarWhereInput[] | CheckScalarWhereInput;
-}
-
-export interface CheckUpdateManyWithWhereNestedInput {
-  where: CheckScalarWhereInput;
-  data: CheckUpdateManyDataInput;
-}
-
-export interface CheckUpdateManyDataInput {
-  githubCheckId?: Int;
-  branch?: String;
-  commit?: String;
-}
-
-export interface RepoUpsertWithWhereUniqueWithoutTeamInput {
-  where: RepoWhereUniqueInput;
-  update: RepoUpdateWithoutTeamDataInput;
-  create: RepoCreateWithoutTeamInput;
 }
 
 export interface RepoScalarWhereInput {
@@ -1755,9 +1589,19 @@ export interface RepoScalarWhereInput {
   NOT?: RepoScalarWhereInput[] | RepoScalarWhereInput;
 }
 
+export interface CheckCreateManyWithoutRepoInput {
+  create?: CheckCreateWithoutRepoInput[] | CheckCreateWithoutRepoInput;
+  connect?: CheckWhereUniqueInput[] | CheckWhereUniqueInput;
+}
+
 export interface RepoUpdateManyWithWhereNestedInput {
   where: RepoScalarWhereInput;
   data: RepoUpdateManyDataInput;
+}
+
+export interface RepoCreateOneWithoutChecksInput {
+  create?: RepoCreateWithoutChecksInput;
+  connect?: RepoWhereUniqueInput;
 }
 
 export interface RepoUpdateManyDataInput {
@@ -1765,9 +1609,19 @@ export interface RepoUpdateManyDataInput {
   name?: String;
 }
 
+export interface TeamCreateOneWithoutReposInput {
+  create?: TeamCreateWithoutReposInput;
+  connect?: TeamWhereUniqueInput;
+}
+
 export interface TeamUpsertWithoutComponentsInput {
   update: TeamUpdateWithoutComponentsDataInput;
   create: TeamCreateWithoutComponentsInput;
+}
+
+export interface ComponentCreateManyWithoutTeamInput {
+  create?: ComponentCreateWithoutTeamInput[] | ComponentCreateWithoutTeamInput;
+  connect?: ComponentWhereUniqueInput[] | ComponentWhereUniqueInput;
 }
 
 export interface ComponentUpsertWithoutSamplesInput {
@@ -1775,15 +1629,38 @@ export interface ComponentUpsertWithoutSamplesInput {
   create: ComponentCreateWithoutSamplesInput;
 }
 
+export interface SampleCreateManyWithoutComponentInput {
+  create?:
+    | SampleCreateWithoutComponentInput[]
+    | SampleCreateWithoutComponentInput;
+  connect?: SampleWhereUniqueInput[] | SampleWhereUniqueInput;
+}
+
 export interface SampleUpsertWithoutRendersInput {
   update: SampleUpdateWithoutRendersDataInput;
   create: SampleCreateWithoutRendersInput;
+}
+
+export interface RenderCreateManyWithoutSampleInput {
+  create?: RenderCreateWithoutSampleInput[] | RenderCreateWithoutSampleInput;
+  connect?: RenderWhereUniqueInput[] | RenderWhereUniqueInput;
 }
 
 export interface RenderUpsertWithWhereUniqueWithoutCheckInput {
   where: RenderWhereUniqueInput;
   update: RenderUpdateWithoutCheckDataInput;
   create: RenderCreateWithoutCheckInput;
+}
+
+export interface TeamSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TeamWhereInput;
+  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
 }
 
 export interface RenderScalarWhereInput {
@@ -1878,9 +1755,31 @@ export interface RenderScalarWhereInput {
   NOT?: RenderScalarWhereInput[] | RenderScalarWhereInput;
 }
 
+export interface RepoSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RepoWhereInput;
+  AND?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
+  OR?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
+  NOT?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
+}
+
 export interface RenderUpdateManyWithWhereNestedInput {
   where: RenderScalarWhereInput;
   data: RenderUpdateManyDataInput;
+}
+
+export interface MembershipSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MembershipWhereInput;
+  AND?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+  OR?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+  NOT?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
 }
 
 export interface RenderUpdateManyDataInput {
@@ -1889,6 +1788,10 @@ export interface RenderUpdateManyDataInput {
   branch?: String;
   commit?: String;
 }
+
+export type CliAuthSessionWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface RepoUpdateOneWithoutChecksInput {
   create?: RepoCreateWithoutChecksInput;
@@ -1899,10 +1802,18 @@ export interface RepoUpdateOneWithoutChecksInput {
   connect?: RepoWhereUniqueInput;
 }
 
+export interface TeamUpdateManyMutationInput {
+  name?: String;
+}
+
 export interface RepoUpdateWithoutChecksDataInput {
   owner?: String;
   name?: String;
   team?: TeamUpdateOneWithoutReposInput;
+}
+
+export interface SampleUpdateManyMutationInput {
+  name?: String;
 }
 
 export interface TeamUpdateOneWithoutReposInput {
@@ -1914,10 +1825,22 @@ export interface TeamUpdateOneWithoutReposInput {
   connect?: TeamWhereUniqueInput;
 }
 
+export interface RepoUpdateManyMutationInput {
+  owner?: String;
+  name?: String;
+}
+
 export interface TeamUpdateWithoutReposDataInput {
   name?: String;
   memberships?: MembershipUpdateManyWithoutTeamInput;
   components?: ComponentUpdateManyWithoutTeamInput;
+}
+
+export interface RenderUpdateManyMutationInput {
+  imageUrl?: String;
+  html?: String;
+  branch?: String;
+  commit?: String;
 }
 
 export interface ComponentUpdateManyWithoutTeamInput {
@@ -1938,14 +1861,26 @@ export interface ComponentUpdateManyWithoutTeamInput {
     | ComponentUpdateManyWithWhereNestedInput;
 }
 
+export interface MembershipUpdateManyMutationInput {
+  role?: Role;
+}
+
 export interface ComponentUpdateWithWhereUniqueWithoutTeamInput {
   where: ComponentWhereUniqueInput;
   data: ComponentUpdateWithoutTeamDataInput;
 }
 
+export interface ComponentUpdateManyMutationInput {
+  name?: String;
+}
+
 export interface ComponentUpdateWithoutTeamDataInput {
   name?: String;
   samples?: SampleUpdateManyWithoutComponentInput;
+}
+
+export interface CliAuthSessionUpdateManyMutationInput {
+  expiresAt?: DateTimeInput;
 }
 
 export interface SampleUpdateManyWithoutComponentInput {
@@ -1968,14 +1903,33 @@ export interface SampleUpdateManyWithoutComponentInput {
     | SampleUpdateManyWithWhereNestedInput;
 }
 
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
 export interface SampleUpdateWithWhereUniqueWithoutComponentInput {
   where: SampleWhereUniqueInput;
   data: SampleUpdateWithoutComponentDataInput;
 }
 
+export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutUserDataInput;
+}
+
 export interface SampleUpdateWithoutComponentDataInput {
   name?: String;
   renders?: RenderUpdateManyWithoutSampleInput;
+}
+
+export interface RenderCreateWithoutCheckInput {
+  id?: ID_Input;
+  imageUrl?: String;
+  html: String;
+  branch: String;
+  commit: String;
+  sample: SampleCreateOneWithoutRendersInput;
 }
 
 export interface RenderUpdateManyWithoutSampleInput {
@@ -1996,9 +1950,21 @@ export interface RenderUpdateManyWithoutSampleInput {
     | RenderUpdateManyWithWhereNestedInput;
 }
 
+export interface ComponentCreateWithoutSamplesInput {
+  id?: ID_Input;
+  name: String;
+  team: TeamCreateOneWithoutComponentsInput;
+}
+
 export interface RenderUpdateWithWhereUniqueWithoutSampleInput {
   where: RenderWhereUniqueInput;
   data: RenderUpdateWithoutSampleDataInput;
+}
+
+export interface MembershipCreateWithoutTeamInput {
+  id?: ID_Input;
+  role?: Role;
+  user: UserCreateOneWithoutMembershipsInput;
 }
 
 export interface RenderUpdateWithoutSampleDataInput {
@@ -2007,6 +1973,13 @@ export interface RenderUpdateWithoutSampleDataInput {
   branch?: String;
   commit?: String;
   check?: CheckUpdateOneWithoutRendersInput;
+}
+
+export interface RepoCreateWithoutTeamInput {
+  id?: ID_Input;
+  owner: String;
+  name: String;
+  checks?: CheckCreateManyWithoutRepoInput;
 }
 
 export interface CheckUpdateOneWithoutRendersInput {
@@ -2018,6 +1991,13 @@ export interface CheckUpdateOneWithoutRendersInput {
   connect?: CheckWhereUniqueInput;
 }
 
+export interface RepoCreateWithoutChecksInput {
+  id?: ID_Input;
+  owner: String;
+  name: String;
+  team?: TeamCreateOneWithoutReposInput;
+}
+
 export interface CheckUpdateWithoutRendersDataInput {
   githubCheckId?: Int;
   branch?: String;
@@ -2025,9 +2005,26 @@ export interface CheckUpdateWithoutRendersDataInput {
   repo?: RepoUpdateOneWithoutChecksInput;
 }
 
+export interface ComponentCreateWithoutTeamInput {
+  id?: ID_Input;
+  name: String;
+  samples?: SampleCreateManyWithoutComponentInput;
+}
+
 export interface CheckUpsertWithoutRendersInput {
   update: CheckUpdateWithoutRendersDataInput;
   create: CheckCreateWithoutRendersInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface RenderUpsertWithWhereUniqueWithoutSampleInput {
@@ -2036,10 +2033,149 @@ export interface RenderUpsertWithWhereUniqueWithoutSampleInput {
   create: RenderCreateWithoutSampleInput;
 }
 
+export interface RenderWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  imageUrl?: String;
+  imageUrl_not?: String;
+  imageUrl_in?: String[] | String;
+  imageUrl_not_in?: String[] | String;
+  imageUrl_lt?: String;
+  imageUrl_lte?: String;
+  imageUrl_gt?: String;
+  imageUrl_gte?: String;
+  imageUrl_contains?: String;
+  imageUrl_not_contains?: String;
+  imageUrl_starts_with?: String;
+  imageUrl_not_starts_with?: String;
+  imageUrl_ends_with?: String;
+  imageUrl_not_ends_with?: String;
+  html?: String;
+  html_not?: String;
+  html_in?: String[] | String;
+  html_not_in?: String[] | String;
+  html_lt?: String;
+  html_lte?: String;
+  html_gt?: String;
+  html_gte?: String;
+  html_contains?: String;
+  html_not_contains?: String;
+  html_starts_with?: String;
+  html_not_starts_with?: String;
+  html_ends_with?: String;
+  html_not_ends_with?: String;
+  branch?: String;
+  branch_not?: String;
+  branch_in?: String[] | String;
+  branch_not_in?: String[] | String;
+  branch_lt?: String;
+  branch_lte?: String;
+  branch_gt?: String;
+  branch_gte?: String;
+  branch_contains?: String;
+  branch_not_contains?: String;
+  branch_starts_with?: String;
+  branch_not_starts_with?: String;
+  branch_ends_with?: String;
+  branch_not_ends_with?: String;
+  commit?: String;
+  commit_not?: String;
+  commit_in?: String[] | String;
+  commit_not_in?: String[] | String;
+  commit_lt?: String;
+  commit_lte?: String;
+  commit_gt?: String;
+  commit_gte?: String;
+  commit_contains?: String;
+  commit_not_contains?: String;
+  commit_starts_with?: String;
+  commit_not_starts_with?: String;
+  commit_ends_with?: String;
+  commit_not_ends_with?: String;
+  sample?: SampleWhereInput;
+  check?: CheckWhereInput;
+  AND?: RenderWhereInput[] | RenderWhereInput;
+  OR?: RenderWhereInput[] | RenderWhereInput;
+  NOT?: RenderWhereInput[] | RenderWhereInput;
+}
+
 export interface SampleUpsertWithWhereUniqueWithoutComponentInput {
   where: SampleWhereUniqueInput;
   update: SampleUpdateWithoutComponentDataInput;
   create: SampleCreateWithoutComponentInput;
+}
+
+export interface CliAuthSessionWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  expiresAt?: DateTimeInput;
+  expiresAt_not?: DateTimeInput;
+  expiresAt_in?: DateTimeInput[] | DateTimeInput;
+  expiresAt_not_in?: DateTimeInput[] | DateTimeInput;
+  expiresAt_lt?: DateTimeInput;
+  expiresAt_lte?: DateTimeInput;
+  expiresAt_gt?: DateTimeInput;
+  expiresAt_gte?: DateTimeInput;
+  authenticatedUser?: UserWhereInput;
+  AND?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
+  OR?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
+  NOT?: CliAuthSessionWhereInput[] | CliAuthSessionWhereInput;
 }
 
 export interface SampleScalarWhereInput {
@@ -2092,19 +2228,50 @@ export interface SampleScalarWhereInput {
   NOT?: SampleScalarWhereInput[] | SampleScalarWhereInput;
 }
 
+export interface SampleCreateInput {
+  id?: ID_Input;
+  name: String;
+  component: ComponentCreateOneWithoutSamplesInput;
+  renders?: RenderCreateManyWithoutSampleInput;
+}
+
 export interface SampleUpdateManyWithWhereNestedInput {
   where: SampleScalarWhereInput;
   data: SampleUpdateManyDataInput;
+}
+
+export interface RenderCreateInput {
+  id?: ID_Input;
+  imageUrl?: String;
+  html: String;
+  branch: String;
+  commit: String;
+  sample: SampleCreateOneWithoutRendersInput;
+  check?: CheckCreateOneWithoutRendersInput;
 }
 
 export interface SampleUpdateManyDataInput {
   name?: String;
 }
 
+export interface ComponentCreateInput {
+  id?: ID_Input;
+  name: String;
+  team: TeamCreateOneWithoutComponentsInput;
+  samples?: SampleCreateManyWithoutComponentInput;
+}
+
 export interface ComponentUpsertWithWhereUniqueWithoutTeamInput {
   where: ComponentWhereUniqueInput;
   update: ComponentUpdateWithoutTeamDataInput;
   create: ComponentCreateWithoutTeamInput;
+}
+
+export interface TeamUpdateOneRequiredWithoutMembershipsInput {
+  create?: TeamCreateWithoutMembershipsInput;
+  update?: TeamUpdateWithoutMembershipsDataInput;
+  upsert?: TeamUpsertWithoutMembershipsInput;
+  connect?: TeamWhereUniqueInput;
 }
 
 export interface ComponentScalarWhereInput {
@@ -2157,13 +2324,35 @@ export interface ComponentScalarWhereInput {
   NOT?: ComponentScalarWhereInput[] | ComponentScalarWhereInput;
 }
 
+export interface SampleCreateWithoutRendersInput {
+  id?: ID_Input;
+  name: String;
+  component: ComponentCreateOneWithoutSamplesInput;
+}
+
 export interface ComponentUpdateManyWithWhereNestedInput {
   where: ComponentScalarWhereInput;
   data: ComponentUpdateManyDataInput;
 }
 
+export interface UserCreateWithoutMembershipsInput {
+  id?: ID_Input;
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
 export interface ComponentUpdateManyDataInput {
   name?: String;
+}
+
+export interface TeamCreateWithoutReposInput {
+  id?: ID_Input;
+  name: String;
+  memberships?: MembershipCreateManyWithoutTeamInput;
+  components?: ComponentCreateManyWithoutTeamInput;
 }
 
 export interface TeamUpsertWithoutReposInput {
@@ -2171,244 +2360,68 @@ export interface TeamUpsertWithoutReposInput {
   create: TeamCreateWithoutReposInput;
 }
 
+export interface TeamWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  memberships_every?: MembershipWhereInput;
+  memberships_some?: MembershipWhereInput;
+  memberships_none?: MembershipWhereInput;
+  components_every?: ComponentWhereInput;
+  components_some?: ComponentWhereInput;
+  components_none?: ComponentWhereInput;
+  repos_every?: RepoWhereInput;
+  repos_some?: RepoWhereInput;
+  repos_none?: RepoWhereInput;
+  AND?: TeamWhereInput[] | TeamWhereInput;
+  OR?: TeamWhereInput[] | TeamWhereInput;
+  NOT?: TeamWhereInput[] | TeamWhereInput;
+}
+
 export interface RepoUpsertWithoutChecksInput {
   update: RepoUpdateWithoutChecksDataInput;
   create: RepoCreateWithoutChecksInput;
-}
-
-export interface CheckUpdateManyMutationInput {
-  githubCheckId?: Int;
-  branch?: String;
-  commit?: String;
-}
-
-export interface CliAuthSessionCreateInput {
-  id?: ID_Input;
-  expiresAt: DateTimeInput;
-  authenticatedUser?: UserCreateOneInput;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserCreateInput {
-  id?: ID_Input;
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipCreateManyWithoutUserInput;
-}
-
-export interface MembershipCreateManyWithoutUserInput {
-  create?:
-    | MembershipCreateWithoutUserInput[]
-    | MembershipCreateWithoutUserInput;
-  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-}
-
-export interface MembershipCreateWithoutUserInput {
-  id?: ID_Input;
-  role?: Role;
-  team: TeamCreateOneWithoutMembershipsInput;
-}
-
-export interface TeamCreateOneWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamCreateWithoutMembershipsInput {
-  id?: ID_Input;
-  name: String;
-  components?: ComponentCreateManyWithoutTeamInput;
-  repos?: RepoCreateManyWithoutTeamInput;
-}
-
-export interface CliAuthSessionUpdateInput {
-  expiresAt?: DateTimeInput;
-  authenticatedUser?: UserUpdateOneInput;
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpdateDataInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipUpdateManyWithoutUserInput;
-}
-
-export interface MembershipUpdateManyWithoutUserInput {
-  create?:
-    | MembershipCreateWithoutUserInput[]
-    | MembershipCreateWithoutUserInput;
-  delete?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  set?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  disconnect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
-  update?:
-    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
-    | MembershipUpdateWithWhereUniqueWithoutUserInput;
-  upsert?:
-    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
-    | MembershipUpsertWithWhereUniqueWithoutUserInput;
-  deleteMany?: MembershipScalarWhereInput[] | MembershipScalarWhereInput;
-  updateMany?:
-    | MembershipUpdateManyWithWhereNestedInput[]
-    | MembershipUpdateManyWithWhereNestedInput;
-}
-
-export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  data: MembershipUpdateWithoutUserDataInput;
-}
-
-export interface MembershipUpdateWithoutUserDataInput {
-  role?: Role;
-  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface TeamUpdateOneRequiredWithoutMembershipsInput {
-  create?: TeamCreateWithoutMembershipsInput;
-  update?: TeamUpdateWithoutMembershipsDataInput;
-  upsert?: TeamUpsertWithoutMembershipsInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TeamUpdateWithoutMembershipsDataInput {
-  name?: String;
-  components?: ComponentUpdateManyWithoutTeamInput;
-  repos?: RepoUpdateManyWithoutTeamInput;
-}
-
-export interface TeamUpsertWithoutMembershipsInput {
-  update: TeamUpdateWithoutMembershipsDataInput;
-  create: TeamCreateWithoutMembershipsInput;
-}
-
-export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  update: MembershipUpdateWithoutUserDataInput;
-  create: MembershipCreateWithoutUserInput;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface CliAuthSessionUpdateManyMutationInput {
-  expiresAt?: DateTimeInput;
-}
-
-export interface ComponentCreateInput {
-  id?: ID_Input;
-  name: String;
-  team: TeamCreateOneWithoutComponentsInput;
-  samples?: SampleCreateManyWithoutComponentInput;
-}
-
-export interface ComponentUpdateInput {
-  name?: String;
-  team?: TeamUpdateOneRequiredWithoutComponentsInput;
-  samples?: SampleUpdateManyWithoutComponentInput;
-}
-
-export interface ComponentUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface MembershipCreateInput {
-  id?: ID_Input;
-  role?: Role;
-  user: UserCreateOneWithoutMembershipsInput;
-  team: TeamCreateOneWithoutMembershipsInput;
-}
-
-export interface MembershipUpdateInput {
-  role?: Role;
-  user?: UserUpdateOneRequiredWithoutMembershipsInput;
-  team?: TeamUpdateOneRequiredWithoutMembershipsInput;
-}
-
-export interface MembershipUpdateManyMutationInput {
-  role?: Role;
-}
-
-export interface RenderCreateInput {
-  id?: ID_Input;
-  imageUrl?: String;
-  html: String;
-  branch: String;
-  commit: String;
-  sample: SampleCreateOneWithoutRendersInput;
-  check?: CheckCreateOneWithoutRendersInput;
-}
-
-export interface RenderUpdateInput {
-  imageUrl?: String;
-  html?: String;
-  branch?: String;
-  commit?: String;
-  sample?: SampleUpdateOneRequiredWithoutRendersInput;
-  check?: CheckUpdateOneWithoutRendersInput;
-}
-
-export interface RenderUpdateManyMutationInput {
-  imageUrl?: String;
-  html?: String;
-  branch?: String;
-  commit?: String;
-}
-
-export interface RepoCreateInput {
-  id?: ID_Input;
-  owner: String;
-  name: String;
-  checks?: CheckCreateManyWithoutRepoInput;
-  team?: TeamCreateOneWithoutReposInput;
-}
-
-export interface RepoUpdateInput {
-  owner?: String;
-  name?: String;
-  checks?: CheckUpdateManyWithoutRepoInput;
-  team?: TeamUpdateOneWithoutReposInput;
-}
-
-export interface RepoUpdateManyMutationInput {
-  owner?: String;
-  name?: String;
-}
-
-export interface SampleCreateInput {
-  id?: ID_Input;
-  name: String;
-  component: ComponentCreateOneWithoutSamplesInput;
-  renders?: RenderCreateManyWithoutSampleInput;
-}
-
-export interface SampleUpdateInput {
-  name?: String;
-  component?: ComponentUpdateOneRequiredWithoutSamplesInput;
-  renders?: RenderUpdateManyWithoutSampleInput;
-}
-
-export interface SampleUpdateManyMutationInput {
-  name?: String;
 }
 
 export interface TeamCreateInput {
@@ -2419,43 +2432,52 @@ export interface TeamCreateInput {
   repos?: RepoCreateManyWithoutTeamInput;
 }
 
-export interface TeamUpdateInput {
-  name?: String;
-  memberships?: MembershipUpdateManyWithoutTeamInput;
-  components?: ComponentUpdateManyWithoutTeamInput;
-  repos?: RepoUpdateManyWithoutTeamInput;
+export interface CheckUpdateManyMutationInput {
+  githubCheckId?: Int;
+  branch?: String;
+  commit?: String;
 }
 
-export interface TeamUpdateManyMutationInput {
-  name?: String;
+export interface MembershipCreateInput {
+  id?: ID_Input;
+  role?: Role;
+  user: UserCreateOneWithoutMembershipsInput;
+  team: TeamCreateOneWithoutMembershipsInput;
 }
 
-export interface UserUpdateInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
-  memberships?: MembershipUpdateManyWithoutUserInput;
+export interface CliAuthSessionUpdateInput {
+  expiresAt?: DateTimeInput;
+  authenticatedUser?: UserUpdateOneInput;
 }
 
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  name?: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
+export interface CheckCreateInput {
+  id?: ID_Input;
+  githubCheckId?: Int;
+  branch: String;
+  commit: String;
+  renders?: RenderCreateManyWithoutCheckInput;
+  repo?: RepoCreateOneWithoutChecksInput;
 }
 
-export interface CheckSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CheckWhereInput;
-  AND?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
-  OR?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
-  NOT?: CheckSubscriptionWhereInput[] | CheckSubscriptionWhereInput;
+export interface TeamCreateWithoutMembershipsInput {
+  id?: ID_Input;
+  name: String;
+  components?: ComponentCreateManyWithoutTeamInput;
+  repos?: RepoCreateManyWithoutTeamInput;
+}
+
+export interface CheckCreateWithoutRepoInput {
+  id?: ID_Input;
+  githubCheckId?: Int;
+  branch: String;
+  commit: String;
+  renders?: RenderCreateManyWithoutCheckInput;
+}
+
+export interface CliAuthSessionCreateInput {
+  id?: ID_Input;
+  expiresAt: DateTimeInput;
+  authenticatedUser?: UserCreateOneInput;
 }
 
 export interface CliAuthSessionSubscriptionWhereInput {
@@ -2475,85 +2497,865 @@ export interface CliAuthSessionSubscriptionWhereInput {
     | CliAuthSessionSubscriptionWhereInput;
 }
 
-export interface ComponentSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ComponentWhereInput;
-  AND?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
-  OR?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
-  NOT?: ComponentSubscriptionWhereInput[] | ComponentSubscriptionWhereInput;
+export interface MembershipCreateWithoutUserInput {
+  id?: ID_Input;
+  role?: Role;
+  team: TeamCreateOneWithoutMembershipsInput;
 }
 
-export interface MembershipSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: MembershipWhereInput;
-  AND?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
-  OR?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
-  NOT?: MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput;
+export interface MembershipCreateManyWithoutUserInput {
+  create?:
+    | MembershipCreateWithoutUserInput[]
+    | MembershipCreateWithoutUserInput;
+  connect?: MembershipWhereUniqueInput[] | MembershipWhereUniqueInput;
 }
 
-export interface RenderSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: RenderWhereInput;
-  AND?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
-  OR?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
-  NOT?: RenderSubscriptionWhereInput[] | RenderSubscriptionWhereInput;
+export interface UserCreateInput {
+  id?: ID_Input;
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+  memberships?: MembershipCreateManyWithoutUserInput;
 }
 
-export interface RepoSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: RepoWhereInput;
-  AND?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
-  OR?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
-  NOT?: RepoSubscriptionWhereInput[] | RepoSubscriptionWhereInput;
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
 }
 
-export interface SampleSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: SampleWhereInput;
-  AND?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
-  OR?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
-  NOT?: SampleSubscriptionWhereInput[] | SampleSubscriptionWhereInput;
+export interface RepoCreateInput {
+  id?: ID_Input;
+  owner: String;
+  name: String;
+  checks?: CheckCreateManyWithoutRepoInput;
+  team?: TeamCreateOneWithoutReposInput;
 }
 
-export interface TeamSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TeamWhereInput;
-  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+export interface SampleCreateWithoutComponentInput {
+  id?: ID_Input;
+  name: String;
+  renders?: RenderCreateManyWithoutSampleInput;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface TeamCreateWithoutComponentsInput {
+  id?: ID_Input;
+  name: String;
+  memberships?: MembershipCreateManyWithoutTeamInput;
+  repos?: RepoCreateManyWithoutTeamInput;
+}
+
+export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutUserDataInput;
+  create: MembershipCreateWithoutUserInput;
 }
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  email: String;
+  name: String;
+  githubAccessToken?: String;
+  figmaAccessToken?: String;
+  figmaRefreshToken?: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  githubAccessToken: () => Promise<String>;
+  figmaAccessToken: () => Promise<String>;
+  figmaRefreshToken: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  githubAccessToken: () => Promise<AsyncIterator<String>>;
+  figmaAccessToken: () => Promise<AsyncIterator<String>>;
+  figmaRefreshToken: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CliAuthSessionConnection {
+  pageInfo: PageInfo;
+  edges: CliAuthSessionEdge[];
+}
+
+export interface CliAuthSessionConnectionPromise
+  extends Promise<CliAuthSessionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CliAuthSessionEdge>>() => T;
+  aggregate: <T = AggregateCliAuthSessionPromise>() => T;
+}
+
+export interface CliAuthSessionConnectionSubscription
+  extends Promise<AsyncIterator<CliAuthSessionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CliAuthSessionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCliAuthSessionSubscription>() => T;
+}
+
+export interface Sample {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface SamplePromise extends Promise<Sample>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  component: <T = ComponentPromise>() => T;
+  renders: <T = FragmentableArray<Render>>(args?: {
+    where?: RenderWhereInput;
+    orderBy?: RenderOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface SampleSubscription
+  extends Promise<AsyncIterator<Sample>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  component: <T = ComponentSubscription>() => T;
+  renders: <T = Promise<AsyncIterator<RenderSubscription>>>(args?: {
+    where?: RenderWhereInput;
+    orderBy?: RenderOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface CliAuthSessionEdge {
+  node: CliAuthSession;
+  cursor: String;
+}
+
+export interface CliAuthSessionEdgePromise
+  extends Promise<CliAuthSessionEdge>,
+    Fragmentable {
+  node: <T = CliAuthSessionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CliAuthSessionEdgeSubscription
+  extends Promise<AsyncIterator<CliAuthSessionEdge>>,
+    Fragmentable {
+  node: <T = CliAuthSessionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Membership {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  role: Role;
+}
+
+export interface MembershipPromise extends Promise<Membership>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  role: () => Promise<Role>;
+  user: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+}
+
+export interface MembershipSubscription
+  extends Promise<AsyncIterator<Membership>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  role: () => Promise<AsyncIterator<Role>>;
+  user: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface Component {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface ComponentPromise extends Promise<Component>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  team: <T = TeamPromise>() => T;
+  samples: <T = FragmentableArray<Sample>>(args?: {
+    where?: SampleWhereInput;
+    orderBy?: SampleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ComponentSubscription
+  extends Promise<AsyncIterator<Component>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  team: <T = TeamSubscription>() => T;
+  samples: <T = Promise<AsyncIterator<SampleSubscription>>>(args?: {
+    where?: SampleWhereInput;
+    orderBy?: SampleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Render {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  imageUrl?: String;
+  html: String;
+  branch: String;
+  commit: String;
+}
+
+export interface RenderPromise extends Promise<Render>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  imageUrl: () => Promise<String>;
+  html: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
+  sample: <T = SamplePromise>() => T;
+  check: <T = CheckPromise>() => T;
+}
+
+export interface RenderSubscription
+  extends Promise<AsyncIterator<Render>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  imageUrl: () => Promise<AsyncIterator<String>>;
+  html: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
+  sample: <T = SampleSubscription>() => T;
+  check: <T = CheckSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CliAuthSession {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  expiresAt: DateTimeOutput;
+}
+
+export interface CliAuthSessionPromise
+  extends Promise<CliAuthSession>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  expiresAt: () => Promise<DateTimeOutput>;
+  authenticatedUser: <T = UserPromise>() => T;
+}
+
+export interface CliAuthSessionSubscription
+  extends Promise<AsyncIterator<CliAuthSession>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  authenticatedUser: <T = UserSubscription>() => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateCheck {
+  count: Int;
+}
+
+export interface AggregateCheckPromise
+  extends Promise<AggregateCheck>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCheckSubscription
+  extends Promise<AsyncIterator<AggregateCheck>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateTeam {
+  count: Int;
+}
+
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTeamSubscription
+  extends Promise<AsyncIterator<AggregateTeam>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TeamPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface TeamPreviousValuesPromise
+  extends Promise<TeamPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface TeamPreviousValuesSubscription
+  extends Promise<AsyncIterator<TeamPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TeamConnection {
+  pageInfo: PageInfo;
+  edges: TeamEdge[];
+}
+
+export interface TeamConnectionPromise
+  extends Promise<TeamConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TeamEdge>>() => T;
+  aggregate: <T = AggregateTeamPromise>() => T;
+}
+
+export interface TeamConnectionSubscription
+  extends Promise<AsyncIterator<TeamConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTeamSubscription>() => T;
+}
+
+export interface CheckSubscriptionPayload {
+  mutation: MutationType;
+  node: Check;
+  updatedFields: String[];
+  previousValues: CheckPreviousValues;
+}
+
+export interface CheckSubscriptionPayloadPromise
+  extends Promise<CheckSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CheckPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CheckPreviousValuesPromise>() => T;
+}
+
+export interface CheckSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CheckSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CheckSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CheckPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateSample {
+  count: Int;
+}
+
+export interface AggregateSamplePromise
+  extends Promise<AggregateSample>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSampleSubscription
+  extends Promise<AsyncIterator<AggregateSample>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CheckPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  githubCheckId?: Int;
+  branch: String;
+  commit: String;
+}
+
+export interface CheckPreviousValuesPromise
+  extends Promise<CheckPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  githubCheckId: () => Promise<Int>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
+}
+
+export interface CheckPreviousValuesSubscription
+  extends Promise<AsyncIterator<CheckPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  githubCheckId: () => Promise<AsyncIterator<Int>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SampleConnection {
+  pageInfo: PageInfo;
+  edges: SampleEdge[];
+}
+
+export interface SampleConnectionPromise
+  extends Promise<SampleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SampleEdge>>() => T;
+  aggregate: <T = AggregateSamplePromise>() => T;
+}
+
+export interface SampleConnectionSubscription
+  extends Promise<AsyncIterator<SampleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SampleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSampleSubscription>() => T;
+}
+
+export interface CheckEdge {
+  node: Check;
+  cursor: String;
+}
+
+export interface CheckEdgePromise extends Promise<CheckEdge>, Fragmentable {
+  node: <T = CheckPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CheckEdgeSubscription
+  extends Promise<AsyncIterator<CheckEdge>>,
+    Fragmentable {
+  node: <T = CheckSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RepoEdge {
+  node: Repo;
+  cursor: String;
+}
+
+export interface RepoEdgePromise extends Promise<RepoEdge>, Fragmentable {
+  node: <T = RepoPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface RepoEdgeSubscription
+  extends Promise<AsyncIterator<RepoEdge>>,
+    Fragmentable {
+  node: <T = RepoSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CliAuthSessionSubscriptionPayload {
+  mutation: MutationType;
+  node: CliAuthSession;
+  updatedFields: String[];
+  previousValues: CliAuthSessionPreviousValues;
+}
+
+export interface CliAuthSessionSubscriptionPayloadPromise
+  extends Promise<CliAuthSessionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CliAuthSessionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CliAuthSessionPreviousValuesPromise>() => T;
+}
+
+export interface CliAuthSessionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CliAuthSessionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CliAuthSessionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CliAuthSessionPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateRender {
+  count: Int;
+}
+
+export interface AggregateRenderPromise
+  extends Promise<AggregateRender>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRenderSubscription
+  extends Promise<AsyncIterator<AggregateRender>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CliAuthSessionPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  expiresAt: DateTimeOutput;
+}
+
+export interface CliAuthSessionPreviousValuesPromise
+  extends Promise<CliAuthSessionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  expiresAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CliAuthSessionPreviousValuesSubscription
+  extends Promise<AsyncIterator<CliAuthSessionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface RenderConnection {
+  pageInfo: PageInfo;
+  edges: RenderEdge[];
+}
+
+export interface RenderConnectionPromise
+  extends Promise<RenderConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RenderEdge>>() => T;
+  aggregate: <T = AggregateRenderPromise>() => T;
+}
+
+export interface RenderConnectionSubscription
+  extends Promise<AsyncIterator<RenderConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RenderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRenderSubscription>() => T;
+}
+
+export interface TeamSubscriptionPayload {
+  mutation: MutationType;
+  node: Team;
+  updatedFields: String[];
+  previousValues: TeamPreviousValues;
+}
+
+export interface TeamSubscriptionPayloadPromise
+  extends Promise<TeamSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TeamPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TeamPreviousValuesPromise>() => T;
+}
+
+export interface TeamSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TeamSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TeamSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TeamPreviousValuesSubscription>() => T;
+}
+
+export interface MembershipEdge {
+  node: Membership;
+  cursor: String;
+}
+
+export interface MembershipEdgePromise
+  extends Promise<MembershipEdge>,
+    Fragmentable {
+  node: <T = MembershipPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MembershipEdgeSubscription
+  extends Promise<AsyncIterator<MembershipEdge>>,
+    Fragmentable {
+  node: <T = MembershipSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ComponentSubscriptionPayload {
+  mutation: MutationType;
+  node: Component;
+  updatedFields: String[];
+  previousValues: ComponentPreviousValues;
+}
+
+export interface ComponentSubscriptionPayloadPromise
+  extends Promise<ComponentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ComponentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ComponentPreviousValuesPromise>() => T;
+}
+
+export interface ComponentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ComponentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ComponentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ComponentPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateComponent {
+  count: Int;
+}
+
+export interface AggregateComponentPromise
+  extends Promise<AggregateComponent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateComponentSubscription
+  extends Promise<AsyncIterator<AggregateComponent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ComponentPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface ComponentPreviousValuesPromise
+  extends Promise<ComponentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface ComponentPreviousValuesSubscription
+  extends Promise<AsyncIterator<ComponentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ComponentConnection {
+  pageInfo: PageInfo;
+  edges: ComponentEdge[];
+}
+
+export interface ComponentConnectionPromise
+  extends Promise<ComponentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ComponentEdge>>() => T;
+  aggregate: <T = AggregateComponentPromise>() => T;
+}
+
+export interface ComponentConnectionSubscription
+  extends Promise<AsyncIterator<ComponentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ComponentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateComponentSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface MembershipSubscriptionPayload {
+  mutation: MutationType;
+  node: Membership;
+  updatedFields: String[];
+  previousValues: MembershipPreviousValues;
+}
+
+export interface MembershipSubscriptionPayloadPromise
+  extends Promise<MembershipSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MembershipPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MembershipPreviousValuesPromise>() => T;
+}
+
+export interface MembershipSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MembershipSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MembershipSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MembershipPreviousValuesSubscription>() => T;
 }
 
 export interface Check {
@@ -2605,126 +3407,29 @@ export interface CheckSubscription
   repo: <T = RepoSubscription>() => T;
 }
 
-export interface Render {
+export interface MembershipPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  imageUrl?: String;
-  html: String;
-  branch: String;
-  commit: String;
+  role: Role;
 }
 
-export interface RenderPromise extends Promise<Render>, Fragmentable {
+export interface MembershipPreviousValuesPromise
+  extends Promise<MembershipPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  imageUrl: () => Promise<String>;
-  html: () => Promise<String>;
-  branch: () => Promise<String>;
-  commit: () => Promise<String>;
-  sample: <T = SamplePromise>() => T;
-  check: <T = CheckPromise>() => T;
+  role: () => Promise<Role>;
 }
 
-export interface RenderSubscription
-  extends Promise<AsyncIterator<Render>>,
+export interface MembershipPreviousValuesSubscription
+  extends Promise<AsyncIterator<MembershipPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  imageUrl: () => Promise<AsyncIterator<String>>;
-  html: () => Promise<AsyncIterator<String>>;
-  branch: () => Promise<AsyncIterator<String>>;
-  commit: () => Promise<AsyncIterator<String>>;
-  sample: <T = SampleSubscription>() => T;
-  check: <T = CheckSubscription>() => T;
-}
-
-export interface Sample {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface SamplePromise extends Promise<Sample>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  component: <T = ComponentPromise>() => T;
-  renders: <T = FragmentableArray<Render>>(args?: {
-    where?: RenderWhereInput;
-    orderBy?: RenderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface SampleSubscription
-  extends Promise<AsyncIterator<Sample>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  component: <T = ComponentSubscription>() => T;
-  renders: <T = Promise<AsyncIterator<RenderSubscription>>>(args?: {
-    where?: RenderWhereInput;
-    orderBy?: RenderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface Component {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface ComponentPromise extends Promise<Component>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  team: <T = TeamPromise>() => T;
-  samples: <T = FragmentableArray<Sample>>(args?: {
-    where?: SampleWhereInput;
-    orderBy?: SampleOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ComponentSubscription
-  extends Promise<AsyncIterator<Component>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  team: <T = TeamSubscription>() => T;
-  samples: <T = Promise<AsyncIterator<SampleSubscription>>>(args?: {
-    where?: SampleWhereInput;
-    orderBy?: SampleOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
 export interface Team {
@@ -2804,31 +3509,313 @@ export interface TeamSubscription
   }) => T;
 }
 
-export interface Membership {
+export interface CheckConnection {
+  pageInfo: PageInfo;
+  edges: CheckEdge[];
+}
+
+export interface CheckConnectionPromise
+  extends Promise<CheckConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CheckEdge>>() => T;
+  aggregate: <T = AggregateCheckPromise>() => T;
+}
+
+export interface CheckConnectionSubscription
+  extends Promise<AsyncIterator<CheckConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CheckEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCheckSubscription>() => T;
+}
+
+export interface AggregateRepo {
+  count: Int;
+}
+
+export interface AggregateRepoPromise
+  extends Promise<AggregateRepo>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRepoSubscription
+  extends Promise<AsyncIterator<AggregateRepo>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface RenderSubscriptionPayload {
+  mutation: MutationType;
+  node: Render;
+  updatedFields: String[];
+  previousValues: RenderPreviousValues;
+}
+
+export interface RenderSubscriptionPayloadPromise
+  extends Promise<RenderSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RenderPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RenderPreviousValuesPromise>() => T;
+}
+
+export interface RenderSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RenderSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RenderSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RenderPreviousValuesSubscription>() => T;
+}
+
+export interface RenderEdge {
+  node: Render;
+  cursor: String;
+}
+
+export interface RenderEdgePromise extends Promise<RenderEdge>, Fragmentable {
+  node: <T = RenderPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface RenderEdgeSubscription
+  extends Promise<AsyncIterator<RenderEdge>>,
+    Fragmentable {
+  node: <T = RenderSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RenderPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  role: Role;
+  imageUrl?: String;
+  html: String;
+  branch: String;
+  commit: String;
 }
 
-export interface MembershipPromise extends Promise<Membership>, Fragmentable {
+export interface RenderPreviousValuesPromise
+  extends Promise<RenderPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  role: () => Promise<Role>;
-  user: <T = UserPromise>() => T;
-  team: <T = TeamPromise>() => T;
+  imageUrl: () => Promise<String>;
+  html: () => Promise<String>;
+  branch: () => Promise<String>;
+  commit: () => Promise<String>;
 }
 
-export interface MembershipSubscription
-  extends Promise<AsyncIterator<Membership>>,
+export interface RenderPreviousValuesSubscription
+  extends Promise<AsyncIterator<RenderPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  role: () => Promise<AsyncIterator<Role>>;
-  user: <T = UserSubscription>() => T;
+  imageUrl: () => Promise<AsyncIterator<String>>;
+  html: () => Promise<AsyncIterator<String>>;
+  branch: () => Promise<AsyncIterator<String>>;
+  commit: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MembershipConnection {
+  pageInfo: PageInfo;
+  edges: MembershipEdge[];
+}
+
+export interface MembershipConnectionPromise
+  extends Promise<MembershipConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MembershipEdge>>() => T;
+  aggregate: <T = AggregateMembershipPromise>() => T;
+}
+
+export interface MembershipConnectionSubscription
+  extends Promise<AsyncIterator<MembershipConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMembershipSubscription>() => T;
+}
+
+export interface Repo {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  owner: String;
+  name: String;
+}
+
+export interface RepoPromise extends Promise<Repo>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  owner: () => Promise<String>;
+  name: () => Promise<String>;
+  checks: <T = FragmentableArray<Check>>(args?: {
+    where?: CheckWhereInput;
+    orderBy?: CheckOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  team: <T = TeamPromise>() => T;
+}
+
+export interface RepoSubscription
+  extends Promise<AsyncIterator<Repo>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  owner: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  checks: <T = Promise<AsyncIterator<CheckSubscription>>>(args?: {
+    where?: CheckWhereInput;
+    orderBy?: CheckOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   team: <T = TeamSubscription>() => T;
+}
+
+export interface AggregateCliAuthSession {
+  count: Int;
+}
+
+export interface AggregateCliAuthSessionPromise
+  extends Promise<AggregateCliAuthSession>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCliAuthSessionSubscription
+  extends Promise<AsyncIterator<AggregateCliAuthSession>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface RepoSubscriptionPayload {
+  mutation: MutationType;
+  node: Repo;
+  updatedFields: String[];
+  previousValues: RepoPreviousValues;
+}
+
+export interface RepoSubscriptionPayloadPromise
+  extends Promise<RepoSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RepoPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RepoPreviousValuesPromise>() => T;
+}
+
+export interface RepoSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RepoSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RepoSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RepoPreviousValuesSubscription>() => T;
+}
+
+export interface TeamEdge {
+  node: Team;
+  cursor: String;
+}
+
+export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
+  node: <T = TeamPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TeamEdgeSubscription
+  extends Promise<AsyncIterator<TeamEdge>>,
+    Fragmentable {
+  node: <T = TeamSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RepoConnection {
+  pageInfo: PageInfo;
+  edges: RepoEdge[];
+}
+
+export interface RepoConnectionPromise
+  extends Promise<RepoConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RepoEdge>>() => T;
+  aggregate: <T = AggregateRepoPromise>() => T;
+}
+
+export interface RepoConnectionSubscription
+  extends Promise<AsyncIterator<RepoConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RepoEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRepoSubscription>() => T;
+}
+
+export interface SamplePreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  name: String;
+}
+
+export interface SamplePreviousValuesPromise
+  extends Promise<SamplePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+}
+
+export interface SamplePreviousValuesSubscription
+  extends Promise<AsyncIterator<SamplePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SampleSubscriptionPayload {
+  mutation: MutationType;
+  node: Sample;
+  updatedFields: String[];
+  previousValues: SamplePreviousValues;
+}
+
+export interface SampleSubscriptionPayloadPromise
+  extends Promise<SampleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SamplePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SamplePreviousValuesPromise>() => T;
+}
+
+export interface SampleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SampleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SampleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SamplePreviousValuesSubscription>() => T;
 }
 
 export interface User {
@@ -2884,900 +3871,6 @@ export interface UserSubscription
   }) => T;
 }
 
-export interface Repo {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  owner: String;
-  name: String;
-}
-
-export interface RepoPromise extends Promise<Repo>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  owner: () => Promise<String>;
-  name: () => Promise<String>;
-  checks: <T = FragmentableArray<Check>>(args?: {
-    where?: CheckWhereInput;
-    orderBy?: CheckOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  team: <T = TeamPromise>() => T;
-}
-
-export interface RepoSubscription
-  extends Promise<AsyncIterator<Repo>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  owner: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  checks: <T = Promise<AsyncIterator<CheckSubscription>>>(args?: {
-    where?: CheckWhereInput;
-    orderBy?: CheckOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  team: <T = TeamSubscription>() => T;
-}
-
-export interface CheckConnection {
-  pageInfo: PageInfo;
-  edges: CheckEdge[];
-}
-
-export interface CheckConnectionPromise
-  extends Promise<CheckConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CheckEdge>>() => T;
-  aggregate: <T = AggregateCheckPromise>() => T;
-}
-
-export interface CheckConnectionSubscription
-  extends Promise<AsyncIterator<CheckConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CheckEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCheckSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CheckEdge {
-  node: Check;
-  cursor: String;
-}
-
-export interface CheckEdgePromise extends Promise<CheckEdge>, Fragmentable {
-  node: <T = CheckPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CheckEdgeSubscription
-  extends Promise<AsyncIterator<CheckEdge>>,
-    Fragmentable {
-  node: <T = CheckSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateCheck {
-  count: Int;
-}
-
-export interface AggregateCheckPromise
-  extends Promise<AggregateCheck>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCheckSubscription
-  extends Promise<AsyncIterator<AggregateCheck>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CliAuthSession {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  expiresAt: DateTimeOutput;
-}
-
-export interface CliAuthSessionPromise
-  extends Promise<CliAuthSession>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  expiresAt: () => Promise<DateTimeOutput>;
-  authenticatedUser: <T = UserPromise>() => T;
-}
-
-export interface CliAuthSessionSubscription
-  extends Promise<AsyncIterator<CliAuthSession>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  authenticatedUser: <T = UserSubscription>() => T;
-}
-
-export interface CliAuthSessionConnection {
-  pageInfo: PageInfo;
-  edges: CliAuthSessionEdge[];
-}
-
-export interface CliAuthSessionConnectionPromise
-  extends Promise<CliAuthSessionConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CliAuthSessionEdge>>() => T;
-  aggregate: <T = AggregateCliAuthSessionPromise>() => T;
-}
-
-export interface CliAuthSessionConnectionSubscription
-  extends Promise<AsyncIterator<CliAuthSessionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CliAuthSessionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCliAuthSessionSubscription>() => T;
-}
-
-export interface CliAuthSessionEdge {
-  node: CliAuthSession;
-  cursor: String;
-}
-
-export interface CliAuthSessionEdgePromise
-  extends Promise<CliAuthSessionEdge>,
-    Fragmentable {
-  node: <T = CliAuthSessionPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CliAuthSessionEdgeSubscription
-  extends Promise<AsyncIterator<CliAuthSessionEdge>>,
-    Fragmentable {
-  node: <T = CliAuthSessionSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateCliAuthSession {
-  count: Int;
-}
-
-export interface AggregateCliAuthSessionPromise
-  extends Promise<AggregateCliAuthSession>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCliAuthSessionSubscription
-  extends Promise<AsyncIterator<AggregateCliAuthSession>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ComponentConnection {
-  pageInfo: PageInfo;
-  edges: ComponentEdge[];
-}
-
-export interface ComponentConnectionPromise
-  extends Promise<ComponentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ComponentEdge>>() => T;
-  aggregate: <T = AggregateComponentPromise>() => T;
-}
-
-export interface ComponentConnectionSubscription
-  extends Promise<AsyncIterator<ComponentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ComponentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateComponentSubscription>() => T;
-}
-
-export interface ComponentEdge {
-  node: Component;
-  cursor: String;
-}
-
-export interface ComponentEdgePromise
-  extends Promise<ComponentEdge>,
-    Fragmentable {
-  node: <T = ComponentPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ComponentEdgeSubscription
-  extends Promise<AsyncIterator<ComponentEdge>>,
-    Fragmentable {
-  node: <T = ComponentSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateComponent {
-  count: Int;
-}
-
-export interface AggregateComponentPromise
-  extends Promise<AggregateComponent>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateComponentSubscription
-  extends Promise<AsyncIterator<AggregateComponent>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MembershipConnection {
-  pageInfo: PageInfo;
-  edges: MembershipEdge[];
-}
-
-export interface MembershipConnectionPromise
-  extends Promise<MembershipConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MembershipEdge>>() => T;
-  aggregate: <T = AggregateMembershipPromise>() => T;
-}
-
-export interface MembershipConnectionSubscription
-  extends Promise<AsyncIterator<MembershipConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMembershipSubscription>() => T;
-}
-
-export interface MembershipEdge {
-  node: Membership;
-  cursor: String;
-}
-
-export interface MembershipEdgePromise
-  extends Promise<MembershipEdge>,
-    Fragmentable {
-  node: <T = MembershipPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MembershipEdgeSubscription
-  extends Promise<AsyncIterator<MembershipEdge>>,
-    Fragmentable {
-  node: <T = MembershipSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateMembership {
-  count: Int;
-}
-
-export interface AggregateMembershipPromise
-  extends Promise<AggregateMembership>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMembershipSubscription
-  extends Promise<AsyncIterator<AggregateMembership>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface RenderConnection {
-  pageInfo: PageInfo;
-  edges: RenderEdge[];
-}
-
-export interface RenderConnectionPromise
-  extends Promise<RenderConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RenderEdge>>() => T;
-  aggregate: <T = AggregateRenderPromise>() => T;
-}
-
-export interface RenderConnectionSubscription
-  extends Promise<AsyncIterator<RenderConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RenderEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRenderSubscription>() => T;
-}
-
-export interface RenderEdge {
-  node: Render;
-  cursor: String;
-}
-
-export interface RenderEdgePromise extends Promise<RenderEdge>, Fragmentable {
-  node: <T = RenderPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RenderEdgeSubscription
-  extends Promise<AsyncIterator<RenderEdge>>,
-    Fragmentable {
-  node: <T = RenderSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateRender {
-  count: Int;
-}
-
-export interface AggregateRenderPromise
-  extends Promise<AggregateRender>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateRenderSubscription
-  extends Promise<AsyncIterator<AggregateRender>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface RepoConnection {
-  pageInfo: PageInfo;
-  edges: RepoEdge[];
-}
-
-export interface RepoConnectionPromise
-  extends Promise<RepoConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RepoEdge>>() => T;
-  aggregate: <T = AggregateRepoPromise>() => T;
-}
-
-export interface RepoConnectionSubscription
-  extends Promise<AsyncIterator<RepoConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RepoEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRepoSubscription>() => T;
-}
-
-export interface RepoEdge {
-  node: Repo;
-  cursor: String;
-}
-
-export interface RepoEdgePromise extends Promise<RepoEdge>, Fragmentable {
-  node: <T = RepoPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RepoEdgeSubscription
-  extends Promise<AsyncIterator<RepoEdge>>,
-    Fragmentable {
-  node: <T = RepoSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateRepo {
-  count: Int;
-}
-
-export interface AggregateRepoPromise
-  extends Promise<AggregateRepo>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateRepoSubscription
-  extends Promise<AsyncIterator<AggregateRepo>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface SampleConnection {
-  pageInfo: PageInfo;
-  edges: SampleEdge[];
-}
-
-export interface SampleConnectionPromise
-  extends Promise<SampleConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SampleEdge>>() => T;
-  aggregate: <T = AggregateSamplePromise>() => T;
-}
-
-export interface SampleConnectionSubscription
-  extends Promise<AsyncIterator<SampleConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SampleEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSampleSubscription>() => T;
-}
-
-export interface SampleEdge {
-  node: Sample;
-  cursor: String;
-}
-
-export interface SampleEdgePromise extends Promise<SampleEdge>, Fragmentable {
-  node: <T = SamplePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface SampleEdgeSubscription
-  extends Promise<AsyncIterator<SampleEdge>>,
-    Fragmentable {
-  node: <T = SampleSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateSample {
-  count: Int;
-}
-
-export interface AggregateSamplePromise
-  extends Promise<AggregateSample>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSampleSubscription
-  extends Promise<AsyncIterator<AggregateSample>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TeamConnection {
-  pageInfo: PageInfo;
-  edges: TeamEdge[];
-}
-
-export interface TeamConnectionPromise
-  extends Promise<TeamConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TeamEdge>>() => T;
-  aggregate: <T = AggregateTeamPromise>() => T;
-}
-
-export interface TeamConnectionSubscription
-  extends Promise<AsyncIterator<TeamConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTeamSubscription>() => T;
-}
-
-export interface TeamEdge {
-  node: Team;
-  cursor: String;
-}
-
-export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
-  node: <T = TeamPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TeamEdgeSubscription
-  extends Promise<AsyncIterator<TeamEdge>>,
-    Fragmentable {
-  node: <T = TeamSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateTeam {
-  count: Int;
-}
-
-export interface AggregateTeamPromise
-  extends Promise<AggregateTeam>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTeamSubscription
-  extends Promise<AsyncIterator<AggregateTeam>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface CheckSubscriptionPayload {
-  mutation: MutationType;
-  node: Check;
-  updatedFields: String[];
-  previousValues: CheckPreviousValues;
-}
-
-export interface CheckSubscriptionPayloadPromise
-  extends Promise<CheckSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CheckPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CheckPreviousValuesPromise>() => T;
-}
-
-export interface CheckSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CheckSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CheckSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CheckPreviousValuesSubscription>() => T;
-}
-
-export interface CheckPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  githubCheckId?: Int;
-  branch: String;
-  commit: String;
-}
-
-export interface CheckPreviousValuesPromise
-  extends Promise<CheckPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  githubCheckId: () => Promise<Int>;
-  branch: () => Promise<String>;
-  commit: () => Promise<String>;
-}
-
-export interface CheckPreviousValuesSubscription
-  extends Promise<AsyncIterator<CheckPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  githubCheckId: () => Promise<AsyncIterator<Int>>;
-  branch: () => Promise<AsyncIterator<String>>;
-  commit: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CliAuthSessionSubscriptionPayload {
-  mutation: MutationType;
-  node: CliAuthSession;
-  updatedFields: String[];
-  previousValues: CliAuthSessionPreviousValues;
-}
-
-export interface CliAuthSessionSubscriptionPayloadPromise
-  extends Promise<CliAuthSessionSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CliAuthSessionPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CliAuthSessionPreviousValuesPromise>() => T;
-}
-
-export interface CliAuthSessionSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CliAuthSessionSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CliAuthSessionSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CliAuthSessionPreviousValuesSubscription>() => T;
-}
-
-export interface CliAuthSessionPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  expiresAt: DateTimeOutput;
-}
-
-export interface CliAuthSessionPreviousValuesPromise
-  extends Promise<CliAuthSessionPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  expiresAt: () => Promise<DateTimeOutput>;
-}
-
-export interface CliAuthSessionPreviousValuesSubscription
-  extends Promise<AsyncIterator<CliAuthSessionPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  expiresAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface ComponentSubscriptionPayload {
-  mutation: MutationType;
-  node: Component;
-  updatedFields: String[];
-  previousValues: ComponentPreviousValues;
-}
-
-export interface ComponentSubscriptionPayloadPromise
-  extends Promise<ComponentSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ComponentPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ComponentPreviousValuesPromise>() => T;
-}
-
-export interface ComponentSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ComponentSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ComponentSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ComponentPreviousValuesSubscription>() => T;
-}
-
-export interface ComponentPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface ComponentPreviousValuesPromise
-  extends Promise<ComponentPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-}
-
-export interface ComponentPreviousValuesSubscription
-  extends Promise<AsyncIterator<ComponentPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface MembershipSubscriptionPayload {
-  mutation: MutationType;
-  node: Membership;
-  updatedFields: String[];
-  previousValues: MembershipPreviousValues;
-}
-
-export interface MembershipSubscriptionPayloadPromise
-  extends Promise<MembershipSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MembershipPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MembershipPreviousValuesPromise>() => T;
-}
-
-export interface MembershipSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MembershipSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MembershipSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MembershipPreviousValuesSubscription>() => T;
-}
-
-export interface MembershipPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  role: Role;
-}
-
-export interface MembershipPreviousValuesPromise
-  extends Promise<MembershipPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  role: () => Promise<Role>;
-}
-
-export interface MembershipPreviousValuesSubscription
-  extends Promise<AsyncIterator<MembershipPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  role: () => Promise<AsyncIterator<Role>>;
-}
-
-export interface RenderSubscriptionPayload {
-  mutation: MutationType;
-  node: Render;
-  updatedFields: String[];
-  previousValues: RenderPreviousValues;
-}
-
-export interface RenderSubscriptionPayloadPromise
-  extends Promise<RenderSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = RenderPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = RenderPreviousValuesPromise>() => T;
-}
-
-export interface RenderSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<RenderSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = RenderSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = RenderPreviousValuesSubscription>() => T;
-}
-
-export interface RenderPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  imageUrl?: String;
-  html: String;
-  branch: String;
-  commit: String;
-}
-
-export interface RenderPreviousValuesPromise
-  extends Promise<RenderPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  imageUrl: () => Promise<String>;
-  html: () => Promise<String>;
-  branch: () => Promise<String>;
-  commit: () => Promise<String>;
-}
-
-export interface RenderPreviousValuesSubscription
-  extends Promise<AsyncIterator<RenderPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  imageUrl: () => Promise<AsyncIterator<String>>;
-  html: () => Promise<AsyncIterator<String>>;
-  branch: () => Promise<AsyncIterator<String>>;
-  commit: () => Promise<AsyncIterator<String>>;
-}
-
-export interface RepoSubscriptionPayload {
-  mutation: MutationType;
-  node: Repo;
-  updatedFields: String[];
-  previousValues: RepoPreviousValues;
-}
-
-export interface RepoSubscriptionPayloadPromise
-  extends Promise<RepoSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = RepoPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = RepoPreviousValuesPromise>() => T;
-}
-
-export interface RepoSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<RepoSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = RepoSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = RepoPreviousValuesSubscription>() => T;
-}
-
 export interface RepoPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
@@ -3806,178 +3899,87 @@ export interface RepoPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface SampleSubscriptionPayload {
-  mutation: MutationType;
+export interface AggregateMembership {
+  count: Int;
+}
+
+export interface AggregateMembershipPromise
+  extends Promise<AggregateMembership>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMembershipSubscription
+  extends Promise<AsyncIterator<AggregateMembership>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SampleEdge {
   node: Sample;
-  updatedFields: String[];
-  previousValues: SamplePreviousValues;
+  cursor: String;
 }
 
-export interface SampleSubscriptionPayloadPromise
-  extends Promise<SampleSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
+export interface SampleEdgePromise extends Promise<SampleEdge>, Fragmentable {
   node: <T = SamplePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = SamplePreviousValuesPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface SampleSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<SampleSubscriptionPayload>>,
+export interface SampleEdgeSubscription
+  extends Promise<AsyncIterator<SampleEdge>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = SampleSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = SamplePreviousValuesSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface SamplePreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface SamplePreviousValuesPromise
-  extends Promise<SamplePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-}
-
-export interface SamplePreviousValuesSubscription
-  extends Promise<AsyncIterator<SamplePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TeamSubscriptionPayload {
-  mutation: MutationType;
-  node: Team;
-  updatedFields: String[];
-  previousValues: TeamPreviousValues;
-}
-
-export interface TeamSubscriptionPayloadPromise
-  extends Promise<TeamSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TeamPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TeamPreviousValuesPromise>() => T;
-}
-
-export interface TeamSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TeamSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TeamSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TeamPreviousValuesSubscription>() => T;
-}
-
-export interface TeamPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  name: String;
-}
-
-export interface TeamPreviousValuesPromise
-  extends Promise<TeamPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-}
-
-export interface TeamPreviousValuesSubscription
-  extends Promise<AsyncIterator<TeamPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
+export interface UserEdge {
   node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
+  cursor: String;
 }
 
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
   node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  email: String;
-  name: String;
-  githubAccessToken?: String;
-  figmaAccessToken?: String;
-  figmaRefreshToken?: String;
+export interface ComponentEdge {
+  node: Component;
+  cursor: String;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface ComponentEdgePromise
+  extends Promise<ComponentEdge>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  githubAccessToken: () => Promise<String>;
-  figmaAccessToken: () => Promise<String>;
-  figmaRefreshToken: () => Promise<String>;
+  node: <T = ComponentPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface ComponentEdgeSubscription
+  extends Promise<AsyncIterator<ComponentEdge>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  githubAccessToken: () => Promise<AsyncIterator<String>>;
-  figmaAccessToken: () => Promise<AsyncIterator<String>>;
-  figmaRefreshToken: () => Promise<AsyncIterator<String>>;
+  node: <T = ComponentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+export type Long = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number;
 
 /*
 DateTime scalar input type, allowing Date
@@ -3990,16 +3992,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
-export type String = string;
+export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-export type Long = string;
 
 /**
  * Model Metadata

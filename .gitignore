@@ -2,7 +2,7 @@
 /public/renders
 /public/dist
 /dist
-/ui/**/samples.tsx
+/packages/sdk/.rpt2_cache/
 
 # misc
 .DS_Store
