@@ -15,5 +15,4 @@ export default async function callFunction(functionName: string, payload: any) {
     const messageId = await pubsub.topic(topic).publish(data)
     console.info(`Published ${topic}/${messageId}`)
   }
-  absolutePath
 }
