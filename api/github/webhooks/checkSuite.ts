@@ -1,26 +1,17 @@
-import { PubSub } from '@google-cloud/pubsub'
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
+import callFunction from 'api/lib/callFunction'
 import { findOne } from 'api/lib/data'
 import { absoluteUrl } from 'api/lib/url'
 import { Check, prisma, Repo } from 'api/prisma'
 import { Context, Octokit } from 'probot'
 import { libraryRoute } from 'ui/lib/routes'
 
-const pubsub = new PubSub()
-const sampleRequestsTopic = 'sample-requests'
-
 interface Payload {
   hello: string
   checkId: string
 }
 
-async function publishSampleRequest(payload: Payload) {
-  const data = Buffer.from(JSON.stringify(payload))
-  const messageId = await pubsub.topic(sampleRequestsTopic).publish(data)
-  console.info(`Published ${sampleRequestsTopic}/${messageId}`)
-}
-
-export default async function({
+export default async function checkSuite({
   payload,
   github,
 }: Context<WebhookPayloadCheckSuite>) {
@@ -85,10 +76,10 @@ export default async function({
       },
     })
 
-    await publishSampleRequest({
+    await callFunction('sampler', {
       hello: 'GitHub',
       checkId: check.id,
-    })
+    } as Payload)
 
     console.log(`✔️ ${repo.owner}/${repo.name}#${check.branch}/${check.commit}`)
   }
