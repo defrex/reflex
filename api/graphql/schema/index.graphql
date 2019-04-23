@@ -1,6 +1,7 @@
 #import Query.*, Mutation.* from "./user.graphql"
 #import Query.*, Mutation.* from "./team.graphql"
 #import Mutation.* from "./component.graphql"
+#import Query.* from "./check.graphql"
 
 type Query {
   hello: String!

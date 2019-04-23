@@ -8,6 +8,15 @@ export type Scalars = {
   Float: number
 }
 
+export type Check = {
+  id: Scalars['ID']
+  githubCheckId?: Maybe<Scalars['Int']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+  repoSource?: Maybe<Scalars['String']>
+  repo?: Maybe<Repo>
+}
+
 export type CliAuthSession = {
   url: Scalars['String']
   cliAuthToken: Scalars['String']
@@ -122,6 +131,7 @@ export type Query = {
   cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+  check?: Maybe<Check>
 }
 
 export type QueryCliAuthSessionArgs = {
@@ -129,6 +139,10 @@ export type QueryCliAuthSessionArgs = {
 }
 
 export type QueryTeamArgs = {
+  id: Scalars['ID']
+}
+
+export type QueryCheckArgs = {
   id: Scalars['ID']
 }
 
@@ -140,6 +154,13 @@ export type Render = {
   branch: Scalars['String']
   commit: Scalars['String']
   sample: Sample
+}
+
+export type Repo = {
+  id: Scalars['ID']
+  owner: Scalars['String']
+  name: Scalars['String']
+  checks: Array<Maybe<Check>>
 }
 
 export type Sample = {
@@ -174,6 +195,8 @@ import {
   Sample,
   Render,
   CliAuthSession,
+  Check,
+  Repo,
 } from 'api/prisma'
 import { ReflexContex } from 'api/graphql/Context'
 
@@ -245,6 +268,15 @@ export type DirectiveResolverFn<
   context: TContext,
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
+
+export type CheckResolvers<Context = ReflexContex, ParentType = Check> = {
+  id?: Resolver<Scalars['ID'], ParentType, Context>
+  githubCheckId?: Resolver<Maybe<Scalars['Int']>, ParentType, Context>
+  branch?: Resolver<Scalars['String'], ParentType, Context>
+  commit?: Resolver<Scalars['String'], ParentType, Context>
+  repoSource?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  repo?: Resolver<Maybe<Repo>, ParentType, Context>
+}
 
 export type CliAuthSessionResolvers<
   Context = ReflexContex,
@@ -379,6 +411,7 @@ export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
   >
   teams?: Resolver<Array<Team>, ParentType, Context>
   team?: Resolver<Maybe<Team>, ParentType, Context, QueryTeamArgs>
+  check?: Resolver<Maybe<Check>, ParentType, Context, QueryCheckArgs>
 }
 
 export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
@@ -389,6 +422,13 @@ export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
   branch?: Resolver<Scalars['String'], ParentType, Context>
   commit?: Resolver<Scalars['String'], ParentType, Context>
   sample?: Resolver<Sample, ParentType, Context>
+}
+
+export type RepoResolvers<Context = ReflexContex, ParentType = Repo> = {
+  id?: Resolver<Scalars['ID'], ParentType, Context>
+  owner?: Resolver<Scalars['String'], ParentType, Context>
+  name?: Resolver<Scalars['String'], ParentType, Context>
+  checks?: Resolver<Array<Maybe<Check>>, ParentType, Context>
 }
 
 export type SampleResolvers<Context = ReflexContex, ParentType = Sample> = {
@@ -414,6 +454,7 @@ export type UserResolvers<Context = ReflexContex, ParentType = User> = {
 }
 
 export type Resolvers<Context = ReflexContex> = {
+  Check?: CheckResolvers<Context>
   CliAuthSession?: CliAuthSessionResolvers<Context>
   Component?: ComponentResolvers<Context>
   Config?: ConfigResolvers<Context>
@@ -428,6 +469,7 @@ export type Resolvers<Context = ReflexContex> = {
   MutationStatus?: MutationStatusResolvers<Context>
   Query?: QueryResolvers<Context>
   Render?: RenderResolvers<Context>
+  Repo?: RepoResolvers<Context>
   Sample?: SampleResolvers<Context>
   Team?: TeamResolvers<Context>
   User?: UserResolvers<Context>

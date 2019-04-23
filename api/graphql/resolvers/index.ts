@@ -1,4 +1,5 @@
 import { Context } from 'api/graphql/Context'
+import Check from 'api/graphql/resolvers/Check'
 import CliAuthSession from 'api/graphql/resolvers/CliAuthSession'
 import Component from 'api/graphql/resolvers/Component'
 import Mutation from 'api/graphql/resolvers/Mutation'
@@ -16,4 +17,5 @@ export default {
   Component,
   Sample,
   CliAuthSession,
+  Check,
 } as Resolvers<Context>

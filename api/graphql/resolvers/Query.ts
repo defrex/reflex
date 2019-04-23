@@ -1,9 +1,11 @@
+import { AuthorizationError } from 'api/exceptions'
 import { authUrl as figmaAuthUrl } from 'api/figma/auth'
 import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { Context } from 'api/graphql/Context'
 import { QueryResolvers } from 'api/graphql/types'
 import { authSessionForToken } from 'api/lib/cliAuth'
 import { absoluteUrl } from 'api/lib/url'
+import { userInTeam } from 'api/lib/user'
 import { CliAuthSession, prisma, Team } from 'api/prisma'
 
 export default {
@@ -41,5 +43,23 @@ export default {
 
   async cliAuthSession(_parent, args): Promise<CliAuthSession | void> {
     return authSessionForToken(args.cliAuthToken)
+  },
+
+  async check(_parent, args, ctx) {
+    const { id } = args
+    const { user } = ctx
+    if (!user) {
+      throw new AuthorizationError()
+    }
+
+    const team = await prisma
+      .check({ id })
+      .repo()
+      .team()
+    if (!userInTeam(user, team)) {
+      throw new AuthorizationError()
+    }
+
+    return prisma.check({ id })
   },
 } as QueryResolvers<Context>

@@ -16,8 +16,11 @@ export async function main(message: { data: string }) {
   const client = new ReflexClient(payload.authToken)
 
   const response = await client.request(gql`
-    query {
+    query SampleCheck($checkId: String!) {
       hello
+      check(id: $checkId) {
+        repoSource
+      }
     }
   `)
   console.log(response)

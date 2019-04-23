@@ -8,6 +8,15 @@ export type Scalars = {
   Float: number
 }
 
+export type Check = {
+  id: Scalars['ID']
+  githubCheckId?: Maybe<Scalars['Int']>
+  branch: Scalars['String']
+  commit: Scalars['String']
+  repoSource?: Maybe<Scalars['String']>
+  repo?: Maybe<Repo>
+}
+
 export type CliAuthSession = {
   url: Scalars['String']
   cliAuthToken: Scalars['String']
@@ -122,6 +131,7 @@ export type Query = {
   cliAuthSession?: Maybe<CliAuthSession>
   teams: Array<Team>
   team?: Maybe<Team>
+  check?: Maybe<Check>
 }
 
 export type QueryCliAuthSessionArgs = {
@@ -129,6 +139,10 @@ export type QueryCliAuthSessionArgs = {
 }
 
 export type QueryTeamArgs = {
+  id: Scalars['ID']
+}
+
+export type QueryCheckArgs = {
   id: Scalars['ID']
 }
 
@@ -140,6 +154,13 @@ export type Render = {
   branch: Scalars['String']
   commit: Scalars['String']
   sample: Sample
+}
+
+export type Repo = {
+  id: Scalars['ID']
+  owner: Scalars['String']
+  name: Scalars['String']
+  checks: Array<Maybe<Check>>
 }
 
 export type Sample = {
