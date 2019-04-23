@@ -20,5 +20,5 @@ export async function main(message: { data: string }) {
       hello
     }
   `)
-  console.log(client)
+  console.log(response)
 }
