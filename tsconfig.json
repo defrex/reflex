@@ -1,5 +1,12 @@
 {
-  "exclude": ["node_modules", "dist/*", "public/dist/*", "local/*"],
+  "exclude": [
+    "node_modules",
+    "dist/*",
+    "public/dist/*",
+    "local/*",
+    "packages/*",
+    "functions/*"
+  ],
   "compilerOptions": {
     "jsx": "react",
     "target": "es2017",

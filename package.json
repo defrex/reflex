@@ -1,10 +1,10 @@
 {
-  "name": "reflex",
+  "name": "@reflexui/reflex",
   "version": "0.1.0",
+  "private": true,
   "main": "./bin/start.js",
   "author": "Aron Jones",
   "license": "RESERVED",
-  "private": true,
   "engines": {
     "node": "11.13.0"
   },
@@ -28,7 +28,7 @@
     "@graphql-codegen/typescript-react-apollo": "^1.0.0",
     "@graphql-codegen/typescript-resolvers": "^1.0.0",
     "@octokit/rest": "^16.17.0",
-    "@reflexui/sampler": "^0.2.0",
+    "@reflexui/sdk": "^1.0.0-alpha.2",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.16.1",
     "@types/graphql": "^14.0.7",
@@ -97,7 +97,6 @@
     "ora": "^3.4.0",
     "prisma-client-lib": "^1.29.2",
     "probot": "^9.1.1",
-    "puppeteer": "^1.14.0",
     "react": "^16.8.3",
     "react-apollo": "^2.5.2",
     "react-dom": "^16.8.6",
@@ -117,5 +116,12 @@
     "webpack-hot-server-middleware": "^0.6.0",
     "webpack-node-externals": "^1.7.2",
     "webpack-stats-plugin": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.4.32",
+    "@types/minimist": "^1.2.0",
+    "adm-zip": "^0.4.13",
+    "graphql-typed-client": "^1.5.1",
+    "lerna": "^3.13.3"
   }
 }

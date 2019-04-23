@@ -1,4 +1,4 @@
-import { sampler, SampleRenderFn } from '@reflexui/sampler'
+import { sampler, SampleRenderFn } from '@reflexui/sdk'
 import { absolutePath } from 'api/lib/path'
 import ReactDomServer from 'react-dom/server'
 import { getStyles } from 'typestyle'
