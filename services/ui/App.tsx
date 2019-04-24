@@ -1,9 +1,8 @@
-/// <reference types="../@types/svgs" />
+/// <reference types="./types/svgs" />
+import { NormalizedCacheObject } from 'apollo-cache-inmemory'
+import { ApolloClient } from 'apollo-client'
 import React, { PureComponent } from 'react'
 import { ApolloProvider } from 'react-apollo'
-import { ApolloClient } from 'apollo-client'
-import { NormalizedCacheObject } from 'apollo-cache-inmemory'
-
 import 'ui/lib/globalStyles'
 import Routes from 'ui/Routes'
 

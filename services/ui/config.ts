@@ -7,7 +7,7 @@ export default {
   ssl: process.env.SSL === 'true',
   domain: process.env.DOMAIN!,
   port: parseInt(process.env.PORT!),
-  graphqlEndpoint: '/api/graphql',
+  graphqlEndpoint: process.env.REFLEX_ENDPOINT,
   env: process.env.ENV as Environment,
   googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
 }

@@ -1,9 +1,15 @@
-/// <reference types="./@types/webpack-stats-plugin" />
-import config from 'api/config'
-import { absolutePath } from 'api/lib/path'
-import webpack from 'webpack'
-import nodeExternals from 'webpack-node-externals'
-import { StatsWriterPlugin } from 'webpack-stats-plugin'
+const { resolve } = require('path')
+const webpack = require('webpack')
+const nodeExternals = require('webpack-node-externals')
+const { StatsWriterPlugin } = require('webpack-stats-plugin')
+
+const config = {
+  environment: process.env.NODE_ENV,
+}
+
+function absolutePath(path) {
+  return resolve(`${__dirname}/${path}`)
+}
 
 const base = {
   mode: config.environment,
@@ -18,7 +24,7 @@ const base = {
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     alias: {
-      ui: absolutePath('./ui'),
+      ui: absolutePath('.'),
     },
   },
 
@@ -27,6 +33,9 @@ const base = {
       {
         test: /\.tsx?$/,
         loader: 'awesome-typescript-loader',
+        options: {
+          configFileName: absolutePath('tsconfig.json'),
+        },
       },
       {
         test: /\.(png|jpg|gif|eot|ttf|woff|woff2|ico|xml|manifest|svg)$/,
@@ -36,18 +45,18 @@ const base = {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT']),
+    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT', 'REFLEX_ENDPOINT']),
     new webpack.DefinePlugin({
       'process.env.ENV': JSON.stringify(config.environment),
       'process.env.GOOGLE_ANALYTICS_ID': JSON.stringify(
-        config.googleAnalyticsId,
+        process.env.GOOGLE_ANALYTICS_ID,
       ),
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 }
 
-export const client = {
+module.exports.client = {
   ...base,
 
   name: 'client',
@@ -58,7 +67,7 @@ export const client = {
       ...(config.environment === 'development'
         ? ['webpack-hot-middleware/client']
         : []),
-      absolutePath('./ui/client'),
+      absolutePath('client'),
     ],
   },
 
@@ -71,15 +80,15 @@ export const client = {
     ...base.plugins,
     new StatsWriterPlugin({ filename: 'client-stats.json' }),
   ],
-} as webpack.Configuration
+}
 
-export const server = {
+module.exports.server = {
   ...base,
 
   name: 'server',
   target: 'node',
 
-  entry: { server: absolutePath('./ui/server') },
+  entry: { server: absolutePath('server') },
 
   output: {
     ...base.output,
@@ -93,6 +102,4 @@ export const server = {
     ...base.plugins,
     new StatsWriterPlugin({ filename: 'server-stats.json' }),
   ],
-} as webpack.Configuration
-
-export default [client, server]
+}

@@ -1,10 +1,11 @@
 #!/bin/env node
-require('./lib/setup')
+const { resolve } = require('path')
+process.chdir(resolve(`${__dirname}/..`))
 
 const webpack = require('webpack')
-const config = require('../webpack.config').default
+const config = require('../webpack.config')
 
-webpack(config, async (err, stats) => {
+webpack([config.client, config.server], async (err, stats) => {
   if (err) {
     console.error(err.stack || err)
     if (err.details) {

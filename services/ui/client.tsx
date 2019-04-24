@@ -1,14 +1,12 @@
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloClient } from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
 import React from 'react'
 import ReactDOM, { Renderer } from 'react-dom'
-import { setStylesTarget } from 'typestyle'
 import { BrowserRouter } from 'react-router-dom'
-
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
-
-import { absoluteUrl } from 'ui/lib/url'
+import { setStylesTarget } from 'typestyle'
 import ReflexApp from 'ui/App'
+import { absoluteUrl } from 'ui/lib/url'
 
 const styles = document.getElementById('styles')
 if (styles) setStylesTarget(styles)
@@ -18,7 +16,7 @@ const apolloClient = new ApolloClient({
     uri: absoluteUrl('/api/graphql'),
     credentials: 'same-origin',
   }),
-  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+  cache: new InMemoryCache().restore((window as any).__APOLLO_STATE__),
 })
 
 async function render(renderFunction: Renderer, App: typeof ReflexApp) {

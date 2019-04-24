@@ -1,6 +1,6 @@
 import { Location } from 'history'
 import React from 'react'
-import { RouterContext } from 'ui/types'
+import { RouterContext } from 'ui/types/RouterContext'
 import styles from './styles'
 
 interface NotFoundProps {
