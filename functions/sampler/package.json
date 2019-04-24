@@ -1,6 +1,6 @@
 {
   "name": "@reflexui/sampler",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "private": true,
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
@@ -38,7 +38,7 @@
   "dependencies": {
     "@google-cloud/pubsub": "^0.28.1",
     "@google-cloud/storage": "^2.5.0",
-    "@reflexui/sdk": "^1.0.0-alpha.2",
+    "@reflexui/sdk": "^1.0.0-alpha.3",
     "gql-tag": "^1.0.1"
   }
 }
