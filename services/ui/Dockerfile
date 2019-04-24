@@ -1,12 +1,10 @@
 FROM node:10-alpine
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY yarn.lock ./
-
+COPY package.json yarn.lock ./
 RUN yarn install
 
-COPY ./ ./
+COPY . .
 RUN yarn build
 
 CMD ["yarn", "start"]

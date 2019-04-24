@@ -19,6 +19,7 @@
     "apollo-link-schema": "^1.2.2",
     "apollo-server-express": "^2.4.8",
     "core-js": "^3.0.0",
+    "express": "^4.16.4",
     "graphql": "^0.13.0",
     "graphql-import": "^0.7.1",
     "graphql-tag": "^2.10.1",
