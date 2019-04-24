@@ -14,8 +14,9 @@
     "gen": "node ./bin/gen.js"
   },
   "_moduleAliases": {
-    "api": "./api",
-    "ui": "./ui"
+    "api": "./services/api",
+    "ui": "./services/ui",
+    "bin": "./bin"
   },
   "dependencies": {
     "@google-cloud/pubsub": "^0.28.1",

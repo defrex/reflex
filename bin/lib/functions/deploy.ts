@@ -1,5 +1,5 @@
-import { absolutePath } from 'api/lib/path'
 import run from 'api/lib/run'
+import absolutePath from 'bin/lib/absolutePath'
 
 export default async function main(functionName: string, uri: string) {
   await run(
