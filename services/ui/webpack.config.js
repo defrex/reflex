@@ -4,7 +4,7 @@ const nodeExternals = require('webpack-node-externals')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 
 const config = {
-  environment: process.env.NODE_ENV,
+  environment: process.env.NODE_ENV || 'production',
 }
 
 function absolutePath(path) {
@@ -45,8 +45,10 @@ const base = {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin(['SSL', 'DOMAIN', 'PORT', 'REFLEX_ENDPOINT']),
     new webpack.DefinePlugin({
+      'process.env.API_ENDPOINT': JSON.stringify(
+        process.env.API_ENDPOINT || 'https://api.reflexui.com/api/graphql',
+      ),
       'process.env.ENV': JSON.stringify(config.environment),
       'process.env.GOOGLE_ANALYTICS_ID': JSON.stringify(
         process.env.GOOGLE_ANALYTICS_ID,

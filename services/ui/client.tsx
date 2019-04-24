@@ -6,14 +6,13 @@ import ReactDOM, { Renderer } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { setStylesTarget } from 'typestyle'
 import ReflexApp from 'ui/App'
-import { absoluteUrl } from 'ui/lib/url'
 
 const styles = document.getElementById('styles')
 if (styles) setStylesTarget(styles)
 
 const apolloClient = new ApolloClient({
   link: new HttpLink({
-    uri: absoluteUrl('/api/graphql'),
+    uri: process.env.API_ENDPOINT,
     credentials: 'same-origin',
   }),
   cache: new InMemoryCache().restore((window as any).__APOLLO_STATE__),

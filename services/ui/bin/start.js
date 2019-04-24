@@ -3,19 +3,14 @@
 const express = require('express')
 const morgan = require('morgan')
 const { resolve } = require('path')
-const webpack = require('webpack')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
-const webpackConfigs = require('../webpack.config')
 
 const config = {
-  environment: process.env.NODE_ENV,
+  environment: process.env.NODE_ENV || 'production',
   port: parseInt(process.env.PORT),
 }
 
 function absolutePath(path) {
-  return resolve(`${__dirname}/${path}`)
+  return resolve(`${__dirname}/../${path}`)
 }
 
 async function main() {
@@ -28,6 +23,12 @@ async function main() {
   app.use(express.static(absolutePath('/public')))
 
   if (config.environment === 'development') {
+    const webpack = require('webpack')
+    const webpackDevMiddleware = require('webpack-dev-middleware')
+    const webpackHotMiddleware = require('webpack-hot-middleware')
+    const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
+    const webpackConfigs = require('../webpack.config')
+
     const compiler = webpack([webpackConfigs.client, webpackConfigs.server])
     app.use(
       webpackDevMiddleware(compiler, {

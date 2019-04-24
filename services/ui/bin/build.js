@@ -16,15 +16,16 @@ webpack([config.client, config.server], async (err, stats) => {
 
   const info = stats.toJson()
 
-  if (stats.hasErrors()) {
-    for (const error of info.errors) {
-      console.error('\n\n', error)
-    }
-  }
-
   if (stats.hasWarnings()) {
     for (const warning of info.warnings) {
       console.warn('\n\n', warning)
     }
+  }
+
+  if (stats.hasErrors()) {
+    for (const error of info.errors) {
+      console.error('\n\n', error)
+    }
+    process.exit(1)
   }
 })

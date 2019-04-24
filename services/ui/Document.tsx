@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react'
-
 import { primary } from 'ui/lib/colors'
-import config from 'ui/config'
 
 export interface Script {
   src?: string
@@ -61,7 +59,7 @@ export default class Document extends PureComponent<DocumentProps> {
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${
-              config.googleAnalyticsId
+              process.env.GOOGLE_ANALYTICS_ID
             }`}
           />
           <script
@@ -70,7 +68,7 @@ export default class Document extends PureComponent<DocumentProps> {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${config.googleAnalyticsId}');
+                gtag('config', '${process.env.GOOGLE_ANALYTICS_ID}');
               `,
             }}
           />

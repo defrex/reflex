@@ -9,7 +9,6 @@ import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { getStyles } from 'typestyle'
 import App from 'ui/App'
-import config from 'ui/config'
 import Document, { Script } from 'ui/Document'
 import { RouterContext } from 'ui/types/RouterContext'
 
@@ -18,7 +17,7 @@ export default ({ clientStats }: { clientStats: any }) =>
     const apollo = new ApolloClient({
       ssrMode: true,
       link: createHttpLink({
-        uri: config.graphqlEndpoint,
+        uri: process.env.API_ENDPOINT,
         fetch: fetch as any,
         headers: req.headers,
       }),
