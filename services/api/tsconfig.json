@@ -13,9 +13,9 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "baseUrl": ".",
+    "baseUrl": "../",
     "paths": {
-      "api/*": ["./*"]
+      "api/*": ["api/*"]
     },
     "typeRoots": ["node_modules/@types", "types"]
   }

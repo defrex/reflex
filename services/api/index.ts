@@ -9,9 +9,7 @@ import morgan from 'morgan'
 export default async function main() {
   const app = express()
 
-  if (config.environment === 'development') {
-    app.use(morgan('dev'))
-  }
+  app.use(morgan(config.environment === 'development' ? 'dev' : 'common'))
 
   app.use(cookieParser())
 
