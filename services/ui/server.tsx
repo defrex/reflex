@@ -12,8 +12,6 @@ import App from 'ui/App'
 import Document, { Script } from 'ui/Document'
 import { RouterContext } from 'ui/types/RouterContext'
 
-console.log('ℹAPI_ENDPOINT', process.env.API_ENDPOINT)
-
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
     const apollo = new ApolloClient({
