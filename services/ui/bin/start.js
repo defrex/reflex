@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('@google-cloud/debug-agent').start()
 const express = require('express')
 const morgan = require('morgan')
 const { resolve } = require('path')

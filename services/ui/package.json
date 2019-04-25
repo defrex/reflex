@@ -11,6 +11,7 @@
     "build": "node ./bin/build.js"
   },
   "dependencies": {
+    "@google-cloud/debug-agent": "^3.1.0",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
     "apollo-link": "^1.2.11",
