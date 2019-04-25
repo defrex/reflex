@@ -24,13 +24,13 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       [
-        'beta'
-        'debug'
-        'source'
-        'upload'
-        '--project=$PROJECT_ID'
-        '--branch=$BRANCH_NAME'
-        '.'
+        'beta',
+        'debug',
+        'source',
+        'upload',
+        '--project=$PROJECT_ID',
+        '--branch=$BRANCH_NAME',
+        '.',
       ]
 images:
   - gcr.io/$PROJECT_ID/${_SERVICE}/$BRANCH_NAME/$SHORT_SHA
