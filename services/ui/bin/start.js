@@ -12,6 +12,7 @@ require('@google-cloud/debug-agent').start({
   },
 })
 
+const ErrorReporting = require('@google-cloud/error-reporting').ErrorReporting
 const express = require('express')
 const morgan = require('morgan')
 const { resolve } = require('path')
@@ -22,6 +23,7 @@ function absolutePath(path) {
 
 async function main() {
   const app = express()
+  const errors = new ErrorReporting()
 
   if (config.environment === 'development') {
     app.use(morgan('dev'))
@@ -66,6 +68,7 @@ async function main() {
     app.get('*', serverRenderer({ clientStats }))
   }
 
+  app.use(errors.express)
   app.listen(config.port, () => {
     console.log(`http://localhost:${config.port}`)
   })
