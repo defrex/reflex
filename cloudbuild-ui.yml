@@ -1,0 +1,19 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/reflex-236915/ui', './services/ui']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/reflex-236915/ui']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'beta',
+        'run',
+        'deploy',
+        'ui',
+        '--image',
+        'gcr.io/reflex-236915/ui',
+        '--region',
+        'us-central1',
+      ]
+images:
+  - gcr.io/reflex-236915/ui
