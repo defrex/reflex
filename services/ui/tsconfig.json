@@ -1,12 +1,9 @@
 {
-  "exclude": [
-    "node_modules",
-    "local/*",
-    "packages/*",
-    "functions/*",
-    "services/*"
-  ],
+  "exclude": ["node_modules", "dist/*", "public/dist/*"],
+  "include": ["./*"],
+  "files": ["server.tsx", "client.tsx"],
   "compilerOptions": {
+    "typeRoots": ["node_modules/@types", "types"],
     "jsx": "react",
     "target": "es2017",
     "lib": ["dom", "es2017", "esnext.asynciterable"],
@@ -22,10 +19,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "api/*": ["./services/api/*"],
-      "ui/*": ["./services/ui/*"],
-      "bin/*": ["./bin/*"]
-    },
-    "typeRoots": ["node_modules/@types", "types"]
+      "ui/*": ["./*"]
+    }
   }
 }

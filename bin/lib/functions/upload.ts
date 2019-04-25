@@ -1,6 +1,6 @@
 import { Storage } from '@google-cloud/storage'
 import Zip from 'adm-zip'
-import { absolutePath } from 'api/lib/path'
+import absolutePath from 'bin/lib/absolutePath'
 import { createHash } from 'crypto'
 import ora from 'ora'
 
