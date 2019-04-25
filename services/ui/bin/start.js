@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 
+const config = {
+  environment: process.env.NODE_ENV || 'production',
+  port: parseInt(process.env.PORT),
+}
+
 require('@google-cloud/debug-agent').start({
   serviceContext: {
     service: 'ui',
-    version: process.env.NODE_ENV || 'production',
+    version: config.environment,
   },
 })
 
 const express = require('express')
 const morgan = require('morgan')
 const { resolve } = require('path')
-
-const config = {
-  environment: process.env.NODE_ENV || 'production',
-  port: parseInt(process.env.PORT),
-}
 
 function absolutePath(path) {
   return resolve(`${__dirname}/../${path}`)
