@@ -47,7 +47,7 @@ const base = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.API_ENDPOINT': JSON.stringify(
-        process.env.API_ENDPOINT || 'https://api.reflexui.com/api/graphql',
+        process.env.API_ENDPOINT || 'https://api.reflexui.com/graphql',
       ),
       'process.env.ENV': JSON.stringify(config.environment),
       'process.env.GOOGLE_ANALYTICS_ID': JSON.stringify(
