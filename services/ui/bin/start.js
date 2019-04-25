@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-require('@google-cloud/debug-agent').start()
+require('@google-cloud/debug-agent').start({
+  serviceContext: {
+    service: 'ui',
+    version: process.env.NODE_ENV || 'production',
+  },
+})
+
 const express = require('express')
 const morgan = require('morgan')
 const { resolve } = require('path')
