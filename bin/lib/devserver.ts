@@ -2,7 +2,6 @@ import absolutePath from 'bin/lib/absolutePath'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
 import colors from 'colors'
-import debounce from 'lodash/debounce'
 import ora from 'ora'
 
 type ProcType = 'api' | 'ui'
@@ -48,7 +47,7 @@ async function spawnProc(type: ProcType): Promise<void> {
       API_ENDPOINT: `http://localhost:${ports.api}/graphql`,
     },
   })
-  procs[type]!.on('exit', () => spinner.fail())
+  procs[type]!.on('exit', () => (spinner.isSpinning ? spinner.fail() : null))
   process.on('exit', () => procs[type] && procs[type]!.kill())
 
   return new Promise((resolve, _reject) => {
@@ -69,11 +68,11 @@ export default async function main() {
   } catch (e) {}
   await spawnProc('ui')
 
-  const apiRespawnQueue = Promise.resolve()
+  // const apiRespawnQueue = Promise.resolve()
   chokidar
-    .watch(absolutePath('api/**/*.ts'), { ignoreInitial: true })
-    .on(
-      'all',
-      debounce(() => apiRespawnQueue.then(() => spawnProc('api')), 1000),
+    .watch(
+      [absolutePath('services/api/*.ts'), absolutePath('services/api/**/*.ts')],
+      { ignoreInitial: true },
     )
+    .on('all', () => spawnProc('api'))
 }
