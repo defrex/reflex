@@ -16,9 +16,9 @@ interface FigmaTokenData {
 
 const router = Router()
 
-export const authUrl = absoluteUrl('/api/figma/auth/start')
+export const authUrl = absoluteUrl('/figma/auth/start')
 // This path must match the Figma App settings
-const redirectUri = absoluteUrl('/api/figma/auth/finish')
+const redirectUri = absoluteUrl('/figma/auth/finish')
 
 router.get('/start', async (req: Request, res: Response) => {
   const user = await currentUser(req, res)

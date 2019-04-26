@@ -20,9 +20,9 @@ interface GithubAuthSessionPayload {
 
 const router = Router()
 
-export const authUrl = absoluteUrl('/api/github/auth/start')
+export const authUrl = absoluteUrl('/github/auth/start')
 // This path must match the Github App settings
-const redirectUri = absoluteUrl('/api/github/auth/finish')
+const redirectUri = absoluteUrl('/github/auth/finish')
 
 router.get('/start', (req: Request, res: Response) => {
   const session = startOAuthSession<GithubAuthSessionPayload>(req, res, {
