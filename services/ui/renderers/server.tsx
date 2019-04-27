@@ -18,12 +18,9 @@ export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
     // @ts-ignore
     const fatch: GlobalFetch['fetch'] = async (uri, options) => {
-      console.log('fetching')
-      console.log('method:', options!.method)
-      console.log('uri:', uri)
+      console.log('fetching', options!.method, uri)
       const resp = await fetch(uri as any, options as any)
       console.log('status:', resp.status)
-      // console.log('json:', resp.json())
       return resp
     }
 
@@ -37,9 +34,11 @@ export default ({ clientStats }: { clientStats: any }) =>
                 message.includes('AUTHENTICATION_ERROR') ||
                 message.includes('AUTHORIZATION_ERROR')
               ) {
-                res.sendStatus(401)
+                console.log(`[Auth error]: ${message}`)
+              } else {
+                res.sendStatus(400)
+                console.log(`[GraphQL error]: ${message}`)
               }
-              console.log(`[GraphQL error]: ${message}`)
             })
           }
           if (networkError) console.log(`[Network error]: ${networkError}`)
