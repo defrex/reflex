@@ -14,6 +14,7 @@ import { RouterContext } from 'ui/types/RouterContext'
 
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
+    console.log(`endpoint: ${process.env.API_URL}/graphql`)
     const apollo = new ApolloClient({
       ssrMode: true,
       link: createHttpLink({

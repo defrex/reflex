@@ -3,9 +3,6 @@ import chalk, { Chalk } from 'chalk'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
 import get from 'lodash/get'
-import ora from 'ora'
-
-ora('test').fail()
 
 type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
 type ProcType = 'service' | 'package' | 'function'
@@ -62,14 +59,14 @@ const setProc = (type: ProcType, name: ProcName, proc: ChildProcess) =>
 const delProc = (type: ProcType, name: ProcName) =>
   delete procs[`${type}/${name}`]
 
-function killProc(type: ProcType, name: ProcName): Promise<void> {
+function killProc(type: ProcType, name: ProcName): Promise<boolean> {
   const proc = getProc(type, name)
   if (!proc || proc.killed) {
-    return Promise.resolve()
+    return Promise.resolve(false)
   }
   return new Promise((resolve, _reject) => {
     proc.on('exit', () => {
-      resolve()
+      resolve(true)
     })
     proc.kill()
   })
@@ -79,9 +76,9 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
   let loaded = false
   const title = color(type, name)(`[${type}s/${name}] `)
 
-  console.log(title, chalk.yellow('↻'))
-
-  await killProc(type, name)
+  if (await killProc(type, name)) {
+    console.log(title, chalk.yellow('↻'))
+  }
 
   const proc = spawn('yarn', ['start'], {
     stdio: ['inherit', 'pipe', 'pipe'],
