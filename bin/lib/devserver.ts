@@ -6,6 +6,7 @@ import get from 'lodash/get'
 
 type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
 type ProcType = 'service' | 'package' | 'function'
+type Status = 'neutral' | 'success' | 'wait' | 'fail'
 type Config<T> = { [key in ProcType]?: { [key in ProcName]?: T } }
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -23,8 +24,6 @@ const colors: Config<Chalk> = {
     ui: chalk.cyan.dim,
   },
 }
-const color = (type: ProcType, name: ProcName) =>
-  get(colors, [type, name], chalk.dim)
 
 const env: Config<{ [key: string]: string }> = {
   package: {
@@ -52,6 +51,19 @@ const env: Config<{ [key: string]: string }> = {
   },
 }
 
+const title = (type: ProcType, name: ProcName, status: Status = 'neutral') => {
+  const baseColor = get(colors, [type, name], chalk.dim)
+  const symbol =
+    status === 'success'
+      ? chalk.green('✔')
+      : status === 'fail'
+      ? chalk.red('✖')
+      : status === 'wait'
+      ? chalk.yellow('↻')
+      : '='
+  return baseColor(`[${type}s/${name} ${symbol}]`)
+}
+
 const procs: { [key: string]: ChildProcess } = {}
 const getProc = (type: ProcType, name: ProcName): ChildProcess | void =>
   procs[`${type}/${name}`]
@@ -75,10 +87,9 @@ function killProc(type: ProcType, name: ProcName): Promise<boolean> {
 
 async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
   let loaded = false
-  const title = color(type, name)(`[${type}s/${name}] `)
 
   if (await killProc(type, name)) {
-    console.log(title, chalk.yellow('↻'))
+    console.log(title(type, name, 'wait'))
   }
 
   const proc = spawn('yarn', ['start'], {
@@ -87,15 +98,15 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
     env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
   proc.stderr.on('data', (data) => {
-    process.stderr.write(title)
+    process.stderr.write(title(type, name))
     process.stderr.write(data)
   })
   proc.stdout.on('data', (data) => {
-    process.stdout.write(title)
+    process.stdout.write(title(type, name))
     process.stdout.write(data)
   })
   proc.on('exit', () => {
-    console.log(title, chalk.red('✖'))
+    console.log(title(type, name, 'fail'))
     loaded = true
     delProc(type, name)
   })
@@ -112,7 +123,7 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
               .toString('utf8')
               .includes(`http://localhost:${ports[type]![name]}`)))
       ) {
-        console.log(title, chalk.green('✔'))
+        console.log(title(type, name, 'success'))
         loaded = true
         resolve()
       }

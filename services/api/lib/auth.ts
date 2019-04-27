@@ -1,7 +1,8 @@
 import config from 'api/config'
 import { AuthenticationError, NotImplementedError } from 'api/exceptions'
+import { authUrl } from 'api/figma/auth'
 import { prisma, Team, User } from 'api/prisma'
-import { CookieOptions, Request, Response } from 'express'
+import { CookieOptions, Request, Response, Router } from 'express'
 import jwt from 'jsonwebtoken'
 import encodeGetParams from './encodeGetParams'
 import uiUrl from './uiUrl'
@@ -81,4 +82,10 @@ export function login(_req: Request, res: Response, user: User) {
 
 export function logout(_req: Request, res: Response) {
   res.clearCookie('Authorization')
+  res.redirect(uiUrl('/login'))
 }
+
+const router = Router()
+router.get('/login', (_req, res) => res.redirect(authUrl))
+router.get('/logout', logout)
+export default router

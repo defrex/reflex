@@ -7,7 +7,6 @@ import {
   CreateRenderResponse,
   CreateSampleResponse,
   CreateTeamResponse,
-  LogoutResponse,
   MutationResolvers,
 } from 'api/graphql/types'
 import { defaultExpiresAt } from 'api/lib/cliAuth'
@@ -15,11 +14,6 @@ import { userInTeam } from 'api/lib/user'
 import { prisma } from 'api/prisma'
 
 export default {
-  async logout(_parent, _args, ctx): Promise<LogoutResponse> {
-    ctx.logout()
-    return success()
-  },
-
   async createTeam(_parent, args, ctx): Promise<CreateTeamResponse> {
     if (!ctx.user) {
       throw new AuthenticationError()

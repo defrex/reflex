@@ -17,13 +17,7 @@ type CliAuthSession {
 }
 
 type Mutation {
-  logout: LogoutResponse
-
   createCliAuthSession: CreateCliAuthSessionResponse
-}
-
-type LogoutResponse {
-  status: MutationStatus
 }
 
 type CreateCliAuthSessionResponse {
