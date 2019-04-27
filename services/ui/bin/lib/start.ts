@@ -73,6 +73,6 @@ export default async function main() {
     app.use(errorReporting.express)
   }
   app.listen(config.port, () => {
-    console.log(`http://localhost:${config.port}`)
+    process.stderr.write(`http://localhost:${config.port}\n`)
   })
 }

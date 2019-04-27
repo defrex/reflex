@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
 const { resolve } = require('path')
 
-process.chdir(resolve(`${__dirname}/../`))
+process.chdir(resolve(`${__dirname}/../../`))
 
 require('module-alias/register')
 require('reflect-metadata')
@@ -12,5 +10,3 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   require('ts-node/register/transpile-only')
 }
-
-require('../index').default()

@@ -19,6 +19,6 @@ export default async function main() {
   await applyGraphqlMiddleware(app)
 
   app.listen(config.port, () => {
-    console.log(`http://localhost:${config.port}`)
+    process.stderr.write(`http://localhost:${config.port}\n`)
   })
 }

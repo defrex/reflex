@@ -1,20 +1,47 @@
 import absolutePath from 'bin/lib/absolutePath'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
-import colors from 'colors'
 import ora from 'ora'
 
-type ProcType = 'api' | 'ui'
+type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
+type ProcType = 'service' | 'package' | 'function'
+type Config<T> = { [key in ProcType]?: { [key in ProcName]?: T } }
 
-let count = 0
-const procs: { [key in ProcType]?: ChildProcess } = {}
-const ports = {
-  ui: process.env.UI_PORT || 8080,
-  api: process.env.API_PORT || 3030,
+const ports: Config<string> = {
+  service: {
+    ui: process.env.UI_PORT || `${8080}`,
+    api: process.env.API_PORT || `${3030}`,
+  },
 }
 
-function killProc(type: ProcType): Promise<void> {
-  const proc = procs[type]
+const env: Config<{ [key: string]: string }> = {
+  package: {
+    sdk: {
+      REFLEX_API_ENDPOINT: `http://localhost:${ports.service!.api!}/graphql`,
+    },
+  },
+  service: {
+    ui: {
+      ...process.env,
+      PORT: ports.service!.ui!,
+      API_ENDPOINT: `http://localhost:${ports.service!.api!}/graphql`,
+    },
+    api: {
+      ...process.env,
+      PORT: ports.service!.api!,
+      UI_URL: `http://localhost:${ports.service!.ui!}`,
+    },
+  },
+}
+
+const procs: { [key: string]: ChildProcess } = {}
+const getProc = (type: ProcType, name: ProcName): ChildProcess | void =>
+  procs[`${type}/${name}`]
+const setProc = (type: ProcType, name: ProcName, proc: ChildProcess) =>
+  (procs[`${type}/${name}`] = proc)
+
+function killProc(type: ProcType, name: ProcName): Promise<void> {
+  const proc = getProc(type, name)
   if (!proc) {
     return Promise.resolve()
   }
@@ -26,53 +53,54 @@ function killProc(type: ProcType): Promise<void> {
   })
 }
 
-async function spawnProc(type: ProcType): Promise<void> {
-  const spinner = ora(
-    `Booting ${type.toUpperCase()} ${colors.dim(`${count++}`)}`,
-  )
+async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
+  const spinner = ora(`${type}s/${name} `)
   spinner.start()
 
-  let proc = procs[type]
+  await killProc(type, name)
 
-  if (proc && !proc.killed) {
-    await killProc(type)
-  }
-
-  procs[type] = spawn(absolutePath(`services/${type}/bin/start.js`), {
-    stdio: ['inherit', 'pipe', 'inherit'],
-    cwd: absolutePath(`services/${type}`),
-    env: {
-      ...process.env,
-      PORT: ports[type].toString(),
-      API_ENDPOINT: `http://localhost:${ports.api}/graphql`,
-    },
+  const proc = spawn('yarn', ['start'], {
+    stdio: ['inherit', 'inherit', 'pipe'],
+    cwd: absolutePath(`${type}s/${name}`),
+    env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
-  procs[type]!.on('exit', () => (spinner.isSpinning ? spinner.fail() : null))
-  process.on('exit', () => procs[type] && procs[type]!.kill())
+  proc.on('exit', () => (spinner.isSpinning ? spinner.fail() : null))
+  process.on('exit', () => killProc(type, name))
+
+  setProc(type, name, proc)
 
   return new Promise((resolve, _reject) => {
-    procs[type] &&
-      procs[type]!.stdout.on('data', (data) => {
-        if (data.toString('utf8').includes(`http://localhost:${ports[type]}`)) {
-          spinner.succeed()
-          resolve()
-        }
-        process.stdout.write(data)
-      })
+    proc.stderr.on('data', (data) => {
+      if (
+        spinner.isSpinning &&
+        (!ports[type] ||
+          !ports[type]![name] ||
+          (ports[type] &&
+            ports[type]![name] &&
+            data
+              .toString('utf8')
+              .includes(`http://localhost:${ports[type]![name]}`)))
+      ) {
+        spinner.succeed()
+        resolve()
+        process.stderr.write(data)
+      } else if (!spinner.isSpinning) {
+        process.stderr.write(data)
+      }
+    })
   })
 }
 
 export default async function main() {
-  try {
-    await spawnProc('api')
-  } catch (e) {}
-  await spawnProc('ui')
+  await spawnProc('package', 'sdk')
+  await spawnProc('function', 'sampler')
+  await spawnProc('service', 'api')
+  await spawnProc('service', 'ui')
 
-  // const apiRespawnQueue = Promise.resolve()
   chokidar
     .watch(
       [absolutePath('services/api/*.ts'), absolutePath('services/api/**/*.ts')],
       { ignoreInitial: true },
     )
-    .on('all', () => spawnProc('api'))
+    .on('all', () => spawnProc('service', 'api'))
 }

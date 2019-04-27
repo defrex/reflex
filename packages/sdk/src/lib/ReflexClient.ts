@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-const REFLEX_ENDPOINT = process.env.REFLEX_ENDPOINT || 'https://reflexui.com/api/graphql'
+const REFLEX_ENDPOINT = process.env.REFLEX_API_ENDPOINT || 'https://api.reflexui.com/graphql'
 
 export class ReflexClient extends GraphQLClient {
   constructor(authToken?: string) {

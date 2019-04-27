@@ -35,6 +35,7 @@ export default {
   ],
   watch: {
     include: 'src/**',
+    clearScreen: false,
   },
   plugins: [
     // Allow json resolution

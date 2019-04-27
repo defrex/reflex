@@ -18,10 +18,9 @@ export async function getContext({
   res: Response
 }): Promise<Context> {
   const user = await currentUser(req, res)
-  const team = await currentTeam(req, res, user)
   return {
     user,
-    team,
+    team: await currentTeam(req, res, user),
     logout: logout.bind(null, req, res),
   }
 }

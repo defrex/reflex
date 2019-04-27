@@ -61,27 +61,16 @@ export class SampleSet {
     return this
   }
 
-  async render(renderer: RenderSampleToDocument) {
+  async run(renderer: RenderSampleToDocument) {
+    const { branch, commit } = await gitInfo()
+
     for (const sample of this.samples) {
-      if (sample.document) {
-        break
-      }
       await spinnerOp({
         text: `Rendering ${this.componentName}/${sample.name}`,
-        run: async () => {
-          sample.document = await renderer(sample.render)
-        }
-      })
-    }
-  }
-
-  async upload() {
-    const { branch, commit } = await gitInfo()
-    for (const sample of this.samples) {
-      await spinnerOp({
-        text: `Uploading ${this.componentName}/${sample.name}`,
-        exitOnFail: true,
         run: [
+          async () => {
+            sample.document = await renderer(sample.render)
+          },
           async () => ({ success: !!sample.document }),
           async () => {
             const response = await client.request<UploadSampleMutationResponse>(
@@ -91,15 +80,15 @@ export class SampleSet {
                 sampleName: sample.name,
                 html: sample.document,
                 branch,
-                commit
-              }
+                commit,
+              },
             )
             if (!response.createRender.status.success) {
               console.error(response.createRender.status.errors)
               throw new Error('Unexpected GraphQL Error')
             }
-          }
-        ]
+          },
+        ],
       })
     }
   }
