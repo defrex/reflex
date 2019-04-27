@@ -46,9 +46,11 @@ export default ({ clientStats }: { clientStats: any }) =>
         createHttpLink({
           uri: `${process.env.API_URL}/graphql`,
           fetch: fatch,
-          headers: {
-            Authorization: req.cookies.Authorization,
-          },
+          headers: req.cookies.Authorization
+            ? {
+                Authorization: req.cookies.Authorization,
+              }
+            : {},
         }),
       ]),
       cache: new InMemoryCache(),
