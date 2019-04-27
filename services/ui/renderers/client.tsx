@@ -1,6 +1,6 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
+import { createHttpLink } from 'apollo-link-http'
 import React from 'react'
 import ReactDOM, { Renderer } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,7 +11,7 @@ const styles = document.getElementById('styles')
 if (styles) setStylesTarget(styles)
 
 const apolloClient = new ApolloClient({
-  link: new HttpLink({
+  link: createHttpLink({
     uri: `${process.env.API_URL}/graphql`,
     credentials: 'same-origin',
   }),

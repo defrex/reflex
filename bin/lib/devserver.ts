@@ -42,6 +42,7 @@ const env: Config<{ [key: string]: string }> = {
       ...process.env,
       PORT: ports.service!.ui!,
       API_URL: `http://localhost:${ports.service!.api!}`,
+      // API_URL: 'https://api.reflexui.com',
     },
     api: {
       ...process.env,

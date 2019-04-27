@@ -29,12 +29,22 @@ export default ({ clientStats }: { clientStats: any }) =>
       console.log('✅')
     }
 
+    // @ts-ignore
+    const fatch: GlobalFetch['fetch'] = async (uri, options) => {
+      console.log('fetching')
+      console.log('method:', options!.method)
+      console.log('uri:', uri)
+      const resp = await fetch(uri as any, options as any)
+      console.log('status:', resp.status)
+      // console.log('json:', resp.json())
+      return resp
+    }
+
     const apollo = new ApolloClient({
       ssrMode: true,
       link: createHttpLink({
         uri: `${process.env.API_URL}/graphql`,
-        fetch: fetch as any,
-        headers: req.headers,
+        fetch: fatch,
       }),
       cache: new InMemoryCache(),
     })
