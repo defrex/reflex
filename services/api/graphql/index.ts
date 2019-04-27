@@ -18,20 +18,7 @@ export default async (app: Application) => {
     schema,
     context: getContext,
     introspection: true,
-    playground: {
-      settings: {
-        'general.betaUpdates': false,
-        'editor.cursorShape': 'line',
-        'editor.fontSize': 14,
-        'editor.fontFamily':
-          "'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace",
-        'editor.theme': 'dark',
-        'editor.reuseHeaders': true,
-        'prettier.printWidth': 80,
-        'request.credentials': 'same-origin',
-        'tracing.hideTracingResponse': true,
-      },
-    },
+    playground: false,
     formatError: (error) => {
       console.error(error)
       return error
