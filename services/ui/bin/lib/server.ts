@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import gcpDebugAgent from '@google-cloud/debug-agent'
 import { ErrorReporting } from '@google-cloud/error-reporting'
 import express from 'express'
 import morgan from 'morgan'
@@ -17,12 +16,6 @@ const config = {
 let errorReporting: ErrorReporting
 if (config.environment === 'production') {
   errorReporting = new ErrorReporting()
-  gcpDebugAgent.start({
-    serviceContext: {
-      service: 'ui',
-      version: config.environment,
-    },
-  })
 }
 
 export default async function main() {
