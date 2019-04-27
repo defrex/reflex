@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { ErrorReporting } from '@google-cloud/error-reporting'
+import cookieParser from 'cookie-parser'
 import express from 'express'
 import morgan from 'morgan'
 import { resolve } from 'path'
@@ -22,7 +23,7 @@ export default async function main() {
   const app = express()
 
   app.use(morgan(config.environment === 'development' ? 'dev' : 'common'))
-
+  app.use(cookieParser())
   app.use(express.static(absolutePath('/public')))
 
   app.get('/api/logout', (_req, res) => {

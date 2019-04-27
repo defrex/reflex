@@ -24,6 +24,7 @@
     "apollo-link-http": "^1.5.14",
     "apollo-link-schema": "^1.2.2",
     "apollo-server-express": "^2.4.8",
+    "cookie-parser": "^1.4.4",
     "core-js": "^3.0.0",
     "express": "^4.16.4",
     "graphql": "^0.13.0",
@@ -46,6 +47,7 @@
     "typestyle": "^2.0.1"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.16.1",
     "@types/lodash": "^4.14.123",
     "@types/luxon": "^1.12.0",

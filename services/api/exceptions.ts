@@ -1,9 +1,11 @@
 export class AuthenticationError extends Error {
-  message = 'You must login'
+  message = 'AUTHENTICATION_ERROR'
 }
 
 export class AuthorizationError extends Error {
-  message = 'You do not have permissions'
+  message = 'AUTHORIZATION_ERROR'
 }
 
-export class NotImplementedError extends Error {}
+export class NotImplementedError extends Error {
+  message = 'NOT_IMPLEMENTED_ERROR'
+}

@@ -20,7 +20,14 @@ export default async (app: Application) => {
     introspection: true,
     playground: false,
     formatError: (error) => {
-      console.error(error)
+      if (
+        error.message.includes('AUTHENTICATION_ERROR') ||
+        error.message.includes('AUTHORIZATION_ERROR')
+      ) {
+        console.error(error.message)
+      } else {
+        console.error(error)
+      }
       return error
     },
   })

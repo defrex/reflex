@@ -1,5 +1,7 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloClient } from 'apollo-client'
+import { ApolloLink } from 'apollo-link'
+import { onError } from 'apollo-link-error'
 import { createHttpLink } from 'apollo-link-http'
 import { NextFunction, Request, Response } from 'express'
 import fetch from 'node-fetch'
@@ -14,21 +16,6 @@ import { RouterContext } from 'ui/types/RouterContext'
 
 export default ({ clientStats }: { clientStats: any }) =>
   async function uiServer(req: Request, res: Response, _next: NextFunction) {
-    console.log(`POST ${process.env.API_URL}/graphql`)
-    console.log(JSON.stringify({ query: 'query {hello}' }))
-    const test = await fetch(`${process.env.API_URL}/graphql`, {
-      method: 'POST',
-      body: JSON.stringify({ query: 'query {hello}' }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (test.status !== 200) {
-      console.error('❌', test.status)
-    } else {
-      console.log('✅')
-    }
-
     // @ts-ignore
     const fatch: GlobalFetch['fetch'] = async (uri, options) => {
       console.log('fetching')
@@ -42,10 +29,29 @@ export default ({ clientStats }: { clientStats: any }) =>
 
     const apollo = new ApolloClient({
       ssrMode: true,
-      link: createHttpLink({
-        uri: `${process.env.API_URL}/graphql`,
-        fetch: fatch,
-      }),
+      link: ApolloLink.from([
+        onError(({ networkError, graphQLErrors }) => {
+          if (graphQLErrors) {
+            graphQLErrors.map(({ message }) => {
+              if (
+                message.includes('AUTHENTICATION_ERROR') ||
+                message.includes('AUTHORIZATION_ERROR')
+              ) {
+                res.sendStatus(401)
+              }
+              console.log(`[GraphQL error]: ${message}`)
+            })
+          }
+          if (networkError) console.log(`[Network error]: ${networkError}`)
+        }),
+        createHttpLink({
+          uri: `${process.env.API_URL}/graphql`,
+          fetch: fatch,
+          headers: {
+            Authorization: req.cookies.Authorization,
+          },
+        }),
+      ]),
       cache: new InMemoryCache(),
     })
 
