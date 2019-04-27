@@ -1,7 +1,11 @@
 import absolutePath from 'bin/lib/absolutePath'
+import chalk, { Chalk } from 'chalk'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
+import get from 'lodash/get'
 import ora from 'ora'
+
+ora('test').fail()
 
 type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
 type ProcType = 'service' | 'package' | 'function'
@@ -15,6 +19,15 @@ const ports: Config<string> = {
     api: process.env.API_PORT || `${3030}`,
   },
 }
+
+const colors: Config<Chalk> = {
+  service: {
+    api: chalk.blue.dim,
+    ui: chalk.cyan.dim,
+  },
+}
+const color = (type: ProcType, name: ProcName) =>
+  get(colors, [type, name], chalk.dim)
 
 const env: Config<{ [key: string]: string }> = {
   package: {
@@ -63,41 +76,46 @@ function killProc(type: ProcType, name: ProcName): Promise<void> {
 }
 
 async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
-  const spinner = ora(`${type}s/${name} `)
-  spinner.start()
+  let loaded = false
+  const title = color(type, name)(`[${type}s/${name}] `)
 
-  spinner.text = `${type}s/${name} killing `
+  console.log(title, chalk.yellow('↻'))
+
   await killProc(type, name)
 
-  spinner.text = `${type}s/${name} spawning`
   const proc = spawn('yarn', ['start'], {
-    stdio: ['inherit', 'inherit', 'pipe'],
+    stdio: ['inherit', 'pipe', 'pipe'],
     cwd: absolutePath(`${type}s/${name}`),
     env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
+  proc.stderr.on('data', (data) => {
+    process.stderr.write(title)
+    process.stderr.write(data)
+  })
+  proc.stdout.on('data', (data) => {
+    process.stdout.write(title)
+    process.stdout.write(data)
+  })
   proc.on('exit', () => {
-    if (spinner.isSpinning) {
-      spinner.fail()
-    }
+    console.log(title, chalk.red('✖'))
+    loaded = true
     delProc(type, name)
   })
 
   setProc(type, name, proc)
 
-  spinner.text = `${type}s/${name} waiting`
   return new Promise((resolve, _reject) => {
     proc.stderr.on('data', (data) => {
       if (
-        spinner.isSpinning &&
-        (!ports[type] ||
-          !ports[type]![name] ||
-          (ports[type] &&
-            ports[type]![name] &&
+        !loaded &&
+        (!get(ports, [type, name]) ||
+          (get(ports, [type, name]) &&
             data
               .toString('utf8')
               .includes(`http://localhost:${ports[type]![name]}`)))
       ) {
-        spinner.succeed(`${type}s/${name} `)
+        console.log(title, chalk.green('✔'))
+        loaded = true
         resolve()
       }
       process.stderr.write(data)

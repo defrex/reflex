@@ -1,11 +1,9 @@
-import React, { PureComponent, MouseEvent } from 'react'
-
+import React, { MouseEvent, PureComponent } from 'react'
 import Icon from 'ui/components/Icon'
 import Link from 'ui/components/Link'
-
 import { AppBarQueryFragment } from 'ui/lib/graphql'
-import styles from './styles'
 import menuSvg from './icons/menu-light.svg'
+import styles from './styles'
 
 interface AppBarProps {
   query: AppBarQueryFragment
@@ -39,7 +37,7 @@ export default class AppBar extends PureComponent<AppBarProps> {
           <div>
             {query.currentUser ? (
               <div>
-                <Link to='/profile' className={styles.link}>
+                <Link to='/dashboard' className={styles.link}>
                   {query.currentUser.name}
                 </Link>
               </div>

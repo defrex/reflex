@@ -1,6 +1,6 @@
 import absolutePath from 'bin/lib/absolutePath'
+import chalk from 'chalk'
 import { spawn } from 'child_process'
-import colors from 'colors'
 
 const BASE_PATH: string = absolutePath('/')
 
@@ -12,8 +12,8 @@ export default async function run(
     const bin = command.shift() as string
     const args = command
 
-    console.log(colors.yellow('Executing...'))
-    console.log(colors.dim(`${bin} ${args.join(' ')}`))
+    console.log(chalk.yellow('Executing...'))
+    console.log(chalk.dim(`${bin} ${args.join(' ')}`))
 
     spawn(bin, args, {
       stdio: 'inherit',
@@ -21,10 +21,10 @@ export default async function run(
       shell: true,
     }).on('close', (code: number) => {
       if (code === 0) {
-        console.log(colors.green('Complete'))
+        console.log(chalk.green('Complete'))
         resolve()
       } else {
-        reject(new Error(colors.red(`return code ${code}`)))
+        reject(new Error(chalk.red(`return code ${code}`)))
       }
     })
   })
