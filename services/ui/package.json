@@ -10,6 +10,9 @@
     "start": "node ./bin/start.js",
     "build": "node ./bin/build.js"
   },
+  "_moduleAliases": {
+    "ui": "./"
+  },
   "dependencies": {
     "@google-cloud/debug-agent": "^3.1.0",
     "@google-cloud/error-reporting": "^0.6.3",
