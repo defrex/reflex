@@ -1,9 +1,10 @@
 import Octokit from '@octokit/rest'
 import config from 'api/config'
+import absoluteUrl from 'api/lib/absoluteUrl'
 import { login } from 'api/lib/auth'
 import { authSessionForToken } from 'api/lib/cliAuth'
+import encodeGetParams from 'api/lib/encodeGetParams'
 import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
-import { absoluteUrl, encodeGetParams } from 'api/lib/url'
 import { prisma, User } from 'api/prisma'
 import { Request, Response, Router } from 'express'
 import fetch from 'node-fetch'
@@ -94,8 +95,6 @@ router.get('/finish', async (req: Request, res: Response) => {
     })
   }
 
-  await login(req, res, user)
-
   if (session.cliAuthToken) {
     const cliAuthSession = await authSessionForToken(session.cliAuthToken)
     if (cliAuthSession) {
@@ -114,7 +113,7 @@ router.get('/finish', async (req: Request, res: Response) => {
     }
   }
 
-  res.redirect('/dashboard')
+  await login(req, res, user)
 })
 
 export default router

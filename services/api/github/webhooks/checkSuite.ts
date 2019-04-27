@@ -1,7 +1,7 @@
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
+import absoluteUrl from 'api/lib/absoluteUrl'
 import callFunction from 'api/lib/callFunction'
 import { findOne } from 'api/lib/data'
-import { absoluteUrl } from 'api/lib/url'
 import { Check, prisma, Repo } from 'api/prisma'
 import { Context, Octokit } from 'probot'
 

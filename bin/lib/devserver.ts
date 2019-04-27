@@ -7,6 +7,8 @@ type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
 type ProcType = 'service' | 'package' | 'function'
 type Config<T> = { [key in ProcType]?: { [key in ProcName]?: T } }
 
+const NODE_ENV = process.env.NODE_ENV || 'development'
+
 const ports: Config<string> = {
   service: {
     ui: process.env.UI_PORT || `${8080}`,
@@ -17,14 +19,19 @@ const ports: Config<string> = {
 const env: Config<{ [key: string]: string }> = {
   package: {
     sdk: {
-      REFLEX_API_ENDPOINT: `http://localhost:${ports.service!.api!}/graphql`,
+      NODE_ENV,
+    },
+  },
+  function: {
+    sampler: {
+      NODE_ENV,
     },
   },
   service: {
     ui: {
       ...process.env,
       PORT: ports.service!.ui!,
-      API_ENDPOINT: `http://localhost:${ports.service!.api!}/graphql`,
+      API_URL: `http://localhost:${ports.service!.api!}`,
     },
     api: {
       ...process.env,
@@ -39,10 +46,12 @@ const getProc = (type: ProcType, name: ProcName): ChildProcess | void =>
   procs[`${type}/${name}`]
 const setProc = (type: ProcType, name: ProcName, proc: ChildProcess) =>
   (procs[`${type}/${name}`] = proc)
+const delProc = (type: ProcType, name: ProcName) =>
+  delete procs[`${type}/${name}`]
 
 function killProc(type: ProcType, name: ProcName): Promise<void> {
   const proc = getProc(type, name)
-  if (!proc) {
+  if (!proc || proc.killed) {
     return Promise.resolve()
   }
   return new Promise((resolve, _reject) => {
@@ -57,18 +66,25 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
   const spinner = ora(`${type}s/${name} `)
   spinner.start()
 
+  spinner.text = `${type}s/${name} killing `
   await killProc(type, name)
 
+  spinner.text = `${type}s/${name} spawning`
   const proc = spawn('yarn', ['start'], {
     stdio: ['inherit', 'inherit', 'pipe'],
     cwd: absolutePath(`${type}s/${name}`),
     env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
-  proc.on('exit', () => (spinner.isSpinning ? spinner.fail() : null))
-  process.on('exit', () => killProc(type, name))
+  proc.on('exit', () => {
+    if (spinner.isSpinning) {
+      spinner.fail()
+    }
+    delProc(type, name)
+  })
 
   setProc(type, name, proc)
 
+  spinner.text = `${type}s/${name} waiting`
   return new Promise((resolve, _reject) => {
     proc.stderr.on('data', (data) => {
       if (
@@ -81,21 +97,25 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
               .toString('utf8')
               .includes(`http://localhost:${ports[type]![name]}`)))
       ) {
-        spinner.succeed()
+        spinner.succeed(`${type}s/${name} `)
         resolve()
-        process.stderr.write(data)
-      } else if (!spinner.isSpinning) {
-        process.stderr.write(data)
       }
+      process.stderr.write(data)
     })
   })
 }
 
+process.on('exit', function killAll() {
+  for (const proc of Object.values(procs)) {
+    proc.kill()
+  }
+})
+
 export default async function main() {
-  await spawnProc('package', 'sdk')
-  await spawnProc('function', 'sampler')
-  await spawnProc('service', 'api')
-  await spawnProc('service', 'ui')
+  spawnProc('package', 'sdk')
+  spawnProc('function', 'sampler')
+  spawnProc('service', 'api')
+  spawnProc('service', 'ui')
 
   chokidar
     .watch(
@@ -103,4 +123,10 @@ export default async function main() {
       { ignoreInitial: true },
     )
     .on('all', () => spawnProc('service', 'api'))
+
+  chokidar
+    .watch(absolutePath('services/ui/bin/lib/server.ts'), {
+      ignoreInitial: true,
+    })
+    .on('all', () => spawnProc('service', 'ui'))
 }

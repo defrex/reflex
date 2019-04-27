@@ -12,7 +12,7 @@ if (styles) setStylesTarget(styles)
 
 const apolloClient = new ApolloClient({
   link: new HttpLink({
-    uri: process.env.API_ENDPOINT,
+    uri: `${process.env.API_URL}/graphql`,
     credentials: 'same-origin',
   }),
   cache: new InMemoryCache().restore((window as any).__APOLLO_STATE__),

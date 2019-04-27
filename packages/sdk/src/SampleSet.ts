@@ -70,8 +70,8 @@ export class SampleSet {
         run: [
           async () => {
             sample.document = await renderer(sample.render)
+            return { success: !!sample.document }
           },
-          async () => ({ success: !!sample.document }),
           async () => {
             const response = await client.request<UploadSampleMutationResponse>(
               UploadSampleMutation,

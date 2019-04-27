@@ -1,7 +1,9 @@
 import config from 'api/config'
+import absoluteUrl from 'api/lib/absoluteUrl'
 import { currentUser } from 'api/lib/auth'
+import encodeGetParams from 'api/lib/encodeGetParams'
 import { finishOAuthSession, startOAuthSession } from 'api/lib/oAuth'
-import { absoluteUrl, encodeGetParams } from 'api/lib/url'
+import uiUrl from 'api/lib/uiUrl'
 import { prisma } from 'api/prisma'
 import { Request, Response, Router } from 'express'
 import fetch from 'node-fetch'
@@ -84,7 +86,7 @@ router.get('/finish', async (req: Request, res: Response) => {
     },
   })
 
-  res.redirect('/dashboard')
+  res.redirect(uiUrl('/dashboard'))
 })
 
 export default router

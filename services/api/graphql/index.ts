@@ -41,6 +41,9 @@ export default async (app: Application) => {
   graphqlServer.applyMiddleware({
     app,
     path: config.graphqlEndpoint,
-    cors: false,
+    cors: {
+      origin: config.uiUrl,
+      credentials: true,
+    },
   })
 }

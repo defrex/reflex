@@ -1,8 +1,10 @@
 import config from 'api/config'
-import { NotImplementedError } from 'api/exceptions'
+import { AuthenticationError, NotImplementedError } from 'api/exceptions'
 import { prisma, Team, User } from 'api/prisma'
 import { CookieOptions, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import encodeGetParams from './encodeGetParams'
+import uiUrl from './uiUrl'
 
 type AuthToken = string
 
@@ -13,7 +15,6 @@ interface AuthPayload {
 export const cookieOptions: CookieOptions = {
   httpOnly: true,
   secure: config.ssl,
-  sameSite: 'strict',
 }
 
 export function tokenForUser(user: User): AuthToken {
@@ -24,8 +25,14 @@ export function tokenForUser(user: User): AuthToken {
 }
 
 export function userForToken(token: AuthToken): Promise<User> {
-  const payload = jwt.verify(token, config.secretKey) as AuthPayload
-  return prisma.user({ id: payload.userId })
+  let payload
+  try {
+    payload = jwt.verify(token, config.secretKey) as AuthPayload
+  } catch (e) {}
+  if (payload && payload.userId) {
+    return prisma.user({ id: payload.userId })
+  }
+  throw new AuthenticationError('Invalid token')
 }
 
 export async function currentUser(
@@ -66,10 +73,10 @@ export async function currentTeam(
   return await prisma.membership({ id: memberships[0].id }).team()
 }
 
-export function login(_req: Request, res: Response, user: User): AuthToken {
+export function login(_req: Request, res: Response, user: User) {
   const token = tokenForUser(user)
   res.cookie('Authorization', `Bearer ${token}`, cookieOptions)
-  return token
+  res.redirect(encodeGetParams(uiUrl('/api/login'), { token }))
 }
 
 export function logout(_req: Request, res: Response) {

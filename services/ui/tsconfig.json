@@ -1,7 +1,7 @@
 {
   "exclude": ["node_modules", "dist/*", "public/dist/*"],
   "include": ["./*"],
-  "files": ["server.tsx", "client.tsx"],
+  "files": ["./renderers/server.tsx", "./renderers/client.tsx"],
   "compilerOptions": {
     "typeRoots": ["node_modules/@types", "types"],
     "jsx": "react",

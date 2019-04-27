@@ -32,6 +32,24 @@ export default async function main() {
 
   app.use(express.static(absolutePath('/public')))
 
+  app.get('/api/logout', (_req, res) => {
+    res.clearCookie('Authorization')
+    res.redirect('/')
+  })
+
+  app.get('/api/login', (req, res) => {
+    if (!req.query.token) {
+      res.sendStatus(400)
+      return
+    }
+    res.cookie('Authorization', `Bearer ${req.query.token}`, {
+      httpOnly: true,
+      secure: req.secure,
+      sameSite: 'strict',
+    })
+    res.redirect('/dashboard')
+  })
+
   if (config.environment === 'development') {
     const webpack = require('webpack')
     const webpackDevMiddleware = require('webpack-dev-middleware')

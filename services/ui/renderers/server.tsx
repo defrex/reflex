@@ -17,7 +17,7 @@ export default ({ clientStats }: { clientStats: any }) =>
     const apollo = new ApolloClient({
       ssrMode: true,
       link: createHttpLink({
-        uri: process.env.API_ENDPOINT,
+        uri: `${process.env.API_URL}/graphql`,
         fetch: fetch as any,
         headers: req.headers,
       }),

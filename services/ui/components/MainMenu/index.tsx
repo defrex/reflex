@@ -1,31 +1,35 @@
-import React, { PureComponent, MouseEvent } from 'react'
-
-import { MainMenuQueryFragment, withMainMenuMutation } from 'ui/lib/graphql'
-import styles from './styles'
+import get from 'lodash/get'
+import React, { MouseEvent, PureComponent } from 'react'
 import GithubAuthButton from 'ui/components/GithubAuthButton'
 import Link from 'ui/components/Link'
+import {
+  MainMenuMutationComponent,
+  MainMenuMutationMutationFn,
+  MainMenuQueryFragment,
+} from 'ui/lib/graphql'
+import styles from './styles'
 
 interface MainMenuProps {
   query: MainMenuQueryFragment
   visible: boolean
 }
 
-class MainMenu extends PureComponent<MainMenuProps> {
+export default class MainMenu extends PureComponent<MainMenuProps> {
   static defaultPropd = {
     visible: false,
   }
 
-  handleLogoutClick = async (event: MouseEvent<HTMLAnchorElement>) => {
-    const { logout } = this.props as any
+  handleLogoutClick = (logoutMutation: MainMenuMutationMutationFn) => async (
+    event: MouseEvent<HTMLAnchorElement>,
+  ) => {
     event.preventDefault()
 
-    console.log('🚪')
+    const response = await logoutMutation()
 
-    const { data } = await logout()
-
-    console.log('🚪', data)
-    if (data.logout.status.success) {
-      document.location.href = '/dashboard'
+    console.log('🚪', response)
+    if (get(response, 'data.logout.status.success')) {
+      document.location.href = '/api/logout'
+      console.log('🚪✅')
     }
   }
 
@@ -45,13 +49,17 @@ class MainMenu extends PureComponent<MainMenuProps> {
                 <span className={styles.username}>
                   {query.currentUser.name}
                 </span>
-                <a
-                  href='#'
-                  className={styles.lowEmphisis}
-                  onClick={this.handleLogoutClick}
-                >
-                  Logout
-                </a>
+                <MainMenuMutationComponent>
+                  {(logout) => (
+                    <a
+                      href='#'
+                      className={styles.lowEmphisis}
+                      onClick={this.handleLogoutClick(logout)}
+                    >
+                      Logout
+                    </a>
+                  )}
+                </MainMenuMutationComponent>
               </li>
               {query.teams.map((team) => (
                 <li className={styles.item} key={team.id}>
@@ -74,5 +82,3 @@ class MainMenu extends PureComponent<MainMenuProps> {
     )
   }
 }
-
-export default withMainMenuMutation<MainMenuProps>({ name: 'logout' })(MainMenu)

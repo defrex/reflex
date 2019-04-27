@@ -46,8 +46,8 @@ const base = {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.API_ENDPOINT': JSON.stringify(
-        process.env.API_ENDPOINT || 'https://api.reflexui.com/graphql',
+      'process.env.API_URL': JSON.stringify(
+        process.env.API_URL || 'https://api.reflexui.com',
       ),
       'process.env.ENV': JSON.stringify(config.environment),
       'process.env.GOOGLE_ANALYTICS_ID': JSON.stringify(
@@ -69,7 +69,7 @@ module.exports.client = {
       ...(config.environment === 'development'
         ? ['webpack-hot-middleware/client']
         : []),
-      absolutePath('client'),
+      absolutePath('renderers/client'),
     ],
   },
 
@@ -90,7 +90,7 @@ module.exports.server = {
   name: 'server',
   target: 'node',
 
-  entry: { server: absolutePath('server') },
+  entry: { server: absolutePath('renderers/server') },
 
   output: {
     ...base.output,
