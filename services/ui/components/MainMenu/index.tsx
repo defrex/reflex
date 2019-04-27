@@ -26,10 +26,8 @@ export default class MainMenu extends PureComponent<MainMenuProps> {
 
     const response = await logoutMutation()
 
-    console.log('🚪', response)
     if (get(response, 'data.logout.status.success')) {
       document.location.href = '/api/logout'
-      console.log('🚪✅')
     }
   }
 
