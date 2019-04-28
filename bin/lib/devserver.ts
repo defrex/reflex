@@ -2,9 +2,10 @@ import absolutePath from 'bin/lib/absolutePath'
 import chalk, { Chalk } from 'chalk'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
+import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 
-type ProcName = 'api' | 'ui' | 'sdk' | 'sampler'
+type ProcName = 'api' | 'ui' | 'sdk' | 'sampler' | 'easy-run'
 type ProcType = 'service' | 'package' | 'function'
 type Status = 'neutral' | 'success' | 'wait' | 'fail'
 type Config<T> = { [key in ProcType]?: { [key in ProcName]?: T } }
@@ -60,8 +61,13 @@ const title = (type: ProcType, name: ProcName, status: Status = 'neutral') => {
       ? chalk.red('✖')
       : status === 'wait'
       ? chalk.yellow('↻')
-      : '='
-  return baseColor(`[${type}s/${name} ${symbol}]`)
+      : '↴'
+  let title = baseColor(`[${type}s/${name} ${symbol}]`)
+  // if (title.length < maxTitleSize) {
+  //   const padding = maxTitleSize - title.length
+  //   title = title.replace(' ', ' '.repeat(padding + 1))
+  // }
+  return title
 }
 
 const procs: { [key: string]: ChildProcess } = {}
@@ -89,7 +95,7 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
   let loaded = false
 
   if (await killProc(type, name)) {
-    console.log(title(type, name, 'wait'))
+    console.log(title(type, name, 'wait'), 'starting')
   }
 
   const proc = spawn('yarn', ['start'], {
@@ -98,15 +104,15 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
     env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
   proc.stderr.on('data', (data) => {
-    process.stderr.write(title(type, name))
+    console.log(title(type, name))
     process.stderr.write(data)
   })
   proc.stdout.on('data', (data) => {
-    process.stdout.write(title(type, name))
+    console.log(title(type, name))
     process.stdout.write(data)
   })
   proc.on('exit', () => {
-    console.log(title(type, name, 'fail'))
+    console.log(title(type, name, 'fail'), 'killed')
     loaded = true
     delProc(type, name)
   })
@@ -123,7 +129,7 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
               .toString('utf8')
               .includes(`http://localhost:${ports[type]![name]}`)))
       ) {
-        console.log(title(type, name, 'success'))
+        console.log(title(type, name, 'success'), 'running')
         loaded = true
         resolve()
       }
@@ -140,6 +146,7 @@ process.on('exit', function killAll() {
 
 export default async function main() {
   spawnProc('package', 'sdk')
+  spawnProc('package', 'easy-run')
   spawnProc('function', 'sampler')
   spawnProc('service', 'api')
   spawnProc('service', 'ui')
@@ -149,11 +156,23 @@ export default async function main() {
       [absolutePath('services/api/*.ts'), absolutePath('services/api/**/*.ts')],
       { ignoreInitial: true },
     )
-    .on('all', () => spawnProc('service', 'api'))
+    .on(
+      'all',
+      debounce(() => spawnProc('service', 'api'), 1000, {
+        leading: true,
+        trailing: true,
+      }),
+    )
 
   chokidar
     .watch(absolutePath('services/ui/bin/lib/server.ts'), {
       ignoreInitial: true,
     })
-    .on('all', () => spawnProc('service', 'ui'))
+    .on(
+      'all',
+      debounce(() => spawnProc('service', 'ui'), 1000, {
+        leading: true,
+        trailing: true,
+      }),
+    )
 }

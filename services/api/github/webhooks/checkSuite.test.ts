@@ -1,12 +1,13 @@
-import { ChecksCreateParams } from '@octokit/rest'
+import { ChecksCreateParams, GitGetCommitParams } from '@octokit/rest'
 import { prisma } from 'api/prisma'
 import checkSuite from './checkSuite'
 
 describe('checkSuite', () => {
   it('runs', async () => {
     const user = await prisma.createUser({
-      email: 'aron@defrex.com',
+      email: 'aron@reflexui.com',
       name: 'aron',
+      githubAccessToken: 'a3a95dff7ad85eba2219fba6f72b150d67d375ea',
     })
 
     const team = await prisma.createTeam({
@@ -55,8 +56,8 @@ describe('checkSuite', () => {
       },
     })
 
-    const branch = 'test_branch'
-    const commit = 'test_sha'
+    const branch = 'master'
+    const commit = '7b278e0371db8df6ba3db2d4c487f332285fb14d'
     const githubCheckId = 55
     const params = {
       payload: {
@@ -86,6 +87,21 @@ describe('checkSuite', () => {
             }
           }),
         },
+        git: {
+          getCommit: jest.fn((params: GitGetCommitParams) => {
+            expect(params.owner).toEqual(repo.owner)
+            expect(params.repo).toEqual(repo.name)
+            expect(params.commit_sha).toEqual(commit)
+
+            return {
+              data: {
+                author: {
+                  email: user.email,
+                },
+              },
+            }
+          }),
+        },
       },
     }
 
@@ -107,6 +123,6 @@ describe('checkSuite', () => {
       },
     })
     expect(renders.length).toBe(1)
-    expect(renders[0].imageUrl).not.toBeUndefined()
+    expect(renders[0].html).not.toBeUndefined()
   })
 })

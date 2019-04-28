@@ -1,14 +1,10 @@
 import { WebhookPayloadCheckSuite } from '@octokit/webhooks'
 import absoluteUrl from 'api/lib/absoluteUrl'
-import callFunction from 'api/lib/callFunction'
+import { tokenForUser } from 'api/lib/auth'
+import { callSampler } from 'api/lib/callFunction'
 import { findOne } from 'api/lib/data'
 import { Check, prisma, Repo } from 'api/prisma'
 import { Context, Octokit } from 'probot'
-
-interface Payload {
-  hello: string
-  checkId: string
-}
 
 export default async function checkSuite({
   payload,
@@ -75,10 +71,30 @@ export default async function checkSuite({
       },
     })
 
-    await callFunction('sampler', {
-      hello: 'GitHub',
+    const commit = await github.git.getCommit({
+      owner: repo.owner,
+      repo: repo.name,
+      commit_sha: check.commit,
+    })
+
+    let authUser = await prisma.user({ email: commit.data.author.email })
+    if (!authUser) {
+      const memberships = await prisma.memberships({
+        where: {
+          team: { id: team.id },
+          role: 'ADMIN',
+        },
+      })
+      if (memberships.length === 0) {
+        throw new Error(`Team with no admin: ${team.id}`)
+      }
+      authUser = await prisma.membership({ id: memberships[0].id }).user()
+    }
+
+    await callSampler({
+      authToken: tokenForUser(authUser),
       checkId: check.id,
-    } as Payload)
+    })
 
     console.log(`✔️ ${repo.owner}/${repo.name}#${check.branch}/${check.commit}`)
   }

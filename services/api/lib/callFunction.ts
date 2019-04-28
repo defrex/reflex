@@ -4,7 +4,7 @@ import absolutePath from 'api/lib/absolutePath'
 
 const pubsub = new PubSub()
 
-export default async function callFunction(functionName: string, payload: any) {
+export async function callFunction(functionName: string, payload: any) {
   const data = Buffer.from(JSON.stringify(payload))
   if (config.environment === 'development') {
     const { main } = require(absolutePath(
@@ -17,4 +17,14 @@ export default async function callFunction(functionName: string, payload: any) {
     const messageId = await pubsub.topic(topic).publish(data)
     console.info(`Published ${topic}/${messageId}`)
   }
+}
+
+interface SamplerPayload {
+  hello?: string
+  checkId: string
+  authToken: string
+}
+
+export function callSampler(payload: SamplerPayload) {
+  return callFunction('sampler', payload)
 }

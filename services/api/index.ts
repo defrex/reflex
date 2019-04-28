@@ -5,9 +5,10 @@ import applyGraphqlMiddleware from 'api/graphql'
 import auth from 'api/lib/auth'
 import cookieParser from 'cookie-parser'
 import express from 'express'
+import { Server } from 'http'
 import morgan from 'morgan'
 
-export default async function main() {
+export default async function main(): Promise<Server> {
   const app = express()
 
   app.use(
@@ -33,7 +34,10 @@ export default async function main() {
 
   await applyGraphqlMiddleware(app)
 
-  app.listen(config.port, () => {
-    process.stderr.write(`http://localhost:${config.port}\n`)
+  return new Promise((resolve, _reject) => {
+    const server: Server = app.listen(config.port, () => {
+      process.stderr.write(`http://localhost:${config.port}\n`)
+      resolve(server)
+    })
   })
 }

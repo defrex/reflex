@@ -49,7 +49,7 @@ export default {
     const { id } = args
     const { user } = ctx
     if (!user) {
-      throw new AuthorizationError()
+      throw new AuthorizationError('No User')
     }
 
     const team = await prisma
@@ -57,7 +57,7 @@ export default {
       .repo()
       .team()
     if (!userInTeam(user, team)) {
-      throw new AuthorizationError()
+      throw new AuthorizationError('User not in Team')
     }
 
     return prisma.check({ id })

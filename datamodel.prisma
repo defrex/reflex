@@ -5,7 +5,10 @@ type User {
 
   email: String! @unique
   name: String!
+
   githubAccessToken: String
+  githubUsername: String
+
   figmaAccessToken: String
   figmaRefreshToken: String
 

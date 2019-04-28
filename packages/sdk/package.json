@@ -12,17 +12,13 @@
     "dist"
   ],
   "author": "Aron Jones <aron.jones@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "start": "rollup -c rollup.config.ts -w"
   },
   "devDependencies": {
