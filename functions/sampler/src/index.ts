@@ -1,5 +1,6 @@
 import { ReflexClient } from '@reflexui/sdk'
 import gql from 'gql-tag'
+import parseDataUri from 'parse-data-uri'
 
 interface Payload {
   hello?: string
@@ -20,7 +21,7 @@ export async function main(message: { data: string }) {
 
   console.log(await client.hello())
 
-  const response = await client.request(
+  const response = await client.request<any>(
     gql`
       query SampleCheck($checkId: ID!) {
         check(id: $checkId) {
@@ -32,5 +33,7 @@ export async function main(message: { data: string }) {
       checkId: payload.checkId,
     },
   )
-  console.log(response)
+
+  const archive = parseDataUri(response.check.repoArchiveUrl)
+  console.log('archive', archive.mimeType)
 }

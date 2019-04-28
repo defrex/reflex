@@ -528,8 +528,6 @@ export type UserOrderByInput =
   | "name_DESC"
   | "githubAccessToken_ASC"
   | "githubAccessToken_DESC"
-  | "githubUsername_ASC"
-  | "githubUsername_DESC"
   | "figmaAccessToken_ASC"
   | "figmaAccessToken_DESC"
   | "figmaRefreshToken_ASC"
@@ -698,20 +696,6 @@ export interface UserWhereInput {
   githubAccessToken_not_starts_with?: String;
   githubAccessToken_ends_with?: String;
   githubAccessToken_not_ends_with?: String;
-  githubUsername?: String;
-  githubUsername_not?: String;
-  githubUsername_in?: String[] | String;
-  githubUsername_not_in?: String[] | String;
-  githubUsername_lt?: String;
-  githubUsername_lte?: String;
-  githubUsername_gt?: String;
-  githubUsername_gte?: String;
-  githubUsername_contains?: String;
-  githubUsername_not_contains?: String;
-  githubUsername_starts_with?: String;
-  githubUsername_not_starts_with?: String;
-  githubUsername_ends_with?: String;
-  githubUsername_not_ends_with?: String;
   figmaAccessToken?: String;
   figmaAccessToken_not?: String;
   figmaAccessToken_in?: String[] | String;
@@ -1103,7 +1087,6 @@ export interface UserUpdateManyMutationInput {
   email?: String;
   name?: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
 }
@@ -1117,7 +1100,6 @@ export interface UserUpdateInput {
   email?: String;
   name?: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
   memberships?: MembershipUpdateManyWithoutUserInput;
@@ -1209,7 +1191,6 @@ export interface UserUpdateWithoutMembershipsDataInput {
   email?: String;
   name?: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
 }
@@ -1486,7 +1467,6 @@ export interface UserUpdateDataInput {
   email?: String;
   name?: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
   memberships?: MembershipUpdateManyWithoutUserInput;
@@ -2360,7 +2340,6 @@ export interface UserCreateWithoutMembershipsInput {
   email: String;
   name: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
 }
@@ -2536,7 +2515,6 @@ export interface UserCreateInput {
   email: String;
   name: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
   memberships?: MembershipCreateManyWithoutUserInput;
@@ -2585,7 +2563,6 @@ export interface UserPreviousValues {
   email: String;
   name: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
 }
@@ -2599,7 +2576,6 @@ export interface UserPreviousValuesPromise
   email: () => Promise<String>;
   name: () => Promise<String>;
   githubAccessToken: () => Promise<String>;
-  githubUsername: () => Promise<String>;
   figmaAccessToken: () => Promise<String>;
   figmaRefreshToken: () => Promise<String>;
 }
@@ -2613,7 +2589,6 @@ export interface UserPreviousValuesSubscription
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   githubAccessToken: () => Promise<AsyncIterator<String>>;
-  githubUsername: () => Promise<AsyncIterator<String>>;
   figmaAccessToken: () => Promise<AsyncIterator<String>>;
   figmaRefreshToken: () => Promise<AsyncIterator<String>>;
 }
@@ -3850,7 +3825,6 @@ export interface User {
   email: String;
   name: String;
   githubAccessToken?: String;
-  githubUsername?: String;
   figmaAccessToken?: String;
   figmaRefreshToken?: String;
 }
@@ -3862,7 +3836,6 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   email: () => Promise<String>;
   name: () => Promise<String>;
   githubAccessToken: () => Promise<String>;
-  githubUsername: () => Promise<String>;
   figmaAccessToken: () => Promise<String>;
   figmaRefreshToken: () => Promise<String>;
   memberships: <T = FragmentableArray<Membership>>(args?: {
@@ -3885,7 +3858,6 @@ export interface UserSubscription
   email: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   githubAccessToken: () => Promise<AsyncIterator<String>>;
-  githubUsername: () => Promise<AsyncIterator<String>>;
   figmaAccessToken: () => Promise<AsyncIterator<String>>;
   figmaRefreshToken: () => Promise<AsyncIterator<String>>;
   memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {

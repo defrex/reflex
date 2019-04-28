@@ -1,9 +1,7 @@
 import absolutePath from 'bin/lib/absolutePath'
-import gen from 'bin/lib/gen'
 import chalk, { Chalk } from 'chalk'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
-import delay from 'delay'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import { Readable, Writable } from 'stream'
@@ -204,9 +202,4 @@ export default async function main() {
         trailing: true,
       }),
     )
-
-  await delay(10000)
-  chokidar
-    .watch(absolutePath('services/**/*.graphql'), { ignoreInitial: true })
-    .on('all', debounce(gen, 1000, { leading: false, trailing: true }))
 }

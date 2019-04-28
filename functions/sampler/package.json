@@ -18,9 +18,7 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.32",
-    "@types/colors": "^1.2.1",
     "@types/node": "^10.11.0",
-    "@types/ora": "^3.2.0",
     "adm-zip": "^0.4.13",
     "colors": "^1.3.3",
     "ora": "^3.4.0",
@@ -39,6 +37,7 @@
     "@google-cloud/pubsub": "^0.28.1",
     "@google-cloud/storage": "^2.5.0",
     "@reflexui/sdk": "^1.0.0-alpha.3",
-    "gql-tag": "^1.0.1"
+    "gql-tag": "^1.0.1",
+    "parse-data-uri": "^0.2.0"
   }
 }

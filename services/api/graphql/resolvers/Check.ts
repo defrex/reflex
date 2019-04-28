@@ -35,8 +35,6 @@ export default {
     }
     const uri = new DataURI()
     uri.format('.tar.gz', archive.data as Buffer)
-    console.log('archive', uri.content)
-
     return uri.content
   },
 } as CheckResolvers<Context>

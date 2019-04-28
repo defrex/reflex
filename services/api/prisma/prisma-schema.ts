@@ -2298,7 +2298,6 @@ type User {
   email: String!
   name: String!
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
   memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
@@ -2315,7 +2314,6 @@ input UserCreateInput {
   email: String!
   name: String!
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
   memberships: MembershipCreateManyWithoutUserInput
@@ -2336,7 +2334,6 @@ input UserCreateWithoutMembershipsInput {
   email: String!
   name: String!
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
 }
@@ -2359,8 +2356,6 @@ enum UserOrderByInput {
   name_DESC
   githubAccessToken_ASC
   githubAccessToken_DESC
-  githubUsername_ASC
-  githubUsername_DESC
   figmaAccessToken_ASC
   figmaAccessToken_DESC
   figmaRefreshToken_ASC
@@ -2374,7 +2369,6 @@ type UserPreviousValues {
   email: String!
   name: String!
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
 }
@@ -2401,7 +2395,6 @@ input UserUpdateDataInput {
   email: String
   name: String
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
   memberships: MembershipUpdateManyWithoutUserInput
@@ -2411,7 +2404,6 @@ input UserUpdateInput {
   email: String
   name: String
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
   memberships: MembershipUpdateManyWithoutUserInput
@@ -2421,7 +2413,6 @@ input UserUpdateManyMutationInput {
   email: String
   name: String
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
 }
@@ -2446,7 +2437,6 @@ input UserUpdateWithoutMembershipsDataInput {
   email: String
   name: String
   githubAccessToken: String
-  githubUsername: String
   figmaAccessToken: String
   figmaRefreshToken: String
 }
@@ -2534,20 +2524,6 @@ input UserWhereInput {
   githubAccessToken_not_starts_with: String
   githubAccessToken_ends_with: String
   githubAccessToken_not_ends_with: String
-  githubUsername: String
-  githubUsername_not: String
-  githubUsername_in: [String!]
-  githubUsername_not_in: [String!]
-  githubUsername_lt: String
-  githubUsername_lte: String
-  githubUsername_gt: String
-  githubUsername_gte: String
-  githubUsername_contains: String
-  githubUsername_not_contains: String
-  githubUsername_starts_with: String
-  githubUsername_not_starts_with: String
-  githubUsername_ends_with: String
-  githubUsername_not_ends_with: String
   figmaAccessToken: String
   figmaAccessToken_not: String
   figmaAccessToken_in: [String!]
