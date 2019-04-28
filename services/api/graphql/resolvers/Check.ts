@@ -2,6 +2,7 @@ import { AuthenticationError, GithubError } from 'api/exceptions'
 import { Context } from 'api/graphql/Context'
 import { CheckResolvers } from 'api/graphql/types'
 import { prisma } from 'api/prisma'
+import DataURI from 'datauri'
 import { Octokit } from 'probot'
 
 export default {
@@ -18,15 +19,9 @@ export default {
       auth: `token ${user.githubAccessToken}`,
     })
 
-    console.log('getArchiveLink', {
-      owner: repo.owner,
-      repo: repo.name,
-      ref: check.commit,
-      archive_format: 'tarball',
-    })
-    let archiveUrl
+    let archive
     try {
-      archiveUrl = await octokit.repos.getArchiveLink({
+      archive = await octokit.repos.getArchiveLink({
         owner: repo.owner,
         repo: repo.name,
         ref: check.commit,
@@ -38,9 +33,10 @@ export default {
         `Cannot find archive for ${repo.owner}/${repo.name}@${check.commit}`,
       )
     }
-    console.log('archiveUrl', archiveUrl)
-    // const archive = await fetch(archiveUrl.data as string)
+    const uri = new DataURI()
+    uri.format('.tar.gz', archive.data)
+    console.log('archive', uri.content)
 
-    return archiveUrl.data as string
+    return uri.content
   },
 } as CheckResolvers<Context>

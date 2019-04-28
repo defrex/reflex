@@ -2,7 +2,7 @@ FROM node:10-alpine
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
-RUN yarn install --prod
+RUN npm install --prod
 COPY . .
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
