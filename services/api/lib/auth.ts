@@ -80,12 +80,15 @@ export function login(_req: Request, res: Response, user: User) {
   res.redirect(encodeGetParams(uiUrl('/api/login'), { token }))
 }
 
-export function logout(_req: Request, res: Response) {
+const router = Router()
+
+router.get('/login', (_req, res) => {
+  res.redirect(authUrl)
+})
+
+router.get('/logout', (_req, res) => {
   res.clearCookie('Authorization')
   res.redirect(uiUrl('/login'))
-}
+})
 
-const router = Router()
-router.get('/login', (_req, res) => res.redirect(authUrl))
-router.get('/logout', logout)
 export default router

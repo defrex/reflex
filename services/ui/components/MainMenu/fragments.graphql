@@ -9,9 +9,5 @@ fragment MainMenuQuery on Query {
     name
   }
 
-  config {
-    logoutUrl
-  }
-
   ...GithubAuthButtonQuery
 }

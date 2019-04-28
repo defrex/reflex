@@ -1,13 +1,15 @@
 import absolutePath from 'bin/lib/absolutePath'
+import gen from 'bin/lib/gen'
 import chalk, { Chalk } from 'chalk'
 import { ChildProcess, spawn } from 'child_process'
 import chokidar from 'chokidar'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
+import { Readable, Writable } from 'stream'
 
 type ProcName = 'api' | 'ui' | 'sdk' | 'sampler' | 'easy-run'
 type ProcType = 'service' | 'package' | 'function'
-type Status = 'neutral' | 'success' | 'wait' | 'fail'
+type Status = 'neutral' | 'success' | 'start' | 'fail'
 type Config<T> = { [key in ProcType]?: { [key in ProcName]?: T } }
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -52,6 +54,21 @@ const env: Config<{ [key: string]: string }> = {
   },
 }
 
+interface State {
+  procs: {
+    [key: string]: ChildProcess
+  }
+  currentTitleProc: null | {
+    type: ProcType
+    name: ProcName
+  }
+}
+
+const state: State = {
+  procs: {},
+  currentTitleProc: null,
+}
+
 const title = (type: ProcType, name: ProcName, status: Status = 'neutral') => {
   const baseColor = get(colors, [type, name], chalk.dim)
   const symbol =
@@ -59,24 +76,42 @@ const title = (type: ProcType, name: ProcName, status: Status = 'neutral') => {
       ? chalk.green('✔')
       : status === 'fail'
       ? chalk.red('✖')
-      : status === 'wait'
+      : status === 'start'
       ? chalk.yellow('↻')
       : '↴'
-  let title = baseColor(`[${type}s/${name} ${symbol}]`)
-  // if (title.length < maxTitleSize) {
-  //   const padding = maxTitleSize - title.length
-  //   title = title.replace(' ', ' '.repeat(padding + 1))
-  // }
-  return title
+  return baseColor(`[${type}s/${name} ${symbol}]`)
 }
 
-const procs: { [key: string]: ChildProcess } = {}
+function titleStream(
+  type: ProcType,
+  name: ProcName,
+  input: Readable,
+  output: Writable,
+) {
+  input.on('data', (data) => {
+    if (
+      !state.currentTitleProc ||
+      state.currentTitleProc.type !== type ||
+      state.currentTitleProc.name !== name
+    ) {
+      console.log(title(type, name))
+      state.currentTitleProc = { type, name }
+    }
+    output.write(data)
+  })
+}
+
+function titleLog(type: ProcType, name: ProcName, status: Status) {
+  console.log(title(type, name, status))
+  state.currentTitleProc = null
+}
+
 const getProc = (type: ProcType, name: ProcName): ChildProcess | void =>
-  procs[`${type}/${name}`]
+  state.procs[`${type}/${name}`]
 const setProc = (type: ProcType, name: ProcName, proc: ChildProcess) =>
-  (procs[`${type}/${name}`] = proc)
+  (state.procs[`${type}/${name}`] = proc)
 const delProc = (type: ProcType, name: ProcName) =>
-  delete procs[`${type}/${name}`]
+  delete state.procs[`${type}/${name}`]
 
 function killProc(type: ProcType, name: ProcName): Promise<boolean> {
   const proc = getProc(type, name)
@@ -95,7 +130,7 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
   let loaded = false
 
   if (await killProc(type, name)) {
-    console.log(title(type, name, 'wait'), 'starting')
+    titleLog(type, name, 'start')
   }
 
   const proc = spawn('yarn', ['start'], {
@@ -103,16 +138,10 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
     cwd: absolutePath(`${type}s/${name}`),
     env: env[type] && env[type]![name] ? env[type]![name] : {},
   })
-  proc.stderr.on('data', (data) => {
-    console.log(title(type, name))
-    process.stderr.write(data)
-  })
-  proc.stdout.on('data', (data) => {
-    console.log(title(type, name))
-    process.stdout.write(data)
-  })
+  titleStream(type, name, proc.stderr, process.stderr)
+  titleStream(type, name, proc.stdout, process.stdout)
   proc.on('exit', () => {
-    console.log(title(type, name, 'fail'), 'killed')
+    titleLog(type, name, 'fail')
     loaded = true
     delProc(type, name)
   })
@@ -129,17 +158,16 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
               .toString('utf8')
               .includes(`http://localhost:${ports[type]![name]}`)))
       ) {
-        console.log(title(type, name, 'success'), 'running')
+        titleLog(type, name, 'success')
         loaded = true
         resolve()
       }
-      process.stderr.write(data)
     })
   })
 }
 
 process.on('exit', function killAll() {
-  for (const proc of Object.values(procs)) {
+  for (const proc of Object.values(state.procs)) {
     proc.kill()
   }
 })
@@ -175,4 +203,8 @@ export default async function main() {
         trailing: true,
       }),
     )
+
+  chokidar
+    .watch(absolutePath('services/**/*.graphql'), { ignoreInitial: true })
+    .on('all', debounce(gen, 1000, { leading: false, trailing: true }))
 }

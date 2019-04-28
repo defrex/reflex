@@ -1,11 +1,10 @@
-import { currentTeam, currentUser, logout } from 'api/lib/auth'
+import { currentTeam, currentUser } from 'api/lib/auth'
 import { Team, User } from 'api/prisma'
 import { Request, Response } from 'express'
 
 export type Context = {
   user?: User
   team?: Team
-  logout: () => void
 }
 // GraphQL Gen needs an export not named "Context"
 export type ReflexContex = Context
@@ -21,6 +20,5 @@ export async function getContext({
   return {
     user,
     team: await currentTeam(req, res, user),
-    logout: logout.bind(null, req, res),
   }
 }

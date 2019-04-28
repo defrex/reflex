@@ -30,7 +30,7 @@ export default async function main(): Promise<Server> {
 
   app.use('/github', github)
   app.use('/figma', figma)
-  app.get('/auth', auth)
+  app.use('/auth', auth)
 
   await applyGraphqlMiddleware(app)
 

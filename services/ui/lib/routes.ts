@@ -57,3 +57,8 @@ export function componentRoute(values?: ComponentRouteParams) {
   }
   return `/teams/${params.teamId}/component/${params.componentId}`
 }
+
+export interface LoginRouteParams {}
+export function loginRoute(_values?: LoginRouteParams) {
+  return '/login'
+}

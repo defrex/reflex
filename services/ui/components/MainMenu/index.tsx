@@ -1,12 +1,7 @@
-import get from 'lodash/get'
-import React, { MouseEvent, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import GithubAuthButton from 'ui/components/GithubAuthButton'
 import Link from 'ui/components/Link'
-import {
-  MainMenuMutationComponent,
-  MainMenuMutationMutationFn,
-  MainMenuQueryFragment,
-} from 'ui/lib/graphql'
+import { MainMenuQueryFragment } from 'ui/lib/graphql'
 import styles from './styles'
 
 interface MainMenuProps {
@@ -17,18 +12,6 @@ interface MainMenuProps {
 export default class MainMenu extends PureComponent<MainMenuProps> {
   static defaultPropd = {
     visible: false,
-  }
-
-  handleLogoutClick = (logoutMutation: MainMenuMutationMutationFn) => async (
-    event: MouseEvent<HTMLAnchorElement>,
-  ) => {
-    event.preventDefault()
-
-    const response = await logoutMutation()
-
-    if (get(response, 'data.logout.status.success')) {
-      document.location.href = '/api/logout'
-    }
   }
 
   render() {
@@ -47,17 +30,9 @@ export default class MainMenu extends PureComponent<MainMenuProps> {
                 <span className={styles.username}>
                   {query.currentUser.name}
                 </span>
-                <MainMenuMutationComponent>
-                  {(logout) => (
-                    <a
-                      href='#'
-                      className={styles.lowEmphisis}
-                      onClick={this.handleLogoutClick(logout)}
-                    >
-                      Logout
-                    </a>
-                  )}
-                </MainMenuMutationComponent>
+                <a href='/api/logout' className={styles.lowEmphisis}>
+                  Logout
+                </a>
               </li>
               {query.teams.map((team) => (
                 <li className={styles.item} key={team.id}>

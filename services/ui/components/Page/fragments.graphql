@@ -1,6 +1,10 @@
 #import "../AppBar/fragments.graphql"
 #import "../MainMenu/fragments.graphql"
 fragment PageQuery on Query {
+  currentUser {
+    id
+  }
+
   ...AppBarQuery
   ...MainMenuQuery
 }

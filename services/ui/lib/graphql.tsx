@@ -1,4 +1,4 @@
-type Maybe<T> = T | null
+export type Maybe<T> = T | null
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -33,7 +33,6 @@ export type Component = {
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
-  logoutUrl: Scalars['String']
 }
 
 export type CreateCliAuthSessionResponse = {
@@ -85,12 +84,7 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type LogoutResponse = {
-  status?: Maybe<MutationStatus>
-}
-
 export type Mutation = {
-  logout?: Maybe<LogoutResponse>
   createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
@@ -188,6 +182,38 @@ export type User = {
   figmaConnected: Scalars['Boolean']
   githubConnected: Scalars['Boolean']
 }
+export type AppBarQueryFragment = { __typename?: 'Query' } & {
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
+  config: { __typename?: 'Config' } & Pick<
+    Config,
+    'githubAuthUrl' | 'figmaAuthUrl'
+  >
+}
+
+export type FigmaAuthButtonQueryFragment = { __typename?: 'Query' } & {
+  config: { __typename?: 'Config' } & Pick<Config, 'figmaAuthUrl'>
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'figmaConnected'>>
+}
+
+export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
+  config: { __typename?: 'Config' } & Pick<Config, 'githubAuthUrl'>
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'githubConnected'>>
+}
+
+export type MainMenuQueryFragment = { __typename?: 'Query' } & {
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'name'>>
+  teams: Array<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name'>>
+} & GithubAuthButtonQueryFragment
+
+export type PageQueryFragment = { __typename?: 'Query' } & {
+  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>
+} & (AppBarQueryFragment & MainMenuQueryFragment)
+
+export type TemplateQueryFragment = { __typename?: 'Query' } & Pick<
+  Query,
+  'hello'
+>
+
 export type ComponentQueryQueryVariables = {
   teamId: Scalars['ID']
   componentId: Scalars['ID']
@@ -278,6 +304,12 @@ export type LibraryQueryQuery = { __typename?: 'Query' } & {
   >
 } & PageQueryFragment
 
+export type LoginQueryQueryVariables = {}
+
+export type LoginQueryQuery = {
+  __typename?: 'Query'
+} & GithubAuthButtonQueryFragment
+
 export type TeamPageQueryQueryVariables = {
   teamId: Scalars['ID']
 }
@@ -286,54 +318,10 @@ export type TeamPageQueryQuery = { __typename?: 'Query' } & {
   team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'name'>>
 } & PageQueryFragment
 
-export type AppBarQueryFragment = { __typename?: 'Query' } & {
-  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
-  config: { __typename?: 'Config' } & Pick<
-    Config,
-    'githubAuthUrl' | 'figmaAuthUrl'
-  >
-}
-
-export type FigmaAuthButtonQueryFragment = { __typename?: 'Query' } & {
-  config: { __typename?: 'Config' } & Pick<Config, 'figmaAuthUrl'>
-  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'figmaConnected'>>
-}
-
-export type GithubAuthButtonQueryFragment = { __typename?: 'Query' } & {
-  config: { __typename?: 'Config' } & Pick<Config, 'githubAuthUrl'>
-  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'githubConnected'>>
-}
-
-export type MainMenuQueryFragment = { __typename?: 'Query' } & {
-  currentUser: Maybe<{ __typename?: 'User' } & Pick<User, 'name'>>
-  teams: Array<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name'>>
-  config: { __typename?: 'Config' } & Pick<Config, 'logoutUrl'>
-} & GithubAuthButtonQueryFragment
-
-export type MainMenuMutationMutationVariables = {}
-
-export type MainMenuMutationMutation = { __typename?: 'Mutation' } & {
-  logout: Maybe<
-    { __typename?: 'LogoutResponse' } & {
-      status: Maybe<
-        { __typename?: 'MutationStatus' } & Pick<MutationStatus, 'success'>
-      >
-    }
-  >
-}
-
-export type PageQueryFragment = {
-  __typename?: 'Query'
-} & (AppBarQueryFragment & MainMenuQueryFragment)
-
-export type TemplateQueryFragment = { __typename?: 'Query' } & Pick<
-  Query,
-  'hello'
->
-
 import gql from 'graphql-tag'
 import * as React from 'react'
 import * as ReactApollo from 'react-apollo'
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export const FigmaAuthButtonQueryFragmentDoc = gql`
   fragment FigmaAuthButtonQuery on Query {
     config {
@@ -375,15 +363,15 @@ export const MainMenuQueryFragmentDoc = gql`
       id
       name
     }
-    config {
-      logoutUrl
-    }
     ...GithubAuthButtonQuery
   }
   ${GithubAuthButtonQueryFragmentDoc}
 `
 export const PageQueryFragmentDoc = gql`
   fragment PageQuery on Query {
+    currentUser {
+      id
+    }
     ...AppBarQuery
     ...MainMenuQuery
   }
@@ -420,40 +408,42 @@ export const ComponentQueryDocument = gql`
   ${PageQueryFragmentDoc}
 `
 
-export class ComponentQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<ComponentQueryQuery, ComponentQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<ComponentQueryQuery, ComponentQueryQueryVariables>
-        query={ComponentQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const ComponentQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<ComponentQueryQuery, ComponentQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables: ComponentQueryQueryVariables },
+) => (
+  <ReactApollo.Query<ComponentQueryQuery, ComponentQueryQueryVariables>
+    query={ComponentQueryDocument}
+    {...props}
+  />
+)
+
 export type ComponentQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<ComponentQueryQuery, ComponentQueryQueryVariables>
 > &
   TChildProps
 export function withComponentQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        ComponentQueryQuery,
-        ComponentQueryQueryVariables,
-        ComponentQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    ComponentQueryQuery,
+    ComponentQueryQueryVariables,
+    ComponentQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     ComponentQueryQuery,
     ComponentQueryQueryVariables,
     ComponentQueryProps<TChildProps>
-  >(ComponentQueryDocument, operationOptions)
+  >(ComponentQueryDocument, {
+    alias: 'withComponentQuery',
+    ...operationOptions,
+  })
 }
 export const CreateTeamPageMutationDocument = gql`
   mutation CreateTeamPageMutation($name: String!) {
@@ -467,27 +457,32 @@ export const CreateTeamPageMutationDocument = gql`
     }
   }
 `
+export type CreateTeamPageMutationMutationFn = ReactApollo.MutationFn<
+  CreateTeamPageMutationMutation,
+  CreateTeamPageMutationMutationVariables
+>
 
-export class CreateTeamPageMutationComponent extends React.Component<
-  Partial<
-    ReactApollo.MutationProps<
-      CreateTeamPageMutationMutation,
-      CreateTeamPageMutationMutationVariables
-    >
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Mutation<
+export const CreateTeamPageMutationComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.MutationProps<
         CreateTeamPageMutationMutation,
         CreateTeamPageMutationMutationVariables
-      >
-        mutation={CreateTeamPageMutationDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+      >,
+      'mutation'
+    >,
+    'variables'
+  > & { variables?: CreateTeamPageMutationMutationVariables },
+) => (
+  <ReactApollo.Mutation<
+    CreateTeamPageMutationMutation,
+    CreateTeamPageMutationMutationVariables
+  >
+    mutation={CreateTeamPageMutationDocument}
+    {...props}
+  />
+)
+
 export type CreateTeamPageMutationProps<TChildProps = {}> = Partial<
   ReactApollo.MutateProps<
     CreateTeamPageMutationMutation,
@@ -495,26 +490,23 @@ export type CreateTeamPageMutationProps<TChildProps = {}> = Partial<
   >
 > &
   TChildProps
-export type CreateTeamPageMutationMutationFn = ReactApollo.MutationFn<
-  CreateTeamPageMutationMutation,
-  CreateTeamPageMutationMutationVariables
->
 export function withCreateTeamPageMutation<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        CreateTeamPageMutationMutation,
-        CreateTeamPageMutationMutationVariables,
-        CreateTeamPageMutationProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    CreateTeamPageMutationMutation,
+    CreateTeamPageMutationMutationVariables,
+    CreateTeamPageMutationProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withMutation<
     TProps,
     CreateTeamPageMutationMutation,
     CreateTeamPageMutationMutationVariables,
     CreateTeamPageMutationProps<TChildProps>
-  >(CreateTeamPageMutationDocument, operationOptions)
+  >(CreateTeamPageMutationDocument, {
+    alias: 'withCreateTeamPageMutation',
+    ...operationOptions,
+  })
 }
 export const TeamsPageQueryDocument = gql`
   query TeamsPageQuery {
@@ -527,40 +519,42 @@ export const TeamsPageQueryDocument = gql`
   ${PageQueryFragmentDoc}
 `
 
-export class TeamsPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
-        query={TeamsPageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const TeamsPageQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables?: TeamsPageQueryQueryVariables },
+) => (
+  <ReactApollo.Query<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
+    query={TeamsPageQueryDocument}
+    {...props}
+  />
+)
+
 export type TeamsPageQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<TeamsPageQueryQuery, TeamsPageQueryQueryVariables>
 > &
   TChildProps
 export function withTeamsPageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        TeamsPageQueryQuery,
-        TeamsPageQueryQueryVariables,
-        TeamsPageQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    TeamsPageQueryQuery,
+    TeamsPageQueryQueryVariables,
+    TeamsPageQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     TeamsPageQueryQuery,
     TeamsPageQueryQueryVariables,
     TeamsPageQueryProps<TChildProps>
-  >(TeamsPageQueryDocument, operationOptions)
+  >(TeamsPageQueryDocument, {
+    alias: 'withTeamsPageQuery',
+    ...operationOptions,
+  })
 }
 export const DashboardQueryDocument = gql`
   query DashboardQuery {
@@ -578,40 +572,42 @@ export const DashboardQueryDocument = gql`
   ${GithubAuthButtonQueryFragmentDoc}
 `
 
-export class DashboardQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<DashboardQueryQuery, DashboardQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<DashboardQueryQuery, DashboardQueryQueryVariables>
-        query={DashboardQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const DashboardQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<DashboardQueryQuery, DashboardQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables?: DashboardQueryQueryVariables },
+) => (
+  <ReactApollo.Query<DashboardQueryQuery, DashboardQueryQueryVariables>
+    query={DashboardQueryDocument}
+    {...props}
+  />
+)
+
 export type DashboardQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<DashboardQueryQuery, DashboardQueryQueryVariables>
 > &
   TChildProps
 export function withDashboardQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        DashboardQueryQuery,
-        DashboardQueryQueryVariables,
-        DashboardQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    DashboardQueryQuery,
+    DashboardQueryQueryVariables,
+    DashboardQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     DashboardQueryQuery,
     DashboardQueryQueryVariables,
     DashboardQueryProps<TChildProps>
-  >(DashboardQueryDocument, operationOptions)
+  >(DashboardQueryDocument, {
+    alias: 'withDashboardQuery',
+    ...operationOptions,
+  })
 }
 export const IndexQueryDocument = gql`
   query IndexQuery {
@@ -619,38 +615,42 @@ export const IndexQueryDocument = gql`
   }
 `
 
-export class IndexQueryComponent extends React.Component<
-  Partial<ReactApollo.QueryProps<IndexQueryQuery, IndexQueryQueryVariables>>
-> {
-  render() {
-    return (
-      <ReactApollo.Query<IndexQueryQuery, IndexQueryQueryVariables>
-        query={IndexQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const IndexQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<IndexQueryQuery, IndexQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables?: IndexQueryQueryVariables },
+) => (
+  <ReactApollo.Query<IndexQueryQuery, IndexQueryQueryVariables>
+    query={IndexQueryDocument}
+    {...props}
+  />
+)
+
 export type IndexQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<IndexQueryQuery, IndexQueryQueryVariables>
 > &
   TChildProps
 export function withIndexQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        IndexQueryQuery,
-        IndexQueryQueryVariables,
-        IndexQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    IndexQueryQuery,
+    IndexQueryQueryVariables,
+    IndexQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     IndexQueryQuery,
     IndexQueryQueryVariables,
     IndexQueryProps<TChildProps>
-  >(IndexQueryDocument, operationOptions)
+  >(IndexQueryDocument, {
+    alias: 'withIndexQuery',
+    ...operationOptions,
+  })
 }
 export const LibraryQueryDocument = gql`
   query LibraryQuery($teamId: ID!) {
@@ -678,38 +678,86 @@ export const LibraryQueryDocument = gql`
   ${PageQueryFragmentDoc}
 `
 
-export class LibraryQueryComponent extends React.Component<
-  Partial<ReactApollo.QueryProps<LibraryQueryQuery, LibraryQueryQueryVariables>>
-> {
-  render() {
-    return (
-      <ReactApollo.Query<LibraryQueryQuery, LibraryQueryQueryVariables>
-        query={LibraryQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const LibraryQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<LibraryQueryQuery, LibraryQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables: LibraryQueryQueryVariables },
+) => (
+  <ReactApollo.Query<LibraryQueryQuery, LibraryQueryQueryVariables>
+    query={LibraryQueryDocument}
+    {...props}
+  />
+)
+
 export type LibraryQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<LibraryQueryQuery, LibraryQueryQueryVariables>
 > &
   TChildProps
 export function withLibraryQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        LibraryQueryQuery,
-        LibraryQueryQueryVariables,
-        LibraryQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    LibraryQueryQuery,
+    LibraryQueryQueryVariables,
+    LibraryQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     LibraryQueryQuery,
     LibraryQueryQueryVariables,
     LibraryQueryProps<TChildProps>
-  >(LibraryQueryDocument, operationOptions)
+  >(LibraryQueryDocument, {
+    alias: 'withLibraryQuery',
+    ...operationOptions,
+  })
+}
+export const LoginQueryDocument = gql`
+  query LoginQuery {
+    ...GithubAuthButtonQuery
+  }
+  ${GithubAuthButtonQueryFragmentDoc}
+`
+
+export const LoginQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<LoginQueryQuery, LoginQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables?: LoginQueryQueryVariables },
+) => (
+  <ReactApollo.Query<LoginQueryQuery, LoginQueryQueryVariables>
+    query={LoginQueryDocument}
+    {...props}
+  />
+)
+
+export type LoginQueryProps<TChildProps = {}> = Partial<
+  ReactApollo.DataProps<LoginQueryQuery, LoginQueryQueryVariables>
+> &
+  TChildProps
+export function withLoginQuery<TProps, TChildProps = {}>(
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    LoginQueryQuery,
+    LoginQueryQueryVariables,
+    LoginQueryProps<TChildProps>
+  >,
+) {
+  return ReactApollo.withQuery<
+    TProps,
+    LoginQueryQuery,
+    LoginQueryQueryVariables,
+    LoginQueryProps<TChildProps>
+  >(LoginQueryDocument, {
+    alias: 'withLoginQuery',
+    ...operationOptions,
+  })
 }
 export const TeamPageQueryDocument = gql`
   query TeamPageQuery($teamId: ID!) {
@@ -721,96 +769,40 @@ export const TeamPageQueryDocument = gql`
   ${PageQueryFragmentDoc}
 `
 
-export class TeamPageQueryComponent extends React.Component<
-  Partial<
-    ReactApollo.QueryProps<TeamPageQueryQuery, TeamPageQueryQueryVariables>
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Query<TeamPageQueryQuery, TeamPageQueryQueryVariables>
-        query={TeamPageQueryDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
+export const TeamPageQueryComponent = (
+  props: Omit<
+    Omit<
+      ReactApollo.QueryProps<TeamPageQueryQuery, TeamPageQueryQueryVariables>,
+      'query'
+    >,
+    'variables'
+  > & { variables: TeamPageQueryQueryVariables },
+) => (
+  <ReactApollo.Query<TeamPageQueryQuery, TeamPageQueryQueryVariables>
+    query={TeamPageQueryDocument}
+    {...props}
+  />
+)
+
 export type TeamPageQueryProps<TChildProps = {}> = Partial<
   ReactApollo.DataProps<TeamPageQueryQuery, TeamPageQueryQueryVariables>
 > &
   TChildProps
 export function withTeamPageQuery<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        TeamPageQueryQuery,
-        TeamPageQueryQueryVariables,
-        TeamPageQueryProps<TChildProps>
-      >
-    | undefined,
+  operationOptions?: ReactApollo.OperationOption<
+    TProps,
+    TeamPageQueryQuery,
+    TeamPageQueryQueryVariables,
+    TeamPageQueryProps<TChildProps>
+  >,
 ) {
   return ReactApollo.withQuery<
     TProps,
     TeamPageQueryQuery,
     TeamPageQueryQueryVariables,
     TeamPageQueryProps<TChildProps>
-  >(TeamPageQueryDocument, operationOptions)
-}
-export const MainMenuMutationDocument = gql`
-  mutation MainMenuMutation {
-    logout {
-      status {
-        success
-      }
-    }
-  }
-`
-
-export class MainMenuMutationComponent extends React.Component<
-  Partial<
-    ReactApollo.MutationProps<
-      MainMenuMutationMutation,
-      MainMenuMutationMutationVariables
-    >
-  >
-> {
-  render() {
-    return (
-      <ReactApollo.Mutation<
-        MainMenuMutationMutation,
-        MainMenuMutationMutationVariables
-      >
-        mutation={MainMenuMutationDocument}
-        {...(this as any)['props'] as any}
-      />
-    )
-  }
-}
-export type MainMenuMutationProps<TChildProps = {}> = Partial<
-  ReactApollo.MutateProps<
-    MainMenuMutationMutation,
-    MainMenuMutationMutationVariables
-  >
-> &
-  TChildProps
-export type MainMenuMutationMutationFn = ReactApollo.MutationFn<
-  MainMenuMutationMutation,
-  MainMenuMutationMutationVariables
->
-export function withMainMenuMutation<TProps, TChildProps = {}>(
-  operationOptions:
-    | ReactApollo.OperationOption<
-        TProps,
-        MainMenuMutationMutation,
-        MainMenuMutationMutationVariables,
-        MainMenuMutationProps<TChildProps>
-      >
-    | undefined,
-) {
-  return ReactApollo.withMutation<
-    TProps,
-    MainMenuMutationMutation,
-    MainMenuMutationMutationVariables,
-    MainMenuMutationProps<TChildProps>
-  >(MainMenuMutationDocument, operationOptions)
+  >(TeamPageQueryDocument, {
+    alias: 'withTeamPageQuery',
+    ...operationOptions,
+  })
 }

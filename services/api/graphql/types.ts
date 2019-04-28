@@ -1,4 +1,4 @@
-type Maybe<T> = T | null
+export type Maybe<T> = T | null
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -33,7 +33,6 @@ export type Component = {
 export type Config = {
   figmaAuthUrl: Scalars['String']
   githubAuthUrl: Scalars['String']
-  logoutUrl: Scalars['String']
 }
 
 export type CreateCliAuthSessionResponse = {
@@ -85,12 +84,7 @@ export type CreateTeamResponse = {
   status: MutationStatus
 }
 
-export type LogoutResponse = {
-  status?: Maybe<MutationStatus>
-}
-
 export type Mutation = {
-  logout?: Maybe<LogoutResponse>
   createCliAuthSession?: Maybe<CreateCliAuthSessionResponse>
   createTeam?: Maybe<CreateTeamResponse>
   createComponent?: Maybe<CreateComponentResponse>
@@ -202,6 +196,8 @@ import { ReflexContex } from 'services/api/graphql/Context'
 
 import { GraphQLResolveInfo } from 'graphql'
 
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
@@ -269,210 +265,317 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
-export type CheckResolvers<Context = ReflexContex, ParentType = Check> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  githubCheckId?: Resolver<Maybe<Scalars['Int']>, ParentType, Context>
-  branch?: Resolver<Scalars['String'], ParentType, Context>
-  commit?: Resolver<Scalars['String'], ParentType, Context>
-  repoArchiveUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
-  repo?: Resolver<Maybe<Repo>, ParentType, Context>
+/** Mapping between all available schema types and the resolvers types */
+export type ResolversTypes = {
+  Query: {}
+  String: Scalars['String']
+  Config: Config
+  User: User
+  ID: Scalars['ID']
+  Boolean: Scalars['Boolean']
+  CliAuthSession: CliAuthSession
+  Team: Team
+  Component: Component
+  Sample: Sample
+  Render: Render
+  Check: Check
+  Int: Scalars['Int']
+  Repo: Repo
+  Mutation: {}
+  CreateCliAuthSessionResponse: Omit<
+    CreateCliAuthSessionResponse,
+    'cliAuthSession'
+  > & { cliAuthSession?: Maybe<ResolversTypes['CliAuthSession']> }
+  MutationStatus: MutationStatus
+  MutationError: MutationError
+  CreateTeamInput: CreateTeamInput
+  CreateTeamResponse: Omit<CreateTeamResponse, 'team'> & {
+    team?: Maybe<ResolversTypes['Team']>
+  }
+  CreateComponentInput: CreateComponentInput
+  CreateComponentResponse: Omit<CreateComponentResponse, 'component'> & {
+    component?: Maybe<ResolversTypes['Component']>
+  }
+  CreateSampleInput: CreateSampleInput
+  CreateSampleResponse: Omit<CreateSampleResponse, 'sample'> & {
+    sample?: Maybe<ResolversTypes['Sample']>
+  }
+  CreateRenderInput: CreateRenderInput
+  CreateRenderResponse: Omit<CreateRenderResponse, 'render'> & {
+    render?: Maybe<ResolversTypes['Render']>
+  }
+}
+
+export type CheckResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Check']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  githubCheckId?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >
+  branch?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  commit?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  repoArchiveUrl?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >
+  repo?: Resolver<Maybe<ResolversTypes['Repo']>, ParentType, ContextType>
 }
 
 export type CliAuthSessionResolvers<
-  Context = ReflexContex,
-  ParentType = CliAuthSession
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CliAuthSession']
 > = {
-  url?: Resolver<Scalars['String'], ParentType, Context>
-  cliAuthToken?: Resolver<Scalars['String'], ParentType, Context>
-  userAuthToken?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  cliAuthToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  userAuthToken?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type ComponentResolvers<
-  Context = ReflexContex,
-  ParentType = Component
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Component']
 > = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  team?: Resolver<Team, ParentType, Context>
-  samples?: Resolver<Array<Sample>, ParentType, Context>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  team?: Resolver<ResolversTypes['Team'], ParentType, ContextType>
+  samples?: Resolver<Array<ResolversTypes['Sample']>, ParentType, ContextType>
 }
 
-export type ConfigResolvers<Context = ReflexContex, ParentType = Config> = {
-  figmaAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
-  githubAuthUrl?: Resolver<Scalars['String'], ParentType, Context>
-  logoutUrl?: Resolver<Scalars['String'], ParentType, Context>
+export type ConfigResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Config']
+> = {
+  figmaAuthUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  githubAuthUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type CreateCliAuthSessionResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CreateCliAuthSessionResponse
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CreateCliAuthSessionResponse']
 > = {
-  cliAuthSession?: Resolver<Maybe<CliAuthSession>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+  cliAuthSession?: Resolver<
+    Maybe<ResolversTypes['CliAuthSession']>,
+    ParentType,
+    ContextType
+  >
+  status?: Resolver<ResolversTypes['MutationStatus'], ParentType, ContextType>
 }
 
 export type CreateComponentResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CreateComponentResponse
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CreateComponentResponse']
 > = {
-  component?: Resolver<Maybe<Component>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+  component?: Resolver<
+    Maybe<ResolversTypes['Component']>,
+    ParentType,
+    ContextType
+  >
+  status?: Resolver<ResolversTypes['MutationStatus'], ParentType, ContextType>
 }
 
 export type CreateRenderResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CreateRenderResponse
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CreateRenderResponse']
 > = {
-  render?: Resolver<Maybe<Render>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+  render?: Resolver<Maybe<ResolversTypes['Render']>, ParentType, ContextType>
+  status?: Resolver<ResolversTypes['MutationStatus'], ParentType, ContextType>
 }
 
 export type CreateSampleResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CreateSampleResponse
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CreateSampleResponse']
 > = {
-  sample?: Resolver<Maybe<Sample>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+  sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType>
+  status?: Resolver<ResolversTypes['MutationStatus'], ParentType, ContextType>
 }
 
 export type CreateTeamResponseResolvers<
-  Context = ReflexContex,
-  ParentType = CreateTeamResponse
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['CreateTeamResponse']
 > = {
-  team?: Resolver<Maybe<Team>, ParentType, Context>
-  status?: Resolver<MutationStatus, ParentType, Context>
+  team?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType>
+  status?: Resolver<ResolversTypes['MutationStatus'], ParentType, ContextType>
 }
 
-export type LogoutResponseResolvers<
-  Context = ReflexContex,
-  ParentType = LogoutResponse
+export type MutationResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Mutation']
 > = {
-  status?: Resolver<Maybe<MutationStatus>, ParentType, Context>
-}
-
-export type MutationResolvers<Context = ReflexContex, ParentType = Mutation> = {
-  logout?: Resolver<Maybe<LogoutResponse>, ParentType, Context>
   createCliAuthSession?: Resolver<
-    Maybe<CreateCliAuthSessionResponse>,
+    Maybe<ResolversTypes['CreateCliAuthSessionResponse']>,
     ParentType,
-    Context
+    ContextType
   >
   createTeam?: Resolver<
-    Maybe<CreateTeamResponse>,
+    Maybe<ResolversTypes['CreateTeamResponse']>,
     ParentType,
-    Context,
+    ContextType,
     MutationCreateTeamArgs
   >
   createComponent?: Resolver<
-    Maybe<CreateComponentResponse>,
+    Maybe<ResolversTypes['CreateComponentResponse']>,
     ParentType,
-    Context,
+    ContextType,
     MutationCreateComponentArgs
   >
   createSample?: Resolver<
-    Maybe<CreateSampleResponse>,
+    Maybe<ResolversTypes['CreateSampleResponse']>,
     ParentType,
-    Context,
+    ContextType,
     MutationCreateSampleArgs
   >
   createRender?: Resolver<
-    Maybe<CreateRenderResponse>,
+    Maybe<ResolversTypes['CreateRenderResponse']>,
     ParentType,
-    Context,
+    ContextType,
     MutationCreateRenderArgs
   >
 }
 
 export type MutationErrorResolvers<
-  Context = ReflexContex,
-  ParentType = MutationError
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['MutationError']
 > = {
-  field?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
-  message?: Resolver<Scalars['String'], ParentType, Context>
+  field?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type MutationStatusResolvers<
-  Context = ReflexContex,
-  ParentType = MutationStatus
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['MutationStatus']
 > = {
-  success?: Resolver<Scalars['Boolean'], ParentType, Context>
-  errors?: Resolver<Maybe<Array<MutationError>>, ParentType, Context>
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  errors?: Resolver<
+    Maybe<Array<ResolversTypes['MutationError']>>,
+    ParentType,
+    ContextType
+  >
 }
 
-export type QueryResolvers<Context = ReflexContex, ParentType = Query> = {
-  hello?: Resolver<Scalars['String'], ParentType, Context>
-  config?: Resolver<Config, ParentType, Context>
-  currentUser?: Resolver<Maybe<User>, ParentType, Context>
+export type QueryResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Query']
+> = {
+  hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  config?: Resolver<ResolversTypes['Config'], ParentType, ContextType>
+  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>
   cliAuthSession?: Resolver<
-    Maybe<CliAuthSession>,
+    Maybe<ResolversTypes['CliAuthSession']>,
     ParentType,
-    Context,
+    ContextType,
     QueryCliAuthSessionArgs
   >
-  teams?: Resolver<Array<Team>, ParentType, Context>
-  team?: Resolver<Maybe<Team>, ParentType, Context, QueryTeamArgs>
-  check?: Resolver<Maybe<Check>, ParentType, Context, QueryCheckArgs>
+  teams?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType>
+  team?: Resolver<
+    Maybe<ResolversTypes['Team']>,
+    ParentType,
+    ContextType,
+    QueryTeamArgs
+  >
+  check?: Resolver<
+    Maybe<ResolversTypes['Check']>,
+    ParentType,
+    ContextType,
+    QueryCheckArgs
+  >
 }
 
-export type RenderResolvers<Context = ReflexContex, ParentType = Render> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  createdAt?: Resolver<Scalars['String'], ParentType, Context>
-  imageUrl?: Resolver<Maybe<Scalars['String']>, ParentType, Context>
-  html?: Resolver<Scalars['String'], ParentType, Context>
-  branch?: Resolver<Scalars['String'], ParentType, Context>
-  commit?: Resolver<Scalars['String'], ParentType, Context>
-  sample?: Resolver<Sample, ParentType, Context>
+export type RenderResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Render']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  html?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  branch?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  commit?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  sample?: Resolver<ResolversTypes['Sample'], ParentType, ContextType>
 }
 
-export type RepoResolvers<Context = ReflexContex, ParentType = Repo> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  owner?: Resolver<Scalars['String'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  checks?: Resolver<Array<Maybe<Check>>, ParentType, Context>
+export type RepoResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Repo']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  checks?: Resolver<
+    Array<Maybe<ResolversTypes['Check']>>,
+    ParentType,
+    ContextType
+  >
 }
 
-export type SampleResolvers<Context = ReflexContex, ParentType = Sample> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  component?: Resolver<Component, ParentType, Context>
-  renders?: Resolver<Array<Render>, ParentType, Context>
+export type SampleResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Sample']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  component?: Resolver<ResolversTypes['Component'], ParentType, ContextType>
+  renders?: Resolver<Array<ResolversTypes['Render']>, ParentType, ContextType>
 }
 
-export type TeamResolvers<Context = ReflexContex, ParentType = Team> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  role?: Resolver<Scalars['String'], ParentType, Context>
-  component?: Resolver<Maybe<Component>, ParentType, Context, TeamComponentArgs>
-  components?: Resolver<Array<Component>, ParentType, Context>
+export type TeamResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['Team']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  role?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  component?: Resolver<
+    Maybe<ResolversTypes['Component']>,
+    ParentType,
+    ContextType,
+    TeamComponentArgs
+  >
+  components?: Resolver<
+    Array<ResolversTypes['Component']>,
+    ParentType,
+    ContextType
+  >
 }
 
-export type UserResolvers<Context = ReflexContex, ParentType = User> = {
-  id?: Resolver<Scalars['ID'], ParentType, Context>
-  name?: Resolver<Scalars['String'], ParentType, Context>
-  figmaConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
-  githubConnected?: Resolver<Scalars['Boolean'], ParentType, Context>
+export type UserResolvers<
+  ContextType = ReflexContex,
+  ParentType = ResolversTypes['User']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  figmaConnected?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  githubConnected?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
-export type Resolvers<Context = ReflexContex> = {
-  Check?: CheckResolvers<Context>
-  CliAuthSession?: CliAuthSessionResolvers<Context>
-  Component?: ComponentResolvers<Context>
-  Config?: ConfigResolvers<Context>
-  CreateCliAuthSessionResponse?: CreateCliAuthSessionResponseResolvers<Context>
-  CreateComponentResponse?: CreateComponentResponseResolvers<Context>
-  CreateRenderResponse?: CreateRenderResponseResolvers<Context>
-  CreateSampleResponse?: CreateSampleResponseResolvers<Context>
-  CreateTeamResponse?: CreateTeamResponseResolvers<Context>
-  LogoutResponse?: LogoutResponseResolvers<Context>
-  Mutation?: MutationResolvers<Context>
-  MutationError?: MutationErrorResolvers<Context>
-  MutationStatus?: MutationStatusResolvers<Context>
-  Query?: QueryResolvers<Context>
-  Render?: RenderResolvers<Context>
-  Repo?: RepoResolvers<Context>
-  Sample?: SampleResolvers<Context>
-  Team?: TeamResolvers<Context>
-  User?: UserResolvers<Context>
+export type Resolvers<ContextType = ReflexContex> = {
+  Check?: CheckResolvers<ContextType>
+  CliAuthSession?: CliAuthSessionResolvers<ContextType>
+  Component?: ComponentResolvers<ContextType>
+  Config?: ConfigResolvers<ContextType>
+  CreateCliAuthSessionResponse?: CreateCliAuthSessionResponseResolvers<
+    ContextType
+  >
+  CreateComponentResponse?: CreateComponentResponseResolvers<ContextType>
+  CreateRenderResponse?: CreateRenderResponseResolvers<ContextType>
+  CreateSampleResponse?: CreateSampleResponseResolvers<ContextType>
+  CreateTeamResponse?: CreateTeamResponseResolvers<ContextType>
+  Mutation?: MutationResolvers<ContextType>
+  MutationError?: MutationErrorResolvers<ContextType>
+  MutationStatus?: MutationStatusResolvers<ContextType>
+  Query?: QueryResolvers<ContextType>
+  Render?: RenderResolvers<ContextType>
+  Repo?: RepoResolvers<ContextType>
+  Sample?: SampleResolvers<ContextType>
+  Team?: TeamResolvers<ContextType>
+  User?: UserResolvers<ContextType>
 }
 
 /**

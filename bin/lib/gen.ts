@@ -4,7 +4,7 @@ import absolutePath from 'bin/lib/absolutePath'
 import fs from 'fs'
 import { promisify } from 'util'
 
-export default async function gen(): Promise<any> {
+export default async function gen(): Promise<void> {
   const typesFilename = absolutePath('services/api/graphql/types.ts')
   await generate({
     schema: config.graphqlSchemaPath,
@@ -26,7 +26,10 @@ export default async function gen(): Promise<any> {
         },
       },
       [absolutePath('services/ui/lib/graphql.tsx')]: {
-        documents: absolutePath('services/ui/**/*.graphql'),
+        documents: [
+          absolutePath('services/ui/components/**/*.graphql'),
+          absolutePath('services/ui/pages/**/*.graphql'),
+        ],
         plugins: [
           'typescript',
           'typescript-operations',

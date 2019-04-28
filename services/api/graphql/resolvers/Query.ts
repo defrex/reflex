@@ -3,7 +3,6 @@ import { authUrl as figmaAuthUrl } from 'api/figma/auth'
 import { authUrl as githubAuthUrl } from 'api/github/auth'
 import { Context } from 'api/graphql/Context'
 import { QueryResolvers } from 'api/graphql/types'
-import absoluteUrl from 'api/lib/absoluteUrl'
 import { authSessionForToken } from 'api/lib/cliAuth'
 import { userInTeam } from 'api/lib/user'
 import { CliAuthSession, prisma, Team } from 'api/prisma'
@@ -17,7 +16,6 @@ export default {
     return {
       figmaAuthUrl,
       githubAuthUrl,
-      logoutUrl: absoluteUrl('/api/logout'),
     }
   },
 

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import express from 'express'
 import morgan from 'morgan'
 import { resolve } from 'path'
+import { apiPath } from 'ui/lib/apiPath'
 
 function absolutePath(path: string) {
   return resolve(`${__dirname}/../../${path}`)
@@ -28,7 +29,7 @@ export default async function main() {
 
   app.get('/api/logout', (_req, res) => {
     res.clearCookie('Authorization')
-    res.redirect('/')
+    res.redirect(apiPath('/auth/logout'))
   })
 
   app.get('/api/login', (req, res) => {

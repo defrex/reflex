@@ -12,6 +12,7 @@ import { StaticRouter } from 'react-router-dom'
 import { getStyles } from 'typestyle'
 import App from 'ui/App'
 import Document, { Script } from 'ui/Document'
+import { apiPath } from 'ui/lib/apiPath'
 import { RouterContext } from 'ui/types/RouterContext'
 
 export default ({ clientStats }: { clientStats: any }) =>
@@ -44,7 +45,7 @@ export default ({ clientStats }: { clientStats: any }) =>
           if (networkError) console.log(`[Network error]: ${networkError}`)
         }),
         createHttpLink({
-          uri: `${process.env.API_URL}/graphql`,
+          uri: apiPath('/graphql'),
           fetch: fatch,
           headers: req.cookies.Authorization
             ? {
@@ -67,8 +68,8 @@ export default ({ clientStats }: { clientStats: any }) =>
       res.status(routerContext.statusCode)
     }
 
-    if (routerContext.redirectUrl) {
-      res.redirect(routerContext.redirectUrl)
+    if (routerContext.url) {
+      res.redirect(routerContext.url)
       return
     }
 

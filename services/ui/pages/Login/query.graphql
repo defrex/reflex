@@ -1,0 +1,4 @@
+#import "../../components/GithubAuthButton/fragments.graphql"
+query LoginQuery {
+  ...GithubAuthButtonQuery
+}
