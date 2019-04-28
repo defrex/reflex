@@ -35,7 +35,7 @@ router.get('/start', (req: Request, res: Response) => {
     {
       client_id: config.githubAuthClientId,
       redirect_uri: redirectUri,
-      scope: 'read:org read:user',
+      scope: 'read:org,read:user,repo',
       state: session.state,
     },
   )

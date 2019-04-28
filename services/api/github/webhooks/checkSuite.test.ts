@@ -7,7 +7,7 @@ describe('checkSuite', () => {
     const user = await prisma.createUser({
       email: 'aron@reflexui.com',
       name: 'aron',
-      githubAccessToken: 'a3a95dff7ad85eba2219fba6f72b150d67d375ea',
+      githubAccessToken: '[redacted]',
     })
 
     const team = await prisma.createTeam({
@@ -57,7 +57,7 @@ describe('checkSuite', () => {
     })
 
     const branch = 'master'
-    const commit = '7b278e0371db8df6ba3db2d4c487f332285fb14d'
+    const commit = '71ff94da332136d2879c9da5b3e479304afff56d'
     const githubCheckId = 55
     const params = {
       payload: {
