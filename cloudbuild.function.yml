@@ -2,10 +2,6 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['build']
+    args: ['run', 'build']
   - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - functions
-      - deploy
-      - ${_FUNCTION}
-      - --source=./dist
+    args: ['functions', 'deploy', '${_FUNCTION}', '--source=./dist']
