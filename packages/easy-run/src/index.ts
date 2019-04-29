@@ -3,7 +3,9 @@ import { spawn } from 'child_process'
 
 export default async function run(
   command: string[],
-  cwd?: string,
+  options: {
+    cwd?: string
+  } = {},
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const bin = command.shift() as string
@@ -14,7 +16,7 @@ export default async function run(
 
     spawn(bin, args, {
       stdio: 'inherit',
-      cwd: cwd || process.cwd(),
+      cwd: options.cwd || process.cwd(),
       shell: true,
     }).on('close', (code: number) => {
       if (code === 0) {

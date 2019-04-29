@@ -87,7 +87,7 @@ type Check {
   commit: String!
 
   renders: [Render]!
-  repo: Repo
+  repo: Repo!
 }
 
 type Repo {

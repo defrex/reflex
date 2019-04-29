@@ -50,7 +50,7 @@ type Check {
   branch: String!
   commit: String!
   renders(where: RenderWhereInput, orderBy: RenderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Render!]
-  repo: Repo
+  repo: Repo!
 }
 
 type CheckConnection {
@@ -65,7 +65,7 @@ input CheckCreateInput {
   branch: String!
   commit: String!
   renders: RenderCreateManyWithoutCheckInput
-  repo: RepoCreateOneWithoutChecksInput
+  repo: RepoCreateOneWithoutChecksInput!
 }
 
 input CheckCreateManyWithoutRepoInput {
@@ -83,7 +83,7 @@ input CheckCreateWithoutRendersInput {
   githubCheckId: Int
   branch: String!
   commit: String!
-  repo: RepoCreateOneWithoutChecksInput
+  repo: RepoCreateOneWithoutChecksInput!
 }
 
 input CheckCreateWithoutRepoInput {
@@ -218,7 +218,7 @@ input CheckUpdateInput {
   branch: String
   commit: String
   renders: RenderUpdateManyWithoutCheckInput
-  repo: RepoUpdateOneWithoutChecksInput
+  repo: RepoUpdateOneRequiredWithoutChecksInput
 }
 
 input CheckUpdateManyDataInput {
@@ -263,7 +263,7 @@ input CheckUpdateWithoutRendersDataInput {
   githubCheckId: Int
   branch: String
   commit: String
-  repo: RepoUpdateOneWithoutChecksInput
+  repo: RepoUpdateOneRequiredWithoutChecksInput
 }
 
 input CheckUpdateWithoutRepoDataInput {
@@ -1677,12 +1677,10 @@ input RepoUpdateManyWithWhereNestedInput {
   data: RepoUpdateManyDataInput!
 }
 
-input RepoUpdateOneWithoutChecksInput {
+input RepoUpdateOneRequiredWithoutChecksInput {
   create: RepoCreateWithoutChecksInput
   update: RepoUpdateWithoutChecksDataInput
   upsert: RepoUpsertWithoutChecksInput
-  delete: Boolean
-  disconnect: Boolean
   connect: RepoWhereUniqueInput
 }
 

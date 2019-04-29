@@ -828,7 +828,7 @@ export interface CheckCreateWithoutRendersInput {
   githubCheckId?: Int;
   branch: String;
   commit: String;
-  repo?: RepoCreateOneWithoutChecksInput;
+  repo: RepoCreateOneWithoutChecksInput;
 }
 
 export interface MembershipWhereInput {
@@ -878,7 +878,7 @@ export interface CheckUpdateInput {
   branch?: String;
   commit?: String;
   renders?: RenderUpdateManyWithoutCheckInput;
-  repo?: RepoUpdateOneWithoutChecksInput;
+  repo?: RepoUpdateOneRequiredWithoutChecksInput;
 }
 
 export interface SampleSubscriptionWhereInput {
@@ -1793,12 +1793,10 @@ export type CliAuthSessionWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface RepoUpdateOneWithoutChecksInput {
+export interface RepoUpdateOneRequiredWithoutChecksInput {
   create?: RepoCreateWithoutChecksInput;
   update?: RepoUpdateWithoutChecksDataInput;
   upsert?: RepoUpsertWithoutChecksInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
   connect?: RepoWhereUniqueInput;
 }
 
@@ -2002,7 +2000,7 @@ export interface CheckUpdateWithoutRendersDataInput {
   githubCheckId?: Int;
   branch?: String;
   commit?: String;
-  repo?: RepoUpdateOneWithoutChecksInput;
+  repo?: RepoUpdateOneRequiredWithoutChecksInput;
 }
 
 export interface ComponentCreateWithoutTeamInput {
@@ -2456,7 +2454,7 @@ export interface CheckCreateInput {
   branch: String;
   commit: String;
   renders?: RenderCreateManyWithoutCheckInput;
-  repo?: RepoCreateOneWithoutChecksInput;
+  repo: RepoCreateOneWithoutChecksInput;
 }
 
 export interface TeamCreateWithoutMembershipsInput {

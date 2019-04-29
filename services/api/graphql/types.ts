@@ -13,8 +13,8 @@ export type Check = {
   githubCheckId?: Maybe<Scalars['Int']>
   branch: Scalars['String']
   commit: Scalars['String']
-  repoArchiveUrl?: Maybe<Scalars['String']>
-  repo?: Maybe<Repo>
+  repoTarball?: Maybe<Scalars['String']>
+  repo: Repo
 }
 
 export type CliAuthSession = {
@@ -318,12 +318,12 @@ export type CheckResolvers<
   >
   branch?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   commit?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  repoArchiveUrl?: Resolver<
+  repoTarball?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType
   >
-  repo?: Resolver<Maybe<ResolversTypes['Repo']>, ParentType, ContextType>
+  repo?: Resolver<ResolversTypes['Repo'], ParentType, ContextType>
 }
 
 export type CliAuthSessionResolvers<

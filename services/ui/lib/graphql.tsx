@@ -13,8 +13,8 @@ export type Check = {
   githubCheckId?: Maybe<Scalars['Int']>
   branch: Scalars['String']
   commit: Scalars['String']
-  repoArchiveUrl?: Maybe<Scalars['String']>
-  repo?: Maybe<Repo>
+  repoTarball?: Maybe<Scalars['String']>
+  repo: Repo
 }
 
 export type CliAuthSession = {

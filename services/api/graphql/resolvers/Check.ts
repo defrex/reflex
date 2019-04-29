@@ -6,7 +6,7 @@ import DataURI from 'datauri'
 import { Octokit } from 'probot'
 
 export default {
-  repoArchiveUrl: async (check, _args, ctx) => {
+  repoTarball: async (check, _args, ctx) => {
     const { user } = ctx
 
     if (!user || !user.githubAccessToken) {
@@ -36,5 +36,9 @@ export default {
     const uri = new DataURI()
     uri.format('.tar.gz', archive.data as Buffer)
     return uri.content
+  },
+
+  repo: async (check) => {
+    return prisma.check({ id: check.id }).repo()
   },
 } as CheckResolvers<Context>
