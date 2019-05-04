@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import collectFilenames from './lib/collectFilenames'
 import ensureAuthenticated from './lib/ensureAuthenticated'
 import spinnerOp from './lib/spinnerOp'
@@ -43,16 +44,12 @@ export async function sampler({
   for (const filename of filenames) {
     await spinnerOp({
       text: `Loading ${trimCwd(filename)}`,
-      run: async () => require(filename),
+      run: async () => require(resolve(`${process.cwd()}/${filename}`)),
     })
   }
 
   for (const sampleSet of sampleSets) {
-    await sampleSet.render(renderSampleToDocument)
-  }
-
-  for (const sampleSet of sampleSets) {
-    await sampleSet.upload()
+    await sampleSet.run(renderSampleToDocument)
   }
 }
 

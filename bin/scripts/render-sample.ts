@@ -2,7 +2,7 @@ import { Storage } from '@google-cloud/storage'
 import config from 'api/config'
 import { trimImage } from 'api/lib/image'
 import { renderUrl } from 'api/lib/render'
-import colors from 'colors'
+import chalk from 'chalk'
 import { absoluteUrl } from 'ui/lib/url'
 
 const storage = new Storage({ projectId: config.gcpProjectId })
@@ -28,12 +28,12 @@ async function upload(filename: string, content: Buffer) {
 }
 
 export default async function main() {
-  console.log(colors.green(`Rendering ${url}`))
+  console.log(chalk.green(`Rendering ${url}`))
   let image: Buffer
   try {
     image = await renderUrl(url)
   } catch (error) {
-    console.log(colors.dim('image = await renderUrl(url)'))
+    console.log(chalk.dim('image = await renderUrl(url)'))
     console.error(error)
     return
   }
@@ -42,7 +42,7 @@ export default async function main() {
     await upload(`${directoryName}/${time}-browser.png`, image)
   } catch (error) {
     console.log(
-      colors.dim('await upload(`${directoryName}/${time}-browser.png`, image)'),
+      chalk.dim('await upload(`${directoryName}/${time}-browser.png`, image)'),
     )
     console.error(error)
     return
@@ -51,7 +51,7 @@ export default async function main() {
   try {
     image = await trimImage(image)
   } catch (error) {
-    console.log(colors.dim('image = await trimImage(image)'))
+    console.log(chalk.dim('image = await trimImage(image)'))
     console.error(error)
     return
   }
@@ -60,7 +60,7 @@ export default async function main() {
     await upload(`${directoryName}/${time}-trim.png`, image)
   } catch (error) {
     console.log(
-      colors.dim('await upload(`${directoryName}/${time}-trim.png`, image)'),
+      chalk.dim('await upload(`${directoryName}/${time}-trim.png`, image)'),
     )
     console.error(error)
     return

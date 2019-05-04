@@ -1,0 +1,23 @@
+type Query {
+  check(id: ID!): Check
+}
+
+type Check {
+  id: ID!
+
+  githubCheckId: Int
+  branch: String!
+  commit: String!
+  repoTarball: String
+
+  repo: Repo!
+}
+
+type Repo {
+  id: ID!
+
+  owner: String!
+  name: String!
+
+  checks: [Check]!
+}

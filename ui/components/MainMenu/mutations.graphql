@@ -1,7 +1,0 @@
-mutation MainMenuMutation {
-  logout {
-    status {
-      success
-    }
-  }
-}

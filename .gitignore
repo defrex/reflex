@@ -1,12 +1,9 @@
-/node_modules
-/public/renders
-/public/dist
-/dist
-/ui/**/samples.tsx
-
-# misc
+node_modules
+dist
+.rpt2_cache
 .DS_Store
 .env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log

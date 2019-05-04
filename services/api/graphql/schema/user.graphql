@@ -1,0 +1,26 @@
+type Query {
+  currentUser: User
+  cliAuthSession(cliAuthToken: String!): CliAuthSession
+}
+
+type User {
+  id: ID!
+  name: String!
+  figmaConnected: Boolean!
+  githubConnected: Boolean!
+}
+
+type CliAuthSession {
+  url: String!
+  cliAuthToken: String!
+  userAuthToken: String
+}
+
+type Mutation {
+  createCliAuthSession: CreateCliAuthSessionResponse
+}
+
+type CreateCliAuthSessionResponse {
+  cliAuthSession: CliAuthSession
+  status: MutationStatus!
+}

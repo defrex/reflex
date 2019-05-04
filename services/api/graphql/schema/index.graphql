@@ -1,0 +1,24 @@
+#import Query.*, Mutation.* from "./user.graphql"
+#import Query.*, Mutation.* from "./team.graphql"
+#import Mutation.* from "./component.graphql"
+#import Query.* from "./check.graphql"
+
+type Query {
+  hello: String!
+  config: Config!
+}
+
+type MutationError {
+  field: String
+  message: String!
+}
+
+type MutationStatus {
+  success: Boolean!
+  errors: [MutationError!]
+}
+
+type Config {
+  figmaAuthUrl: String!
+  githubAuthUrl: String!
+}

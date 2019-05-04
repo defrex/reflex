@@ -1,4 +1,6 @@
 {
+  "exclude": ["node_modules", "dist/*"],
+  "include": ["src/*"],
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es5",
@@ -12,7 +14,6 @@
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": ["node_modules/@types"]
-  },
-  "include": ["src"]
+    "typeRoots": ["node_modules/@types", "types"]
+  }
 }

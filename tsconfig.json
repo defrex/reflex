@@ -1,11 +1,10 @@
 {
   "exclude": [
     "node_modules",
-    "dist/*",
-    "public/dist/*",
     "local/*",
     "packages/*",
-    "functions/*"
+    "functions/*",
+    "services/*"
   ],
   "compilerOptions": {
     "jsx": "react",
@@ -23,9 +22,10 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "api/*": ["api/*"],
-      "ui/*": ["ui/*"]
+      "api/*": ["./services/api/*"],
+      "ui/*": ["./services/ui/*"],
+      "bin/*": ["./bin/*"]
     },
-    "typeRoots": ["node_modules/@types", "@types"]
+    "typeRoots": ["node_modules/@types", "types"]
   }
 }
