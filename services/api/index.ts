@@ -1,3 +1,4 @@
+import { ErrorReporting } from '@google-cloud/error-reporting'
 import config from 'api/config'
 import figma from 'api/figma'
 import github from 'api/github'
@@ -33,6 +34,11 @@ export default async function main(): Promise<Server> {
   app.use('/auth', auth)
 
   await applyGraphqlMiddleware(app)
+
+  if (config.environment === 'production') {
+    const errorReporting = new ErrorReporting()
+    app.use(errorReporting.express)
+  }
 
   return new Promise((resolve, _reject) => {
     const server: Server = app.listen(config.port, () => {
