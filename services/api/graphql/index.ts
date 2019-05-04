@@ -1,4 +1,5 @@
 /// <reference path="../types/Request.d.ts" />
+import { ErrorReporting } from '@google-cloud/error-reporting'
 import config from 'api/config'
 import { getContext } from 'api/graphql/Context'
 import resolvers from 'api/graphql/resolvers'
@@ -7,6 +8,7 @@ import { Application } from 'express'
 import { importSchema } from 'graphql-import'
 
 const typeDefs = importSchema(config.graphqlSchemaPath)
+const errorReporting = new ErrorReporting()
 
 export default async (app: Application) => {
   const schema = makeExecutableSchema({
@@ -28,6 +30,11 @@ export default async (app: Application) => {
       } else {
         console.error(error)
       }
+
+      if (config.environment === 'production') {
+        errorReporting.report(error)
+      }
+
       return error
     },
   })
