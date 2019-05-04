@@ -7,12 +7,15 @@ console.log(
   'githubAppPrivateKey.newlines',
   (config.githubAppPrivateKey.match(/\n/g) || []).length,
 )
-const cert = config.githubAppPrivateKey
+const key = config.githubAppPrivateKey
   .replace('-----BEGIN RSA PRIVATE KEY-----', '')
   .replace('-----END RSA PRIVATE KEY-----', '')
   .trim()
   .split(' ')
-  .join('\n')
+key.unshift('-----BEGIN RSA PRIVATE KEY-----')
+key.push('-----END RSA PRIVATE KEY-----')
+const cert = key.join('\n')
+
 console.log('cert', cert)
 
 const probot = new Probot({
