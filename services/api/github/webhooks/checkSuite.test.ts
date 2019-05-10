@@ -59,7 +59,7 @@ describe('checkSuite', () => {
     })
 
     const branch = 'master'
-    const commit = '71ff94da332136d2879c9da5b3e479304afff56d'
+    const commit = 'e036ea382fd9cbf6dbce3777d91599d5b46dafb7'
     const githubCheckId = 55
     const params = {
       payload: {
