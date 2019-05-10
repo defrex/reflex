@@ -19,6 +19,8 @@ export default {
       auth: `token ${user.githubAccessToken}`,
     })
 
+    console.log(await octokit.users.getAuthenticated())
+
     let archive
     try {
       archive = await octokit.repos.getArchiveLink({
