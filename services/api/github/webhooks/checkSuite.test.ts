@@ -2,12 +2,14 @@ import { ChecksCreateParams, GitGetCommitParams } from '@octokit/rest'
 import { prisma } from 'api/prisma'
 import checkSuite from './checkSuite'
 
+jest.setTimeout(100000)
+
 describe('checkSuite', () => {
   it('runs', async () => {
     const user = await prisma.createUser({
       email: 'aron@reflexui.com',
       name: 'aron',
-      githubAccessToken: '',
+      githubAccessToken: '76b9913c468914c252d5e6921109f45680fecca1',
     })
 
     const team = await prisma.createTeam({
