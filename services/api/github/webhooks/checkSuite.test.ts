@@ -2,7 +2,7 @@ import { ChecksCreateParams, GitGetCommitParams } from '@octokit/rest'
 import { prisma } from 'api/prisma'
 import checkSuite from './checkSuite'
 
-jest.setTimeout(100000)
+jest.setTimeout(1000000)
 
 describe('checkSuite', () => {
   it('runs', async () => {
@@ -59,7 +59,7 @@ describe('checkSuite', () => {
     })
 
     const branch = 'master'
-    const commit = 'e036ea382fd9cbf6dbce3777d91599d5b46dafb7'
+    const commit = '663c61a0492887a262bc54f8158c95c3bb5a3aa4'
     const githubCheckId = 55
     const params = {
       payload: {
