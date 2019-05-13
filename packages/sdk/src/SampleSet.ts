@@ -56,6 +56,10 @@ export class SampleSet {
 
   constructor(public componentName: string) {}
 
+  get length(): number {
+    return this.samples.length
+  }
+
   add(name: string, render: SampleRenderFn) {
     this.samples.push({ name, render })
     return this

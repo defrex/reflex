@@ -31,22 +31,20 @@ export async function sampler({
   }
   await ensureAuthenticated()
 
-  let filenames: string[] = []
   await spinnerOp({
     text: `Collecting ${
       typeof paths === 'string' ? trimCwd(paths) : paths.map((path) => trimCwd(path)).join(',')
     }`,
     run: async () => {
-      filenames = await collectFilenames(paths)
+      const filenames: string[] = await collectFilenames(paths)
+      for (const filename of filenames) {
+        require(resolve(`${process.cwd()}/${filename}`))
+      }
     },
   })
 
-  for (const filename of filenames) {
-    await spinnerOp({
-      text: `Loading ${trimCwd(filename)}`,
-      run: async () => require(resolve(`${process.cwd()}/${filename}`)),
-    })
-  }
+  const sampleCount = sampleSets.reduce((sum, sampleSet) => sum + sampleSet.length, 0)
+  console.log(`Found ${sampleCount} samples from ${sampleSets.length} components`)
 
   for (const sampleSet of sampleSets) {
     await sampleSet.run(renderSampleToDocument)
