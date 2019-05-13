@@ -46,6 +46,9 @@ export default {
     }
 
     const team = await prisma.team({ id: teamId })
+    if (!team) {
+      throw new Error(`Invalid teamId ${teamId}`)
+    }
 
     if (!(await userInTeam(ctx.user, team))) {
       throw new AuthorizationError()
@@ -70,6 +73,10 @@ export default {
     }
 
     const component = await prisma.component({ id: componentId })
+    if (!component) {
+      throw new Error(`Invalid componentId ${componentId}`)
+    }
+
     const team = await prisma.component({ id: componentId }).team()
 
     if (!(await userInTeam(ctx.user, team))) {

@@ -25,13 +25,17 @@ export function tokenForUser(user: User): AuthToken {
   return jwt.sign(payload, config.secretKey)
 }
 
-export function userForToken(token: AuthToken): Promise<User> {
+export async function userForToken(token: AuthToken): Promise<User> {
   let payload
   try {
     payload = jwt.verify(token, config.secretKey) as AuthPayload
   } catch (e) {}
   if (payload && payload.userId) {
-    return prisma.user({ id: payload.userId })
+    const user = await prisma.user({ id: payload.userId })
+    if (!user) {
+      throw new AuthenticationError(`Cannot find User for id ${payload.userId}`)
+    }
+    return user
   }
   throw new AuthenticationError('Invalid token')
 }

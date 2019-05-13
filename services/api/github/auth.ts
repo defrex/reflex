@@ -76,7 +76,7 @@ router.get('/finish', async (req: Request, res: Response) => {
   const githubUserResponse = await octokit.users.getAuthenticated()
   const githubUser = githubUserResponse.data
 
-  let user: User = await prisma.user({ email: githubUser.email })
+  let user: User | null = await prisma.user({ email: githubUser.email })
 
   if (!user) {
     user = await prisma.createUser({

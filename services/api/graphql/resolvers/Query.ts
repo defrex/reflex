@@ -39,7 +39,7 @@ export default {
     return teams
   },
 
-  async cliAuthSession(_parent, args): Promise<CliAuthSession | void> {
+  async cliAuthSession(_parent, args): Promise<CliAuthSession | null> {
     return authSessionForToken(args.cliAuthToken)
   },
 

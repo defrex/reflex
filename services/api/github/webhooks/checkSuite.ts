@@ -89,6 +89,9 @@ export default async function checkSuite({
         throw new Error(`Team with no admin: ${team.id}`)
       }
       authUser = await prisma.membership({ id: memberships[0].id }).user()
+      if (!authUser) {
+        throw new Error(`Invalid membership id: ${memberships[0].id}`)
+      }
     }
 
     await callSampler({

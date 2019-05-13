@@ -26,9 +26,10 @@ export function tokenForAuthSession(session: CliAuthSession): Token {
 
 export async function authSessionForToken(
   token: Token,
-): Promise<CliAuthSession | void> {
+): Promise<CliAuthSession | null> {
   const payload = jwt.verify(token, config.secretKey) as any
   if (payload && payload.sessionId) {
     return prisma.cliAuthSession({ id: payload.sessionId })
   }
+  return null
 }

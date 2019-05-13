@@ -30,11 +30,17 @@ const colors: Config<Chalk> = {
 const env: Config<{ [key: string]: string }> = {
   package: {
     sdk: {
+      ...process.env,
+      NODE_ENV,
+    },
+    'easy-run': {
+      ...process.env,
       NODE_ENV,
     },
   },
   function: {
     sampler: {
+      ...process.env,
       NODE_ENV,
     },
   },
@@ -132,7 +138,7 @@ async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
     titleLog(type, name, 'start')
   }
 
-  const proc = spawn('yarn', ['start'], {
+  const proc = spawn('npm', ['run', 'start'], {
     stdio: ['inherit', 'pipe', 'pipe'],
     cwd: absolutePath(`${type}s/${name}`),
     env: env[type] && env[type]![name] ? env[type]![name] : {},
