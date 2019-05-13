@@ -52,4 +52,16 @@ export default {
 
     return components.pop()
   },
+
+  repos: async (team, _args, ctx) => {
+    if (!ctx.user) {
+      throw new AuthenticationError()
+    }
+
+    if (!(await userInTeam(ctx.user, team))) {
+      throw new AuthorizationError()
+    }
+
+    return prisma.team({ id: team.id }).repos()
+  },
 } as TeamResolvers<Context>

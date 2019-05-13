@@ -1,14 +1,13 @@
 /// <reference path="../types/Request.d.ts" />
-import { ErrorReporting } from '@google-cloud/error-reporting'
 import config from 'api/config'
 import { getContext } from 'api/graphql/Context'
 import resolvers from 'api/graphql/resolvers'
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express'
 import { Application } from 'express'
 import { importSchema } from 'graphql-import'
+import PrettyError from 'pretty-error'
 
 const typeDefs = importSchema(config.graphqlSchemaPath)
-const errorReporting = new ErrorReporting()
 
 export default async (app: Application) => {
   const schema = makeExecutableSchema({
@@ -22,19 +21,12 @@ export default async (app: Application) => {
     introspection: true,
     playground: false,
     formatError: (error) => {
-      if (
-        error.message.includes('AUTHENTICATION_ERROR') ||
-        error.message.includes('AUTHORIZATION_ERROR')
-      ) {
-        console.error(error.message)
+      if (config.environment === 'development') {
+        console.log(new PrettyError().render(error))
       } else {
-        console.error(error)
+        console.log(error)
       }
-
-      if (config.environment === 'production') {
-        errorReporting.report(error)
-      }
-
+      console.log(error.extensions!.exception)
       return error
     },
   })

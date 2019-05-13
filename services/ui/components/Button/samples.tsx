@@ -1,6 +1,6 @@
 import { samplesOf } from '@reflexui/sdk'
 import React from 'react'
-import Button from './index'
+import Button from '.'
 
 samplesOf('Button')
   .add('Default', () => {

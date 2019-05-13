@@ -170,6 +170,7 @@ export type Team = {
   role: Scalars['String']
   component?: Maybe<Component>
   components: Array<Component>
+  repos: Array<Repo>
 }
 
 export type TeamComponentArgs = {
@@ -278,9 +279,9 @@ export type ResolversTypes = {
   Component: Component
   Sample: Sample
   Render: Render
+  Repo: Repo
   Check: Check
   Int: Scalars['Int']
-  Repo: Repo
   Mutation: {}
   CreateCliAuthSessionResponse: Omit<
     CreateCliAuthSessionResponse,
@@ -543,6 +544,7 @@ export type TeamResolvers<
     ParentType,
     ContextType
   >
+  repos?: Resolver<Array<ResolversTypes['Repo']>, ParentType, ContextType>
 }
 
 export type UserResolvers<

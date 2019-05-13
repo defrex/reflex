@@ -170,6 +170,7 @@ export type Team = {
   role: Scalars['String']
   component?: Maybe<Component>
   components: Array<Component>
+  repos: Array<Repo>
 }
 
 export type TeamComponentArgs = {

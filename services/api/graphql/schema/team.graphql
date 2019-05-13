@@ -10,6 +10,7 @@ type Team {
 
   component(id: ID!): Component
   components: [Component!]!
+  repos: [Repo!]!
 }
 
 type Mutation {
