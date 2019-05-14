@@ -1,4 +1,4 @@
-import config, { AUTH_KEY } from '../config'
+import store, { AUTH_KEY } from '../store'
 import { ReflexClient } from './ReflexClient'
 
-export default new ReflexClient(config.get(AUTH_KEY))
+export default new ReflexClient(store.get(AUTH_KEY))

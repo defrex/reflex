@@ -1,5 +1,10 @@
 import gql from 'gql-tag'
 import { GraphQLClient } from 'graphql-request'
+import {
+  UploadSampleMutation,
+  UploadSampleMutationInput,
+  UploadSampleMutationResponse,
+} from './mutations/UploadSampleMutation'
 
 const REFLEX_ENDPOINT = process.env.REFLEX_API_ENDPOINT || 'https://api.reflexui.com/graphql'
 
@@ -22,5 +27,9 @@ export class ReflexClient extends GraphQLClient {
         hello
       }
     `)
+  }
+
+  async uploadSample(input: UploadSampleMutationInput) {
+    return this.request<UploadSampleMutationResponse>(UploadSampleMutation, input)
   }
 }

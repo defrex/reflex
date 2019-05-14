@@ -1,55 +1,10 @@
-import gql from 'gql-tag'
 import { gitInfo } from './git'
 import client from './lib/client'
 import spinnerOp from './lib/spinnerOp'
-import { RenderSampleToDocument, Sample, SampleRenderFn } from './types'
+import { Sample } from './Sample'
+import { SampleRenderFn } from './types'
 
-const UploadSampleMutation = gql`
-  mutation UploadSampleMutation(
-    $componentName: String!
-    $sampleName: String!
-    $branch: String!
-    $commit: String!
-    $html: String!
-    $imageUrl: String
-  ) {
-    createRender(
-      input: {
-        componentName: $componentName
-        sampleName: $sampleName
-        branch: $branch
-        commit: $commit
-        html: $html
-        imageUrl: $imageUrl
-      }
-    ) {
-      render {
-        id
-      }
-      status {
-        success
-        errors {
-          field
-          message
-        }
-      }
-    }
-  }
-`
-interface UploadSampleMutationResponse {
-  createRender: {
-    render?: {
-      id: string
-    }
-    status: {
-      success: boolean
-      errors?: {
-        field: string
-        message: string
-      }
-    }
-  }
-}
+export const sampleSets: Array<SampleSet> = []
 
 export class SampleSet {
   public samples: Array<Sample> = []
@@ -60,40 +15,48 @@ export class SampleSet {
     return this.samples.length
   }
 
-  add(name: string, render: SampleRenderFn) {
-    this.samples.push({ name, render })
+  add(name: string, sampleRenderFn: SampleRenderFn): SampleSet {
+    this.samples.push(new Sample(this.componentName, name, sampleRenderFn))
     return this
   }
 
-  async run(renderer: RenderSampleToDocument) {
+  async render() {
+    for (const sample of this.samples) {
+      await spinnerOp({
+        text: `Rendering ${this.componentName}/${sample.name}`,
+        run: async () => {
+          sample.render()
+        },
+      })
+    }
+  }
+
+  async upload() {
     const { branch, commit } = await gitInfo()
 
     for (const sample of this.samples) {
       await spinnerOp({
-        text: `Rendering ${this.componentName}/${sample.name}`,
-        run: [
-          async () => {
-            sample.document = await renderer(sample.render)
-            return { success: !!sample.document }
-          },
-          async () => {
-            const response = await client.request<UploadSampleMutationResponse>(
-              UploadSampleMutation,
-              {
-                componentName: this.componentName,
-                sampleName: sample.name,
-                html: sample.document,
-                branch,
-                commit,
-              },
-            )
-            if (!response.createRender.status.success) {
-              console.error(response.createRender.status.errors)
-              throw new Error('Unexpected GraphQL Error')
-            }
-          },
-        ],
+        text: `Uploading ${this.componentName}/${sample.name}`,
+        run: async () => {
+          const response = await client.uploadSample({
+            componentName: this.componentName,
+            sampleName: sample.name,
+            html: sample.document!,
+            branch,
+            commit,
+          })
+          if (!response.createRender.status.success) {
+            console.error(response.createRender.status.errors)
+            throw new Error('Unexpected GraphQL Error')
+          }
+        },
       })
     }
   }
+}
+
+export function samplesOf(componentName: string): SampleSet {
+  const sampleSet = new SampleSet(componentName)
+  sampleSets.push(sampleSet)
+  return sampleSet
 }

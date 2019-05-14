@@ -118,6 +118,11 @@ const setProc = (type: ProcType, name: ProcName, proc: ChildProcess) =>
 const delProc = (type: ProcType, name: ProcName) =>
   delete state.procs[`${type}/${name}`]
 
+function procIsRunning(type: ProcType, name: ProcName) {
+  const proc = getProc(type, name)
+  return proc && !proc.killed
+}
+
 function killProc(type: ProcType, name: ProcName): Promise<boolean> {
   const proc = getProc(type, name)
   if (!proc || proc.killed) {
@@ -131,8 +136,16 @@ function killProc(type: ProcType, name: ProcName): Promise<boolean> {
   })
 }
 
-async function spawnProc(type: ProcType, name: ProcName): Promise<void> {
+async function spawnProc(
+  type: ProcType,
+  name: ProcName,
+  restart: boolean = true,
+): Promise<void> {
   let loaded = false
+
+  if (!restart && procIsRunning(type, name)) {
+    return
+  }
 
   if (await killProc(type, name)) {
     titleLog(type, name, 'start')
@@ -177,6 +190,21 @@ process.on('exit', function killAll() {
   }
 })
 
+function watchAndSpawn(
+  paths: string | string[],
+  type: ProcType,
+  name: ProcName,
+  restart?: boolean,
+) {
+  chokidar.watch(paths, { ignoreInitial: true }).on(
+    'all',
+    debounce(() => spawnProc(type, name, restart), 1000, {
+      leading: true,
+      trailing: true,
+    }),
+  )
+}
+
 export default async function main() {
   spawnProc('package', 'sdk')
   spawnProc('package', 'easy-run')
@@ -184,28 +212,19 @@ export default async function main() {
   spawnProc('service', 'api')
   spawnProc('service', 'ui')
 
-  chokidar
-    .watch(
-      [absolutePath('services/api/*.ts'), absolutePath('services/api/**/*.ts')],
-      { ignoreInitial: true },
-    )
-    .on(
-      'all',
-      debounce(() => spawnProc('service', 'api'), 1000, {
-        leading: true,
-        trailing: true,
-      }),
-    )
-
-  chokidar
-    .watch(absolutePath('services/ui/bin/lib/server.ts'), {
-      ignoreInitial: true,
-    })
-    .on(
-      'all',
-      debounce(() => spawnProc('service', 'ui'), 1000, {
-        leading: true,
-        trailing: true,
-      }),
-    )
+  watchAndSpawn(
+    [absolutePath('services/api/*.ts'), absolutePath('services/api/**/*.ts')],
+    'service',
+    'api',
+  )
+  watchAndSpawn(absolutePath('services/ui/bin/lib/server.ts'), 'service', 'ui')
+  watchAndSpawn(
+    [
+      absolutePath('packages/sdk/src/*.ts'),
+      absolutePath('packages/sdk/src/**/*.ts'),
+    ],
+    'package',
+    'sdk',
+    false,
+  )
 }

@@ -1,9 +1,9 @@
-import { sampler, SampleRenderFn } from '@reflexui/sdk'
+import { run, SampleRenderFn } from '@reflexui/sdk'
 import ReactDomServer from 'react-dom/server'
 import { getStyles } from 'typestyle'
 
 async function main() {
-  await sampler({
+  await run({
     paths: './components/*/samples.tsx',
     renderSampleToStrings: async (sampleRender: SampleRenderFn) => {
       const rendered = await sampleRender()

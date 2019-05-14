@@ -30,6 +30,7 @@ export default {
     'crypto',
     'http',
     'https',
+    'net',
     'url',
     'zlib',
   ],

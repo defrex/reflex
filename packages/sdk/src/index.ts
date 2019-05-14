@@ -1,6 +1,7 @@
 import cli from './cli'
 export { ReflexClient } from './lib/ReflexClient'
-export { sampler, SamplerOptions, samplesOf } from './sampler'
+export { run } from './runner'
+export { samplesOf } from './SampleSet'
 export * from './types'
 
 if (!module.parent) {
