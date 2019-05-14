@@ -1,5 +1,4 @@
 import { stylesheet } from 'typestyle'
-
 import { primary } from 'ui/lib/colors'
 
 export default stylesheet({
@@ -15,7 +14,7 @@ export default stylesheet({
   },
   img: {
     display: 'block',
-    maxHeight: '100px',
+    height: '100px',
     margin: '0 32px',
   },
   buttonWrapper: {
