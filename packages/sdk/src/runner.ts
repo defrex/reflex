@@ -1,11 +1,12 @@
 import { resolve } from 'path'
-import config, { Options } from './config'
-import ensureAuthenticated from './lib/ensureAuthenticated'
-import spinnerOp from './lib/spinnerOp'
-import trimCwd from './lib/trimCwd'
-import { sampleSets } from './SampleSet'
-import { startServer } from './ui'
-export * from './types'
+import { setCurrentlyFilename } from 'src/Component'
+import { componentSet } from 'src/componentSet'
+import config, { Options } from 'src/config'
+import ensureAuthenticated from 'src/lib/ensureAuthenticated'
+import spinnerOp from 'src/lib/spinnerOp'
+import trimCwd from 'src/lib/trimCwd'
+import { startServer } from 'src/server'
+export * from 'src/types'
 
 export async function run(options: Options): Promise<void> {
   await config.setOptions(options)
@@ -15,17 +16,16 @@ export async function run(options: Options): Promise<void> {
     text: `Collecting ${config.paths.map((path) => trimCwd(path)).join(',')}`,
     run: async () => {
       for (const filename of config.filenames) {
-        require(resolve(`${process.cwd()}/${filename}`))
+        const absFilename = resolve(`${process.cwd()}/${filename}`)
+        setCurrentlyFilename(absFilename)
+        require(absFilename)
       }
     },
   })
 
-  const sampleCount = sampleSets.reduce((sum, sampleSet) => sum + sampleSet.length, 0)
-  console.log(`Found ${sampleCount} samples from ${sampleSets.length} components`)
+  console.log(`Found ${componentSet.sampleCount()} samples from ${componentSet.length} components`)
 
-  for (const sampleSet of sampleSets) {
-    await sampleSet.render()
-  }
+  await componentSet.render()
 
   await startServer()
   console.log(`http://localhost:${config.port}`)

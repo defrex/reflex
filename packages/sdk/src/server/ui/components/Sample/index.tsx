@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sample as SampleData } from '../../../Sample'
+import { Sample as SampleData } from 'src/Sample'
 
 interface SampleProps {
   sample: SampleData

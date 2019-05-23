@@ -1,3 +1,5 @@
+require('source-map-support').install()
+
 import yargs from 'yargs'
 import { gitInfo } from './git'
 import clearAuthentication from './lib/clearAuthentication'

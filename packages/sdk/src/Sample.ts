@@ -1,17 +1,30 @@
 import config from './config'
 import { SampleRenderFn } from './types'
 
-export class Sample {
-  document: string | null = null
+export interface SampleArgs {
+  componentName: string
+  name: string
+  sampleRenderFn: SampleRenderFn
+  document?: string
+}
 
-  constructor(
-    public componentName: string,
-    public name: string,
-    private sampleRenderFn: SampleRenderFn,
-  ) {}
+export class Sample {
+  public componentName: string
+  public name: string
+  public document?: string
+  private sampleRenderFn: SampleRenderFn
+
+  constructor({ componentName, name, sampleRenderFn, document }: SampleArgs) {
+    this.componentName = componentName
+    this.name = name
+    this.sampleRenderFn = sampleRenderFn
+    this.document = document
+  }
 
   async render() {
     this.document = await config.renderSampleToDocument(this.sampleRenderFn)
     return this.document
   }
+
+  async save() {}
 }

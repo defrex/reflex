@@ -5,8 +5,13 @@
     "jest/globals": true
   },
   "extends": [
+    "standard",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "standard"
+    "prettier",
+    "prettier/standard",
+    "prettier/@typescript-eslint",
+    "prettier/react"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -20,16 +25,15 @@
     "project": "./tsconfig.json",
     "tsconfigRootDir": "."
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "jest"
-  ],
+  "plugins": ["react", "@typescript-eslint", "jest"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", {
-      "argsIgnorePattern": "^_"
-    }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "comma-dangle": ["error", "always-multiline"]
   }
 }
